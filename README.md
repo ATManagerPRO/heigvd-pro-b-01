@@ -4,17 +4,18 @@ An application for collaboratively tagging and annotating historical
 images from the canton of Vaud.
 
 This software was developed as semester project (PRO) at HEIG-VD,
-academic year 2018/19.
+academic year 2020/21.
 
 Development team:
 
-| Name                                 | Email                        | Github   |
-|--------------------------------------|------------------------------|----------|
-| James Gosling                        | james.gosling@heig-vd.ch     | liskbas  |
-| Brian Kernighan (project lead)       | brian.kernighan@heig-vd.ch   | perwol   |
-| Guido van Rossum                     | guido.vanrossum@heig-vd.ch   | chaunlep |
-| Bjarne Stroustrup                    | bjarne.stroustrup@heig-vd.ch | tomphan  |
-| Linus Torvalds (deputy project lead) | linus.torvalds@heig-vd.ch    | kwenaw   |
+| Name                                 | Email                        | Github      |
+|--------------------------------------|------------------------------|-------------|
+| Stéphane Bottin                      | stephane.bottin@heig-vd.ch   | StephaneB1  |
+| Loïc Dessaules (project lead)        | loic.dessaules@heig-vd.ch    | perwol      |
+| Robin Demarta                        | robin.demarta@heig-vd.ch     | lorem       |
+| Teo Ferrari (deputy project lead)    | teo.ferrari@heig-vd.ch       | LordTT      |
+| Chau Ying Kot                        | chau.kot@heig-vd.ch          | KurohanaJuri|
+| Simon Mattei                         | simon.mattei@heig-vd.ch      | Ikewolf77   |
 
 ## Dependencies
 
