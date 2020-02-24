@@ -11,8 +11,8 @@ Development team:
 | Name                                 | Email                        | Github      |
 |--------------------------------------|------------------------------|-------------|
 | Stéphane Bottin                      | stephane.bottin@heig-vd.ch   | StephaneB1  |
-| Loïc Dessaules (project lead)        | loic.dessaules@heig-vd.ch    | perwol      |
-| Robin Demarta                        | robin.demarta@heig-vd.ch     | lorem       |
+| Loïc Dessaules (project lead)        | loic.dessaules@heig-vd.ch    | gollgot     |
+| Robin Demarta                        | robin.demarta@heig-vd.ch     | rdemarta    |
 | Teo Ferrari (deputy project lead)    | teo.ferrari@heig-vd.ch       | LordTT      |
 | Chau Ying Kot                        | chau.kot@heig-vd.ch          | KurohanaJuri|
 | Simon Mattei                         | simon.mattei@heig-vd.ch      | Ikewolf77   |
