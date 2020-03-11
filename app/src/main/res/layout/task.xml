@@ -67,18 +67,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="List1"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textColor="@color/grey"
                 android:fontFamily="@font/arial"
                 android:textStyle="bold"
                 />
         </LinearLayout>
 
-
-
-
-
     </LinearLayout>
-
 
 </LinearLayout>
