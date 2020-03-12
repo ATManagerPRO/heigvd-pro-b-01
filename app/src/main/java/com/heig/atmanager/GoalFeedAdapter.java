@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * Author : Stephane
+ * Author : Stéphane Bottin
  * Date   : 12.03.2020
- * <p>
- * This class better be good.
+ *
+ * Goal feed adapter for the home view
  */
 public class GoalFeedAdapter extends RecyclerView.Adapter<GoalFeedAdapter.MyViewHolder> {
 private ArrayList<Goal> goals;

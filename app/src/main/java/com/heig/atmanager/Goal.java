@@ -1,10 +1,10 @@
 package com.heig.atmanager;
 
 /**
- * Author : Stephane
+ * Author : Stéphane Bottin
  * Date   : 12.03.2020
- * <p>
- * This class better be good.
+ *
+ * Temp class to represent the goals
  */
 public class Goal {
 
