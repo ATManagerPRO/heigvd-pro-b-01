@@ -25,6 +25,7 @@ public class HomeFragment extends Fragment {
 
     // Task home feed
     ArrayList<Task> tasks; // user data
+    ArrayList<Task> goals; // user data
     private RecyclerView tasksRecyclerView;
     private RecyclerView.Adapter tasksAdapter;
     private RecyclerView.LayoutManager taskslayoutManager;
@@ -36,11 +37,13 @@ public class HomeFragment extends Fragment {
 
         // ----------- TEMP -----------
         tasks = new ArrayList<>();
+        goals = new ArrayList<>();
         tasks.add(new Task("Task1"));
         tasks.add(new Task("Task2"));
         tasks.add(new Task("Task3"));
+        tasks.add(new Task("Task4"));
+        tasks.add(new Task("Task5"));
         // --------- END TEMP ---------
-
 
         // Greeting
         greetingText = (TextView) v.findViewById(R.id.greeting_text);
@@ -71,11 +74,14 @@ public class HomeFragment extends Fragment {
 
     private String getGreeting() {
         String greeting = "";
+        String user_info = "";
         String user = "User123";
         Calendar rightNow = Calendar.getInstance();
+
         // Hour (0 - 23)
         int currentHour = rightNow.get(Calendar.HOUR_OF_DAY);
 
+        // Select proper greeting
         if(currentHour < 10) {
             greeting = "Good morning ";
         } else if (currentHour < 12) {
@@ -86,9 +92,25 @@ public class HomeFragment extends Fragment {
             greeting = "Good evening ";
         }
 
-        // TODO : add goals and make text more dynamic (if 0 tasks says you have nothing, etc...)
-        greeting += user + ",\nyou have " + tasks.size() + " tasks left for today.";
+        // Select user info sentence (total tasks/goals for the day)
+        if(tasks.size() == 0 && goals.size() == 0) {
+            user_info = "relax! You have nothing to do today.";
+        } else if (tasks.size() != 0 && goals.size() == 0) {
+            user_info = getSingleUserInfoGreeting(tasks.size()) + " for today.";
+        } else if (tasks.size() == 0 && goals.size() != 0) {
+            user_info = getSingleUserInfoGreeting(goals.size()) + " for today.";
+        } else {
+            user_info = getSingleUserInfoGreeting(tasks.size()) + " and "
+                    + goals.size() + " goal" + (goals.size() > 1 ? "s" : "") + " for today.";
+        }
+
+        greeting += user + ",\n" + user_info;
 
         return greeting;
+    }
+
+    private String getSingleUserInfoGreeting(int value) {
+        return "You " + (value < 5 ? "just " : "") + "have " +
+                value + " task" + (value > 1 ? "s" : "");
     }
 }
