@@ -1,10 +1,10 @@
 package com.heig.atmanager;
 
 /**
- * Author : Stephane
+ * Author : Stéphane Bottin
  * Date   : 11.03.2020
- * <p>
- * This class better be good.
+ *
+ * Task object (tmp)
  */
 public class Task {
     private String title;
