@@ -74,6 +74,12 @@
                 />
         </LinearLayout>
 
+        <Button
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/ic_arrow_hollow"
+            android:layout_marginStart="-70dp"/>
+
     </LinearLayout>
 
 </LinearLayout>
