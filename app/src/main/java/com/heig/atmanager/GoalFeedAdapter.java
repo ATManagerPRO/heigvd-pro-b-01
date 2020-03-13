@@ -31,10 +31,10 @@ public static class MyViewHolder extends RecyclerView.ViewHolder {
 
     public MyViewHolder(View v) {
         super(v);
-        unit         = (TextView) v.findViewById(R.id.unitText);
-        currentValue = (TextView) v.findViewById(R.id.currentValueText);
-        totalValue   = (TextView) v.findViewById(R.id.totalValueText);
-        progress     = (ProgressBar) v.findViewById(R.id.goalProgress);
+        unit         = (TextView) v.findViewById(R.id.unit_text);
+        currentValue = (TextView) v.findViewById(R.id.current_value_text);
+        totalValue   = (TextView) v.findViewById(R.id.total_value_text);
+        progress     = (ProgressBar) v.findViewById(R.id.goal_progress);
     }
 }
 

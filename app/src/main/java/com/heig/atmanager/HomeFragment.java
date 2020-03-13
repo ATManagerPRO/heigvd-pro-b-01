@@ -104,13 +104,13 @@ public class HomeFragment extends Fragment {
      * @return the proper greetings
      */
     private String getGreetings() {
-        Calendar rightNow = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         String greeting = "";
         String user_info = "";
         String user = "User123";
 
         // Hour (0 - 23)
-        int currentHour = rightNow.get(Calendar.HOUR_OF_DAY);
+        int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
 
         // Select proper greeting
         if(currentHour < 10) {
