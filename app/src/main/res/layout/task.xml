@@ -5,8 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_marginTop="5dp"
-    android:layout_marginBottom="5dp"
-    android:background="@color/colorAccent">
+    android:layout_marginBottom="5dp">
 
     <!-- Time display (HH:MM / AM or PM) -->
     <LinearLayout
@@ -35,6 +34,7 @@
 
     <!-- Task View (expanded) -->
     <LinearLayout
+        android:id="@+id/task_expanded_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -44,9 +44,10 @@
         app:layout_constraintTop_toTopOf="parent"
         android:paddingTop="70dp"
         android:paddingBottom="0dp"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <TextView
+            android:id="@+id/task_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Task detail here..."

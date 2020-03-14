@@ -45,10 +45,10 @@ public class HomeFragment extends Fragment {
         goals.add(new Goal("SQUATS", 100, 70));
         goals.add(new Goal("KMS", 8, 3));
         tasks = new ArrayList<>();
-        tasks.add(new Task("Task1"));
-        tasks.add(new Task("Task2"));
-        tasks.add(new Task("Task3"));
-        tasks.add(new Task("Task4"));
+        tasks.add(new Task("Task1", "This is a really useful task."));
+        tasks.add(new Task("Task2", "Rendre labo 1 :\n> Fiche technique\n> Rapport (10 pages)\n> Code source (C++)"));
+        tasks.add(new Task("Task3", "..."));
+        tasks.add(new Task("Task4", "..."));
         // --------- END TEMP ---------
 
         // Greeting

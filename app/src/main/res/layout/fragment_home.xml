@@ -33,7 +33,8 @@
             android:id="@+id/goals_rv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/greeting_text" />
+            app:layout_constraintTop_toBottomOf="@id/greeting_text"
+            android:scrollbars="horizontal"/>
     </LinearLayout>
 
 
@@ -43,6 +44,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/goals_container"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="20dp"
+        android:scrollbars="vertical"
+        android:paddingBottom="400dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
