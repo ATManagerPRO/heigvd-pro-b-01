@@ -43,7 +43,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:paddingTop="70dp"
-        android:paddingBottom="0dp"
+        android:paddingBottom="10dp"
         android:visibility="gone">
 
         <TextView
@@ -56,29 +56,15 @@
             android:textColor="@color/black"
             android:textSize="18sp"/>
 
-        <LinearLayout
+        <TextView
+            android:textAlignment="textEnd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="#TAG1 #TAG2"
-                android:paddingStart="20dp"
-                android:paddingEnd="10dp"
-                android:textColor="@color/grey"
-                android:textSize="18sp"/>
-
-            <Button
-                android:id="@+id/retract_button"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/ic_arrow_hollow"
-                android:layout_marginStart="-65dp"
-                android:rotation="180"/>
-        </LinearLayout>
-
+            android:text="#Tag1 #Tag2"
+            android:paddingStart="20dp"
+            android:paddingEnd="10dp"
+            android:textColor="@color/grey"
+            android:textSize="18sp"/>
 
     </LinearLayout>
 
@@ -99,6 +85,7 @@
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:background="@drawable/task_checkbox"/>
+
 
         <!-- Task info (title and list) -->
         <LinearLayout
@@ -131,12 +118,26 @@
         </LinearLayout>
 
         <!-- Task details (expanded) -->
-        <Button
-            android:id="@+id/expand_button"
+        <FrameLayout
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/ic_arrow_hollow"
-            android:layout_marginStart="-65dp"/>
+            android:layout_marginStart="-65dp">
+
+            <Button
+                android:id="@+id/expand_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/ic_arrow_hollow"/>
+
+            <Button
+                android:id="@+id/retract_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/ic_arrow_hollow"
+                android:rotation="180"
+                android:visibility="gone"/>
+        </FrameLayout>
+
 
     </LinearLayout>
 

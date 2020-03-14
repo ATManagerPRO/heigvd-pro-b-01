@@ -113,11 +113,11 @@ public class HomeFragment extends Fragment {
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
 
         // Select proper greeting
-        if(currentHour < 10) {
+        if(currentHour < 11) {
             greeting = "Good morning ";
-        } else if (currentHour < 12) {
+        } else if (currentHour < 13) {
             greeting = "Hello ";
-        } else if (currentHour < 17) {
+        } else if (currentHour < 18) {
             greeting = "Good afternoon ";
         } else {
             greeting = "Good evening ";

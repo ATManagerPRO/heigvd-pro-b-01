@@ -69,6 +69,7 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
             @Override
             public void onClick(View view) {
                 holder.expandedView.setVisibility(View.VISIBLE);
+                holder.retractBtn.setVisibility(View.VISIBLE);
                 holder.expandBtn.setVisibility(View.GONE);
             }
         });
@@ -77,6 +78,7 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
             @Override
             public void onClick(View view) {
                 holder.expandedView.setVisibility(View.GONE);
+                holder.retractBtn.setVisibility(View.GONE);
                 holder.expandBtn.setVisibility(View.VISIBLE);
             }
         });
