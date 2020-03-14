@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_marginTop="5dp"
-    android:layout_marginBottom="5dp">
+    android:layout_marginBottom="5dp"
+    android:background="@color/colorAccent">
 
     <!-- Time display (HH:MM / AM or PM) -->
     <LinearLayout
+        android:id="@+id/time_container"
         android:layout_width="80dp"
-        android:layout_height="match_parent"
+        android:layout_height="70dp"
         android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -29,14 +33,65 @@
             android:textColor="@color/grey"/>
     </LinearLayout>
 
-    <!-- Task container -->
+    <!-- Task View (expanded) -->
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/task_background"
+        app:layout_constraintLeft_toRightOf="@id/time_container"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingTop="70dp"
+        android:paddingBottom="0dp"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Task detail here..."
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textColor="@color/black"
+            android:textSize="18sp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="#TAG1 #TAG2"
+                android:paddingStart="20dp"
+                android:paddingEnd="10dp"
+                android:textColor="@color/grey"
+                android:textSize="18sp"/>
+
+            <Button
+                android:id="@+id/retract_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/ic_arrow_hollow"
+                android:layout_marginStart="-65dp"
+                android:rotation="180"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <!-- Task View (brief) -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="70dp"
         android:background="@drawable/task_background"
         android:paddingStart="15dp"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toRightOf="@id/time_container"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <!-- Check box -->
         <Button
@@ -74,12 +129,15 @@
                 />
         </LinearLayout>
 
+        <!-- Task details (expanded) -->
         <Button
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
+            android:id="@+id/expand_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:background="@drawable/ic_arrow_hollow"
-            android:layout_marginStart="-70dp"/>
+            android:layout_marginStart="-65dp"/>
 
     </LinearLayout>
 
-</LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

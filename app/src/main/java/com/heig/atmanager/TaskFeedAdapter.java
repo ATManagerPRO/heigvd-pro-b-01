@@ -3,6 +3,7 @@ package com.heig.atmanager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -23,11 +24,13 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
     // you provide access to all the views for a data item in a view holder
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        private TextView textView;
+        private TextView title;
+        private Button expandBtn;
 
         public MyViewHolder(View v) {
             super(v);
-            textView = v.findViewById(R.id.task_title);
+            title = v.findViewById(R.id.task_title);
+            expandBtn = v.findViewById(R.id.expand_button);
         }
     }
 
@@ -53,7 +56,7 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.textView.setText(tasks.get(position).getTitle());
+        holder.title.setText(tasks.get(position).getTitle());
     }
 
     // Return the size of your dataset (invoked by the layout manager)
