@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="140dp"
+    android:layout_height="140dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp">
+
+    <LinearLayout
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="@drawable/goal_background"
+        android:layout_gravity="center">
+
+
+        <LinearLayout
+            android:id="@+id/counter_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/current_value_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="99"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="40sp"/>
+
+            <TextView
+                android:id="@+id/total_value_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="/99"
+                android:textColor="@color/light_grey"
+                android:textStyle="bold"
+                android:textSize="20sp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/unit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SQUATS"
+            android:textColor="@color/light_grey"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/goal_progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:progress="40"
+        style="?android:progressBarStyleHorizontal"
+        android:progressDrawable="@drawable/goal_progressbar"
+        android:rotation="90"/>
+
+</FrameLayout>
