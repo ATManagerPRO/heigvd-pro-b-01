@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical">
 
     <!-- Greeting message -->
     <TextView
         android:id="@+id/greeting_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
         android:fontFamily="@font/arial"
         android:textColor="@color/black"
         android:textSize="20sp"
@@ -20,29 +19,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"/>
 
-    <!-- Goals feed (list) -->
-    <LinearLayout
-        android:id="@+id/goals_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/greeting_text"
-        android:layout_marginTop="20dp">
+    <!-- Daily feed -->
+    <include layout="@layout/task_and_goal_feed"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/goals_rv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/greeting_text" />
-    </LinearLayout>
-
-
-    <!-- Tasks feed (list) -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/tasks_rv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/goals_container"
-        android:layout_marginTop="20dp"/>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
