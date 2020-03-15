@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:orientation="horizontal"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp">
+
+    <!-- Time display (HH:MM / AM or PM) -->
+    <LinearLayout
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="07:00"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/grey"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="AM"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/grey"/>
+    </LinearLayout>
+
+    <!-- Task container -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/task_background"
+        android:paddingStart="15dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <!-- Check box -->
+        <Button
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:background="@drawable/task_checkbox"/>
+
+        <!-- Task info (title and list) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:gravity="center_vertical">
+            <TextView
+                android:id="@+id/task_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Task1"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/arial"
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/task_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="List1"
+                android:textSize="16sp"
+                android:textColor="@color/grey"
+                android:fontFamily="@font/arial"
+                android:textStyle="bold"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
