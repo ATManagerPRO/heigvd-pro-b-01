@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">ATManager</string>
+    <string name="goals_today">TODAY</string>
+    <string name="goals_week">THIS WEEK</string>
+    <string name="goals_month">THIS MONTH</string>
+    <string name="goals_year">THIS YEAR</string>
 </resources>
