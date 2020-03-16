@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -41,8 +42,13 @@ public class HomeFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
         // ----------- TEMP -----------
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, 5);
+        Date dueDateGoal1 = calendar.getTime();
         goals = new ArrayList<>();
-        //goals.add(new Goal("SQUATS", 100, 70));
+        // SQUATS EVERY DAY FOR 5 DAY
+        Goal goal = new Goal("SQUATS", 100, Interval.DAY, dueDateGoal1);
+        //goals.add();
         //goals.add(new Goal("KMS", 8, 3));
         todos = new ArrayList<>();
         todos.add(new Todo("Task1", "This is a really useful task."));

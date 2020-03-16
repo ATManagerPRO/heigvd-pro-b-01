@@ -46,10 +46,13 @@ public class Goal {
              => new GoalTodo(this, 0, )
             today += interval
         }*/
+
         Calendar calendar = Calendar.getInstance();
-        Date today = calendar.getTime();
 
-
+        while(interval.getNextDate(calendar).before(dueDate)) {
+            goals.add(new GoalTodo(this, 0, calendar.getTime(), dueDate));
+            calendar.add(interval.getCalendarInterval(),1);
+        }
 
         return goals;
     }

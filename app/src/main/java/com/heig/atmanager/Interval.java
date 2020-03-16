@@ -10,30 +10,25 @@ import java.util.Date;
  * This class better be good.
  */
 public enum Interval {
-    HOUR {
-        @Override
-        public Date getNextDate(Calendar c) {
-            c.add(Calendar.HOUR_OF_DAY, 1);
-            return c.getTime();
-        }
-    },
-    DAY {
-        @Override
-        public Date getNextDate(Calendar c) {
-            c.add(Calendar.DAY_OF_MONTH, 1);
-            return c.getTime();
-        }
-    },
-    WEEK {
-        @Override
-        public Date getNextDate(Calendar c) {
-            c.add(Calendar.WEEK_OF_MONTH, 1);
-            return c.getTime();
-        }
-    };
+    HOUR (Calendar.HOUR_OF_DAY),
+    DAY (Calendar.DAY_OF_YEAR),
+    WEEK (Calendar.WEEK_OF_YEAR) ;
     // TODO :
     //MONTH,
     //YEAR;
 
-    public abstract Date getNextDate(Calendar c);
+    private int calendarInterval;
+
+    Interval(int calendarInterval) {
+        this.calendarInterval = calendarInterval;
+    }
+
+    public Date getNextDate(Calendar c) {
+        c.add(calendarInterval, 1);
+        return c.getTime();
+    };
+
+    public int getCalendarInterval() {
+        return calendarInterval;
+    }
 }
