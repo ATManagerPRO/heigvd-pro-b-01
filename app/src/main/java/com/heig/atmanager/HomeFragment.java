@@ -30,7 +30,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView.LayoutManager goalslayoutManager;
 
     // Task feed
-    ArrayList<Task> tasks; // user data
+    ArrayList<Todo> todos; // user data
     private RecyclerView tasksRecyclerView;
     private RecyclerView.Adapter tasksAdapter;
     private RecyclerView.LayoutManager taskslayoutManager;
@@ -44,11 +44,11 @@ public class HomeFragment extends Fragment {
         goals = new ArrayList<>();
         goals.add(new Goal("SQUATS", 100, 70));
         goals.add(new Goal("KMS", 8, 3));
-        tasks = new ArrayList<>();
-        tasks.add(new Task("Task1", "This is a really useful task."));
-        tasks.add(new Task("Task2", "Rendre labo 1 :\n> Fiche technique\n> Rapport (10 pages)\n> Code source (C++)"));
-        tasks.add(new Task("Task3", "..."));
-        tasks.add(new Task("Task4", "..."));
+        todos = new ArrayList<>();
+        todos.add(new Todo("Task1", "This is a really useful task."));
+        todos.add(new Todo("Task2", "Rendre labo 1 :\n> Fiche technique\n> Rapport (10 pages)\n> Code source (C++)"));
+        todos.add(new Todo("Task3", "..."));
+        todos.add(new Todo("Task4", "..."));
         // --------- END TEMP ---------
 
         // Greeting
@@ -56,15 +56,17 @@ public class HomeFragment extends Fragment {
         greetingText.setText(getGreetings());
 
         // Task feed
-        setupTasksRecyclerView(v, tasks);
+        setupTasksRecyclerView(v, todos);
 
         // Goal feed
-        setupGoalsRecyclerView(v, goals);
+        goalsRecyclerView = (RecyclerView) v.findViewById(R.id.goals_rv);
+        Utils.setupGoalsRecyclerView(v, goalsRecyclerView, goalsAdapter, goalslayoutManager, goals);
+        //setupGoalsRecyclerView(v, goals);
 
         return v;
     }
 
-    private void setupTasksRecyclerView(View v, ArrayList<Task> tasks) {
+    private void setupTasksRecyclerView(View v, ArrayList<Todo> todos) {
 
         tasksRecyclerView = (RecyclerView) v.findViewById(R.id.tasks_rv);
 
@@ -77,11 +79,11 @@ public class HomeFragment extends Fragment {
         tasksRecyclerView.setLayoutManager(taskslayoutManager);
 
         // specify an adapter (see also next example)
-        tasksAdapter = new TaskFeedAdapter(tasks);
+        tasksAdapter = new TodoFeedAdapter(todos);
         tasksRecyclerView.setAdapter(tasksAdapter);
     }
 
-    private void setupGoalsRecyclerView(View v, ArrayList<Goal> goals) {
+    /*private void setupGoalsRecyclerView(View v, ArrayList<Goal> goals) {
 
         goalsRecyclerView = (RecyclerView) v.findViewById(R.id.goals_rv);
 
@@ -97,7 +99,7 @@ public class HomeFragment extends Fragment {
         // specify an adapter (see also next example)
         goalsAdapter = new GoalFeedAdapter(goals);
         goalsRecyclerView.setAdapter(goalsAdapter);
-    }
+    }*/
 
     /**
      * Get the welcoming sentence (dynamic with user's data)
@@ -124,14 +126,14 @@ public class HomeFragment extends Fragment {
         }
 
         // Select user info sentence (total tasks/goals for the day)
-        if(tasks.size() == 0 && goals.size() == 0) {
+        if(todos.size() == 0 && goals.size() == 0) {
             user_info = "relax! You have nothing to do today.";
-        } else if (tasks.size() != 0 && goals.size() == 0) {
-            user_info = getSingleUserInfoGreeting(tasks.size()) + " for today.";
-        } else if (tasks.size() == 0) { // goals != 0 always true
+        } else if (todos.size() != 0 && goals.size() == 0) {
+            user_info = getSingleUserInfoGreeting(todos.size()) + " for today.";
+        } else if (todos.size() == 0) { // goals != 0 always true
             user_info = getSingleUserInfoGreeting(goals.size()) + " for today.";
         } else {
-            user_info = getSingleUserInfoGreeting(tasks.size()) + " and "
+            user_info = getSingleUserInfoGreeting(todos.size()) + " and "
                     + goals.size() + " goal" + (goals.size() > 1 ? "s" : "") + " for today.";
         }
 
