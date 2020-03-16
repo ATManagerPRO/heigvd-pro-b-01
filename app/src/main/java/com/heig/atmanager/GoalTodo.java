@@ -31,4 +31,20 @@ public class GoalTodo {
         quantityDone += quantity;
     }
 
+    public int getPercentage() {
+        return (int) (((float) quantityDone / goal.getQuantity()) * 100);
+    }
+
+    public String getUnit() {
+        return goal.getUnit();
+    }
+
+    public String getStringCurrent() {
+        return (quantityDone < 10 ? "0" : "") + quantityDone;
+    }
+
+    public String getStringTotal() {
+        return (goal.getQuantity() < 10 ? "0" : "") + goal.getQuantity();
+    }
+
 }

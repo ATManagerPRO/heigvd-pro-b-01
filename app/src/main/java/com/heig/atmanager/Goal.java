@@ -1,7 +1,9 @@
 package com.heig.atmanager;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Author : Stéphane Bottin
@@ -24,42 +26,40 @@ public class Goal {
     private Date dueDate;
 
     public Goal(String unit, int quantity, Interval interval, Date dueDate) {
-        this.unit = unit;
+        this.unit     = unit;
         this.quantity = quantity;
         this.interval = interval;
-        this.dueDate = dueDate;
+        this.dueDate  = dueDate;
 
         // Generate the todos automatically (once) for the user
         // TODO: rem : if there are no due dates, ...
         generateTodos();
     }
 
-    /*public int getPercentage() {
-        return (int) (((float) current / quantity) * 100);
-    }
-
-    public String getUnit() {
-        return unit;
-    }
-
-    public String getStringCurrent() {
-        return (current < 10 ? "0" : "") + current;
-    }
-
-    public String getStringTotal() {
-        return (quantity < 10 ? "0" : "") + quantity;
-    }*/
-
     public ArrayList<GoalTodo> generateTodos() {
         ArrayList<GoalTodo> goals = new ArrayList<>();
 
-        /*while(today + interval < due date) {
+        /*
+        PSEUDO-CODE :
+        while(today + interval < due date) {
             Add new goal to list with today + interval date
              => new GoalTodo(this, 0, )
             today += interval
         }*/
+        Calendar calendar = Calendar.getInstance();
+        Date today = calendar.getTime();
+
+
 
         return goals;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public String getUnit() {
+        return unit;
     }
 
 }

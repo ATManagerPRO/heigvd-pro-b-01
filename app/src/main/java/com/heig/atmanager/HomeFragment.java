@@ -42,8 +42,8 @@ public class HomeFragment extends Fragment {
 
         // ----------- TEMP -----------
         goals = new ArrayList<>();
-        goals.add(new Goal("SQUATS", 100, 70));
-        goals.add(new Goal("KMS", 8, 3));
+        //goals.add(new Goal("SQUATS", 100, 70));
+        //goals.add(new Goal("KMS", 8, 3));
         todos = new ArrayList<>();
         todos.add(new Todo("Task1", "This is a really useful task."));
         todos.add(new Todo("Task2", "Rendre labo 1 :\n> Fiche technique\n> Rapport (10 pages)\n> Code source (C++)"));
