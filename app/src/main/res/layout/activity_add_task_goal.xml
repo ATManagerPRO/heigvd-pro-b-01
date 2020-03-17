@@ -7,40 +7,10 @@
     android:background="@color/colorPrimary"
     tools:context=".ui.AddTaskGoalActivity">
 
-    <LinearLayout
+    <fragment
+        android:id="@+id/main_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="10"
-        >
-
-        <fragment
-            android:id="@+id/act_add_task_description"
-            android:name="com.heig.atmanager.ui.AddTaskDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="5" />
-
-        <fragment
-            android:id="@+id/act_add_task_deadline"
-            android:name="com.heig.atmanager.ui.AddTaskDeadline"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2" />
-
-        <fragment
-            android:id="@+id/act_add_task_filechoice"
-            android:name="com.heig.atmanager.ui.FileChoice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <fragment
-            android:id="@+id/act_validation"
-            android:name="com.heig.atmanager.ui.Validation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2" />
-    </LinearLayout>
+        android:name="com.heig.atmanager.ui.TaskFragment"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
