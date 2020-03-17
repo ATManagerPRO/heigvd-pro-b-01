@@ -22,6 +22,7 @@ import java.util.GregorianCalendar;
  *     - etc...
  *
  * The app will then generate the goals (cf GoalTodo) for the user to interact with.
+ *
  */
 public class Goal {
 
@@ -55,11 +56,36 @@ public class Goal {
         // Adding new goalsTodo while it's equal or before the due date
         while(calendar.getTime().equals(dueDate) || calendar.getTime().before(dueDate)) {
             Log.d(TAG, "generateTodaysTodos: adding 1 todo for " + calendar.getTime());
-            goals.add(new GoalTodo(this, 0, calendar.getTime(), dueDate));
+            goals.add(new GoalTodo(this, 0, getDoneDate(interval, calendar), dueDate));
             calendar.add(interval.getCalendarInterval(),1);
         }
 
         return goals;
+    }
+
+    private Date getDoneDate(Interval interval, Calendar c) {
+        // todo : change end date to the set date (if set on a wednesday for a weekly goal it should end next wednesday)
+        switch(interval) {
+            case YEAR:
+                // User has until December to finish a yearly goal
+                c.set(Calendar.MONTH, 12);
+            case MONTH:
+                // User has until the end of the month to finish a monthly goal
+                c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH));
+            case WEEK:
+                // User has until Sunday to finish a weekly goal
+                c.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+            case DAY:
+                // User has until the end of the day to finish a daily goal
+                c.set(Calendar.HOUR_OF_DAY, 23);
+            case HOUR:
+                // User has until the end of the hour to finish an hourly goal
+                c.set(Calendar.MINUTE, 59);
+                c.set(Calendar.SECOND, 59);
+                break;
+        }
+
+        return c.getTime();
     }
 
     public ArrayList<GoalTodo> getGoalTodos() {

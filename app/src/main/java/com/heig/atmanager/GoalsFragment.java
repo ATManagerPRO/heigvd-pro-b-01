@@ -17,6 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 /**
  * Author : Stéphane Bottin
  * Date   : 15.03.2020
+ *
+ * User's goals depending on the interval of it.
+ * Rem : if a goal is spread in a year for every day, it will show up only once in the today
+ *       category. Same goes for weeks and months. This is to avoid unhelpful duplicates.
  */
 public class GoalsFragment extends Fragment {
 
@@ -62,12 +66,12 @@ public class GoalsFragment extends Fragment {
 
         // Today's goals setup
         ArrayList<GoalTodo> todayGoals = new ArrayList<>();
-        ArrayList<GoalTodo> weekGoals = new ArrayList<>();
+        ArrayList<GoalTodo> weekGoals  = new ArrayList<>();
         for(Goal goal : goals) {
             if(goal.getInterval() == Interval.DAY) {
                 todayGoals.addAll(goal.getGoalsTodoForDay(today));
             } else if (goal.getInterval() == Interval.WEEK) {
-                //weekGoals.addAll(goal.ge)
+                weekGoals.addAll(goal.getGoalsTodoForDay(today));
             }
         }
 

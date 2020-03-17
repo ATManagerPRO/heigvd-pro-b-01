@@ -12,10 +12,9 @@ import java.util.Date;
 public enum Interval {
     HOUR (Calendar.HOUR_OF_DAY),
     DAY (Calendar.DAY_OF_YEAR),
-    WEEK (Calendar.WEEK_OF_YEAR) ;
-    // TODO :
-    //MONTH,
-    //YEAR;
+    WEEK (Calendar.WEEK_OF_YEAR),
+    MONTH (Calendar.MONTH),
+    YEAR (Calendar.YEAR);
 
     private int calendarInterval;
 
