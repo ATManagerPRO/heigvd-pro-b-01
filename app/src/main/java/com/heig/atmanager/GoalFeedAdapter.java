@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * Goal feed adapter for the home view
  */
 public class GoalFeedAdapter extends RecyclerView.Adapter<GoalFeedAdapter.MyViewHolder> {
-private ArrayList<Goal> goals;
+private ArrayList<GoalTodo> goals;
 
 // Provide a reference to the views for each data item
 // Complex data items may need more than one view per item, and
@@ -39,7 +39,7 @@ public static class MyViewHolder extends RecyclerView.ViewHolder {
 }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public GoalFeedAdapter(ArrayList<Goal> goals) {
+    public GoalFeedAdapter(ArrayList<GoalTodo> goals) {
         this.goals = goals;
     }
 

@@ -25,7 +25,7 @@ public class HomeFragment extends Fragment {
     TextView greetingText;
 
     // Goal feed
-    ArrayList<Goal> goals; // user data
+    ArrayList<GoalTodo> goals; // user data
     private RecyclerView goalsRecyclerView;
     private RecyclerView.Adapter goalsAdapter;
     private RecyclerView.LayoutManager goalslayoutManager;
@@ -48,8 +48,7 @@ public class HomeFragment extends Fragment {
         goals = new ArrayList<>();
         // SQUATS EVERY DAY FOR 5 DAY
         Goal goal = new Goal("SQUATS", 100, Interval.DAY, dueDateGoal1);
-        //goals.add();
-        //goals.add(new Goal("KMS", 8, 3));
+        goals = goal.generateTodaysTodos();
         todos = new ArrayList<>();
         todos.add(new Todo("Task1", "This is a really useful task."));
         todos.add(new Todo("Task2", "Rendre labo 1 :\n> Fiche technique\n> Rapport (10 pages)\n> Code source (C++)"));
@@ -62,50 +61,15 @@ public class HomeFragment extends Fragment {
         greetingText.setText(getGreetings());
 
         // Task feed
-        setupTasksRecyclerView(v, todos);
+        tasksRecyclerView = (RecyclerView) v.findViewById(R.id.tasks_rv);
+        Utils.setupTodosFeed(v, tasksRecyclerView, todos);
 
         // Goal feed
         goalsRecyclerView = (RecyclerView) v.findViewById(R.id.goals_rv);
-        Utils.setupGoalsRecyclerView(v, goalsRecyclerView, goalsAdapter, goalslayoutManager, goals);
-        //setupGoalsRecyclerView(v, goals);
+        Utils.setupGoalsFeed(v, goalsRecyclerView, goals);
 
         return v;
     }
-
-    private void setupTasksRecyclerView(View v, ArrayList<Todo> todos) {
-
-        tasksRecyclerView = (RecyclerView) v.findViewById(R.id.tasks_rv);
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        tasksRecyclerView.setHasFixedSize(true);
-
-        // use a linear layout manager
-        taskslayoutManager = new LinearLayoutManager(v.getContext());
-        tasksRecyclerView.setLayoutManager(taskslayoutManager);
-
-        // specify an adapter (see also next example)
-        tasksAdapter = new TodoFeedAdapter(todos);
-        tasksRecyclerView.setAdapter(tasksAdapter);
-    }
-
-    /*private void setupGoalsRecyclerView(View v, ArrayList<Goal> goals) {
-
-        goalsRecyclerView = (RecyclerView) v.findViewById(R.id.goals_rv);
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        goalsRecyclerView.setHasFixedSize(true);
-
-        // use a (horizontal) linear layout manager
-        goalslayoutManager = new LinearLayoutManager(v.getContext(),
-                LinearLayoutManager.HORIZONTAL, false);
-        goalsRecyclerView.setLayoutManager(goalslayoutManager);
-
-        // specify an adapter (see also next example)
-        goalsAdapter = new GoalFeedAdapter(goals);
-        goalsRecyclerView.setAdapter(goalsAdapter);
-    }*/
 
     /**
      * Get the welcoming sentence (dynamic with user's data)

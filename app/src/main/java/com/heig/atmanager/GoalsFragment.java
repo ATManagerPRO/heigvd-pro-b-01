@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class GoalsFragment extends Fragment {
 
     // Today's goal feed
-    ArrayList<Goal> goalsToday; // user data
+    ArrayList<GoalTodo> goalsToday; // user data
     private RecyclerView goalsTodayRecyclerView;
     private RecyclerView.Adapter goalsTodayAdapter;
     private RecyclerView.LayoutManager goalsTodaylayoutManager;
@@ -53,7 +53,7 @@ public class GoalsFragment extends Fragment {
 
         // Today's goals setup
         goalsTodayRecyclerView = (RecyclerView) v.findViewById(R.id.goals_today_rv);
-        Utils.setupGoalsRecyclerView(v, goalsTodayRecyclerView, goalsTodayAdapter, goalsTodaylayoutManager, goalsToday);
+        Utils.setupGoalsFeed(v, goalsTodayRecyclerView, goalsToday);
 
         return v;
     }

@@ -1,34 +1,55 @@
 package com.heig.atmanager;
 
 import android.view.View;
+import android.widget.Adapter;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * Author : Stephane
+ * Author : Stéphane Bottin
  * Date   : 16.03.2020
- * <p>
- * This class better be good.
+ *
+ * Bag for utils functions, can be refactored / separated later on...
  */
 public class Utils {
 
-
-    public static void setupGoalsRecyclerView(View v, RecyclerView rv, RecyclerView.Adapter adapter, RecyclerView.LayoutManager manager, ArrayList<Goal> goals) {
+    public static void setupGoalsFeed(View v, RecyclerView rv, ArrayList<GoalTodo> goals) {
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         rv.setHasFixedSize(true);
 
         // use a (horizontal) linear layout manager
-        manager = new LinearLayoutManager(v.getContext(),
-                LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager manager = new LinearLayoutManager(v.getContext(), LinearLayoutManager.HORIZONTAL, false);
         rv.setLayoutManager(manager);
 
         // specify an adapter (see also next example)
-        adapter = new GoalFeedAdapter(goals);
+        RecyclerView.Adapter adapter = new GoalFeedAdapter(goals);
         rv.setAdapter(adapter);
+    }
+
+    public static void setupTodosFeed(View v, RecyclerView rv, ArrayList<Todo> todos) {
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        rv.setHasFixedSize(true);
+
+        // use a linear layout manager
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(v.getContext());
+        rv.setLayoutManager(manager);
+
+        // specify an adapter (see also next example)
+        RecyclerView.Adapter adapter = new TodoFeedAdapter(todos);
+        rv.setAdapter(adapter);
+    }
+
+    public static int getDay(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal.get(Calendar.DAY_OF_MONTH);
     }
 }

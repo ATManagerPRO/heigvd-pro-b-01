@@ -1,5 +1,8 @@
 package com.heig.atmanager;
 
+import java.lang.reflect.Array;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -32,7 +35,7 @@ public class Goal {
         this.dueDate  = dueDate;
 
         // Generate the todos automatically (once) for the user
-        // TODO: rem : if there are no due dates, ...
+        // TODO: if there are no due dates, ...
         generateTodos();
     }
 
@@ -55,6 +58,22 @@ public class Goal {
         }
 
         return goals;
+    }
+
+    public ArrayList<GoalTodo> generateTodaysTodos() {
+        ArrayList<GoalTodo> todaysGoals = new ArrayList<>();
+
+        Calendar calendar = Calendar.getInstance();
+        Date today = calendar.getTime();
+
+        // Adding new goalsTodo while it's in the interval range and for today
+        while(interval.getNextDate(calendar).before(dueDate) &&
+                Utils.getDay(interval.getNextDate(calendar)) == Utils.getDay(today)) {
+            todaysGoals.add(new GoalTodo(this, 0, calendar.getTime(), dueDate));
+            calendar.add(interval.getCalendarInterval(),1);
+        }
+
+        return todaysGoals;
     }
 
     public int getQuantity() {
