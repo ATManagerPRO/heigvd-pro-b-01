@@ -42,13 +42,19 @@ public class HomeFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
         // ----------- TEMP -----------
+        goals = new ArrayList<>();
+        // GOAL : 20 squats every day for 5 days
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_MONTH, 5);
         Date dueDateGoal1 = calendar.getTime();
-        goals = new ArrayList<>();
-        // SQUATS EVERY DAY FOR 5 DAY
-        Goal goal = new Goal("SQUATS", 100, Interval.DAY, dueDateGoal1);
-        goals = goal.generateTodaysTodos();
+        calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        Date dueDateGoal2 = calendar.getTime();
+        
+        Goal goal1 = new Goal("SQUATS", 20, Interval.DAY, dueDateGoal1);
+        Goal goal2 = new Goal("BREAK", 1, Interval.HOUR, dueDateGoal2);
+        goals = goal1.getGoalsTodoForDay(calendar.getTime()); // Generates 1 goalTodo for 20 squats
+        goals.addAll(goal2.getGoalsTodoForDay(calendar.getTime())); // Generates 1 break every hour
         todos = new ArrayList<>();
         todos.add(new Todo("Task1", "This is a really useful task."));
         todos.add(new Todo("Task2", "Rendre labo 1 :\n> Fiche technique\n> Rapport (10 pages)\n> Code source (C++)"));

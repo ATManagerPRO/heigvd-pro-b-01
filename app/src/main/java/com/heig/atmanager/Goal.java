@@ -1,5 +1,7 @@
 package com.heig.atmanager;
 
+import android.util.Log;
+
 import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -23,10 +25,13 @@ import java.util.GregorianCalendar;
  */
 public class Goal {
 
+    private static final String TAG = "Goal";
+    
     private String unit;
     private int quantity;
     private Interval interval;
     private Date dueDate;
+    private ArrayList<GoalTodo> goalTodos;
 
     public Goal(String unit, int quantity, Interval interval, Date dueDate) {
         this.unit     = unit;
@@ -36,10 +41,10 @@ public class Goal {
 
         // Generate the todos automatically (once) for the user
         // TODO: if there are no due dates, ...
-        generateTodos();
+        goalTodos = generateTodos();
     }
 
-    public ArrayList<GoalTodo> generateTodos() {
+    private ArrayList<GoalTodo> generateTodos() {
         ArrayList<GoalTodo> goals = new ArrayList<>();
 
         /*
@@ -51,8 +56,13 @@ public class Goal {
         }*/
 
         Calendar calendar = Calendar.getInstance();
+        Log.d(TAG, "generateTodaysTodos: GENERATING FOR " + unit + " --------------------------");
+        Log.d(TAG, "generateTodaysTodos: calendar day : " + calendar.getTime());
+        Log.d(TAG, "generateTodaysTodos: due date     : " + dueDate);
 
-        while(interval.getNextDate(calendar).before(dueDate)) {
+        // Adding new goalsTodo while it's equal or before the due date
+        while(calendar.getTime().equals(dueDate) || calendar.getTime().before(dueDate)) {
+            Log.d(TAG, "generateTodaysTodos: adding 1 todo for " + calendar.getTime());
             goals.add(new GoalTodo(this, 0, calendar.getTime(), dueDate));
             calendar.add(interval.getCalendarInterval(),1);
         }
@@ -60,20 +70,17 @@ public class Goal {
         return goals;
     }
 
-    public ArrayList<GoalTodo> generateTodaysTodos() {
-        ArrayList<GoalTodo> todaysGoals = new ArrayList<>();
+    public ArrayList<GoalTodo> getGoalTodos() {
+        return goalTodos;
+    }
 
-        Calendar calendar = Calendar.getInstance();
-        Date today = calendar.getTime();
+    public ArrayList<GoalTodo> getGoalsTodoForDay(Date day) {
+        ArrayList<GoalTodo> todayGoalsTodos = new ArrayList<>();
+        for(GoalTodo goalTodo : goalTodos)
+            if(Utils.getDay(goalTodo.getDoneDate()) == Utils.getDay(day))
+                todayGoalsTodos.add(goalTodo);
 
-        // Adding new goalsTodo while it's in the interval range and for today
-        while(interval.getNextDate(calendar).before(dueDate) &&
-                Utils.getDay(interval.getNextDate(calendar)) == Utils.getDay(today)) {
-            todaysGoals.add(new GoalTodo(this, 0, calendar.getTime(), dueDate));
-            calendar.add(interval.getCalendarInterval(),1);
-        }
-
-        return todaysGoals;
+        return todayGoalsTodos;
     }
 
     public int getQuantity() {

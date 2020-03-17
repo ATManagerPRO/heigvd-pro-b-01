@@ -23,10 +23,10 @@ public enum Interval {
         this.calendarInterval = calendarInterval;
     }
 
-    public Date getNextDate(Calendar c) {
-        c.add(calendarInterval, 1);
+    /*public Date getDate(Calendar c) {
+        //c.add(calendarInterval, 1);
         return c.getTime();
-    };
+    };*/
 
     public int getCalendarInterval() {
         return calendarInterval;

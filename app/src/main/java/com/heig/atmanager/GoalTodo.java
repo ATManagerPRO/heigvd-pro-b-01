@@ -47,4 +47,8 @@ public class GoalTodo {
         return (goal.getQuantity() < 10 ? "0" : "") + goal.getQuantity();
     }
 
+    public Date getDoneDate() {
+        return doneDate;
+    }
+
 }
