@@ -11,11 +11,11 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="titre">Titre</string>
     <string name="description">Description</string>
-    <string name="tags">Tags</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="due_date">Due Date</string>
     <string name="due_time">Due Time</string>
+    <string name="tags">Tags</string>
 
 </resources>
