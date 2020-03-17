@@ -11,7 +11,7 @@
         android:id="@+id/frag_validation_button"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_check_black_24dp"
+        android:src="@drawable/ic_check_white_24dp"
         android:adjustViewBounds="true"
         android:background="@color/colorAccent"
         android:layout_gravity="center"/>
