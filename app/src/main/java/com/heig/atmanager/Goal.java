@@ -47,14 +47,6 @@ public class Goal {
     private ArrayList<GoalTodo> generateTodos() {
         ArrayList<GoalTodo> goals = new ArrayList<>();
 
-        /*
-        PSEUDO-CODE :
-        while(today + interval < due date) {
-            Add new goal to list with today + interval date
-             => new GoalTodo(this, 0, )
-            today += interval
-        }*/
-
         Calendar calendar = Calendar.getInstance();
         Log.d(TAG, "generateTodaysTodos: GENERATING FOR " + unit + " --------------------------");
         Log.d(TAG, "generateTodaysTodos: calendar day : " + calendar.getTime());
@@ -75,10 +67,13 @@ public class Goal {
     }
 
     public ArrayList<GoalTodo> getGoalsTodoForDay(Date day) {
+        Log.d(TAG, "generateTodaysTodos: FETCHING FOR " + unit + " ON " + day + " --------------------------");
         ArrayList<GoalTodo> todayGoalsTodos = new ArrayList<>();
         for(GoalTodo goalTodo : goalTodos)
-            if(Utils.getDay(goalTodo.getDoneDate()) == Utils.getDay(day))
+            if(Utils.getDay(goalTodo.getDoneDate()) == Utils.getDay(day)) {
+                Log.d(TAG, "getGoalsTodoForDay: fetching 1 todo for " + day);
                 todayGoalsTodos.add(goalTodo);
+            }
 
         return todayGoalsTodos;
     }
@@ -89,6 +84,10 @@ public class Goal {
 
     public String getUnit() {
         return unit;
+    }
+
+    public Interval getInterval() {
+        return interval;
     }
 
 }

@@ -50,7 +50,7 @@ public class HomeFragment extends Fragment {
         calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_MONTH, 1);
         Date dueDateGoal2 = calendar.getTime();
-        
+
         Goal goal1 = new Goal("SQUATS", 20, Interval.DAY, dueDateGoal1);
         Goal goal2 = new Goal("BREAK", 1, Interval.HOUR, dueDateGoal2);
         goals = goal1.getGoalsTodoForDay(calendar.getTime()); // Generates 1 goalTodo for 20 squats

@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,41 +21,58 @@ import androidx.recyclerview.widget.RecyclerView;
 public class GoalsFragment extends Fragment {
 
     // Today's goal feed
-    ArrayList<GoalTodo> goalsToday; // user data
+    ArrayList<Goal> goals; // user data
     private RecyclerView goalsTodayRecyclerView;
-    private RecyclerView.Adapter goalsTodayAdapter;
-    private RecyclerView.LayoutManager goalsTodaylayoutManager;
 
     // This week's goal feed
-    /*ArrayList<Goal> goals; // user data
-    private RecyclerView goalsRecyclerView;
-    private RecyclerView.Adapter goalsAdapter;
-    private RecyclerView.LayoutManager goalslayoutManager;
+    private RecyclerView goalsWeekRecyclerView;
 
     // This month's goal feed
-    ArrayList<Goal> goals; // user data
-    private RecyclerView goalsRecyclerView;
-    private RecyclerView.Adapter goalsAdapter;
-    private RecyclerView.LayoutManager goalslayoutManager;
+    private RecyclerView goalsMonthRecyclerView;
 
     // This year's goal feed
-    ArrayList<Goal> goals; // user data
-    private RecyclerView goalsRecyclerView;
-    private RecyclerView.Adapter goalsAdapter;
-    private RecyclerView.LayoutManager goalslayoutManager;*/
+    private RecyclerView goalsYearRecyclerView;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_goals, container, false);
 
         // ----------- TEMP -----------
-        //goalsToday = new ArrayList<>();
-        //goalsToday.add(new Goal("SQUATS", 100, 70));
-        //goalsToday.add(new Goal("KMS", 8, 3));
+        goals = new ArrayList<>();
+        // GOAL : 20 squats every day for 5 days
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, 5);
+        Date dueDateGoal1 = calendar.getTime();
+        calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        Date dueDateGoal2 = calendar.getTime();
+        calendar.add(Calendar.WEEK_OF_MONTH, 4);
+        Date dueDateGoal3 = calendar.getTime();
+
+        Goal goal1 = new Goal("SQUATS", 20, Interval.DAY, dueDateGoal1);
+        Goal goal2 = new Goal("BREAK", 1, Interval.HOUR, dueDateGoal2);
+        Goal goal3 = new Goal("KMS", 4, Interval.WEEK, dueDateGoal3);
+        goals.add(goal1);
+        goals.add(goal2);
+        goals.add(goal3);
+        // --------- END TEMP ---------
+
+        // Calendar instances (for readability)
+        Date today = Calendar.getInstance().getTime();
 
         // Today's goals setup
+        ArrayList<GoalTodo> todayGoals = new ArrayList<>();
+        ArrayList<GoalTodo> weekGoals = new ArrayList<>();
+        for(Goal goal : goals) {
+            if(goal.getInterval() == Interval.DAY) {
+                todayGoals.addAll(goal.getGoalsTodoForDay(today));
+            } else if (goal.getInterval() == Interval.WEEK) {
+                //weekGoals.addAll(goal.ge)
+            }
+        }
+
         goalsTodayRecyclerView = (RecyclerView) v.findViewById(R.id.goals_today_rv);
-        Utils.setupGoalsFeed(v, goalsTodayRecyclerView, goalsToday);
+        Utils.setupGoalsFeed(v, goalsTodayRecyclerView, todayGoals);
 
         return v;
     }
