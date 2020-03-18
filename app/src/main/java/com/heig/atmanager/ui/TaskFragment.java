@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -23,9 +24,7 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.heig.atmanager.R;
 import com.heig.atmanager.Task;
-import com.heig.atmanager.User;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -71,7 +70,7 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View mView = inflater.inflate(R.layout.fragment_task, container, false);
+        final View mView = inflater.inflate(R.layout.fragment_add_task, container, false);
 
 
         titleInput = mView.findViewById(R.id.frag_task_title);
@@ -80,7 +79,7 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
         dueDate = mView.findViewById(R.id.frag_task_due_date);
         dueTime = mView.findViewById(R.id.frag_task_due_time);
 
-        final ImageButton imageValidationButton = mView.findViewById(R.id.frag_validation_button);
+        final Button imageValidationButton = mView.findViewById(R.id.frag_validation_button);
 
         // Picker of date and time
         dueDate.setOnClickListener(new View.OnClickListener() {
@@ -120,6 +119,7 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
         // Tags
 
         ArrayAdapter<String> chipsAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, userTags);
+/*
         final AutoCompleteTextView autoCompleteTextView = mView.findViewById(R.id.autoCompleteTextView);
         autoCompleteTextView.setAdapter(chipsAdapter);
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -131,6 +131,7 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
                 addChipToGroup(text, chipGroup);
             }
         });
+*/
 
         // Directory spinner
         //directory.addAll(user.getDirectories());
