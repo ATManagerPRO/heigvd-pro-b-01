@@ -4,4 +4,5 @@
     <string name="goals_week">THIS WEEK</string>
     <string name="goals_month">THIS MONTH</string>
     <string name="goals_year">THIS YEAR</string>
+    <string name="goal_completed">COMPLETED</string>
 </resources>

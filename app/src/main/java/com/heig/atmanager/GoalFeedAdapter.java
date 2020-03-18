@@ -1,6 +1,7 @@
 package com.heig.atmanager;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -10,11 +11,13 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
@@ -38,6 +41,7 @@ public static class MyViewHolder extends RecyclerView.ViewHolder {
     private ProgressBar progress;
     private Button addBtn;
     private EditText addNumValue;
+    private LinearLayout background;
 
     public MyViewHolder(View v) {
         super(v);
@@ -48,6 +52,7 @@ public static class MyViewHolder extends RecyclerView.ViewHolder {
         progress     = (ProgressBar) v.findViewById(R.id.goal_progress);
         addBtn       = (Button) v.findViewById(R.id.goal_add_button);
         addNumValue  = (EditText) v.findViewById(R.id.goal_value_input);
+        background   = (LinearLayout) v.findViewById(R.id.goal_background);
     }
 }
 
@@ -104,7 +109,18 @@ public static class MyViewHolder extends RecyclerView.ViewHolder {
 
                     goals.get(position).addQuantity(addedValue);
 
-                    // Update text display
+                    // Goal completed
+                    if(goals.get(position).getQuantityDone() >= goals.get(position).getTotalQuantity()) {
+                        holder.background.setBackground(ContextCompat.getDrawable(v.getContext(), R.drawable.goal_background_completed));
+                        holder.currentValue.setTextColor(ContextCompat.getColor(v.getContext(), R.color.white));
+                        holder.totalValue.setTextColor(ContextCompat.getColor(v.getContext(), R.color.white_50));
+                        holder.unit.setTextColor(ContextCompat.getColor(v.getContext(), R.color.white_50));
+                        holder.timerValue.setBackground(ContextCompat.getDrawable(v.getContext(), R.drawable.goal_timer_background_completed));
+                        holder.timerValue.setTextColor(ContextCompat.getColor(v.getContext(), R.color.white));
+                        holder.timerValue.setText(R.string.goal_completed);
+                        holder.addBtn.setVisibility(View.GONE);
+                    }
+
                     holder.currentValue.setText(goals.get(position).getStringCurrent());
                     return true;
                 }

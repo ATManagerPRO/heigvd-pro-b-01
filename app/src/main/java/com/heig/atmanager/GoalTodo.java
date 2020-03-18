@@ -60,6 +60,14 @@ public class GoalTodo {
         return goal.getUnit();
     }
 
+    public int getQuantityDone() {
+        return quantityDone;
+    }
+
+    public int getTotalQuantity() {
+        return goal.getQuantity();
+    }
+
     public String getStringCurrent() {
         return Utils.formatNumber(quantityDone);
     }
