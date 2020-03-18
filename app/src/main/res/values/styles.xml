@@ -25,10 +25,6 @@
         <item name="colorControlHighlight">#58857e</item>
     </style>
 
-    <style name="AppTheme.Round" parent="ShapeAppearance.MaterialComponents.SmallComponent">
-        <item name="cornerSize">24dp</item>
-        <item name="cornerFamily">rounded</item>
-    </style>
 
 
 </resources>
