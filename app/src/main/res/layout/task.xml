@@ -82,9 +82,9 @@
 
         <!-- Check box -->
         <Button
+            style="@style/AppTheme.CheckBox"
             android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:background="@drawable/task_checkbox"/>
+            android:layout_height="45dp" />
 
 
         <!-- Task info (title and list) -->
