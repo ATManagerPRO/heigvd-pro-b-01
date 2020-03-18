@@ -1,6 +1,7 @@
 package com.heig.atmanager;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,6 +83,7 @@ public static class MyViewHolder extends RecyclerView.ViewHolder {
             public void onClick(View view) {
                 holder.addBtn.setVisibility(View.GONE);
                 holder.addNumValue.setVisibility(View.VISIBLE);
+                holder.addNumValue.requestFocus();
             }
         });
 
@@ -95,8 +97,8 @@ public static class MyViewHolder extends RecyclerView.ViewHolder {
 
                     int addedValue = 0;
 
-                    if(holder.addNumValue.getText().toString() != "" &&
-                            holder.addNumValue.getText().toString() != "##") {
+                    // TODO : crash when there is no input
+                    if(!TextUtils.isEmpty(holder.addNumValue.getText())) {
                         addedValue = Integer.parseInt(holder.addNumValue.getText().toString());
                     }
 
