@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
  *
  * Task adapter for the task Recycler view
  */
-public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyViewHolder> {
-    private ArrayList<Task> tasks;
+public class TodoFeedAdapter extends RecyclerView.Adapter<TodoFeedAdapter.MyViewHolder> {
+    private ArrayList<Todo> todos;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -42,14 +42,14 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public TaskFeedAdapter(ArrayList<Task> tasks) {
-        this.tasks = tasks;
+    public TodoFeedAdapter(ArrayList<Todo> todos) {
+        this.todos = todos;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public TaskFeedAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                                     int viewType) {
+    public TodoFeedAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
+                                                           int viewType) {
         // create a new view
         View v = (View) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.task, parent, false);
@@ -63,8 +63,8 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.title.setText(tasks.get(position).getTitle());
-        holder.description.setText(tasks.get(position).getDescription());
+        holder.title.setText(todos.get(position).getTitle());
+        holder.description.setText(todos.get(position).getDescription());
         holder.expandBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,6 +87,6 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return tasks.size();
+        return todos.size();
     }
 }
