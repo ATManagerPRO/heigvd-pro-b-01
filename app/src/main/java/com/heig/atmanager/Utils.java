@@ -52,4 +52,8 @@ public class Utils {
         cal.setTime(date);
         return cal.get(Calendar.DAY_OF_MONTH);
     }
+
+    public static String formatNumber(int number) {
+        return (number < 10 ? "0" : "") + number;
+    }
 }

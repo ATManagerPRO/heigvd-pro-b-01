@@ -10,6 +10,8 @@
         android:layout_height="100dp"
         android:layout_gravity="center_horizontal"/>
 
+    <!-- TODO : Refactor in a goalDisplay layout -->
+
     <!-- Daily goals display -->
     <TextView
         android:layout_width="match_parent"
@@ -75,7 +77,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/goals_month_rv"
@@ -99,7 +102,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/goals_year_rv"

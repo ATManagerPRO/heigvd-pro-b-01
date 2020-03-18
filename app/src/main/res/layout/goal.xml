@@ -20,7 +20,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="-10dp">
 
             <TextView
                 android:id="@+id/current_value_text"
@@ -50,7 +51,8 @@
             android:textColor="@color/light_grey"
             android:textStyle="bold"
             android:textSize="18sp"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:layout_marginBottom="10dp"/>
 
     </LinearLayout>
 
@@ -62,5 +64,20 @@
         style="?android:progressBarStyleHorizontal"
         android:progressDrawable="@drawable/goal_progressbar"
         android:rotation="90"/>
+
+    <TextView
+        android:id="@+id/goal_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/goal_timer_background"
+        android:text="XX interval left"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:layout_gravity="bottom |center" />
 
 </FrameLayout>

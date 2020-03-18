@@ -48,23 +48,22 @@ public class Goal {
     private ArrayList<GoalTodo> generateTodos() {
         ArrayList<GoalTodo> goals = new ArrayList<>();
 
-        Calendar calendar = Calendar.getInstance();
-        Log.d(TAG, "generateTodaysTodos: GENERATING FOR " + unit + " --------------------------");
-        Log.d(TAG, "generateTodaysTodos: calendar day : " + calendar.getTime());
-        Log.d(TAG, "generateTodaysTodos: due date     : " + dueDate);
+        Calendar calendar = getCalendarInstance(interval);
 
         // Adding new goalsTodo while it's equal or before the due date
         while(calendar.getTime().equals(dueDate) || calendar.getTime().before(dueDate)) {
-            Log.d(TAG, "generateTodaysTodos: adding 1 todo for " + calendar.getTime());
-            goals.add(new GoalTodo(this, 0, getDoneDate(interval, calendar), dueDate));
+            goals.add(new GoalTodo(this, 0, calendar.getTime(), dueDate));
             calendar.add(interval.getCalendarInterval(),1);
         }
 
         return goals;
     }
 
-    private Date getDoneDate(Interval interval, Calendar c) {
-        // todo : change end date to the set date (if set on a wednesday for a weekly goal it should end next wednesday)
+    private Calendar getCalendarInstance(Interval interval) {
+        // todo : change end date to the set date
+        //    (if set on a wednesday for a weekly goal it should end next wednesday)
+        Calendar c = Calendar.getInstance();
+
         switch(interval) {
             case YEAR:
                 // User has until December to finish a yearly goal
@@ -85,7 +84,7 @@ public class Goal {
                 break;
         }
 
-        return c.getTime();
+        return c;
     }
 
     public ArrayList<GoalTodo> getGoalTodos() {
@@ -93,11 +92,9 @@ public class Goal {
     }
 
     public ArrayList<GoalTodo> getGoalsTodoForDay(Date day) {
-        Log.d(TAG, "generateTodaysTodos: FETCHING FOR " + unit + " ON " + day + " --------------------------");
         ArrayList<GoalTodo> todayGoalsTodos = new ArrayList<>();
         for(GoalTodo goalTodo : goalTodos)
             if(Utils.getDay(goalTodo.getDoneDate()) == Utils.getDay(day)) {
-                Log.d(TAG, "getGoalsTodoForDay: fetching 1 todo for " + day);
                 todayGoalsTodos.add(goalTodo);
             }
 

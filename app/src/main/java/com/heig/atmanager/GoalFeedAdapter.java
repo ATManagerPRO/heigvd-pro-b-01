@@ -27,6 +27,7 @@ public static class MyViewHolder extends RecyclerView.ViewHolder {
     private TextView unit;
     private TextView totalValue;
     private TextView currentValue;
+    private TextView timerValue;
     private ProgressBar progress;
 
     public MyViewHolder(View v) {
@@ -34,6 +35,7 @@ public static class MyViewHolder extends RecyclerView.ViewHolder {
         unit         = (TextView) v.findViewById(R.id.unit_text);
         currentValue = (TextView) v.findViewById(R.id.current_value_text);
         totalValue   = (TextView) v.findViewById(R.id.total_value_text);
+        timerValue   = (TextView) v.findViewById(R.id.goal_timer);
         progress     = (ProgressBar) v.findViewById(R.id.goal_progress);
     }
 }
@@ -63,6 +65,7 @@ public static class MyViewHolder extends RecyclerView.ViewHolder {
         holder.unit.setText(goals.get(position).getUnit());
         holder.currentValue.setText(goals.get(position).getStringCurrent());
         holder.totalValue.setText("/" + goals.get(position).getStringTotal());
+        holder.timerValue.setText(goals.get(position).getTimerValue());
         holder.progress.setProgress(goals.get(position).getPercentage());
     }
 

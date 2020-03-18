@@ -2,7 +2,9 @@ package com.heig.atmanager;
 
 import android.util.Log;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Author : Stéphane Bottin
@@ -19,6 +21,9 @@ import java.util.Date;
  *     - Year     | the year                   (2020)
  */
 public class GoalTodo {
+
+    private static final long MILLIS_IN_HOUR  = 3600000;
+    private static final long MILLIS_IN_DAY   = 86400000;
 
     private static final String TAG = "GoalTodo";
 
@@ -56,11 +61,32 @@ public class GoalTodo {
     }
 
     public String getStringCurrent() {
-        return (quantityDone < 10 ? "0" : "") + quantityDone;
+        return Utils.formatNumber(quantityDone);
     }
 
     public String getStringTotal() {
-        return (goal.getQuantity() < 10 ? "0" : "") + goal.getQuantity();
+        return Utils.formatNumber(goal.getQuantity());
+    }
+
+    public String getTimerValue() {
+        Calendar calendarNow = Calendar.getInstance();
+        long millisLeft = doneDate.getTime() - calendarNow.getTimeInMillis();
+        int timeLeft = -1;
+        String unit = "";
+
+        if(millisLeft < MILLIS_IN_HOUR) {
+            timeLeft = (int) TimeUnit.MILLISECONDS.toMinutes(millisLeft);
+            unit = "minute";
+        } else if (millisLeft < MILLIS_IN_DAY) {
+            timeLeft = (int) TimeUnit.MILLISECONDS.toHours(millisLeft);
+            unit = "hour";
+        } else {
+            timeLeft = (int) TimeUnit.MILLISECONDS.toDays(millisLeft);
+            unit = "day";
+        }
+
+        return Utils.formatNumber(timeLeft) + " " + unit +
+                (timeLeft > 1 ? "s" : "") + " left";
     }
 
     public Date getDoneDate() {

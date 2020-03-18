@@ -52,13 +52,18 @@ public class GoalsFragment extends Fragment {
         Date dueDateGoal2 = calendar.getTime();
         calendar.add(Calendar.WEEK_OF_MONTH, 4);
         Date dueDateGoal3 = calendar.getTime();
+        calendar.add(Calendar.MONTH, 3);
+        Date dueDateGoal4 = calendar.getTime();
 
-        Goal goal1 = new Goal("SQUATS", 20, Interval.DAY, dueDateGoal1);
-        Goal goal2 = new Goal("BREAK", 1, Interval.HOUR, dueDateGoal2);
-        Goal goal3 = new Goal("KMS", 4, Interval.WEEK, dueDateGoal3);
-        goals.add(goal1);
-        goals.add(goal2);
-        goals.add(goal3);
+
+        Goal daily_goal1 = new Goal("SQUATS", 20, Interval.DAY, dueDateGoal1);
+        Goal daily_goal2 = new Goal("FRUITS", 5, Interval.DAY, dueDateGoal2);
+        Goal weekly_goal3 = new Goal("KMS", 4, Interval.WEEK, dueDateGoal3);
+        Goal monthly_goal4 = new Goal("GIT PUSH", 4, Interval.MONTH, dueDateGoal4);
+        goals.add(daily_goal1);
+        goals.add(daily_goal2);
+        goals.add(weekly_goal3);
+        goals.add(monthly_goal4);
         // --------- END TEMP ---------
 
         // Calendar instances (for readability)
@@ -67,17 +72,29 @@ public class GoalsFragment extends Fragment {
         // Today's goals setup
         ArrayList<GoalTodo> todayGoals = new ArrayList<>();
         ArrayList<GoalTodo> weekGoals  = new ArrayList<>();
+        ArrayList<GoalTodo> monthGoals = new ArrayList<>();
         for(Goal goal : goals) {
-            if(goal.getInterval() == Interval.DAY) {
-                todayGoals.addAll(goal.getGoalsTodoForDay(today));
-            } else if (goal.getInterval() == Interval.WEEK) {
-                weekGoals.addAll(goal.getGoalsTodoForDay(today));
+            switch(goal.getInterval()) {
+                case DAY:
+                    todayGoals.add(goal.getGoalTodos().get(0));
+                    break;
+                case WEEK:
+                    weekGoals.add(goal.getGoalTodos().get(0));
+                    break;
+                case MONTH:
+                    monthGoals.add(goal.getGoalTodos().get(0));
+                    break;
             }
         }
 
         goalsTodayRecyclerView = (RecyclerView) v.findViewById(R.id.goals_today_rv);
         Utils.setupGoalsFeed(v, goalsTodayRecyclerView, todayGoals);
 
+        goalsWeekRecyclerView = (RecyclerView) v.findViewById(R.id.goals_week_rv);
+        Utils.setupGoalsFeed(v, goalsWeekRecyclerView, weekGoals);
+
+        goalsMonthRecyclerView = (RecyclerView) v.findViewById(R.id.goals_month_rv);
+        Utils.setupGoalsFeed(v, goalsMonthRecyclerView, monthGoals);
         return v;
     }
 
