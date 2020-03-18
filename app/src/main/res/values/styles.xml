@@ -9,15 +9,24 @@
         <item name="buttonStyle">@style/Widget.AppCompat.Button.Borderless</item>
     </style>
 
+    <style name="AppTheme.MoreButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="icon">@drawable/ic_arrow_hollow</item>
+        <item name="iconSize">50dp</item>
+    </style>
+
 
     <style name="AppTheme.CheckBox" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="shapeAppearance">@style/AppTheme.Round</item>
         <item name="strokeColor">@color/black</item>
         <item name="strokeWidth">2dp</item>
-        <item name="shapeAppearance">@style/AppTheme.Round</item>
+        <item name="color">@color/colorAccent</item>
+        <item name="colorButtonNormal">@color/transparent</item>
+        <item name="android:background">@drawable/task_checkbox</item>
+        <item name="colorControlHighlight">#58857e</item>
     </style>
 
     <style name="AppTheme.Round" parent="ShapeAppearance.MaterialComponents.SmallComponent">
-        <item name="cornerRadius">50dp</item>
+        <item name="cornerSize">24dp</item>
         <item name="cornerFamily">rounded</item>
     </style>
 
