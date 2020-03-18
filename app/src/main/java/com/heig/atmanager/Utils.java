@@ -1,6 +1,8 @@
 package com.heig.atmanager;
 
+import android.content.Context;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Adapter;
 
 import java.util.ArrayList;
