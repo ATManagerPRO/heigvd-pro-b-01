@@ -10,25 +10,20 @@ import java.util.Date;
  * Enum to work with intervals for goals or todos
  */
 public enum Interval {
-    HOUR  (Calendar.HOUR_OF_DAY, "minute"),
-    DAY   (Calendar.DAY_OF_YEAR, "hour"),
-    WEEK  (Calendar.WEEK_OF_YEAR, "day"),
-    MONTH (Calendar.MONTH, "week"),
-    YEAR  (Calendar.YEAR, "month");
+    HOUR  (Calendar.HOUR_OF_DAY),
+    DAY   (Calendar.DAY_OF_YEAR),
+    WEEK  (Calendar.WEEK_OF_YEAR),
+    MONTH (Calendar.MONTH),
+    YEAR  (Calendar.YEAR);
 
     private int calendarInterval;
-    private String timerValue;
 
-    Interval(int calendarInterval, String timerValue) {
+    Interval(int calendarInterval) {
         this.calendarInterval = calendarInterval;
-        this.timerValue       = timerValue;
     }
 
     public int getCalendarInterval() {
         return calendarInterval;
     }
 
-    public String getTimerValue() {
-        return timerValue;
-    }
 }

@@ -41,14 +41,18 @@ public class Goal {
         this.dueDate  = dueDate;
 
         // Generate the todos automatically (once) for the user
-        // TODO: if there are no due dates, ...
         goalTodos = generateTodos();
     }
 
+    /**
+     * Generates the GoalTodo of a Goal
+     * TODO : Handle no due dates
+     * @return list of GoalTodo
+     */
     private ArrayList<GoalTodo> generateTodos() {
         ArrayList<GoalTodo> goals = new ArrayList<>();
 
-        Calendar calendar = getCalendarInstance(interval);
+        Calendar calendar = getCalendarInstance();
 
         // Adding new goalsTodo while it's equal or before the due date
         while(calendar.getTime().equals(dueDate) || calendar.getTime().before(dueDate)) {
@@ -59,7 +63,11 @@ public class Goal {
         return goals;
     }
 
-    private Calendar getCalendarInstance(Interval interval) {
+    /**
+     * Get the calendar instance for the generation of GoalTodos
+     * @return Calendar set at the normalized time
+     */
+    private Calendar getCalendarInstance() {
         // todo : change end date to the set date
         //    (if set on a wednesday for a weekly goal it should end next wednesday)
         Calendar c = Calendar.getInstance();
@@ -87,10 +95,11 @@ public class Goal {
         return c;
     }
 
-    public ArrayList<GoalTodo> getGoalTodos() {
-        return goalTodos;
-    }
-
+    /**
+     * Get the GoalTodo for a specific day
+     * @param day : date filter
+     * @return list of GoalTodo for that day
+     */
     public ArrayList<GoalTodo> getGoalsTodoForDay(Date day) {
         ArrayList<GoalTodo> todayGoalsTodos = new ArrayList<>();
         for(GoalTodo goalTodo : goalTodos)
@@ -100,6 +109,10 @@ public class Goal {
 
         return todayGoalsTodos;
     }
+
+    /**
+     *  Getters
+     */
 
     public int getQuantity() {
         return quantity;
@@ -112,5 +125,10 @@ public class Goal {
     public Interval getInterval() {
         return interval;
     }
+
+    public ArrayList<GoalTodo> getGoalTodos() {
+        return goalTodos;
+    }
+
 
 }

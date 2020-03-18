@@ -69,7 +69,7 @@ public class GoalsFragment extends Fragment {
         // Calendar instances (for readability)
         Date today = Calendar.getInstance().getTime();
 
-        // Today's goals setup
+        // Displaying the generating GoalTodo from the goals by intervals
         ArrayList<GoalTodo> todayGoals = new ArrayList<>();
         ArrayList<GoalTodo> weekGoals  = new ArrayList<>();
         ArrayList<GoalTodo> monthGoals = new ArrayList<>();
@@ -87,6 +87,7 @@ public class GoalsFragment extends Fragment {
             }
         }
 
+        // Goals feeds setup
         goalsTodayRecyclerView = (RecyclerView) v.findViewById(R.id.goals_today_rv);
         Utils.setupGoalsFeed(v, goalsTodayRecyclerView, todayGoals);
 

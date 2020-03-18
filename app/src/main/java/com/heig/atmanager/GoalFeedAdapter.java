@@ -79,10 +79,12 @@ public static class MyViewHolder extends RecyclerView.ViewHolder {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.unit.setText(goals.get(position).getUnit());
-        holder.currentValue.setText(goals.get(position).getStringCurrent());
-        holder.totalValue.setText("/" + goals.get(position).getStringTotal());
+        holder.currentValue.setText(Utils.formatNumber(goals.get(position).getQuantityDone()));
+        holder.totalValue.setText("/" + Utils.formatNumber(goals.get(position).getTotalQuantity()));
         holder.timerValue.setText(goals.get(position).getTimerValue());
         holder.progress.setProgress(goals.get(position).getPercentage());
+
+        // Add a quantity to a GoalTodo
         holder.addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,6 +94,7 @@ public static class MyViewHolder extends RecyclerView.ViewHolder {
             }
         });
 
+        // Set the quantity value to add in a GoalTodo
         holder.addNumValue.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_NEXT) {
@@ -102,7 +105,6 @@ public static class MyViewHolder extends RecyclerView.ViewHolder {
 
                     int addedValue = 0;
 
-                    // TODO : crash when there is no input
                     if(!TextUtils.isEmpty(holder.addNumValue.getText())) {
                         addedValue = Integer.parseInt(holder.addNumValue.getText().toString());
                     }
@@ -121,7 +123,8 @@ public static class MyViewHolder extends RecyclerView.ViewHolder {
                         holder.addBtn.setVisibility(View.GONE);
                     }
 
-                    holder.currentValue.setText(goals.get(position).getStringCurrent());
+                    // Update text quantity value
+                    holder.currentValue.setText(Utils.formatNumber(goals.get(position).getQuantityDone()));
                     return true;
                 }
                 return false;

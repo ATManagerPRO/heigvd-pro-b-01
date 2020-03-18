@@ -13,12 +13,6 @@ import java.util.concurrent.TimeUnit;
  * GoalTodos are generated from a goal in order to let the user interact with his/her goals.
  * This class also helps keeping track of the user's progress.
  *
- * DoneDate : date the goal needs to be done, will change depending on the interval :
- *       Interval | Displayed if it is equal to...
- *     - Day      | the same day               (12.4.2020)
- *     - Week     | the first day of the week  (Monday)
- *     - Month    | the first day of the Month (1st)
- *     - Year     | the year                   (2020)
  */
 public class GoalTodo {
 
@@ -33,11 +27,6 @@ public class GoalTodo {
     private Date dueDate;
 
     public GoalTodo(Goal goal, int quantityDone, Date doneDate, Date dueDate) {
-        Log.d(TAG, "GoalTodo: GoalTodo generated ----------------------------------");
-        Log.d(TAG, "\t> goal         : " + goal.getUnit() + " (" + goal.getInterval() + ")");
-        Log.d(TAG, "\t> quantityDone : " + quantityDone);
-        Log.d(TAG, "\t> doneDate     : " + doneDate);
-        Log.d(TAG, "\t> dueDate      : " + dueDate);
         this.goal = goal;
         this.quantityDone = quantityDone;
         this.doneDate = doneDate;
@@ -45,10 +34,6 @@ public class GoalTodo {
     }
 
     public void addQuantity(int quantity) {
-        quantityDone += quantity;
-    }
-
-    public void removeQuantity(int quantity) {
         quantityDone += quantity;
     }
 
@@ -68,19 +53,15 @@ public class GoalTodo {
         return goal.getQuantity();
     }
 
-    public String getStringCurrent() {
-        return Utils.formatNumber(quantityDone);
-    }
-
-    public String getStringTotal() {
-        return Utils.formatNumber(goal.getQuantity());
-    }
-
+    /**
+     * Get the Timer value for the goal (how much time is left to complete it)
+     * @return the timer value as a string
+     */
     public String getTimerValue() {
         Calendar calendarNow = Calendar.getInstance();
         long millisLeft = doneDate.getTime() - calendarNow.getTimeInMillis();
-        int timeLeft = -1;
-        String unit = "";
+        int timeLeft;
+        String unit;
 
         if(millisLeft < MILLIS_IN_HOUR) {
             timeLeft = (int) TimeUnit.MILLISECONDS.toMinutes(millisLeft);

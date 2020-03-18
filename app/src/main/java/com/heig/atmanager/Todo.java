@@ -6,7 +6,7 @@ import java.util.Date;
  * Author : Stéphane Bottin
  * Date   : 11.03.2020
  *
- * Task object (tmp)
+ * Task object
  */
 public class Todo {
     private String title;
