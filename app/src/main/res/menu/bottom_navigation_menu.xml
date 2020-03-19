@@ -2,25 +2,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/item1"
-        android:title="Home"
+        android:title="@string/dock_home"
         android:icon="@drawable/ic_home" />
 
     <!-- Calendar view -->
     <item
         android:id="@+id/item2"
-        android:title="Calendar"
+        android:title="@string/dock_calendar"
         android:icon="@drawable/ic_calendar"/>
-
 
     <!-- Goals view -->
     <item
         android:id="@+id/item3"
-        android:title="Goals"
+        android:title="@string/dock_goals"
         android:icon="@drawable/ic_goals"/>
 
     <!-- Profile view -->
     <item
         android:id="@+id/item4"
-        android:title="Profile"
+        android:title="@string/dock_profile"
         android:icon="@drawable/ic_profile"/>
 </menu>

@@ -1,5 +1,12 @@
 <resources>
     <string name="app_name">ATManager</string>
+    <!-- Dock -->
+    <string name="dock_home">Home</string>
+    <string name="dock_calendar">Calendar</string>
+    <string name="dock_goals">Goals</string>
+    <string name="dock_profile">Profile</string>
+
+    <!-- Goals -->
     <string name="goals_today">TODAY</string>
     <string name="goals_week">THIS WEEK</string>
     <string name="goals_month">THIS MONTH</string>
