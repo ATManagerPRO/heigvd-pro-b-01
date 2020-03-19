@@ -15,7 +15,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -23,7 +22,7 @@ import android.widget.TimePicker;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.heig.atmanager.R;
-import com.heig.atmanager.Task;
+import com.heig.atmanager.Todo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -119,7 +118,7 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
         // Tags
 
         ArrayAdapter<String> chipsAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, userTags);
-/*
+
         final AutoCompleteTextView autoCompleteTextView = mView.findViewById(R.id.autoCompleteTextView);
         autoCompleteTextView.setAdapter(chipsAdapter);
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -131,7 +130,7 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
                 addChipToGroup(text, chipGroup);
             }
         });
-*/
+
 
         // Directory spinner
         //directory.addAll(user.getDirectories());
@@ -155,7 +154,7 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
 
         Date selectedDate = new GregorianCalendar(mYear, mMonth, mDay, mHour, mMinute).getTime();
 
-        new Task(title, description, selectedDate, selectedDirectory);
+        new Todo(title, description, selectedDate, selectedDirectory);
     }
 
     private void addChipToGroup(String tag, final ChipGroup chipGroup){

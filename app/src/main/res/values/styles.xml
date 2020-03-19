@@ -63,6 +63,26 @@
         <item name="icon">@drawable/ic_close_black_24dp</item>
     </style>
 
+    <style name="AppTheme.OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:minWidth">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">0dp</item>
+    </style>
+
+    <style name="AppTheme.OutlinedButton.Cancel" parent="AppTheme.OutlinedButton">
+        <item name="iconTint">@color/black</item>
+        <item name="icon">@drawable/ic_close_black_24dp</item>
+    </style>
+
+    <style name="AppTheme.OutlinedButton.Edit" parent="AppTheme.OutlinedButton">
+        <item name="iconTint">@color/black</item>
+        <item name="icon">@drawable/ic_edit_black_24dp</item>
+    </style>
+
 
 
 

@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,13 +25,13 @@ public class HomeFragment extends Fragment {
     TextView greetingText;
 
     // Goal feed
-    ArrayList<Goal> goals; // user data
+    ArrayList<GoalTodo> goals; // user data
     private RecyclerView goalsRecyclerView;
     private RecyclerView.Adapter goalsAdapter;
     private RecyclerView.LayoutManager goalslayoutManager;
 
     // Task feed
-    ArrayList<Task> tasks; // user data
+    ArrayList<Todo> todos; // user data
     private RecyclerView tasksRecyclerView;
     private RecyclerView.Adapter tasksAdapter;
     private RecyclerView.LayoutManager taskslayoutManager;
@@ -42,13 +43,23 @@ public class HomeFragment extends Fragment {
 
         // ----------- TEMP -----------
         goals = new ArrayList<>();
-        goals.add(new Goal("SQUATS", 100, 70));
-        goals.add(new Goal("KMS", 8, 3));
-        tasks = new ArrayList<>();
-        tasks.add(new Task("Task1", "This is a really useful task."));
-        tasks.add(new Task("Task2", "Rendre labo 1 :\n> Fiche technique\n> Rapport (10 pages)\n> Code source (C++)"));
-        tasks.add(new Task("Task3", "..."));
-        tasks.add(new Task("Task4", "..."));
+        // GOAL : 20 squats every day for 5 days
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, 5);
+        Date dueDateGoal1 = calendar.getTime();
+        calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        Date dueDateGoal2 = calendar.getTime();
+
+        Goal goal1 = new Goal("SQUATS", 20, Interval.DAY, dueDateGoal1);
+        Goal goal2 = new Goal("BREAK", 1, Interval.HOUR, dueDateGoal2);
+        goals = goal1.getGoalsTodoForDay(calendar.getTime()); // Generates 1 goalTodo for 20 squats
+        goals.addAll(goal2.getGoalsTodoForDay(calendar.getTime())); // Generates 1 break every hour
+        todos = new ArrayList<>();
+        todos.add(new Todo("Task1", "This is a really useful task."));
+        todos.add(new Todo("Task2", "Rendre labo 1 :\n> Fiche technique\n> Rapport (10 pages)\n> Code source (C++)"));
+        todos.add(new Todo("Task3", "..."));
+        todos.add(new Todo("Task4", "..."));
         // --------- END TEMP ---------
 
         // Greeting
@@ -56,47 +67,14 @@ public class HomeFragment extends Fragment {
         greetingText.setText(getGreetings());
 
         // Task feed
-        setupTasksRecyclerView(v, tasks);
+        tasksRecyclerView = (RecyclerView) v.findViewById(R.id.tasks_rv);
+        Utils.setupTodosFeed(v, tasksRecyclerView, todos);
 
         // Goal feed
-        setupGoalsRecyclerView(v, goals);
+        goalsRecyclerView = (RecyclerView) v.findViewById(R.id.goals_rv);
+        Utils.setupGoalsFeed(v, goalsRecyclerView, goals);
 
         return v;
-    }
-
-    private void setupTasksRecyclerView(View v, ArrayList<Task> tasks) {
-
-        tasksRecyclerView = (RecyclerView) v.findViewById(R.id.tasks_rv);
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        tasksRecyclerView.setHasFixedSize(true);
-
-        // use a linear layout manager
-        taskslayoutManager = new LinearLayoutManager(v.getContext());
-        tasksRecyclerView.setLayoutManager(taskslayoutManager);
-
-        // specify an adapter (see also next example)
-        tasksAdapter = new TaskFeedAdapter(tasks);
-        tasksRecyclerView.setAdapter(tasksAdapter);
-    }
-
-    private void setupGoalsRecyclerView(View v, ArrayList<Goal> goals) {
-
-        goalsRecyclerView = (RecyclerView) v.findViewById(R.id.goals_rv);
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        goalsRecyclerView.setHasFixedSize(true);
-
-        // use a (horizontal) linear layout manager
-        goalslayoutManager = new LinearLayoutManager(v.getContext(),
-                LinearLayoutManager.HORIZONTAL, false);
-        goalsRecyclerView.setLayoutManager(goalslayoutManager);
-
-        // specify an adapter (see also next example)
-        goalsAdapter = new GoalFeedAdapter(goals);
-        goalsRecyclerView.setAdapter(goalsAdapter);
     }
 
     /**
@@ -124,14 +102,14 @@ public class HomeFragment extends Fragment {
         }
 
         // Select user info sentence (total tasks/goals for the day)
-        if(tasks.size() == 0 && goals.size() == 0) {
+        if(todos.size() == 0 && goals.size() == 0) {
             user_info = "relax! You have nothing to do today.";
-        } else if (tasks.size() != 0 && goals.size() == 0) {
-            user_info = getSingleUserInfoGreeting(tasks.size()) + " for today.";
-        } else if (tasks.size() == 0) { // goals != 0 always true
+        } else if (todos.size() != 0 && goals.size() == 0) {
+            user_info = getSingleUserInfoGreeting(todos.size()) + " for today.";
+        } else if (todos.size() == 0) { // goals != 0 always true
             user_info = getSingleUserInfoGreeting(goals.size()) + " for today.";
         } else {
-            user_info = getSingleUserInfoGreeting(tasks.size()) + " and "
+            user_info = getSingleUserInfoGreeting(todos.size()) + " and "
                     + goals.size() + " goal" + (goals.size() > 1 ? "s" : "") + " for today.";
         }
 

@@ -6,27 +6,31 @@ import java.util.Date;
  * Author : Stéphane Bottin
  * Date   : 11.03.2020
  *
- * Task object (tmp)
+ * Task object
  */
-public class Task {
+public class Todo {
     private String title;
     private String description;
+    private boolean done;
     private Date dueDate;
+    private Date doneDate;
+    private Date reminderDate;
     private String directory;
 
-    public Task(String title, String description) {
-       this(title, description, null, null);
+
+    public Todo(String title, String description) {
+        this(title, description, null,null);
     }
 
-    public Task(String title, String description, Date dueDate, String directory) {
+    public Todo(String title, String description, Date dueDate) {
+        this(title, description, dueDate, null);
+    }
+
+    public Todo(String title, String description, Date dueDate, String directory) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.directory = directory;
-    }
-
-    public Task(String title, String description, Date dueDate) {
-        this(title, description, dueDate, null);
     }
 
     public String getTitle() {
