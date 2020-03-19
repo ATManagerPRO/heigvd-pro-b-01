@@ -27,14 +27,10 @@ public class HomeFragment extends Fragment {
     // Goal feed
     ArrayList<GoalTodo> goals; // user data
     private RecyclerView goalsRecyclerView;
-    private RecyclerView.Adapter goalsAdapter;
-    private RecyclerView.LayoutManager goalslayoutManager;
 
     // Task feed
     ArrayList<Todo> todos; // user data
     private RecyclerView tasksRecyclerView;
-    private RecyclerView.Adapter tasksAdapter;
-    private RecyclerView.LayoutManager taskslayoutManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
