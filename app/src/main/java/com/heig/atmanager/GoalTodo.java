@@ -1,7 +1,5 @@
 package com.heig.atmanager;
 
-import android.util.Log;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -21,12 +19,12 @@ public class GoalTodo {
 
     private static final String TAG = "GoalTodo";
 
-    private Goal goal;
+    private GoalTask goal;
     private int quantityDone;
     private Date doneDate;
     private Date dueDate;
 
-    public GoalTodo(Goal goal, int quantityDone, Date doneDate, Date dueDate) {
+    public GoalTodo(GoalTask goal, int quantityDone, Date doneDate, Date dueDate) {
         this.goal = goal;
         this.quantityDone = quantityDone;
         this.doneDate = doneDate;

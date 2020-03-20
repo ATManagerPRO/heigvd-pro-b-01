@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.heig.atmanager.Goal;
+import com.heig.atmanager.GoalTask;
 import com.heig.atmanager.R;
 
 import java.util.ArrayList;
@@ -40,9 +40,9 @@ public class AddTaskInGoalAdapter extends RecyclerView.Adapter<AddTaskInGoalAdap
         }
     }
 
-    private ArrayList<Goal> goals;
+    private ArrayList<GoalTask> goals;
 
-    public AddTaskInGoalAdapter(ArrayList<Goal> goals) {
+    public AddTaskInGoalAdapter(ArrayList<GoalTask> goals) {
         this.goals = goals;
     }
 
@@ -58,7 +58,7 @@ public class AddTaskInGoalAdapter extends RecyclerView.Adapter<AddTaskInGoalAdap
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
-        Goal currentGoalTodo = goals.get(position);
+        GoalTask currentGoalTodo = goals.get(position);
         holder.quantity.setText(String.valueOf(currentGoalTodo.getQuantity()));
         holder.unit.setText(currentGoalTodo.getUnit());
         holder.intervalNumber.setText(String.valueOf(currentGoalTodo.getIntervalNumber()));

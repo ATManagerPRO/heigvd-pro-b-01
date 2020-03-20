@@ -14,7 +14,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
-import com.heig.atmanager.Goal;
+import com.heig.atmanager.GoalTask;
 import com.heig.atmanager.Interval;
 import com.heig.atmanager.R;
 import com.heig.atmanager.ui.adapter.AddTaskInGoalAdapter;
@@ -40,7 +40,7 @@ public class AddGoalFragement extends Fragment {
 
     private TextView dueDate;
 
-    private ArrayList<Goal> goalTasks = new ArrayList<>();
+    private ArrayList<GoalTask> goalTasks = new ArrayList<>();
 
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager manager;
@@ -92,8 +92,8 @@ public class AddGoalFragement extends Fragment {
         calendar.add(Calendar.DAY_OF_MONTH, 1);
         Date dueDateGoal2 = calendar.getTime();
 
-        Goal goal1 = new Goal("SQUATS", 20, 2, Interval.DAY, dueDateGoal1);
-        Goal goal2 = new Goal("BREAK", 1, 3, Interval.HOUR, dueDateGoal2);
+        GoalTask goal1 = new GoalTask("SQUATS", 20, 2, Interval.DAY, dueDateGoal1);
+        GoalTask goal2 = new GoalTask("BREAK", 1, 3, Interval.HOUR, dueDateGoal2);
 
         goalTasks.add(goal1);
         goalTasks.add(goal2);
