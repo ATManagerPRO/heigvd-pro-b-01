@@ -108,7 +108,7 @@
                 android:id="@+id/card_add_task_delete_goal_task"
                 android:layout_height="50dp"
                 android:layout_width="50dp"
-                style="@style/AppTheme.Button.CancelButton"
+                style="@style/AppTheme.Button.Icon.Cancel"
                 app:layout_constraintRight_toLeftOf="parent"
                 app:layout_constraintLeft_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="parent"

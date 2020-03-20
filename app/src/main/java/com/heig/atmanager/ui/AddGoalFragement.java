@@ -60,7 +60,7 @@ public class AddGoalFragement extends Fragment {
 
         dueDate = view.findViewById(R.id.frag_add_goal_due_date);
 
-        goalTasksRV = view.findViewById(R.id.frag_goa_add_goal_task_rv);
+        goalTasksRV = view.findViewById(R.id.frag_add_goal_task_rv);
 
         dueDate.setOnClickListener(new View.OnClickListener() {
             @Override
