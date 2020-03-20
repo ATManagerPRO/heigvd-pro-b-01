@@ -11,9 +11,10 @@ import android.widget.TextView;
 
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link ProfileMenuFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Author : Ferrari Teo
+ * Date   : 20.03.2020
+ *
+ * Fragment that contains the profile menu allowing to navigate to different other windows
  */
 public class ProfileMenuFragment extends Fragment {
 
@@ -48,7 +49,11 @@ public class ProfileMenuFragment extends Fragment {
 
         View stats = (View) v.findViewById(R.id.stats_button);
         TextView stats_title = (TextView) stats.findViewById(R.id.profile_button_title);
-        stats_title.setText("Stats");
+        stats_title.setText("Statistics");
+
+        View settings = (View) v.findViewById(R.id.settings_button);
+        TextView settings_title = (TextView) settings.findViewById(R.id.profile_button_title);
+        settings_title.setText("Settings");
 
         //set the onclicklisteners to switch to the correct activity/fragment
         tasks.setOnClickListener(new View.OnClickListener() {
@@ -64,6 +69,12 @@ public class ProfileMenuFragment extends Fragment {
         });
 
         stats.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // switch fragment
+            }
+        });
+
+        settings.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // switch fragment
             }

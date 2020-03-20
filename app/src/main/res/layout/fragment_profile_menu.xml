@@ -24,6 +24,10 @@
             android:id="@+id/stats_button"
             layout="@layout/profile_button"
             />
+        <include
+            android:id="@+id/settings_button"
+            layout="@layout/profile_button"
+            />
 
     </LinearLayout>
 </FrameLayout>

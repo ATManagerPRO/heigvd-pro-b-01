@@ -6,6 +6,12 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 
+/**
+ * Author : Ferrari Teo
+ * Date   : 18.03.2020
+ *
+ * Activity for the profile view that will take care of that user infos and statistics
+ */
 public class ProfileActivity extends AppCompatActivity {
 
     @Override

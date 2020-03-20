@@ -21,10 +21,10 @@
             android:id="@+id/profile_button_title"
             android:layout_width="310dp"
             android:layout_height="match_parent"
+            android:layout_marginStart="50dp"
             android:fontFamily="@font/arial"
             android:gravity="center_vertical"
             android:text="Title"
-            android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -37,10 +37,11 @@
             android:id="@+id/arrow"
             android:layout_width="94dp"
             android:layout_height="47dp"
+            android:rotation="-90"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/ic_media_play" />
+            app:srcCompat="@drawable/ic_arrow_hollow" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

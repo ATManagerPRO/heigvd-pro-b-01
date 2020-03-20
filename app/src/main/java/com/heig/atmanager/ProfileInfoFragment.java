@@ -11,9 +11,10 @@ import android.widget.TextView;
 
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link ProfileInfoFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Author : Ferrari Teo
+ * Date   : 20.03.2020
+ *
+ * Fragment for the profile view that will show the user infos
  */
 public class ProfileInfoFragment extends Fragment {
 
@@ -48,7 +49,7 @@ public class ProfileInfoFragment extends Fragment {
         first = "John";
         nick = "@J0hnD0e";
 
-
+        //set user info texts
         TextView lastName = (TextView) v.findViewById(R.id.last_name);
         lastName.setText(last);
 
