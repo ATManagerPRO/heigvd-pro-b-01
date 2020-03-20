@@ -24,4 +24,10 @@
     <string name="goals_year">THIS YEAR</string>
     <string name="goal_completed">COMPLETED</string>
     <string name="i_would_like_to">I would like to</string>
+    <string name="frequency">Frequency</string>
+    <string name="i_would">I would like to do/make/eat</string>
+    <string name="x_times">x times</string>
+    <string name="something">Something</string>
+    <string name="times">Times</string>
+    <string name="every">Every</string>
 </resources>
