@@ -4,8 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     tools:context=".ui.AddGoalFragement"
-    android:orientation="vertical">
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    >
 
     <LinearLayout
         android:id="@+id/frag_goal_add_goal_description"
@@ -20,6 +23,7 @@
             android:padding="5dp">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/frag_add_goal_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Goal" />
@@ -30,35 +34,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="4">
+            >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="2"
                 android:padding="10dp"
                 android:text="@string/due_date" />
 
             <TextView
-                android:id="@+id/frag_goal_due_date"
+                android:id="@+id/frag_add_goal_due_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="1"
                 android:padding="10dp"
                 android:hint="@string/due_date"
                 />
-
-
-            <TextView
-                android:id="@+id/frag_goal_due_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="10dp"
-                android:layout_weight="1"
-                android:hint="@string/due_time" />
 
 
         </LinearLayout>
@@ -68,12 +60,12 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/frag_goa_add_goal_task_rv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
         android:padding="5dp"
-        android:scrollbars="vertical"
-        app:layout_constraintBottom_toTopOf="@id/frag_goal_validation_button"
-        app:layout_constraintTop_toBottomOf="@id/frag_goal_add_goal_description"/>
+        android:scrollbars="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/frag_goal_validation_button"
+        app:layout_constraintTop_toBottomOf="@+id/frag_goal_add_goal_description" />
 
 
     <Button

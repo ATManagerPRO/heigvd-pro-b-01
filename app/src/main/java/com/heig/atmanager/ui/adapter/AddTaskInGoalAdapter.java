@@ -61,6 +61,7 @@ public class AddTaskInGoalAdapter extends RecyclerView.Adapter<AddTaskInGoalAdap
         Goal currentGoalTodo = goals.get(position);
         holder.quantity.setText(String.valueOf(currentGoalTodo.getQuantity()));
         holder.unit.setText(currentGoalTodo.getUnit());
+        holder.intervalNumber.setText(String.valueOf(currentGoalTodo.getIntervalNumber()));
         holder.interval.setText(currentGoalTodo.getInterval().toString());
 
         holder.editButton.setOnClickListener(new View.OnClickListener() {

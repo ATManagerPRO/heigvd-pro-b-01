@@ -30,13 +30,15 @@ public class Goal {
     
     private String unit;
     private int quantity;
+    private int intervalNumber;
     private Interval interval;
     private Date dueDate;
     private ArrayList<GoalTodo> goalTodos;
 
-    public Goal(String unit, int quantity, Interval interval, Date dueDate) {
+    public Goal(String unit, int quantity, int intervalNumber,Interval interval, Date dueDate) {
         this.unit     = unit;
         this.quantity = quantity;
+        this.intervalNumber = intervalNumber;
         this.interval = interval;
         this.dueDate  = dueDate;
 
@@ -120,6 +122,10 @@ public class Goal {
 
     public String getUnit() {
         return unit;
+    }
+
+    public int getIntervalNumber() {
+        return intervalNumber;
     }
 
     public Interval getInterval() {

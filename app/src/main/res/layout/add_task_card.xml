@@ -43,6 +43,7 @@
                     android:layout_weight="4">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/card_add_task_quantity"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="x times" />
@@ -56,6 +57,7 @@
                     android:layout_weight="4">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/card_add_task_unit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Something" />
@@ -77,6 +79,7 @@
                     android:layout_weight="1">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/card_add_task_interval_number"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:inputType="number"
@@ -84,7 +87,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Spinner
-                    android:id="@+id/spinner"
+                    android:id="@+id/card_add_task_interval_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:spinnerMode="dropdown"
@@ -102,7 +105,7 @@
             android:layout_weight="1">
 
             <Button
-                android:id="@+id/delete_goal_task"
+                android:id="@+id/card_add_task_delete_goal_task"
                 android:layout_height="50dp"
                 android:layout_width="50dp"
                 style="@style/AppTheme.Button.CancelButton"
