@@ -37,6 +37,7 @@ public class SignInActivity extends Activity implements View.OnClickListener {
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        // Request email allows to also access their email
         GoogleSignInOptions gso =
                 new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -49,6 +50,13 @@ public class SignInActivity extends Activity implements View.OnClickListener {
     private void updateUI(GoogleSignInAccount account) {
         //If user is connected, launch mainActivity
         if(account != null){
+
+            //update client info
+            GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(SignInActivity.this);
+            if(acct != null)
+                ClientInfo.updateInfo(acct);
+
+            //launch main activity
             Intent mainActivity = new Intent(SignInActivity.this,MainActivity.class);
             startActivity(mainActivity);
         }
@@ -66,7 +74,7 @@ public class SignInActivity extends Activity implements View.OnClickListener {
 
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        startActivityForResult(signInIntent, RC_SIGN_IN); //start google sign in activity
     }
 
     @Override
