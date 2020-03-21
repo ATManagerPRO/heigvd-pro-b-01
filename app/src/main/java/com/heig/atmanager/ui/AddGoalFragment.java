@@ -75,6 +75,7 @@ public class AddGoalFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_goal, container, false);
 
+        // Bind input with the id
         quantityTextInput = view.findViewById(R.id.frag_add_goal_quantity);
         unitTextInput = view.findViewById(R.id.frag_add_goal_unit);
         intervalNumberTextInput = view.findViewById(R.id.frag_add_goal_interval_number);
@@ -89,14 +90,13 @@ public class AddGoalFragment extends Fragment {
         quantityLayout = view.findViewById(R.id.frag_add_goal_quantity_layout);
         intervalNumberLayout = view.findViewById(R.id.frag_add_goal_interval_number_layout);
 
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add(Interval.DAY.toString());
-
+        // Set the interval spinner
         ArrayAdapter intervalAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, Interval.values());
         intervalAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         intervalSpinner.setAdapter(intervalAdapter);
         interval = Interval.valueOf(intervalSpinner.getSelectedItem().toString());
 
+        // Date picker
         dueDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,7 +118,6 @@ public class AddGoalFragment extends Fragment {
         validationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
 
                 boolean hasInputError = false;
                 unit = unitTextInput.getText().toString();
@@ -153,7 +152,6 @@ public class AddGoalFragment extends Fragment {
                     dueDateTextView.setError(null);
                 }
 
-
                 if (hasInputError) {
                     return;
                 }
@@ -163,6 +161,7 @@ public class AddGoalFragment extends Fragment {
 
                 Date selectedDate = new GregorianCalendar(mYear, mMonth, mDay).getTime();
 
+                // TODO Add goal to user
                 new Goal(unit, quantity, intervalNumber, interval, selectedDate);
 
             }

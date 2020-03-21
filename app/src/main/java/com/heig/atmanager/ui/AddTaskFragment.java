@@ -51,7 +51,6 @@ public class AddTaskFragment extends Fragment {
 
     private EditText titleEditText;
     private EditText descriptionEditText;
-    private EditText tagsEditText;
 
     private TextView dueDateTextView;
     private TextView dueTimeTextView;
@@ -73,6 +72,7 @@ public class AddTaskFragment extends Fragment {
         // Inflate the layout for this fragment
         final View mView = inflater.inflate(R.layout.fragment_add_task, container, false);
 
+        // Bind all input with id
         titleEditText = mView.findViewById(R.id.frag_add_task_title);
         descriptionEditText = mView.findViewById(R.id.frag_add_task_description);
 
@@ -83,7 +83,7 @@ public class AddTaskFragment extends Fragment {
 
         final Button validationButton = mView.findViewById(R.id.frag_validation_button);
 
-        // Picker of date and time
+        // Picker for date and time
         dueDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,7 +95,8 @@ public class AddTaskFragment extends Fragment {
                 picker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        dueDateTextView.setText(dayOfMonth + "." + (month + 1) + "." + year);
+                        String dueDateString = dayOfMonth + "." + (month + 1) + "." + year;
+                        dueDateTextView.setText(dueDateString);
                     }
                 }, mYear, mMonth, mDay);
                 picker.show();
@@ -108,7 +109,6 @@ public class AddTaskFragment extends Fragment {
                 mHour = calendar.get(Calendar.HOUR_OF_DAY);
                 mMinute = calendar.get(Calendar.MINUTE);
 
-                Log.d("AddTaskFragment", "BLAAAAAA");
 
                 TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
@@ -121,25 +121,24 @@ public class AddTaskFragment extends Fragment {
         });
 
         // Tags
-
+        //TODO get user tags
         ArrayAdapter<String> chipsAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, userTags);
 
-        final AutoCompleteTextView autoCompleteTextView = mView.findViewById(R.id.autoCompleteTextView);
+        final AutoCompleteTextView autoCompleteTextView = mView.findViewById(R.id.frag_add_task_autocomplete_textview);
         autoCompleteTextView.setAdapter(chipsAdapter);
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 autoCompleteTextView.setText(null);
                 String text = (String) adapterView.getItemAtPosition(i);
-                ChipGroup chipGroup = mView.findViewById(R.id.chipGroup2);
+                ChipGroup chipGroup = mView.findViewById(R.id.frag_add_task_chipgroup);
                 addChipToGroup(text, chipGroup);
             }
         });
 
 
         // Directory spinner
-        //directory.addAll(user.getDirectories());
-
+        //TODO get user directory
         final Spinner tagSpinner = mView.findViewById(R.id.frag_directory_choice_tag_spinner);
 
         ArrayAdapter tagAdapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, directory);
@@ -147,6 +146,7 @@ public class AddTaskFragment extends Fragment {
         tagSpinner.setAdapter(tagAdapter);
         selectedDirectory = tagSpinner.getSelectedItem().toString();
 
+        // Button
         validationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -162,6 +162,7 @@ public class AddTaskFragment extends Fragment {
 
                 Date selectedDate = new GregorianCalendar(mYear, mMonth, mDay, mHour, mMinute).getTime();
 
+                // TODO add to the user todo
                 new Todo(title, description, selectedDate, selectedDirectory);
             }
         });
@@ -169,6 +170,11 @@ public class AddTaskFragment extends Fragment {
         return mView;
     }
 
+    /**
+     * Add a string as chip into the given chip group
+     * @param tag a name
+     * @param chipGroup where to add
+     */
     private void addChipToGroup(String tag, final ChipGroup chipGroup) {
         final Chip chip = new Chip(this.getContext());
 
