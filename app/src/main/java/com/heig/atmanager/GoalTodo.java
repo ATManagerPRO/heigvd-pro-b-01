@@ -19,12 +19,12 @@ public class GoalTodo {
 
     private static final String TAG = "GoalTodo";
 
-    private GoalTask goal;
+    private Goal goal;
     private int quantityDone;
     private Date doneDate;
     private Date dueDate;
 
-    public GoalTodo(GoalTask goal, int quantityDone, Date doneDate, Date dueDate) {
+    public GoalTodo(Goal goal, int quantityDone, Date doneDate, Date dueDate) {
         this.goal = goal;
         this.quantityDone = quantityDone;
         this.doneDate = doneDate;

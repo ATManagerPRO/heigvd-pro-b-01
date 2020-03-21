@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 
-public class TaskFragment extends Fragment implements View.OnClickListener {
+public class AddTaskFragment extends Fragment implements View.OnClickListener {
 
     private String title;
     private String description;
@@ -47,7 +48,6 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
 
     private String selectedDirectory;
 
-
     private EditText titleInput;
     private EditText descriptionInput;
     private EditText tagsInput;
@@ -55,14 +55,13 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
     private TextView dueDate;
     private TextView dueTime;
 
-    public TaskFragment() {
+    public AddTaskFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -71,14 +70,13 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         final View mView = inflater.inflate(R.layout.fragment_add_task, container, false);
 
-
         titleInput = mView.findViewById(R.id.frag_task_title);
         descriptionInput = mView.findViewById(R.id.frag_task_description);
 
         dueDate = mView.findViewById(R.id.frag_task_due_date);
         dueTime = mView.findViewById(R.id.frag_task_due_time);
 
-        final Button imageValidationButton = mView.findViewById(R.id.frag_validation_button);
+        final Button ValidationButton = mView.findViewById(R.id.frag_validation_button);
 
         // Picker of date and time
         dueDate.setOnClickListener(new View.OnClickListener() {
@@ -104,6 +102,8 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
             public void onClick(View v) {
                 mHour = calendar.get(Calendar.HOUR_OF_DAY);
                 mMinute = calendar.get(Calendar.MINUTE);
+
+                Log.d("AddTaskFragment", "BLAAAAAA");
 
                 TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
@@ -142,7 +142,7 @@ public class TaskFragment extends Fragment implements View.OnClickListener {
         tagSpinner.setAdapter(tagAdapter);
         selectedDirectory = tagSpinner.getSelectedItem().toString();
 
-        imageValidationButton.setOnClickListener(this);
+        ValidationButton.setOnClickListener(this);
 
         return mView;
     }

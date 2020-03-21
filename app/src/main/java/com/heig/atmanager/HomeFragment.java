@@ -50,8 +50,8 @@ public class HomeFragment extends Fragment {
         calendar.add(Calendar.DAY_OF_MONTH, 1);
         Date dueDateGoal2 = calendar.getTime();
 
-        GoalTask goal1 = new GoalTask("SQUATS", 20, 2,Interval.DAY, dueDateGoal1);
-        GoalTask goal2 = new GoalTask("BREAK", 1, 1,Interval.HOUR, dueDateGoal2);
+        Goal goal1 = new Goal("SQUATS", 20, 2,Interval.DAY, dueDateGoal1);
+        Goal goal2 = new Goal("BREAK", 1, 1,Interval.HOUR, dueDateGoal2);
         goals = goal1.getGoalsTodoForDay(calendar.getTime()); // Generates 1 goalTodo for 20 squats
         goals.addAll(goal2.getGoalsTodoForDay(calendar.getTime())); // Generates 1 break every hour
         todos = new ArrayList<>();

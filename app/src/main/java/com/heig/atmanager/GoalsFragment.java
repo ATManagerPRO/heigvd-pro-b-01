@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class GoalsFragment extends Fragment {
 
     // Today's goal feed
-    ArrayList<GoalTask> goals; // user data
+    ArrayList<Goal> goals; // user data
     private RecyclerView goalsTodayRecyclerView;
 
     // This week's goal feed
@@ -56,10 +56,10 @@ public class GoalsFragment extends Fragment {
         Date dueDateGoal4 = calendar.getTime();
 
 
-        GoalTask daily_goal1 = new GoalTask("SQUATS", 20, 1,Interval.DAY, dueDateGoal1);
-        GoalTask daily_goal2 = new GoalTask("FRUITS", 5, 1,Interval.DAY, dueDateGoal2);
-        GoalTask weekly_goal3 = new GoalTask("KMS", 4, 1,Interval.WEEK, dueDateGoal3);
-        GoalTask monthly_goal4 = new GoalTask("GIT PUSH", 4, 1,Interval.MONTH, dueDateGoal4);
+        Goal daily_goal1 = new Goal("SQUATS", 20, 1,Interval.DAY, dueDateGoal1);
+        Goal daily_goal2 = new Goal("FRUITS", 5, 1,Interval.DAY, dueDateGoal2);
+        Goal weekly_goal3 = new Goal("KMS", 4, 1,Interval.WEEK, dueDateGoal3);
+        Goal monthly_goal4 = new Goal("GIT PUSH", 4, 1,Interval.MONTH, dueDateGoal4);
         goals.add(daily_goal1);
         goals.add(daily_goal2);
         goals.add(weekly_goal3);
@@ -73,7 +73,7 @@ public class GoalsFragment extends Fragment {
         ArrayList<GoalTodo> todayGoals = new ArrayList<>();
         ArrayList<GoalTodo> weekGoals  = new ArrayList<>();
         ArrayList<GoalTodo> monthGoals = new ArrayList<>();
-        for(GoalTask goal : goals) {
+        for(Goal goal : goals) {
             switch(goal.getInterval()) {
                 case DAY:
                     todayGoals.add(goal.getGoalTodos().get(0));

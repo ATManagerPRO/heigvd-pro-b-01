@@ -1,0 +1,134 @@
+package com.heig.atmanager.ui;
+
+import android.app.DatePickerDialog;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.textfield.TextInputEditText;
+import com.heig.atmanager.Goal;
+import com.heig.atmanager.Interval;
+import com.heig.atmanager.R;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
+/**
+ * Author   : Chau Ying Kot
+ * Date     : 20.03.2020
+ */
+
+public class AddGoalFragment extends Fragment {
+
+    // GUI Input
+    private TextInputEditText quantityTextInput;
+    private TextInputEditText unitTextInput;
+    private TextInputEditText intervalNumberTextInput;
+    private Spinner intervalSpinner;
+
+    private DatePickerDialog picker;
+    private TextView dueDateTextView;
+
+    private Button validationButton;
+    private Button cancelButton;
+
+    private final Calendar calendar = Calendar.getInstance();
+
+    // Values
+    private String unit;
+    private int quantity;
+    private int intervalNumber;
+    private Interval interval;
+
+    private int mDay;
+    private int mMonth;
+    private int mYear;
+
+    public AddGoalFragment() {
+        // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_add_goal, container, false);
+
+        quantityTextInput = view.findViewById(R.id.frag_add_goal_quantity);
+        unitTextInput = view.findViewById(R.id.frag_add_goal_unit);
+        intervalNumberTextInput = view.findViewById(R.id.frag_add_goal_interval_number);
+        dueDateTextView = view.findViewById(R.id.frag_add_goal_due_date);
+
+        intervalSpinner = view.findViewById(R.id.frag_add_goal_interval_spinner);
+
+        validationButton = view.findViewById(R.id.frag_add_goal_validation_button);
+        cancelButton = view.findViewById(R.id.frag_add_goal_cancel_button);
+
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add(Interval.DAY.toString());
+
+        ArrayAdapter intervalAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, Interval.values());
+        intervalAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        intervalSpinner.setAdapter(intervalAdapter);
+        interval = Interval.valueOf(intervalSpinner.getSelectedItem().toString());
+
+/*        intervalSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                interval = (Interval) adapterView.getItemAtPosition(i);
+            }
+        });*/
+
+        dueDateTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                mDay = calendar.get(Calendar.DAY_OF_MONTH);
+                mMonth = calendar.get(Calendar.MONTH);
+                mYear = calendar.get(Calendar.YEAR);
+
+                picker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        dueDateTextView.setText(dayOfMonth + "." + (month + 1) + "." + year);
+                    }
+                }, mYear, mMonth, mDay);
+                picker.show();
+            }
+        });
+
+        validationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                unit = unitTextInput.getText().toString();
+                quantity = Integer.parseInt(quantityTextInput.getText().toString());
+                intervalNumber = Integer.parseInt(intervalNumberTextInput.getText().toString());
+
+                Date selectedDate = new GregorianCalendar(mYear, mMonth, mDay).getTime();
+
+                new Goal(unit, quantity, intervalNumber, interval, selectedDate);
+
+            }
+        });
+
+
+        return view;
+    }
+
+}

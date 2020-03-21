@@ -24,7 +24,7 @@ import java.util.GregorianCalendar;
  * The app will then generate the goals (cf GoalTodo) for the user to interact with.
  *
  */
-public class GoalTask {
+public class Goal {
 
     private static final String TAG = "Goal";
     
@@ -35,7 +35,7 @@ public class GoalTask {
     private Date dueDate;
     private ArrayList<GoalTodo> goalTodos;
 
-    public GoalTask(String unit, int quantity, int intervalNumber, Interval interval, Date dueDate) {
+    public Goal(String unit, int quantity, int intervalNumber, Interval interval, Date dueDate) {
         this.unit     = unit;
         this.quantity = quantity;
         this.intervalNumber = intervalNumber;
