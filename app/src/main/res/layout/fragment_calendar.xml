@@ -6,25 +6,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <!-- Highlights -->
-    <GridView
-        android:id="@+id/highlights_grid"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        app:layout_constraintTop_toTopOf="@id/calendar_view"
-        android:numColumns="7"
-        android:layout_marginTop="97dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:gravity="center"
-        android:background="@color/grey"/>
-
-    <!-- Calendar -->
-    <CalendarView
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:id="@+id/calendar_view"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Task & Goal feed -->
     <include

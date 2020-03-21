@@ -13,6 +13,8 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Calendar;
+
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
@@ -32,11 +34,14 @@ public class HighlightGridAdapter extends BaseAdapter {
     Context context;
     LayoutInflater layoutInflater;
     GridView highlightsGrid;
+    Calendar calendar;
+    boolean clearNotifications;
 
-    public HighlightGridAdapter(Context context, GridView highlightsGrid) {
+    public HighlightGridAdapter(Context context, GridView highlightsGrid, Calendar calendar) {
         this.context = context;
         this.highlightsGrid = highlightsGrid;
         layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.calendar = calendar;
     }
 
     @Override
@@ -56,23 +61,39 @@ public class HighlightGridAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        ConstraintLayout notificationLayout;
-        if(view == null) {
 
+        if(view == null)
             view = layoutInflater.inflate(R.layout.calendar_day, null);
 
-            //view.setTag(imageView);
-
-        } else {
-            //imageView = (ImageView) view.getTag();
-        }
-
-        notificationLayout =  (ConstraintLayout) view.findViewById(R.id.day_background);
-
-        //imageView.setImageResource(R.drawable.calendar_day_background);
-        //imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        ConstraintLayout notificationLayout = (ConstraintLayout) view.findViewById(R.id.day_background);
         notificationLayout.setMinHeight(highlightsGrid.getMeasuredHeight() / MAX_WEEKS_PER_MONTH);
 
+        if(i < calendar.getFirstDayOfWeek())
+            notificationLayout.setVisibility(View.INVISIBLE);
+
         return view;
+    }
+
+    public void refreshNewCalendar(Calendar calendar) {
+        // Change the calendar (the month)
+        this.calendar = calendar;
+
+        // Refresh the grid's layout
+        highlightsGrid.invalidateViews();
+    }
+
+    public void goToNextMonth() {
+        Log.d(TAG, "goToNextMonth: Going to next month...");
+        // Clear all notification of this month
+        clearNotifications = true;
+        highlightsGrid.invalidateViews();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, 1);
+        this.calendar = calendar;
+
+        // Refresh with next month's calendar
+        //clearNotifications = false;
+        //refreshNewCalendar(calendar);
     }
 }
