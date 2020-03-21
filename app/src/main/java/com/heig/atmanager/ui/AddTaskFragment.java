@@ -22,6 +22,7 @@ import android.widget.TimePicker;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.textfield.TextInputLayout;
 import com.heig.atmanager.R;
 import com.heig.atmanager.Todo;
 
@@ -32,7 +33,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 
-public class AddTaskFragment extends Fragment implements View.OnClickListener {
+public class AddTaskFragment extends Fragment {
 
     private String title;
     private String description;
@@ -48,12 +49,14 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener {
 
     private String selectedDirectory;
 
-    private EditText titleInput;
-    private EditText descriptionInput;
-    private EditText tagsInput;
+    private EditText titleEditText;
+    private EditText descriptionEditText;
+    private EditText tagsEditText;
 
-    private TextView dueDate;
-    private TextView dueTime;
+    private TextView dueDateTextView;
+    private TextView dueTimeTextView;
+
+    private TextInputLayout titleLayout;
 
     public AddTaskFragment() {
         // Required empty public constructor
@@ -70,16 +73,18 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         final View mView = inflater.inflate(R.layout.fragment_add_task, container, false);
 
-        titleInput = mView.findViewById(R.id.frag_task_title);
-        descriptionInput = mView.findViewById(R.id.frag_task_description);
+        titleEditText = mView.findViewById(R.id.frag_add_task_title);
+        descriptionEditText = mView.findViewById(R.id.frag_add_task_description);
 
-        dueDate = mView.findViewById(R.id.frag_task_due_date);
-        dueTime = mView.findViewById(R.id.frag_task_due_time);
+        dueDateTextView = mView.findViewById(R.id.frag_add_task_due_date);
+        dueTimeTextView = mView.findViewById(R.id.frag_add_task_due_time);
 
-        final Button ValidationButton = mView.findViewById(R.id.frag_validation_button);
+        titleLayout = mView.findViewById(R.id.frag_add_task_title_layout);
+
+        final Button validationButton = mView.findViewById(R.id.frag_validation_button);
 
         // Picker of date and time
-        dueDate.setOnClickListener(new View.OnClickListener() {
+        dueDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -90,14 +95,14 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener {
                 picker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        dueDate.setText(dayOfMonth + "." + (month + 1) + "." + year);
+                        dueDateTextView.setText(dayOfMonth + "." + (month + 1) + "." + year);
                     }
                 }, mYear, mMonth, mDay);
                 picker.show();
             }
         });
 
-        dueTime.setOnClickListener(new View.OnClickListener() {
+        dueTimeTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mHour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -108,7 +113,7 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener {
                 TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        dueTime.setText(hourOfDay + ":" + minute);
+                        dueTimeTextView.setText(hourOfDay + ":" + minute);
                     }
                 }, mHour, mMinute, true);
                 timePickerDialog.show();
@@ -142,22 +147,29 @@ public class AddTaskFragment extends Fragment implements View.OnClickListener {
         tagSpinner.setAdapter(tagAdapter);
         selectedDirectory = tagSpinner.getSelectedItem().toString();
 
-        ValidationButton.setOnClickListener(this);
+        validationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                title = titleEditText.getText().toString();
+                description = descriptionEditText.getText().toString();
+
+                if (title.isEmpty()) {
+                    titleLayout.setError(getString(R.string.input_missing));
+                    return;
+                } else {
+                    titleLayout.setError(null);
+                }
+
+                Date selectedDate = new GregorianCalendar(mYear, mMonth, mDay, mHour, mMinute).getTime();
+
+                new Todo(title, description, selectedDate, selectedDirectory);
+            }
+        });
 
         return mView;
     }
 
-    @Override
-    public void onClick(View v) {
-        title = titleInput.getText().toString();
-        description = descriptionInput.getText().toString();
-
-        Date selectedDate = new GregorianCalendar(mYear, mMonth, mDay, mHour, mMinute).getTime();
-
-        new Todo(title, description, selectedDate, selectedDirectory);
-    }
-
-    private void addChipToGroup(String tag, final ChipGroup chipGroup){
+    private void addChipToGroup(String tag, final ChipGroup chipGroup) {
         final Chip chip = new Chip(this.getContext());
 
         chip.setText(tag);
