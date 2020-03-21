@@ -1,9 +1,12 @@
 package com.heig.atmanager;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
+import android.widget.GridView;
 
 import java.util.ArrayList;
 
@@ -20,6 +23,12 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 public class CalendarFragment extends Fragment {
 
+    private static final String TAG = "CalendarFragment";
+    
+    // Calendar
+    CalendarView calendarView;
+    GridView highlights;
+
     // Goal feed
     ArrayList<GoalTodo> goals; // user data
     private RecyclerView goalsRecyclerView;
@@ -33,10 +42,24 @@ public class CalendarFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_calendar, container, false);
 
+        calendarView = (CalendarView) v.findViewById(R.id.calendar_view);
+        highlights = (GridView) v.findViewById(R.id.highlights_grid);
         todos = new ArrayList<>();
         goals = new ArrayList<>();
 
-        // TODO: Load todos and goals depending on the calendar selected day
+        // TODO : Highlight days with todos or goals
+        HighlightGridAdapter gridAdapter = new HighlightGridAdapter(v.getContext(), highlights);
+        highlights.setAdapter(gridAdapter);
+
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
+                // i = year, i1 = month, i2 = day
+                // TODO: Load todos and goals depending on the calendar selected day
+                //       (with API's connection)
+            }
+        });
+        
 
         // Task feed
         tasksRecyclerView = (RecyclerView) v.findViewById(R.id.tasks_rv);
