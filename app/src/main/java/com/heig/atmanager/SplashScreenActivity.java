@@ -10,6 +10,7 @@ public class SplashScreenActivity extends Activity {
     Handler handler;
     final int splashScreenTime = 2000; //milliseconds
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,7 +21,7 @@ public class SplashScreenActivity extends Activity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(SplashScreenActivity.this,MainActivity.class);
+                Intent intent = new Intent(SplashScreenActivity.this,SignInActivity.class);
                 startActivity(intent);
                 finish();
             }
