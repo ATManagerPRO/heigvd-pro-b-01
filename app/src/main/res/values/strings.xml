@@ -30,4 +30,5 @@
     <string name="something">Something</string>
     <string name="times">Times</string>
     <string name="every">Every</string>
+    <string name="input_missing">Input Missing</string>
 </resources>

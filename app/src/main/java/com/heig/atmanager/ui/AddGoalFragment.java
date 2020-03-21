@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.heig.atmanager.Goal;
 import com.heig.atmanager.Interval;
 import com.heig.atmanager.R;
@@ -41,6 +42,11 @@ public class AddGoalFragment extends Fragment {
 
     private Button validationButton;
     private Button cancelButton;
+
+    private TextInputLayout unitLayout;
+    private TextInputLayout quantityLayout;
+    private TextInputLayout intervalNumberLayout;
+
 
     private final Calendar calendar = Calendar.getInstance();
 
@@ -79,6 +85,10 @@ public class AddGoalFragment extends Fragment {
         validationButton = view.findViewById(R.id.frag_add_goal_validation_button);
         cancelButton = view.findViewById(R.id.frag_add_goal_cancel_button);
 
+        unitLayout = view.findViewById(R.id.frag_add_goal_unit_layout);
+        quantityLayout = view.findViewById(R.id.frag_add_goal_quantity_layout);
+        intervalNumberLayout = view.findViewById(R.id.frag_add_goal_interval_number_layout);
+
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add(Interval.DAY.toString());
 
@@ -86,13 +96,6 @@ public class AddGoalFragment extends Fragment {
         intervalAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         intervalSpinner.setAdapter(intervalAdapter);
         interval = Interval.valueOf(intervalSpinner.getSelectedItem().toString());
-
-/*        intervalSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                interval = (Interval) adapterView.getItemAtPosition(i);
-            }
-        });*/
 
         dueDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,7 +119,45 @@ public class AddGoalFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
+
+                boolean hasInputError = false;
                 unit = unitTextInput.getText().toString();
+
+                // Errors
+                if (unit.isEmpty()) {
+                    unitLayout.setError(getString(R.string.input_missing));
+                    hasInputError = true;
+                } else {
+                    unitLayout.setError(null);
+                }
+
+
+                if (quantityTextInput.getText().toString().isEmpty()) {
+                    quantityLayout.setError(getString(R.string.input_missing));
+                    hasInputError = true;
+                } else {
+                    quantityLayout.setError(null);
+                }
+
+                if (intervalNumberTextInput.getText().toString().isEmpty()) {
+                    intervalNumberLayout.setError(getString(R.string.input_missing));
+                    hasInputError = true;
+                } else {
+                    intervalNumberLayout.setError(null);
+                }
+
+                if(mDay == 0 ||mMonth == 0 ||mYear == 0){
+                    dueDateTextView.setError(getString(R.string.input_missing));
+                    hasInputError = true;
+                } else {
+                    dueDateTextView.setError(null);
+                }
+
+
+                if (hasInputError) {
+                    return;
+                }
+
                 quantity = Integer.parseInt(quantityTextInput.getText().toString());
                 intervalNumber = Integer.parseInt(intervalNumberTextInput.getText().toString());
 
