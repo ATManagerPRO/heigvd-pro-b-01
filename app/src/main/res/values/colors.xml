@@ -4,12 +4,16 @@
     <color name="colorPrimaryDark">#B8B8B8</color>
     <color name="colorAccent">#0BC6F4</color>
     <color name="transparent">#00FFFFFF</color>
+    <color name="ic_check_fill_color">#FF000000</color>
+    <color name="ic_folder_black">#FF000000</color>
+    <color name="ic_check_tint">#FFFFFF</color>
     <color name="splashBackground">#E1E5ED</color>
     <color name="black">#101010</color>
     <color name="grey">#9F9F9F</color>
     <color name="light_grey">#C3C3C3</color>
     <color name="white">#FFFFFF</color>
     <color name="shadow_black">#1E000000</color>
+    <color name="close_button">#C70039</color>
     <color name="white_50">#80FFFFFF</color>
     <color name="red">#FF0000</color>
 </resources>
