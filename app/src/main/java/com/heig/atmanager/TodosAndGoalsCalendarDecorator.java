@@ -18,12 +18,14 @@ import androidx.core.content.ContextCompat;
  */
 public class TodosAndGoalsCalendarDecorator implements DayViewDecorator {
 
-    private static final int notificationColor = Color.rgb(0, 0, 0);
     private Context context;
+    private int color;
 
-    public TodosAndGoalsCalendarDecorator(Context context) {
+    public TodosAndGoalsCalendarDecorator(Context context, int color) {
         this.context = context;
+        this.color = color;
     }
+
 
     @Override
     public boolean shouldDecorate(CalendarDay day) {
@@ -34,6 +36,6 @@ public class TodosAndGoalsCalendarDecorator implements DayViewDecorator {
     @Override
     public void decorate(DayViewFacade view) {
         view.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.calendar_selection));
-        view.addSpan(new CalendarDayNotification(5, notificationColor));
+        view.addSpan(new CalendarDayNotification(5, color));
     }
 }

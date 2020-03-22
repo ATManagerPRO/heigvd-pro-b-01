@@ -12,10 +12,14 @@ import androidx.annotation.NonNull;
 /**
  * Author : Stephane
  * Date   : 22.03.2020
- * <p>
- * This class better be good.
+ *
+ * Calendar Day Notification graphics (dot)
  */
 public class CalendarDayNotification implements LineBackgroundSpan {
+
+    private static final int DOT_RADIUS    = 12;
+    private static final int DOT_PADDING_H = 40;
+    private static final int DOT_PADDING_V = 20;
 
     private int totalTodosAndGoals;
     private int color;
@@ -34,12 +38,8 @@ public class CalendarDayNotification implements LineBackgroundSpan {
     ) {
         int oldColor = paint.getColor();
         paint.setColor(color);
-        // TODO: instead of random, get total goals and todos from that day
-        //paint.setAlpha(totalTodosAndGoals);
-        Random rand = new Random();
-        paint.setAlpha(rand.nextInt(70));
 
-        canvas.drawCircle((left + right) / 2, (top + bottom) / 2, 50, paint);
+        canvas.drawCircle(right - DOT_PADDING_H, top - DOT_PADDING_V, DOT_RADIUS, paint);
         paint.setColor(oldColor);
     }
 }

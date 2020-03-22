@@ -1,6 +1,7 @@
 package com.heig.atmanager;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.text.style.LineBackgroundSpan;
 
@@ -14,7 +15,7 @@ import androidx.annotation.NonNull;
  */
 public class CalendarDayToday  implements LineBackgroundSpan {
 
-    private static int OUTLINE_WIDTH = 6;
+    private static int DOT_RADIUS = 50;
 
     int color;
 
@@ -29,14 +30,11 @@ public class CalendarDayToday  implements LineBackgroundSpan {
             @NonNull CharSequence charSequence,
             int start, int end, int lineNum
     ) {
-        int oldColor = paint.getColor();
         paint.setColor(color);
-        paint.setStrokeWidth(OUTLINE_WIDTH);
-        paint.setStyle(Paint.Style.STROKE);
-        canvas.drawCircle((left + right) / 2, (top + bottom) / 2, 50, paint);
+        canvas.drawCircle((left + right) / 2, (top + bottom) / 2, DOT_RADIUS, paint);
 
-        paint.setColor(oldColor);
-        paint.setStyle(Paint.Style.FILL);
+        // Set color to white for the text that will be drawn next
+        paint.setColor(Color.WHITE);
 
     }
 }

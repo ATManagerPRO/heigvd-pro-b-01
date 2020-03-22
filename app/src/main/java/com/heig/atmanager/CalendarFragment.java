@@ -28,10 +28,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * Author : Stephane
+ * Author : Stéphane Bottin
  * Date   : 15.03.2020
- * <p>
- * This class better be good.
+ *
+ * Calendar view of todos and goals
  */
 public class CalendarFragment extends Fragment {
 
@@ -39,6 +39,7 @@ public class CalendarFragment extends Fragment {
     
     // Calendar
     private MaterialCalendarView calendarView;
+    private int notificationDotColor = Color.rgb(255, 0, 0);
 
     // Goal feed
     private ArrayList<GoalTodo> goals; // user data
@@ -65,9 +66,10 @@ public class CalendarFragment extends Fragment {
                 calendar.get(Calendar.DAY_OF_MONTH)
         );
         // Notification decorator for todos and goals
-        calendarView.addDecorator(new TodosAndGoalsCalendarDecorator(v.getContext()));
+        calendarView.addDecorator(new TodosAndGoalsCalendarDecorator(v.getContext(),
+                v.getResources().getColor(R.color.colorAccent, null)));
         // Today's date decorator
-        calendarView.addDecorator(new TodayCalendarDecorator(today, v.getResources().getColor(R.color.colorAccent, null)));
+        calendarView.addDecorator(new TodayCalendarDecorator(today, notificationDotColor));
 
         // Task feed
         tasksRecyclerView = (RecyclerView) v.findViewById(R.id.tasks_rv);
