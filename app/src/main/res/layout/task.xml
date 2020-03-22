@@ -85,7 +85,7 @@
         <Button
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:background="@drawable/task_checkbox"/>
+            style="@style/AppTheme.CheckBox"/>
 
 
         <!-- Task info (title and list) -->
@@ -128,13 +128,13 @@
                 android:id="@+id/expand_button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/ic_arrow_hollow"/>
+                style="@style/AppTheme.MoreButton"/>
 
             <Button
                 android:id="@+id/retract_button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/ic_arrow_hollow"
+                style="@style/AppTheme.MoreButton"
                 android:rotation="180"
                 android:visibility="gone"/>
         </FrameLayout>
