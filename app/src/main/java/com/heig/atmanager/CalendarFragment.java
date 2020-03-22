@@ -1,5 +1,6 @@
 package com.heig.atmanager;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -10,8 +11,11 @@ import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.GridView;
 
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
+import java.lang.reflect.Array;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -52,7 +56,16 @@ public class CalendarFragment extends Fragment {
         goals        = new ArrayList<>();
 
         // Calendar setup
-        // TODO
+        Calendar calendar = Calendar.getInstance();
+        CalendarDay today = CalendarDay.from(
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH) + 1, // Month 0 to 11 in Calendar
+                calendar.get(Calendar.DAY_OF_MONTH)
+        );
+        // Notification decorator for todos and goals
+        calendarView.addDecorator(new TodosAndGoalsCalendarDecorator());
+        // Today's date decorator
+        calendarView.addDecorator(new TodayCalendarDecorator(today, v.getResources().getColor(R.color.colorAccent, null)));
 
         // Task feed
         tasksRecyclerView = (RecyclerView) v.findViewById(R.id.tasks_rv);

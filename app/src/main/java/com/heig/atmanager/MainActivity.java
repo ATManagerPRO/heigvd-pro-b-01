@@ -13,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        loadFragment(new GoalsFragment());
+        loadFragment(new CalendarFragment());
     }
 
     private void loadFragment(Fragment fragment) {
