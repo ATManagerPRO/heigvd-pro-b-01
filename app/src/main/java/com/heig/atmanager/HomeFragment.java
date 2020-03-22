@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import java.util.Date;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ import java.util.Calendar;
  * Author : Stéphane Bottin
  * Date   : 11.03.2020
  *
- * Fragment for the Home view (User's Tasks and Goals of the day)
+ * Fragment for the Home view (com.heig.atmanager.User's Tasks and Goals of the day)
  */
 public class HomeFragment extends Fragment {
     // Greeting message
@@ -51,8 +50,8 @@ public class HomeFragment extends Fragment {
         calendar.add(Calendar.DAY_OF_MONTH, 1);
         Date dueDateGoal2 = calendar.getTime();
 
-        Goal goal1 = new Goal("SQUATS", 20, Interval.DAY, dueDateGoal1);
-        Goal goal2 = new Goal("BREAK", 1, Interval.HOUR, dueDateGoal2);
+        Goal goal1 = new Goal("SQUATS", 20, 2,Interval.DAY, dueDateGoal1);
+        Goal goal2 = new Goal("BREAK", 1, 1,Interval.HOUR, dueDateGoal2);
         goals = goal1.getGoalsTodoForDay(calendar.getTime()); // Generates 1 goalTodo for 20 squats
         goals.addAll(goal2.getGoalsTodoForDay(calendar.getTime())); // Generates 1 break every hour
         todos = new ArrayList<>();
