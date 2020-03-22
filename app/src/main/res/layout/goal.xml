@@ -81,7 +81,7 @@
         android:paddingBottom="5dp"
         android:layout_gravity="bottom|center" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/goal_add_button"
         android:layout_width="40dp"
         android:layout_height="40dp"

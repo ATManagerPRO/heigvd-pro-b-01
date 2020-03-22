@@ -15,4 +15,5 @@
     <color name="shadow_black">#1E000000</color>
     <color name="close_button">#C70039</color>
     <color name="white_50">#80FFFFFF</color>
+    <color name="red">#FF0000</color>
 </resources>
