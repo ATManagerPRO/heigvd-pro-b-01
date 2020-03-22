@@ -4,6 +4,12 @@ import android.net.Uri;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
+/**
+ * Author : Simon Mattei
+ * Date   : 21.03.2020
+ *
+ */
+
 public class ClientInfo {
 
     public static String personName;

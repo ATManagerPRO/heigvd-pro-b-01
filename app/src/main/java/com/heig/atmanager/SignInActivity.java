@@ -13,6 +13,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
+/**
+ * Author : Simon Mattei
+ * Date   : 21.03.2020
+ *
+ */
+
 public class SignInActivity extends Activity implements View.OnClickListener {
 
     private GoogleSignInClient mGoogleSignInClient; //google client account
