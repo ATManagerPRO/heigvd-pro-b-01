@@ -8,7 +8,7 @@ import android.os.Handler;
 public class SplashScreenActivity extends Activity {
 
     Handler handler;
-    int splashScreenTime = 2000; //milliseconds
+    final int splashScreenTime = 2000; //milliseconds
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
