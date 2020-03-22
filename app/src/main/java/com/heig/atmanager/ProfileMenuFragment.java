@@ -41,19 +41,19 @@ public class ProfileMenuFragment extends Fragment {
         //Modifiy all buttons templates titles
         View tasks = (View) v.findViewById(R.id.tasks_button);
         TextView tasks_title = (TextView) tasks.findViewById(R.id.profile_button_title);
-        tasks_title.setText("Tasks");
+        tasks_title.setText(R.string.profile_button_tasks);
 
         View goals = (View) v.findViewById(R.id.goals_button);
         TextView goals_title = (TextView) goals.findViewById(R.id.profile_button_title);
-        goals_title.setText("Goals");
+        goals_title.setText(R.string.profile_button_goals);
 
         View stats = (View) v.findViewById(R.id.stats_button);
         TextView stats_title = (TextView) stats.findViewById(R.id.profile_button_title);
-        stats_title.setText("Statistics");
+        stats_title.setText(R.string.profile_button_stats);
 
         View settings = (View) v.findViewById(R.id.settings_button);
         TextView settings_title = (TextView) settings.findViewById(R.id.profile_button_title);
-        settings_title.setText("Settings");
+        settings_title.setText(R.string.profile_button_settings);
 
         //set the onclicklisteners to switch to the correct activity/fragment
         tasks.setOnClickListener(new View.OnClickListener() {
