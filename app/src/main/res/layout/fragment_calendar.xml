@@ -12,13 +12,13 @@
         android:layout_height="wrap_content"
         app:mcv_calendarMode="month"
         app:mcv_arrowColor="@color/grey"
-        app:mcv_selectionColor="@color/colorAccent"
         app:layout_constraintTop_toTopOf="parent"
         app:mcv_weekDayLabels="@array/weekDays"
         app:mcv_monthLabels="@array/months"
         app:mcv_selectionMode="single"
         app:mcv_dateTextAppearance="@font/arial"
-        app:mcv_titleAnimationOrientation="horizontal"/>
+        app:mcv_titleAnimationOrientation="horizontal"
+        app:mcv_selectionColor="@color/transparent"/>
 
     <!-- Task & Goal feed -->
     <include

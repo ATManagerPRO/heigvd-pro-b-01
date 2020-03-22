@@ -4,8 +4,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.text.style.LineBackgroundSpan;
 
-import java.util.Random;
-
 import androidx.annotation.NonNull;
 
 /**

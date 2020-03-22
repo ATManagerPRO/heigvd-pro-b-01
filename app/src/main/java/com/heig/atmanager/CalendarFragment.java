@@ -1,6 +1,8 @@
 package com.heig.atmanager;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -63,7 +65,7 @@ public class CalendarFragment extends Fragment {
                 calendar.get(Calendar.DAY_OF_MONTH)
         );
         // Notification decorator for todos and goals
-        calendarView.addDecorator(new TodosAndGoalsCalendarDecorator());
+        calendarView.addDecorator(new TodosAndGoalsCalendarDecorator(v.getContext()));
         // Today's date decorator
         calendarView.addDecorator(new TodayCalendarDecorator(today, v.getResources().getColor(R.color.colorAccent, null)));
 

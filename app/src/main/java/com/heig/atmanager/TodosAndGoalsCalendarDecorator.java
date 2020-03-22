@@ -1,14 +1,13 @@
 package com.heig.atmanager;
 
+import android.content.Context;
 import android.graphics.Color;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
-import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 
-import java.util.Collection;
-import java.util.HashSet;
+import androidx.core.content.ContextCompat;
 
 /**
  * Author : Stéphane Bottin
@@ -20,8 +19,10 @@ import java.util.HashSet;
 public class TodosAndGoalsCalendarDecorator implements DayViewDecorator {
 
     private static final int notificationColor = Color.rgb(0, 0, 0);
+    private Context context;
 
-    public TodosAndGoalsCalendarDecorator() {
+    public TodosAndGoalsCalendarDecorator(Context context) {
+        this.context = context;
     }
 
     @Override
@@ -32,6 +33,7 @@ public class TodosAndGoalsCalendarDecorator implements DayViewDecorator {
 
     @Override
     public void decorate(DayViewFacade view) {
+        view.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.calendar_selection));
         view.addSpan(new CalendarDayNotification(5, notificationColor));
     }
 }
