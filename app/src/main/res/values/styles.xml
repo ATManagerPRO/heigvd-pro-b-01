@@ -1,12 +1,30 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="buttonStyle">@style/Widget.AppCompat.Button.Borderless</item>
     </style>
+
+    <style name="AppTheme.MoreButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="icon">@drawable/ic_arrow_hollow</item>
+        <item name="iconSize">50dp</item>
+    </style>
+
+
+    <style name="AppTheme.CheckBox" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="shapeAppearance">@style/AppTheme.Round</item>
+        <item name="strokeColor">@color/black</item>
+        <item name="strokeWidth">2dp</item>
+        <item name="color">@color/colorAccent</item>
+        <item name="colorButtonNormal">@color/transparent</item>
+        <item name="android:background">@drawable/task_checkbox</item>
+        <item name="colorControlHighlight">#58857e</item>
+    </style>
+
+
 
 </resources>
