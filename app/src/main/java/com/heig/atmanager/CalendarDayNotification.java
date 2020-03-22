@@ -18,7 +18,7 @@ import androidx.annotation.NonNull;
 public class CalendarDayNotification implements LineBackgroundSpan {
 
     private static final int DOT_RADIUS    = 12;
-    private static final int DOT_PADDING_H = 40;
+    private static final int DOT_PADDING_H = 30;
     private static final int DOT_PADDING_V = 20;
 
     private int totalTodosAndGoals;

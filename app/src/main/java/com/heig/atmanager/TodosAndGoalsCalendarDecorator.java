@@ -35,7 +35,8 @@ public class TodosAndGoalsCalendarDecorator implements DayViewDecorator {
 
     @Override
     public void decorate(DayViewFacade view) {
-        view.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.calendar_selection));
+        //view.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.calendar_selection));
+        view.setSelectionDrawable(ContextCompat.getDrawable(context, R.drawable.calendar_selection));
         view.addSpan(new CalendarDayNotification(5, color));
     }
 }
