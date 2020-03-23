@@ -146,6 +146,7 @@
 
     <!-- Favorite icon <3 -->
     <ImageView
+        android:id="@+id/favorite_icon"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:visibility="visible"

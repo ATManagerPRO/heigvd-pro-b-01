@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -30,14 +31,16 @@ public class TodoFeedAdapter extends RecyclerView.Adapter<TodoFeedAdapter.MyView
         private Button expandBtn;
         private Button retractBtn;
         private LinearLayout expandedView;
+        private ImageView favoriteIcon;
 
         public MyViewHolder(View v) {
             super(v);
-            title = v.findViewById(R.id.task_title);
-            description = v.findViewById(R.id.task_description);
-            expandBtn = v.findViewById(R.id.expand_button);
-            retractBtn = v.findViewById(R.id.retract_button);
+            title        = v.findViewById(R.id.task_title);
+            description  = v.findViewById(R.id.task_description);
+            expandBtn    = v.findViewById(R.id.expand_button);
+            retractBtn   = v.findViewById(R.id.retract_button);
             expandedView = v.findViewById(R.id.task_expanded_view);
+            favoriteIcon = v.findViewById(R.id.favorite_icon);
         }
     }
 
@@ -82,6 +85,9 @@ public class TodoFeedAdapter extends RecyclerView.Adapter<TodoFeedAdapter.MyView
                 holder.expandBtn.setVisibility(View.VISIBLE);
             }
         });
+
+        // Favorite
+        holder.favoriteIcon.setVisibility(todos.get(position).isFavorite() ? View.VISIBLE : View.GONE);
     }
 
     // Return the size of your dataset (invoked by the layout manager)

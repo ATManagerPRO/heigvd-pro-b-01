@@ -12,6 +12,7 @@ public class Todo {
     private String title;
     private String description;
     private boolean done;
+    private boolean favorite;
     private Date dueDate;
     private Date doneDate;
     private Date reminderDate;
@@ -59,5 +60,9 @@ public class Todo {
 
     public void setDirectory(String directory) {
         this.directory = directory;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
     }
 }
