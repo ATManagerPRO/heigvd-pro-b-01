@@ -1,12 +1,90 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="buttonStyle">@style/Widget.AppCompat.Button.Borderless</item>
+        <item name="textInputStyle">@style/AppTheme.TextInputEditText</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.TextInputEditText" >
+        <item name="background">@color/transparent</item>
+        <item name="hintTextColor">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppTheme.MoreButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="icon">@drawable/ic_arrow_hollow</item>
+        <item name="iconSize">50dp</item>
+    </style>
+
+
+    <style name="AppTheme.CheckBox" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="shapeAppearance">@style/AppTheme.Round</item>
+        <item name="strokeColor">@color/black</item>
+        <item name="strokeWidth">2dp</item>
+        <item name="color">@color/colorAccent</item>
+        <item name="colorButtonNormal">@color/transparent</item>
+        <item name="colorControlHighlight">#58857e</item>
+    </style>
+
+    <style name="AppTheme.Button" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="backgroundTint">@color/colorAccent</item>
+        <item name="elevation">0dp</item>
+        <item name="shapeAppearance">@style/AppTheme.Round</item>
+    </style>
+
+    <style name="AppTheme.Button.Icon" parent="AppTheme.Button">
+        <item name="android:minWidth">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">0dp</item>
+    </style>
+
+    <style name="AppTheme.Button.Icon.Validation" parent="AppTheme.Button.Icon">
+        <item name="icon">@drawable/ic_check_white_24dp</item>
+    </style>
+
+    <style name="AppTheme.Button.Icon.Cancel" parent="AppTheme.Button.Icon">
+        <item name="icon">@drawable/ic_close_black_24dp</item>
+    </style>
+
+    <style name="AppTheme.OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:minWidth">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">0dp</item>
+    </style>
+
+    <style name="AppTheme.OutlinedButton.Cancel" parent="AppTheme.OutlinedButton">
+        <item name="iconTint">@color/black</item>
+        <item name="icon">@drawable/ic_close_black_24dp</item>
+    </style>
+
+    <style name="AppTheme.OutlinedButton.Edit" parent="AppTheme.OutlinedButton">
+        <item name="iconTint">@color/black</item>
+        <item name="icon">@drawable/ic_edit_black_24dp</item>
+    </style>
+
+    <style name="AppTheme.Button.Icon.More" parent="AppTheme.Button.Icon">
+        <item name="icon">@drawable/ic_add_black_24dp</item>
     </style>
 
 </resources>
