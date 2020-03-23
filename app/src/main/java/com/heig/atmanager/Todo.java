@@ -20,18 +20,27 @@ public class Todo {
 
 
     public Todo(String title, String description) {
-        this(title, description, null,null);
+        this(title, description, null, null, false);
     }
 
     public Todo(String title, String description, Date dueDate) {
-        this(title, description, dueDate, null);
+        this(title, description, dueDate, null, false);
+    }
+
+    public Todo(String title, String description, boolean favorite) {
+        this(title, description, null,null, favorite);
     }
 
     public Todo(String title, String description, Date dueDate, String directory) {
-        this.title = title;
+        this(title, description, dueDate, directory, false);
+    }
+
+    public Todo(String title, String description, Date dueDate, String directory, boolean favorite) {
+        this.title       = title;
         this.description = description;
-        this.dueDate = dueDate;
-        this.directory = directory;
+        this.dueDate     = dueDate;
+        this.directory   = directory;
+        this.favorite    = favorite;
     }
 
     public String getTitle() {

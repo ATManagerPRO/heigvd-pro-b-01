@@ -5,8 +5,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="5dp"
-    android:layout_marginBottom="5dp"
-    android:background="@color/colorAccent">
+    android:layout_marginBottom="5dp">
 
     <!-- Time display (HH:MM / AM or PM) -->
     <LinearLayout
@@ -153,6 +152,7 @@
         android:src="@drawable/favorite_icon"
         app:layout_constraintLeft_toRightOf="@id/time_container"
         app:layout_constraintTop_toTopOf="parent"
+        android:translationX="-7dp"
         />
 
 
