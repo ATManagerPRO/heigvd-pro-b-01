@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        android:id="@+id/calendar_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:mcv_calendarMode="month"
+        app:mcv_arrowColor="@color/grey"
+        app:layout_constraintTop_toTopOf="parent"
+        app:mcv_weekDayLabels="@array/weekDays"
+        app:mcv_monthLabels="@array/months"
+        app:mcv_selectionMode="single"
+        app:mcv_dateTextAppearance="@font/arial"
+        app:mcv_titleAnimationOrientation="horizontal"
+        app:mcv_selectionColor="@color/transparent"/>
+
+    <!-- Task & Goal feed -->
+    <include
+        layout="@layout/task_and_goal_feed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/calendar_view"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
