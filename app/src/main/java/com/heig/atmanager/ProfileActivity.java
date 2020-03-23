@@ -4,22 +4,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Intent;
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+/**
+ * Author : Ferrari Teo
+ * Date   : 18.03.2020
+ *
+ * Activity for the profile view that will take care of that user infos and statistics
+ */
+public class ProfileActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        loadFragment(new HomeFragment());
-
-        //instantly switches to the Profile activity for testing purposes
-        Intent myIntent = new Intent(MainActivity.this, ProfileActivity.class);
-        MainActivity.this.startActivity(myIntent);
-
+        setContentView(R.layout.activity_profile);
     }
 
     private void loadFragment(Fragment fragment) {
@@ -35,5 +33,4 @@ public class MainActivity extends AppCompatActivity {
         // Commit the transaction
         transaction.commit();
     }
-
 }
