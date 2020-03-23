@@ -82,11 +82,10 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <!-- Check box -->
-        <Button
+        <CheckBox
             android:layout_width="45dp"
             android:layout_height="45dp"
-            style="@style/AppTheme.CheckBox"/>
-
+            android:button="@drawable/task_checkbox"/>
 
         <!-- Task info (title and list) -->
         <LinearLayout

@@ -1,27 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android" >
-
-    <item android:state_pressed="true" >
-        <shape android:shape="rectangle"  >
-            <corners android:radius="100dp" />
-            <stroke android:color="@color/black" android:width="2dp"/>
-            <solid android:color="@color/colorAccent"/>
-        </shape>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:state_checked="true"
+        android:drawable="@drawable/task_checkbox_checked"
+        android:state_focused="false" >
     </item>
 
-    <item android:state_focused="true">
-        <shape android:shape="rectangle"  >
-            <corners android:radius="100dp" />
-            <stroke android:color="@color/black" android:width="2dp"/>
-            <solid android:color="#58857e"/>
-        </shape>
-    </item>
-
-    <item >
-        <shape android:shape="rectangle"  >
-            <corners android:radius="100dp" />
-            <stroke android:color="@color/black" android:width="2dp"/>
-            <solid android:color="@color/transparent"/>
-        </shape>
+    <item
+        android:state_checked="false"
+        android:drawable="@drawable/task_checkbox_unchecked"
+        android:state_focused="false">
     </item>
 </selector>
