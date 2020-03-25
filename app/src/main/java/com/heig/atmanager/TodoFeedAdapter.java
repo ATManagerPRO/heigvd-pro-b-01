@@ -69,7 +69,7 @@ public class TodoFeedAdapter extends RecyclerView.Adapter<TodoFeedAdapter.MyView
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.title.setText(todos.get(position).getTitle());
@@ -100,8 +100,7 @@ public class TodoFeedAdapter extends RecyclerView.Adapter<TodoFeedAdapter.MyView
         holder.checkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "onClick: pressed");
-                //holder.checkButton.setChecked(!holder.checkButton.isChecked());
+                todos.get(position).setDone(holder.checkButton.isChecked());
             }
         });
     }
