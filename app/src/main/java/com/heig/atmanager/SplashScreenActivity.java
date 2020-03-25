@@ -24,7 +24,7 @@ public class SplashScreenActivity extends Activity {
                 startActivity(intent);
                 finish();
             }
-        },splashScreenTime);
+        }, splashScreenTime);
     }
 
 }
