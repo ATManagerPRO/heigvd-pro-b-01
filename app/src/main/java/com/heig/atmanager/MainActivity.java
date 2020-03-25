@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         loadFragment(new HomeFragment());
 
         //instantly switches to the Profile activity for testing purposes
-        Intent myIntent = new Intent(MainActivity.this, ProfileActivity.class);
+        Intent myIntent = new Intent(MainActivity.this, Manager.class);
         MainActivity.this.startActivity(myIntent);
 
     }
