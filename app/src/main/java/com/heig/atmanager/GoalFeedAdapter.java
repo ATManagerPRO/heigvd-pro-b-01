@@ -3,10 +3,13 @@ package com.heig.atmanager;
 import android.content.Context;
 import android.content.res.Resources;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -14,11 +17,14 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 /**
  * Author : Stéphane Bottin
@@ -33,13 +39,14 @@ private ArrayList<GoalTodo> goals;
 // Complex data items may need more than one view per item, and
 // you provide access to all the views for a data item in a view holder
 public static class MyViewHolder extends RecyclerView.ViewHolder {
+
     // each data item is just a string in this case
     private TextView unit;
     private TextView totalValue;
     private TextView currentValue;
     private TextView timerValue;
     private ProgressBar progress;
-    private Button addBtn;
+    private ToggleButton addBtn;
     private EditText addNumValue;
     private LinearLayout background;
 
@@ -50,9 +57,10 @@ public static class MyViewHolder extends RecyclerView.ViewHolder {
         totalValue   = (TextView) v.findViewById(R.id.total_value_text);
         timerValue   = (TextView) v.findViewById(R.id.goal_timer);
         progress     = (ProgressBar) v.findViewById(R.id.goal_progress);
-        addBtn       = (Button) v.findViewById(R.id.goal_add_button);
+        addBtn       = (ToggleButton) v.findViewById(R.id.goal_add_button);
         addNumValue  = (EditText) v.findViewById(R.id.goal_value_input);
         background   = (LinearLayout) v.findViewById(R.id.goal_background);
+
     }
 }
 
@@ -88,9 +96,16 @@ public static class MyViewHolder extends RecyclerView.ViewHolder {
         holder.addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                holder.addBtn.setVisibility(View.GONE);
+                // Show input display
                 holder.addNumValue.setVisibility(View.VISIBLE);
                 holder.addNumValue.requestFocus();
+
+                // Switch button's state (cancel or add)
+                RotateAnimation rotation = (RotateAnimation) AnimationUtils.loadAnimation(view.getContext(), R.anim.rotation_45_anticlockwise);
+                rotation.setFillAfter(true);
+                view.startAnimation(rotation);
+
+                holder.addBtn.setChecked(!holder.addBtn.isChecked());
             }
         });
 
