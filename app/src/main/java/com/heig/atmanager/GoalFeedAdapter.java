@@ -8,8 +8,11 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
+import android.view.animation.ScaleAnimation;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -96,16 +99,27 @@ public static class MyViewHolder extends RecyclerView.ViewHolder {
         holder.addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Show input display
-                holder.addNumValue.setVisibility(View.VISIBLE);
-                holder.addNumValue.requestFocus();
 
-                // Switch button's state (cancel or add)
-                RotateAnimation rotation = (RotateAnimation) AnimationUtils.loadAnimation(view.getContext(), R.anim.rotation_45_anticlockwise);
+                // Rotation animation (add button)
+                RotateAnimation rotation =
+                        (RotateAnimation) AnimationUtils.loadAnimation(view.getContext(),
+                                holder.addBtn.isChecked() ? R.anim.rotation_45_anticlockwise :
+                                        R.anim.rotation_45_clockwise);
                 rotation.setFillAfter(true);
                 view.startAnimation(rotation);
 
-                holder.addBtn.setChecked(!holder.addBtn.isChecked());
+                // Translation animation (input)
+                AnimationSet scale =
+                        (AnimationSet) AnimationUtils.loadAnimation(view.getContext(),
+                                holder.addBtn.isChecked() ? R.anim.translation_open_rtl :
+                                        R.anim.translation_close_rtl);
+                scale.setFillAfter(true);
+                holder.addNumValue.setAnimation(scale);
+
+                // Show input display
+                holder.addNumValue.setVisibility(holder.addBtn.isChecked() ? View.VISIBLE : View.GONE);
+                if(holder.addBtn.isChecked())
+                    holder.addNumValue.requestFocus();
             }
         });
 

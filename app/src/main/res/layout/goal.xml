@@ -99,13 +99,13 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:background="@drawable/goal_add_button"
-        android:text="+"
         android:textSize="25sp"
+        android:textColor="@drawable/goal_add_button_colors"
         android:fontFamily="@font/arial"
         android:textStyle="bold"
         android:layout_gravity="end"
-        android:textOn=""
-        android:textOff=""
+        android:textOn="+"
+        android:textOff="+"
         style="@style/Widget.AppCompat.Button.Borderless"/>
 
 </FrameLayout>
