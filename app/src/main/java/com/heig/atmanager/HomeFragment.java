@@ -51,7 +51,7 @@ public class HomeFragment extends Fragment {
         goals = goal1.getGoalsTodoForDay(calendar.getTime()); // Generates 1 goalTodo for 20 squats
         goals.addAll(goal2.getGoalsTodoForDay(calendar.getTime())); // Generates 1 break every hour
         todos = new ArrayList<>();
-        todos.add(new Todo("Task1", "This is a really useful task."));
+        todos.add(new Todo("Task1", "This is a really useful task.", true));
         todos.add(new Todo("Task2", "Rendre labo 1 :\n> Fiche technique\n> Rapport (10 pages)\n> Code source (C++)"));
         todos.add(new Todo("Task3", "..."));
         todos.add(new Todo("Task4", "..."));

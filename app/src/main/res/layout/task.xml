@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
     android:layout_marginTop="5dp"
     android:layout_marginBottom="5dp">
 
@@ -32,6 +31,7 @@
             android:textStyle="bold"
             android:textColor="@color/grey"/>
     </LinearLayout>
+
 
     <!-- Task View (expanded) -->
     <LinearLayout
@@ -141,6 +141,19 @@
 
 
     </LinearLayout>
+
+
+    <!-- Favorite icon <3 -->
+    <ImageView
+        android:id="@+id/favorite_icon"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:visibility="visible"
+        android:src="@drawable/favorite_icon"
+        app:layout_constraintLeft_toRightOf="@id/time_container"
+        app:layout_constraintTop_toTopOf="parent"
+        android:translationX="-7dp"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
