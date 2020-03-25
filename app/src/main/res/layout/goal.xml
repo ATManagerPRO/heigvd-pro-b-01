@@ -81,6 +81,19 @@
         android:paddingBottom="5dp"
         android:layout_gravity="bottom|center" />
 
+    <EditText
+        android:id="@+id/goal_value_input"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:inputType="number"
+        android:background="@drawable/goal_add_button"
+        android:layout_gravity="end"
+        android:hint="##"
+        android:gravity="center_vertical"
+        android:paddingStart="15dp"
+        android:paddingEnd="45dp"
+        android:visibility="visible" />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/goal_add_button"
         android:layout_width="40dp"
@@ -91,16 +104,5 @@
         android:fontFamily="@font/arial"
         android:textStyle="bold"
         android:layout_gravity="end"/>
-
-    <EditText
-        android:id="@+id/goal_value_input"
-        android:layout_width="80dp"
-        android:layout_height="40dp"
-        android:inputType="number"
-        android:background="@drawable/goal_add_button"
-        android:layout_gravity="end"
-        android:hint="##"
-        android:gravity="center"
-        android:visibility="gone" />
 
 </FrameLayout>
