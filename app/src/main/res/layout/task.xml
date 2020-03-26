@@ -82,11 +82,15 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <!-- Check box -->
-        <Button
+        <ToggleButton
+            android:id="@+id/check_button"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            style="@style/AppTheme.CheckBox"/>
-
+            android:background="@drawable/task_checkbox"
+            android:shadowColor="@color/transparent"
+            style="?android:attr/borderlessButtonStyle"
+            android:textOff=""
+            android:textOn=""/>
 
         <!-- Task info (title and list) -->
         <LinearLayout

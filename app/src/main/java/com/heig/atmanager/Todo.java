@@ -71,6 +71,10 @@ public class Todo {
         this.directory = directory;
     }
 
+    public void setDone(boolean status) {
+        this.done = status;
+    }
+
     public boolean isFavorite() {
         return favorite;
     }

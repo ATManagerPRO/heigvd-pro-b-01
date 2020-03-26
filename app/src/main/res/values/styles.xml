@@ -29,16 +29,6 @@
         <item name="iconSize">50dp</item>
     </style>
 
-
-    <style name="AppTheme.CheckBox" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="shapeAppearance">@style/AppTheme.Round</item>
-        <item name="strokeColor">@color/black</item>
-        <item name="strokeWidth">2dp</item>
-        <item name="color">@color/colorAccent</item>
-        <item name="colorButtonNormal">@color/transparent</item>
-        <item name="colorControlHighlight">#58857e</item>
-    </style>
-
     <style name="AppTheme.Button" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="backgroundTint">@color/colorAccent</item>
         <item name="elevation">0dp</item>
@@ -85,6 +75,10 @@
 
     <style name="AppTheme.Button.Icon.More" parent="AppTheme.Button.Icon">
         <item name="icon">@drawable/ic_add_black_24dp</item>
+    </style>
+
+    <style name="AppTheme.Button.Checkbox" parent="AppTheme.Button.Icon">
+        <item name="icon">@drawable/task_checkbox</item>
     </style>
 
 </resources>
