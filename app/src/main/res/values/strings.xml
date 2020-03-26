@@ -13,7 +13,10 @@
     <string name="goals_month">THIS MONTH</string>
     <string name="goals_year">THIS YEAR</string>
     <string name="goal_completed">COMPLETED</string>
+    <string name="goal_add_input">+</string>
 
+
+    <!-- Profile -->
     <string name="profile_button_tasks">Tasks</string>
     <string name="profile_button_goals">Goals</string>
     <string name="profile_button_stats">Statistics</string>

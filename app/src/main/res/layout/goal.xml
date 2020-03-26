@@ -104,8 +104,8 @@
         android:fontFamily="@font/arial"
         android:textStyle="bold"
         android:layout_gravity="end"
-        android:textOn="+"
-        android:textOff="+"
+        android:textOn="@string/goal_add_input"
+        android:textOff="@string/goal_add_input"
         style="@style/Widget.AppCompat.Button.Borderless"/>
 
 </FrameLayout>
