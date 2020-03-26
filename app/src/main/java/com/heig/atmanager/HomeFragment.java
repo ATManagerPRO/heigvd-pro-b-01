@@ -26,14 +26,10 @@ public class HomeFragment extends Fragment {
     // Goal feed
     ArrayList<GoalTodo> goals; // user data
     private RecyclerView goalsRecyclerView;
-    private RecyclerView.Adapter goalsAdapter;
-    private RecyclerView.LayoutManager goalslayoutManager;
 
     // Task feed
     ArrayList<Todo> todos; // user data
     private RecyclerView tasksRecyclerView;
-    private RecyclerView.Adapter tasksAdapter;
-    private RecyclerView.LayoutManager taskslayoutManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,7 +51,7 @@ public class HomeFragment extends Fragment {
         goals = goal1.getGoalsTodoForDay(calendar.getTime()); // Generates 1 goalTodo for 20 squats
         goals.addAll(goal2.getGoalsTodoForDay(calendar.getTime())); // Generates 1 break every hour
         todos = new ArrayList<>();
-        todos.add(new Todo("Task1", "This is a really useful task."));
+        todos.add(new Todo("Task1", "This is a really useful task.", true));
         todos.add(new Todo("Task2", "Rendre labo 1 :\n> Fiche technique\n> Rapport (10 pages)\n> Code source (C++)"));
         todos.add(new Todo("Task3", "..."));
         todos.add(new Todo("Task4", "..."));
