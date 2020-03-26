@@ -22,7 +22,8 @@
                 android:layout_height="match_parent"
                 android:background="@color/transparent"
                 android:padding="10dp"
-
+                android:maxLines="1"
+                android:inputType="text"
                 android:hint="@string/titre" />
         </com.google.android.material.textfield.TextInputLayout>
 
