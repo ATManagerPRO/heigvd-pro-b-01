@@ -53,6 +53,8 @@
                     android:id="@+id/frag_add_goal_unit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:maxLines="1"
                     android:hint="@string/something" />
 
             </com.google.android.material.textfield.TextInputLayout>
