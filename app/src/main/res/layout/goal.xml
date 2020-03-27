@@ -81,26 +81,31 @@
         android:paddingBottom="5dp"
         android:layout_gravity="bottom|center" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <EditText
+        android:id="@+id/goal_value_input"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:inputType="number"
+        android:background="@drawable/goal_add_input_text"
+        android:layout_gravity="end"
+        android:hint="##"
+        android:gravity="center_vertical"
+        android:paddingStart="15dp"
+        android:paddingEnd="45dp"
+        android:visibility="gone" />
+
+    <ToggleButton
         android:id="@+id/goal_add_button"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:background="@drawable/goal_add_button"
-        android:text="+"
         android:textSize="25sp"
+        android:textColor="@drawable/goal_add_button_colors"
         android:fontFamily="@font/arial"
         android:textStyle="bold"
-        android:layout_gravity="end"/>
-
-    <EditText
-        android:id="@+id/goal_value_input"
-        android:layout_width="80dp"
-        android:layout_height="40dp"
-        android:inputType="number"
-        android:background="@drawable/goal_add_button"
         android:layout_gravity="end"
-        android:hint="##"
-        android:gravity="center"
-        android:visibility="gone" />
+        android:textOn="@string/goal_add_input"
+        android:textOff="@string/goal_add_input"
+        style="@style/Widget.AppCompat.Button.Borderless"/>
 
 </FrameLayout>
