@@ -21,9 +21,9 @@ public class CalendarDayNotification implements LineBackgroundSpan {
 
     private static final String TAG = "CalendarDayNotification";
 
-    private static final int DOT_RADIUS    = 12;
-    private static final int DOT_PADDING_H = 30;
-    private static final int DOT_PADDING_V = 20;
+    private static final int HEIGHT = 50;
+    private static final int PADDING = 5;
+    private static final int CORNER_RADIUS = 20;
 
     private int totalTodosAndGoals;
     private int maxTodosAndGoals;
@@ -49,9 +49,9 @@ public class CalendarDayNotification implements LineBackgroundSpan {
         // user.getTodosAndGoalsForDay(Integer.parseInt(charSequence))
         paint.setAlpha((255 * Integer.parseInt(charSequence.toString())) / maxTodosAndGoals);
 
-        //canvas.drawText("99", (left + right) / 2, (top + bottom) / 2, paint);
-        canvas.drawRoundRect(left, top, right, bottom, 10, 10, paint);
-        //canvas.drawCircle(right - DOT_PADDING_H, top - DOT_PADDING_V, DOT_RADIUS, paint);
+        canvas.drawRoundRect(left + PADDING, top - HEIGHT + PADDING,
+                right - PADDING, bottom + HEIGHT - PADDING, CORNER_RADIUS,
+                CORNER_RADIUS, paint);
 
         // Bold and old color font for days
         paint.setColor(oldColor);

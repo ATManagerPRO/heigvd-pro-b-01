@@ -2,7 +2,9 @@ package com.heig.atmanager;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
+import android.graphics.Shader;
 import android.text.style.LineBackgroundSpan;
 
 import androidx.annotation.NonNull;
@@ -15,10 +17,9 @@ import androidx.annotation.NonNull;
  */
 public class CalendarDayToday  implements LineBackgroundSpan {
 
-    private static int CORNER_RADIUS = 10;
-    private static int LINE_HEIGHT = 10;
-    private static int VERTICAL_OFFSET = 20;
-    private static int HORIZONTAL_PADDING = 40;
+    private static int LINE_HEIGHT        = 15;
+    private static int VERTICAL_OFFSET    = 30;
+    private static int HORIZONTAL_PADDING = 5;
 
     int color;
 
@@ -34,10 +35,14 @@ public class CalendarDayToday  implements LineBackgroundSpan {
             int start, int end, int lineNum
     ) {
         paint.setColor(color);
-        // Draw the top part that has rounded corners with twice the height of the radius
-        canvas.drawRoundRect(left + HORIZONTAL_PADDING, bottom + VERTICAL_OFFSET, right - HORIZONTAL_PADDING, bottom + VERTICAL_OFFSET + LINE_HEIGHT, CORNER_RADIUS, CORNER_RADIUS, paint);
+
+        // Draw line
+        canvas.drawRect(left + HORIZONTAL_PADDING,
+                bottom + VERTICAL_OFFSET,
+                right - HORIZONTAL_PADDING,
+                bottom + VERTICAL_OFFSET + LINE_HEIGHT, paint);
 
         // Set color to white for the text that will be drawn next
-        paint.setColor(Color.WHITE);
+        paint.setColor(Color.BLACK);
     }
 }
