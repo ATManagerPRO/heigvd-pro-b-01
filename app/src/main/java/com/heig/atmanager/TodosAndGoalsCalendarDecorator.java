@@ -1,14 +1,11 @@
 package com.heig.atmanager;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.util.Log;
+import android.graphics.drawable.Drawable;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
-
-import java.util.Random;
 
 import androidx.core.content.ContextCompat;
 
@@ -21,8 +18,6 @@ import androidx.core.content.ContextCompat;
  */
 public class TodosAndGoalsCalendarDecorator implements DayViewDecorator {
 
-    private static final String TAG = "TodosAndGoalsCalendarDe";
-    
     private Context context;
     private int color;
 
@@ -33,13 +28,18 @@ public class TodosAndGoalsCalendarDecorator implements DayViewDecorator {
 
     @Override
     public boolean shouldDecorate(CalendarDay day) {
-        // return getTotalTodosAndGoals(day) != 0;
+        // TODO: return getTotalTodosAndGoals(day) != 0;
         return true;
     }
 
     @Override
     public void decorate(DayViewFacade view) {
-        view.setSelectionDrawable(ContextCompat.getDrawable(context, R.drawable.calendar_selection));
+        // Selection outline when pressing on a day
+        Drawable selection_outline = ContextCompat.getDrawable(context, R.drawable.calendar_selection);
+        if(selection_outline != null)
+            view.setSelectionDrawable(selection_outline);
+
+        // Daily notifications
         view.addSpan(new CalendarDayNotification(color));
     }
 }

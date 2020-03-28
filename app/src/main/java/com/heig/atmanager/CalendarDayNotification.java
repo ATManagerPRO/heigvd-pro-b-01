@@ -1,29 +1,24 @@
 package com.heig.atmanager;
 
-import android.content.res.Resources;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.text.style.LineBackgroundSpan;
-import android.util.Log;
 
 import java.util.Random;
 
 import androidx.annotation.NonNull;
 
 /**
- * Author : Stephane
+ * Author : Stéphane Bottin
  * Date   : 22.03.2020
  *
  * Calendar Day Notification graphics (dot)
  */
 public class CalendarDayNotification implements LineBackgroundSpan {
 
-    private static final String TAG = "CalendarDayNotification";
-
-    private static final int HEIGHT = 50;
-    private static final int PADDING = 10;
+    private static final int HEIGHT        = 50;
+    private static final int PADDING       = 10;
     private static final int CORNER_RADIUS = 20;
 
     private static final int[] alphaDensity = new int[] {0, 50, 100, 150, 230};

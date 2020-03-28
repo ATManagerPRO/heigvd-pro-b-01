@@ -2,9 +2,7 @@ package com.heig.atmanager;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.LinearGradient;
 import android.graphics.Paint;
-import android.graphics.Shader;
 import android.text.style.LineBackgroundSpan;
 
 import androidx.annotation.NonNull;
@@ -17,8 +15,8 @@ import androidx.annotation.NonNull;
  */
 public class CalendarDayToday  implements LineBackgroundSpan {
 
-    private static final int HEIGHT = 50;
-    private static final int PADDING = 10;
+    private static final int HEIGHT        = 50;
+    private static final int PADDING       = 10;
     private static final int CORNER_RADIUS = 20;
 
     int color;
@@ -36,11 +34,7 @@ public class CalendarDayToday  implements LineBackgroundSpan {
     ) {
         paint.setColor(color);
 
-        // Draw line
-        /*canvas.drawRect(left + HORIZONTAL_PADDING,
-                bottom + VERTICAL_OFFSET,
-                right - HORIZONTAL_PADDING,
-                bottom + VERTICAL_OFFSET + LINE_HEIGHT, paint);*/
+        // Draw outline
         paint.setStrokeWidth(8);
         paint.setStyle(Paint.Style.STROKE);
         canvas.drawRoundRect(left + PADDING, top - HEIGHT + PADDING,
