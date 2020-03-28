@@ -64,6 +64,11 @@ public class CalendarDayNotification implements LineBackgroundSpan {
         paint.setTypeface(Typeface.DEFAULT_BOLD);
     }
 
+    /**
+     * Get the density of activity depending on the total of tasks and goals
+     * @param totalTodosAndGoals : total activity
+     * @return an alpha value from the alphaDensity array
+     */
     private int getDensityAlpha(int totalTodosAndGoals) {
         int densityColor = 0;
 

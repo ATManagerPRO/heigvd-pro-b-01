@@ -17,10 +17,6 @@ import androidx.annotation.NonNull;
  */
 public class CalendarDayToday  implements LineBackgroundSpan {
 
-    private static int LINE_HEIGHT        = 15;
-    private static int VERTICAL_OFFSET    = 30;
-    private static int HORIZONTAL_PADDING = 5;
-
     private static final int HEIGHT = 50;
     private static final int PADDING = 10;
     private static final int CORNER_RADIUS = 20;
