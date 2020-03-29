@@ -14,7 +14,7 @@ public class DummyData {
     final static User dummyUser = new User("Joe", "GoogleToken");
 
 
-    static User initData(){
+    public static User initData(){
 
         // Add goals
         Calendar calendar = Calendar.getInstance();
