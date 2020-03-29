@@ -13,6 +13,17 @@ public class User {
 
     private ArrayList<Goal> goals;
 
+    private ArrayList<String> tags;
+
+    public User(String userName, String googleToken) {
+        this.userName = userName;
+        this.googleToken = googleToken;
+        directories = new ArrayList<>();
+        tasks = new ArrayList<>();
+        goals = new ArrayList<>();
+        tags = new ArrayList<>();
+    }
+
     public String getUserName() {
         return userName;
     }
@@ -25,13 +36,8 @@ public class User {
         return googleToken;
     }
 
-    public User(String userName, String googleToken) {
-        this.userName = userName;
-        this.googleToken = googleToken;
-        directories = new ArrayList<>();
-        tasks = new ArrayList<>();
-        goals = new ArrayList<>();
-    }
+
+
 
     public ArrayList<Todo> getTodos() {
         return tasks;
@@ -47,5 +53,17 @@ public class User {
 
     public void addGoal(Goal goal){
         goals.add(goal);
+    }
+
+    public ArrayList<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(ArrayList<String> tags) {
+        this.tags = tags;
+    }
+
+    public void setDirectories(ArrayList<String> directories) {
+        this.directories = directories;
     }
 }
