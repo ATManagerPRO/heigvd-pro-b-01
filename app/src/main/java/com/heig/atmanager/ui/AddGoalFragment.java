@@ -166,13 +166,20 @@ public class AddGoalFragment extends Fragment {
 
                 Date selectedDate = new GregorianCalendar(mYear, mMonth, mDay).getTime();
 
-                // TODO Add goal to user
 
                 ((AddTaskGoalActivity) getActivity()).dummyUser.addGoal(new Goal(unit, quantity, intervalNumber, interval, selectedDate));
 
 
                 startActivity(new Intent(getContext(), MainActivity.class));
 
+            }
+        });
+
+        // TODO Back to the view before add goal
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(), MainActivity.class));
             }
         });
 
