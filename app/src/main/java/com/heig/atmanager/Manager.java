@@ -18,6 +18,7 @@ public class Manager extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager);
 
+        loadFragment(new HomeFragment());
         fragmentContainer = findViewById(R.id.folder_fragment_container);
         button = findViewById(R.id.floatingActionButton);
 
@@ -31,6 +32,19 @@ public class Manager extends AppCompatActivity {
                 }
             }
         });
+    }
+    private void loadFragment(Fragment fragment) {
+
+        // Create new fragment and transaction
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        // Replace whatever is in the fragment_container view with this fragment,
+        // and add the transaction to the back stack
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.addToBackStack(null);
+
+        // Commit the transaction
+        transaction.commit();
     }
 
 }
