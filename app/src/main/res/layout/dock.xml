@@ -10,15 +10,14 @@
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        style="@style/Widget.MaterialComponents.BottomNavigationView"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="60dp"
         android:layout_gravity="bottom"
         android:background="@color/colorPrimary"
+        android:visibility="visible"
         app:itemIconTint="@color/colorAccent"
         app:itemTextColor="@color/black"
-        app:menu="@menu/bottom_navigation_menu"
-        style="@style/Widget.MaterialComponents.BottomNavigationView"
-        android:visibility="visible"
-        />
+        app:menu="@menu/bottom_navigation_menu" />
 
 </FrameLayout>

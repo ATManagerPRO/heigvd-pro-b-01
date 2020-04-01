@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimary"
-    android:clickable="true"
+    android:background="@color/transparent"
+    android:clickable="false"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clickable="true"
         android:orientation="horizontal">
 
         <ImageView
@@ -33,10 +34,11 @@
     </LinearLayout>
 
     <View
-        android:id="@+id/separator2"
+        android:id="@+id/separator"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_marginRight="10dp"
-        android:background="@color/colorAccent" />
+        android:background="@color/colorAccent"
+        android:clickable="false" />
 
 </LinearLayout>

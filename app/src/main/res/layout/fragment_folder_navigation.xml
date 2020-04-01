@@ -9,5 +9,14 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/folder_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <View
+        android:id="@+id/separator2"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="right"
+        android:background="@color/colorPrimaryDark" />
 </FrameLayout>
