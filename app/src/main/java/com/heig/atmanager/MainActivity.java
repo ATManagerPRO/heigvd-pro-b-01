@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         //instantly switches to the Profile activity for testing purposes
         //Intent myIntent = new Intent(MainActivity.this, ProfileActivity.class);
         //MainActivity.this.startActivity(myIntent);
-
+        fragmentContainer = findViewById(R.id.folder_fragment_container);
         button = findViewById(R.id.drawer_button);
 
         button.setOnClickListener(new View.OnClickListener() {
