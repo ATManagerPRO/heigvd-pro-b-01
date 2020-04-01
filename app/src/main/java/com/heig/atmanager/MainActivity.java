@@ -6,8 +6,12 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
+
+    View fragmentContainer;
+    View button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +23,19 @@ public class MainActivity extends AppCompatActivity {
         //instantly switches to the Profile activity for testing purposes
         //Intent myIntent = new Intent(MainActivity.this, ProfileActivity.class);
         //MainActivity.this.startActivity(myIntent);
+
+        button = findViewById(R.id.drawer_button);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if(fragmentContainer.getVisibility() == View.GONE){
+                    fragmentContainer.setVisibility(View.VISIBLE);
+                    fragmentContainer.bringToFront();
+                } else{
+                    fragmentContainer.setVisibility(View.GONE);
+                }
+            }
+        });
 
     }
 

@@ -35,6 +35,22 @@ public class Utils {
         rv.setAdapter(adapter);
     }
 
+    public static void setupFoldersFeed(View v, RecyclerView rv, ArrayList<Folder> folders) {
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        rv.setHasFixedSize(false);
+
+        // use a (horizontal) linear layout manager
+        LinearLayoutManager manager = new LinearLayoutManager(v.getContext(), LinearLayoutManager.VERTICAL, false);
+        rv.setLayoutManager(manager);
+
+        // specify an adapter (see also next example)
+        RecyclerView.Adapter adapter = new FolderAdapter(folders);
+        rv.setAdapter(adapter);
+    }
+
+
     public static void setupTodosFeed(View v, RecyclerView rv, ArrayList<Todo> todos) {
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
