@@ -8,65 +8,26 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/colorPrimaryDark"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="60dp"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageButton
-            android:id="@+id/drawer_button"
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:backgroundTint="@android:color/transparent"
-            app:srcCompat="@drawable/ic_folder_black_24dp" />
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:visibility="visible"
-            app:srcCompat="@drawable/atm_logo" />
-
-        <TextView
-            android:id="@+id/folder_name"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Folder"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:visibility="gone" />
-
-        <ImageButton
-            android:id="@+id/settings_button"
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:backgroundTint="@android:color/transparent"
-            app:srcCompat="@android:drawable/ic_menu_manage" />
-
-    </LinearLayout>
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/top_navigation_menu" />
 
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/include2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
     </FrameLayout>
 
@@ -75,12 +36,12 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginEnd="@android:dimen/thumbnail_width"
-        android:background="@color/colorPrimary"
+        android:background="@color/white"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/include2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <fragment
             android:id="@+id/folders_fragment"

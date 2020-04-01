@@ -28,7 +28,7 @@
         android:id="@+id/MenuLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/include"
+        app:layout_constraintBottom_toTopOf="@+id/toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent">
@@ -41,7 +41,7 @@
     </FrameLayout>
 
     <include
-        android:id="@+id/include"
+        android:id="@+id/toolbar"
         layout="@layout/dock" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

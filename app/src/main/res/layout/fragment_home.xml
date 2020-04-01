@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -10,31 +11,32 @@
         android:id="@+id/greeting_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
         android:fontFamily="@font/arial"
-        android:textColor="@color/black"
-        android:textSize="20sp"
         android:padding="10dp"
         android:text="Insert welcome text here"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"/>
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Goals feed (list) -->
     <LinearLayout
         android:id="@+id/goals_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/greeting_text"
-        android:layout_marginTop="20dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/greeting_text">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/goals_rv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/greeting_text"
-            android:scrollbars="horizontal"/>
+            android:scrollbars="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/greeting_text" />
     </LinearLayout>
 
 
@@ -42,10 +44,12 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tasks_rv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/goals_container"
+        android:layout_height="0dp"
         android:layout_marginTop="20dp"
         android:scrollbars="vertical"
-        android:paddingBottom="400dp"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/goals_container" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
