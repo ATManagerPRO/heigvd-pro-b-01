@@ -5,7 +5,7 @@
     <string name="dock_home">Home</string>
     <string name="dock_calendar">Calendar</string>
     <string name="dock_goals">Goals</string>
-    <string name="dock_profile">Profile</string>
+    <string name="dock_stats">Stats</string>
 
     <!-- Goals -->
     <string name="goals_today">TODAY</string>

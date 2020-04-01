@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,42 +36,17 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.goals:
                         selectedFragment = new GoalsFragment();
                         break;
-                    case R.id.profile:
-                        Intent intent = new Intent(getBaseContext(), ProfileActivity.class);
-                        // Might need this to know which user is logged in
-                        //String userID = "U12332";
-                        //intent.putExtra(USER_ID, userID);
-                        startActivity(intent);
-                        finish();
-                        overridePendingTransition(0, 0);
+                    case R.id.stats:
+                        selectedFragment = new StatsFragment();
                         break;
                 }
-
-                if(selectedFragment != null)
-                    loadFragment(selectedFragment);
-
+                loadFragment(selectedFragment);
                 return true;
             }
         });
 
         // Load fragment
-        Intent intent = getIntent();
-        int fragmentId = intent.getIntExtra("FRAGMENT_ID", R.id.home);
-        switch(fragmentId) {
-            case R.id.home:
-                dock.getMenu().findItem(R.id.home).setChecked(true);
-                loadFragment(new HomeFragment());
-                break;
-            case R.id.calendar:
-                dock.getMenu().findItem(R.id.calendar).setChecked(true);
-                loadFragment(new CalendarFragment());
-                break;
-            case R.id.goals:
-                dock.getMenu().findItem(R.id.goals).setChecked(true);
-                loadFragment(new GoalsFragment());
-                break;
-        }
-
+        loadFragment(new HomeFragment());
     }
 
 

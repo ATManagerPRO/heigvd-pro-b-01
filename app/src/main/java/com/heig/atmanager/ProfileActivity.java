@@ -29,7 +29,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         View dockView = findViewById(R.id.dock_container);
         dock = dockView.findViewById(R.id.dock);
-        dock.getMenu().findItem(R.id.profile).setChecked(true);
+        dock.getMenu().findItem(R.id.stats).setChecked(true);
         dock.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -50,7 +50,7 @@ public class ProfileActivity extends AppCompatActivity {
                         finish();
                         overridePendingTransition(0, 0);
                         break;
-                    case R.id.profile:
+                    case R.id.stats:
                         // Do nothing
                         break;
                 }
