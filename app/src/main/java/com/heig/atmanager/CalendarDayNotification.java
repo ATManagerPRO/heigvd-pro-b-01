@@ -1,8 +1,8 @@
 package com.heig.atmanager;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.text.style.LineBackgroundSpan;
 
 import java.util.Random;
@@ -10,23 +10,28 @@ import java.util.Random;
 import androidx.annotation.NonNull;
 
 /**
- * Author : Stephane
+ * Author : Stéphane Bottin
  * Date   : 22.03.2020
  *
  * Calendar Day Notification graphics (dot)
  */
 public class CalendarDayNotification implements LineBackgroundSpan {
 
-    private static final int DOT_RADIUS    = 12;
-    private static final int DOT_PADDING_H = 30;
-    private static final int DOT_PADDING_V = 20;
+    private static final int HEIGHT        = 50;
+    private static final int PADDING       = 10;
+    private static final int CORNER_RADIUS = 20;
+
+    private static final int[] alphaDensity = new int[] {0, 50, 100, 150, 230};
 
     private int totalTodosAndGoals;
+    private int maxTodosAndGoals;
     private int color;
 
-    public CalendarDayNotification(int totalTodosAndGoals, int color) {
-        this.totalTodosAndGoals = totalTodosAndGoals;
+    public CalendarDayNotification(int color) {
         this.color = color;
+
+        // maxTodos = user.getMaxTodosPerDay()...
+        this.maxTodosAndGoals   = 40;
     }
 
     @Override
@@ -37,9 +42,38 @@ public class CalendarDayNotification implements LineBackgroundSpan {
             int start, int end, int lineNum
     ) {
         int oldColor = paint.getColor();
+        Random rand = new Random(); // random for now
         paint.setColor(color);
+        paint.setAlpha(getDensityAlpha(rand.nextInt(maxTodosAndGoals)));
 
-        canvas.drawCircle(right - DOT_PADDING_H, top - DOT_PADDING_V, DOT_RADIUS, paint);
+        // rem : charSequence = day of the month
+        // user.getTodosAndGoalsForDay(Integer.parseInt(charSequence))
+        //paint.setAlpha((255 * Integer.parseInt(charSequence.toString())) / maxTodosAndGoals);
+
+        canvas.drawRoundRect(left + PADDING, top - HEIGHT + PADDING,
+                right - PADDING, bottom + HEIGHT - PADDING, CORNER_RADIUS,
+                CORNER_RADIUS, paint);
+
+        // Bold and old color font for days
         paint.setColor(oldColor);
+        paint.setTypeface(Typeface.DEFAULT_BOLD);
     }
+
+    /**
+     * Get the density of activity depending on the total of tasks and goals
+     * @param totalTodosAndGoals : total activity
+     * @return an alpha value from the alphaDensity array
+     */
+    private int getDensityAlpha(int totalTodosAndGoals) {
+        int densityColor = 0;
+
+        for(int i = 0; i < alphaDensity.length; ++i) {
+            if (totalTodosAndGoals > i * (maxTodosAndGoals / alphaDensity.length)) {
+                densityColor = alphaDensity[i];
+            }
+        }
+
+        return densityColor;
+    }
+
 }
