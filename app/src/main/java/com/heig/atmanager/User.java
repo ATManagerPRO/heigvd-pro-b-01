@@ -36,9 +36,6 @@ public class User {
         return googleToken;
     }
 
-
-
-
     public ArrayList<Todo> getTodos() {
         return tasks;
     }
