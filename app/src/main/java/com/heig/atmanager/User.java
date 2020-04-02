@@ -8,6 +8,7 @@ import com.heig.atmanager.goals.GoalTodo;
 import com.heig.atmanager.tasks.Task;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class User {
@@ -76,12 +77,11 @@ public class User {
     public int getTotalTasksForDay(Date day) {
         int totalTasks = 0;
 
-        Log.d(TAG, "getTotalTasksForDay: " + tasks.size());
-        
-        for(Task task : tasks)
-            if(task.getDueDate() != null && task.getDueDate().equals(day))
+        for(Task task : tasks) {
+            if (task.getDueDate() != null && isSameSimpleDate(task.getDueDate(), day))
                 totalTasks++;
-
+        }
+        
         return totalTasks;
     }
 
@@ -90,7 +90,7 @@ public class User {
 
         for(Goal goal : goals)
             for(GoalTodo goalTodo : goal.getGoalTodos())
-                if(goalTodo.getDoneDate() != null && goalTodo.getDoneDate().equals(day))
+                if(goalTodo.getDoneDate() != null && isSameSimpleDate(goalTodo.getDoneDate(), day))
                     totalGoal++;
 
         return totalGoal;
@@ -98,5 +98,15 @@ public class User {
 
     public int getTotalActivityForDay(Date day) {
         return getTotalTasksForDay(day) + getTotalGoalsForDay(day);
+    }
+
+    private boolean isSameSimpleDate(Date d1, Date d2) {
+        Calendar calendar_d1 = Calendar.getInstance();
+        Calendar calendar_d2 = Calendar.getInstance();
+        calendar_d1.setTime(d1);
+        calendar_d2.setTime(d2);
+        return calendar_d1.get(Calendar.YEAR) == calendar_d2.get(Calendar.YEAR) &&
+                calendar_d1.get(Calendar.MONTH) == calendar_d2.get(Calendar.MONTH) &&
+                calendar_d1.get(Calendar.DAY_OF_MONTH) == calendar_d2.get(Calendar.DAY_OF_MONTH);
     }
 }

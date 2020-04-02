@@ -2,6 +2,7 @@ package com.heig.atmanager.calendar;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
@@ -24,6 +25,8 @@ import androidx.core.content.ContextCompat;
  */
 public class TasksAndGoalsCalendarDecorator implements DayViewDecorator {
 
+    private static final String TAG = "TasksAndGoalsCalendarDe";
+
     private Context context;
     private int color;
 
@@ -34,7 +37,9 @@ public class TasksAndGoalsCalendarDecorator implements DayViewDecorator {
 
     @Override
     public boolean shouldDecorate(CalendarDay day) {
-        return ((MainActivity) context).dummyUser.getTotalActivityForDay(convertCalendarDayToDate(day)) != 0;
+        int totalActivity = ((MainActivity) context).dummyUser.getTotalActivityForDay(convertCalendarDayToDate(day));
+        Log.d(TAG, "shouldDecorate: " + day + " : " + totalActivity);
+        return totalActivity != 0;
     }
 
     @Override
