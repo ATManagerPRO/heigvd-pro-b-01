@@ -1,4 +1,4 @@
-package com.heig.atmanager.add_task_goal;
+package com.heig.atmanager.addTaskGoal;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
