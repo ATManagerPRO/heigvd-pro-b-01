@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        loadFragment(new HomeFragment());
+        loadFragment(new CalendarFragment());
 
         //instantly switches to the Profile activity for testing purposes
         //Intent myIntent = new Intent(MainActivity.this, ProfileActivity.class);

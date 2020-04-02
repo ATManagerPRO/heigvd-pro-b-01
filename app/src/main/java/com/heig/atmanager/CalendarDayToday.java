@@ -15,7 +15,9 @@ import androidx.annotation.NonNull;
  */
 public class CalendarDayToday  implements LineBackgroundSpan {
 
-    private static int DOT_RADIUS = 50;
+    private static final int HEIGHT        = 50;
+    private static final int PADDING       = 10;
+    private static final int CORNER_RADIUS = 20;
 
     int color;
 
@@ -31,10 +33,16 @@ public class CalendarDayToday  implements LineBackgroundSpan {
             int start, int end, int lineNum
     ) {
         paint.setColor(color);
-        canvas.drawCircle((left + right) / 2, (top + bottom) / 2, DOT_RADIUS, paint);
+
+        // Draw outline
+        paint.setStrokeWidth(8);
+        paint.setStyle(Paint.Style.STROKE);
+        canvas.drawRoundRect(left + PADDING, top - HEIGHT + PADDING,
+                right - PADDING, bottom + HEIGHT - PADDING, CORNER_RADIUS,
+                CORNER_RADIUS, paint);
 
         // Set color to white for the text that will be drawn next
-        paint.setColor(Color.WHITE);
-
+        paint.setColor(Color.BLACK);
+        paint.setStyle(Paint.Style.FILL);
     }
 }
