@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".ui.AddTaskFragment">
+    tools:context=".addTaskGoal.AddTaskFragment">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/frag_add_task_title_layout"

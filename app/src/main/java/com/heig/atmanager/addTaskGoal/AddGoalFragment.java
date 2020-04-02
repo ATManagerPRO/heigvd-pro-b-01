@@ -1,6 +1,7 @@
-package com.heig.atmanager.ui;
+package com.heig.atmanager.addTaskGoal;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +16,11 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.heig.atmanager.Goal;
+import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.Interval;
+import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -161,9 +162,20 @@ public class AddGoalFragment extends Fragment {
 
                 Date selectedDate = new GregorianCalendar(mYear, mMonth, mDay).getTime();
 
-                // TODO Add goal to user
-                new Goal(unit, quantity, intervalNumber, interval, selectedDate);
 
+                ((AddTaskGoalActivity) getActivity()).dummyUser.addGoal(new Goal(unit, quantity, intervalNumber, interval, selectedDate));
+
+
+                startActivity(new Intent(getContext(), MainActivity.class));
+
+            }
+        });
+
+        // TODO Back to the view before add goal
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(), MainActivity.class));
             }
         });
 

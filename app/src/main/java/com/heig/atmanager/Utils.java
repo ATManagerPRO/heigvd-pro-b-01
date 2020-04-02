@@ -1,9 +1,11 @@
 package com.heig.atmanager;
 
-import android.content.Context;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Adapter;
+
+import com.heig.atmanager.goals.GoalFeedAdapter;
+import com.heig.atmanager.goals.GoalTodo;
+import com.heig.atmanager.tasks.Task;
+import com.heig.atmanager.tasks.TaskFeedAdapter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -61,7 +63,7 @@ public class Utils {
         rv.setLayoutManager(manager);
 
         // specify an adapter (see also next example)
-        RecyclerView.Adapter adapter = new TodoFeedAdapter(todos);
+        RecyclerView.Adapter adapter = new TaskFeedAdapter(tasks);
         rv.setAdapter(adapter);
     }
 

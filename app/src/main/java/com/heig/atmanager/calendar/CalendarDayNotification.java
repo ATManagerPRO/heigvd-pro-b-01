@@ -1,4 +1,4 @@
-package com.heig.atmanager;
+package com.heig.atmanager.calendar;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;

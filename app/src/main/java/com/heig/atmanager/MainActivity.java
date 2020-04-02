@@ -1,5 +1,6 @@
 package com.heig.atmanager;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -10,16 +11,26 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.heig.atmanager.calendar.CalendarFragment;
+import com.heig.atmanager.goals.GoalsFragment;
+
 public class MainActivity extends AppCompatActivity {
+    public User dummyUser;
 
     View fragmentContainer;
+
+    BottomNavigationView dock;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        loadFragment(new CalendarFragment());
+        // To get this variable from the fragments ((MainActivity)getActivity()).dummyUser
+        dummyUser = new DummyData().initData();
+
+        loadFragment(new HomeFragment());
 
         //instantly switches to the Profile activity for testing purposes
         //Intent myIntent = new Intent(MainActivity.this, ProfileActivity.class);
@@ -38,6 +49,35 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.top_navigation_menu, menu);
         return true;
+        View dockView = findViewById(R.id.dock_container);
+        dock = dockView.findViewById(R.id.dock);
+        dock.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment selectedFragment = null;
+                switch (item.getItemId()) {
+                    case R.id.home:
+                        selectedFragment = new HomeFragment();
+                        break;
+                    case R.id.calendar:
+                        selectedFragment = new CalendarFragment();
+                        break;
+                    case R.id.goals:
+                        selectedFragment = new GoalsFragment();
+                        break;
+                    case R.id.stats:
+                        selectedFragment = new StatsFragment();
+                        break;
+                    default:
+                        return false;
+                }
+                loadFragment(selectedFragment);
+                return true;
+            }
+        });
+
+        // Load fragment
+        loadFragment(new HomeFragment());
     }
 
     @Override
@@ -60,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
 
 
     private void loadFragment(Fragment fragment) {

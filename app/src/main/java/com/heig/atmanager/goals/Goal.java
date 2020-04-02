@@ -1,14 +1,11 @@
-package com.heig.atmanager;
+package com.heig.atmanager.goals;
 
-import android.util.Log;
+import com.heig.atmanager.Interval;
+import com.heig.atmanager.Utils;
 
-import java.lang.reflect.Array;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 /**
  * Author : Stéphane Bottin

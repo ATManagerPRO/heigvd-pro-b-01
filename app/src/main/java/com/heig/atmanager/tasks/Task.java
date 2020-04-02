@@ -1,4 +1,4 @@
-package com.heig.atmanager;
+package com.heig.atmanager.tasks;
 
 import java.util.Date;
 
@@ -8,7 +8,7 @@ import java.util.Date;
  *
  * Task object
  */
-public class Todo {
+public class Task {
     private String title;
     private String description;
     private boolean done;
@@ -19,23 +19,23 @@ public class Todo {
     private String directory;
 
 
-    public Todo(String title, String description) {
+    public Task(String title, String description) {
         this(title, description, null, null, false);
     }
 
-    public Todo(String title, String description, Date dueDate) {
+    public Task(String title, String description, Date dueDate) {
         this(title, description, dueDate, null, false);
     }
 
-    public Todo(String title, String description, boolean favorite) {
+    public Task(String title, String description, boolean favorite) {
         this(title, description, null,null, favorite);
     }
 
-    public Todo(String title, String description, Date dueDate, String directory) {
+    public Task(String title, String description, Date dueDate, String directory) {
         this(title, description, dueDate, directory, false);
     }
 
-    public Todo(String title, String description, Date dueDate, String directory, boolean favorite) {
+    public Task(String title, String description, Date dueDate, String directory, boolean favorite) {
         this.title       = title;
         this.description = description;
         this.dueDate     = dueDate;

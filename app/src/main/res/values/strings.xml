@@ -5,7 +5,7 @@
     <string name="dock_home">Home</string>
     <string name="dock_calendar">Calendar</string>
     <string name="dock_goals">Goals</string>
-    <string name="dock_profile">Profile</string>
+    <string name="dock_stats">Stats</string>
 
     <!-- Goals -->
     <string name="goals_today">TODAY</string>
@@ -23,7 +23,7 @@
     <string name="profile_button_settings">Settings</string>
 
   
-    <!-- Add todo / goal -->
+    <!-- Add task / goal -->
     <string name="title_activity_add_task_goal">Add Task/Goal</string>
     <string name="i_would_like_to">I would like to</string>
     <string name="frequency">Frequency</string>
@@ -45,8 +45,6 @@
     <string name="titre">Titre</string>
     <string name="description">Description</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="due_date">Due Date</string>
     <string name="due_time">Due Time</string>
     <string name="tags">Tags</string>

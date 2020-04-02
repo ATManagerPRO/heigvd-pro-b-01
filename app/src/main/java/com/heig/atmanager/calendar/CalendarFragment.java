@@ -1,10 +1,16 @@
-package com.heig.atmanager;
+package com.heig.atmanager.calendar;
 
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.heig.atmanager.tasks.Task;
+import com.heig.atmanager.goals.GoalTodo;
+import com.heig.atmanager.R;
+import com.heig.atmanager.Utils;
+
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
@@ -33,7 +39,7 @@ public class CalendarFragment extends Fragment {
     private RecyclerView goalsRecyclerView;
 
     // Task feed
-    private ArrayList<Todo> todos; // user data
+    private ArrayList<Task> tasks; // user data
     private RecyclerView tasksRecyclerView;
 
     @Nullable
@@ -42,7 +48,7 @@ public class CalendarFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_calendar, container, false);
 
         calendarView = v.findViewById(R.id.calendar_view);
-        todos        = new ArrayList<>();
+        tasks = new ArrayList<>();
         goals        = new ArrayList<>();
 
         // Calendar setup
@@ -53,14 +59,14 @@ public class CalendarFragment extends Fragment {
                 calendar.get(Calendar.DAY_OF_MONTH)
         );
         // Notification decorator for todos and goals
-        calendarView.addDecorator(new TodosAndGoalsCalendarDecorator(v.getContext(),
+        calendarView.addDecorator(new TasksAndGoalsCalendarDecorator(v.getContext(),
                 v.getResources().getColor(R.color.colorAccent, null)));
         // Today's date decorator
         calendarView.addDecorator(new TodayCalendarDecorator(today, notificationDotColor));
 
         // Task feed
         tasksRecyclerView = (RecyclerView) v.findViewById(R.id.tasks_rv);
-        Utils.setupTodosFeed(v, tasksRecyclerView, todos);
+        Utils.setupTodosFeed(v, tasksRecyclerView, tasks);
 
         // Goal feed
         goalsRecyclerView = (RecyclerView) v.findViewById(R.id.goals_rv);
