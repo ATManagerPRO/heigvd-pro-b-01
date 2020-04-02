@@ -1,5 +1,8 @@
 package com.heig.atmanager;
 
+import com.heig.atmanager.goals.Goal;
+import com.heig.atmanager.tasks.Task;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -40,10 +43,10 @@ public class DummyData {
         dummyUser.addGoal(monthly_goal4);
 
         // Add Tasks
-        dummyUser.addTask(new Todo("Task1", "This is a really useful task.", true));
-        dummyUser.addTask(new Todo("Task2", "Rendre labo 1 :\n> Fiche technique\n> Rapport (10 pages)\n> Code source (C++)"));
-        dummyUser.addTask(new Todo("Task3", "..."));
-        dummyUser.addTask(new Todo("Task4", "..."));
+        dummyUser.addTask(new Task("Task1", "This is a really useful task.", true));
+        dummyUser.addTask(new Task("Task2", "Rendre labo 1 :\n> Fiche technique\n> Rapport (10 pages)\n> Code source (C++)"));
+        dummyUser.addTask(new Task("Task3", "..."));
+        dummyUser.addTask(new Task("Task4", "..."));
 
         dummyUser.setTags(new ArrayList<>(Arrays.asList("Urgent", "Normal")));
 

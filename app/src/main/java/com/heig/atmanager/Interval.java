@@ -7,7 +7,7 @@ import java.util.Date;
  * Author : Stéphane Bottin
  * Date   : 16.03.2020
  *
- * Enum to work with intervals for goals or todos
+ * Enum to work with intervals for goals or tasks
  */
 public enum Interval {
     HOUR  (Calendar.HOUR_OF_DAY),

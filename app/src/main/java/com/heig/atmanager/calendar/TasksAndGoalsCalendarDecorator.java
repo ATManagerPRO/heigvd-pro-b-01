@@ -1,8 +1,9 @@
-package com.heig.atmanager;
+package com.heig.atmanager.calendar;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 
+import com.heig.atmanager.R;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
@@ -13,15 +14,15 @@ import androidx.core.content.ContextCompat;
  * Author : Stéphane Bottin
  * Date   : 22.03.2020
  *
- * Decorator to give the user an overiew on how much there is goals and todos on a day
+ * Decorator to give the user an overiew on how much there is goals and tasks on a day
  * without opening the days' content
  */
-public class TodosAndGoalsCalendarDecorator implements DayViewDecorator {
+public class TasksAndGoalsCalendarDecorator implements DayViewDecorator {
 
     private Context context;
     private int color;
 
-    public TodosAndGoalsCalendarDecorator(Context context, int color) {
+    public TasksAndGoalsCalendarDecorator(Context context, int color) {
         this.context = context;
         this.color = color;
     }

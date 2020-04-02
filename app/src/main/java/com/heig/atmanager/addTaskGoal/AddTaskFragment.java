@@ -1,4 +1,4 @@
-package com.heig.atmanager.ui;
+package com.heig.atmanager.addTaskGoal;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +25,8 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputLayout;
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
-import com.heig.atmanager.Todo;
 import com.heig.atmanager.User;
+import com.heig.atmanager.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -165,12 +164,7 @@ public class AddTaskFragment extends Fragment {
 
                 Date selectedDate = new GregorianCalendar(mYear, mMonth, mDay, mHour, mMinute).getTime();
 
-                // TODO add to the user todo
-                currentUser.addTask(new Todo(title, description, selectedDate, selectedDirectory));
-
-                for (Todo t : currentUser.getTodos()){
-                    Log.d("AddTaskFragment", "onClick: " + t.getTitle());
-                }
+                currentUser.addTask(new Task(title, description, selectedDate, selectedDirectory));
 
                 startActivity(new Intent(getContext(), MainActivity.class));
             }

@@ -1,9 +1,8 @@
-package com.heig.atmanager.ui;
+package com.heig.atmanager.addTaskGoal;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +16,11 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.heig.atmanager.Goal;
-import com.heig.atmanager.HomeFragment;
+import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.Interval;
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
-import com.heig.atmanager.User;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;

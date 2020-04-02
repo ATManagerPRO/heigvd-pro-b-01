@@ -1,6 +1,9 @@
 package com.heig.atmanager;
 
 
+import com.heig.atmanager.goals.Goal;
+import com.heig.atmanager.tasks.Task;
+
 import java.util.ArrayList;
 
 public class User {
@@ -9,7 +12,7 @@ public class User {
     private  ArrayList<String> directories;
     private String googleToken;
 
-    private ArrayList<Todo> tasks;
+    private ArrayList<Task> tasks;
 
     private ArrayList<Goal> goals;
 
@@ -36,7 +39,7 @@ public class User {
         return googleToken;
     }
 
-    public ArrayList<Todo> getTodos() {
+    public ArrayList<Task> getTodos() {
         return tasks;
     }
 
@@ -44,7 +47,7 @@ public class User {
         return goals;
     }
 
-    public void addTask(Todo task){
+    public void addTask(Task task){
         tasks.add(task);
     }
 

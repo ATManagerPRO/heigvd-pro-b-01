@@ -1,4 +1,4 @@
-package com.heig.atmanager.ui;
+package com.heig.atmanager.addTaskGoal;
 
 import android.os.Bundle;
 

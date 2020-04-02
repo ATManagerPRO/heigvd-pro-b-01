@@ -1,4 +1,6 @@
-package com.heig.atmanager;
+package com.heig.atmanager.goals;
+
+import com.heig.atmanager.Utils;
 
 import java.util.Calendar;
 import java.util.Date;
