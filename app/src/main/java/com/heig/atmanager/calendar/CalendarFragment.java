@@ -60,7 +60,7 @@ public class CalendarFragment extends Fragment {
                 calendar.get(Calendar.DAY_OF_MONTH)
         );
         // Notification decorator for todos and goals
-        calendarView.addDecorator(new TodosAndGoalsCalendarDecorator(v.getContext(),
+        calendarView.addDecorator(new TasksAndGoalsCalendarDecorator(v.getContext(),
                 v.getResources().getColor(R.color.colorAccent, null)));
         // Today's date decorator
         calendarView.addDecorator(new TodayCalendarDecorator(today, notificationDotColor));

@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
-        <activity android:name=".ui.AddTaskGoalActivity" />
+        <activity android:name=".add_task_goal.AddTaskGoalActivity" />
         <activity android:name=".ProfileActivity" />
 
     </application>

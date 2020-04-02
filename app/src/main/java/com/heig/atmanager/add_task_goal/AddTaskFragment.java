@@ -1,4 +1,4 @@
-package com.heig.atmanager.ui;
+package com.heig.atmanager.add_task_goal;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;

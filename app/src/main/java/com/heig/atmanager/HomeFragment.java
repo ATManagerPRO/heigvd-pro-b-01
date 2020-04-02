@@ -21,7 +21,7 @@ import java.util.Calendar;
  * Author : Stéphane Bottin
  * Date   : 11.03.2020
  *
- * Fragment for the Home view (com.heig.atmanager.User's Tasks and Goals of the day)
+ * Fragment for the Home view (User's Tasks and Goals of the day)
  */
 public class HomeFragment extends Fragment {
     // Greeting message
