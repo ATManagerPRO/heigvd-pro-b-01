@@ -44,13 +44,8 @@ public class TasksAndGoalsCalendarDecorator implements DayViewDecorator {
 
     @Override
     public void decorate(DayViewFacade view) {
-        // Selection outline when pressing on a day
-        Drawable selection_outline = ContextCompat.getDrawable(context, R.drawable.calendar_selection);
-        if(selection_outline != null)
-            view.setSelectionDrawable(selection_outline);
-
         // Daily notifications
-        view.addSpan(new CalendarDayNotification(color));
+        view.addSpan(new CalendarDayNotification(context, color));
     }
 
     private Date convertCalendarDayToDate(CalendarDay day) {

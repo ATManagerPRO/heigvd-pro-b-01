@@ -3,6 +3,7 @@ package com.heig.atmanager.goals;
 import com.heig.atmanager.Interval;
 import com.heig.atmanager.Utils;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -132,6 +133,7 @@ public class Goal {
     public ArrayList<GoalTodo> getGoalTodos() {
         return goalTodos;
     }
+
 
 
 }

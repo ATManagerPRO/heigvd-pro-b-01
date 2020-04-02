@@ -35,7 +35,11 @@ public class DummyData {
 
         calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_MONTH, 7);
-        Date dueDateTask = calendar.getTime();
+        Date dueDateTask1 = calendar.getTime();
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        Date dueDateTask2 = calendar.getTime();
+        calendar.add(Calendar.DAY_OF_MONTH, 3);
+        Date dueDateTask3 = calendar.getTime();
 
         Goal daily_goal1 = new Goal("SQUATS", 20, 1,Interval.DAY, dueDateGoal1);
         Goal daily_goal2 = new Goal("FRUITS", 5, 1,Interval.DAY, dueDateGoal2);
@@ -48,9 +52,14 @@ public class DummyData {
 
         // Add Tasks
         dummyUser.addTask(new Task("Task1", "This is a really useful task.", true));
-        dummyUser.addTask(new Task("Task2", "Rendre labo 1 :\n> Fiche technique\n> Rapport (10 pages)\n> Code source (C++)", dueDateTask));
-        dummyUser.addTask(new Task("Task3", "...", dueDateTask));
-        dummyUser.addTask(new Task("Task4", "...", dueDateTask));
+        dummyUser.addTask(new Task("Task2", "Rendre labo 1 :\n> Fiche technique\n> Rapport (10 pages)\n> Code source (C++)", dueDateTask1));
+        dummyUser.addTask(new Task("Task3", "...", dueDateTask1));
+        dummyUser.addTask(new Task("Task4", "...", dueDateTask2));
+        dummyUser.addTask(new Task("Task5", "...", dueDateTask2));
+        dummyUser.addTask(new Task("Task6", "...", dueDateTask3));
+        dummyUser.addTask(new Task("Task7", "...", dueDateTask3));
+        dummyUser.addTask(new Task("Task8", "...", dueDateTask3));
+        dummyUser.addTask(new Task("Task9", "...", dueDateTask3));
 
         dummyUser.setTags(new ArrayList<>(Arrays.asList("Urgent", "Normal")));
 

@@ -1,5 +1,9 @@
 package com.heig.atmanager.tasks;
 
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -57,6 +61,13 @@ public class Task {
 
     public Date getDueDate() {
         return dueDate;
+    }
+
+    public LocalDate getLocalDueDate() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(dueDate);
+        return LocalDate.of(calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
     }
 
     public void setTitle(String title) {

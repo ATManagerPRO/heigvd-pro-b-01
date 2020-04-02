@@ -1,15 +1,18 @@
 package com.heig.atmanager;
 
-
-import android.util.Log;
-
 import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.goals.GoalTodo;
 import com.heig.atmanager.tasks.Task;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 
+import java.lang.reflect.Array;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class User {
 
@@ -81,7 +84,7 @@ public class User {
             if (task.getDueDate() != null && isSameSimpleDate(task.getDueDate(), day))
                 totalTasks++;
         }
-        
+
         return totalTasks;
     }
 
@@ -98,6 +101,37 @@ public class User {
 
     public int getTotalActivityForDay(Date day) {
         return getTotalTasksForDay(day) + getTotalGoalsForDay(day);
+    }
+
+    public int getMaxActivityPerDay() {
+        Map.Entry<LocalDate, Integer> maxEntry = null;
+        Map<LocalDate, Integer> hm = new HashMap<>();
+
+        // Count tasks recurrences for each date
+        for(Task task : tasks) {
+            LocalDate date = task.getLocalDueDate();
+            Integer j = hm.get(date);
+            hm.put(date, (j == null) ? 1 : j + 1);
+        }
+
+        // Count goals recurrences for each date
+        for(Goal goal : goals) {
+            for(GoalTodo goalTodo : goal.getGoalTodos()) {
+                LocalDate date = goalTodo.getLocalDueDate();
+                Integer j = hm.get(date);
+                hm.put(date, (j == null) ? 1 : j + 1);
+            }
+        }
+
+        // Find max
+        for (Map.Entry<LocalDate, Integer> entry : hm.entrySet()) {
+            if (maxEntry == null || entry.getValue()
+                    .compareTo(maxEntry.getValue()) > 0) {
+                maxEntry = entry;
+            }
+        }
+
+        return maxEntry == null ? 0 : maxEntry.getValue();
     }
 
     private boolean isSameSimpleDate(Date d1, Date d2) {

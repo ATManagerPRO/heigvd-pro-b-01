@@ -1,9 +1,12 @@
 package com.heig.atmanager.calendar;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.text.style.LineBackgroundSpan;
+
+import com.heig.atmanager.MainActivity;
 
 import java.util.Random;
 
@@ -27,11 +30,10 @@ public class CalendarDayNotification implements LineBackgroundSpan {
     private int maxTodosAndGoals;
     private int color;
 
-    public CalendarDayNotification(int color) {
+    public CalendarDayNotification(Context context, int color) {
         this.color = color;
 
-        // maxTodos = user.getMaxTodosPerDay()...
-        this.maxTodosAndGoals   = 40;
+        this.maxTodosAndGoals   = ((MainActivity) context).dummyUser.getMaxActivityPerDay();
     }
 
     @Override
