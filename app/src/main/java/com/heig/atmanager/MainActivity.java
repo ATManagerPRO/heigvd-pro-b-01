@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.mipmap.ic_launcher);
+        getSupportActionBar().setLogo(R.mipmap.ic_atmanager_launcher);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
     }
 
@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.top_navigation_menu, menu);
-        return true;
         View dockView = findViewById(R.id.dock_container);
         dock = dockView.findViewById(R.id.dock);
         dock.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -78,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Load fragment
         loadFragment(new HomeFragment());
+        return true;
     }
 
     @Override

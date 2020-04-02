@@ -19,4 +19,11 @@
         android:layout_height="match_parent"
         android:layout_gravity="right"
         android:background="@color/colorPrimaryDark" />
+
+    <View
+        android:id="@+id/separator3"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="left"
+        android:background="@color/colorPrimaryDark" />
 </FrameLayout>
