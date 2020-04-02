@@ -15,11 +15,10 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.heig.atmanager.Goal;
+import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.Interval;
 import com.heig.atmanager.R;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;

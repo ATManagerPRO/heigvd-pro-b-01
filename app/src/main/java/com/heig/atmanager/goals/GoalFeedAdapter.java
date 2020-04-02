@@ -1,33 +1,27 @@
-package com.heig.atmanager;
+package com.heig.atmanager.goals;
 
-import android.content.Context;
-import android.content.res.Resources;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
-import android.view.animation.ScaleAnimation;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.heig.atmanager.R;
+import com.heig.atmanager.Utils;
+
 import java.util.ArrayList;
 
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-
-import static androidx.constraintlayout.widget.Constraints.TAG;
 
 /**
  * Author : Stéphane Bottin

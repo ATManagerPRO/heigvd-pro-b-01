@@ -1,6 +1,5 @@
-package com.heig.atmanager;
+package com.heig.atmanager.tasks;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
+import com.heig.atmanager.R;
 
 import java.util.ArrayList;
 
@@ -20,10 +21,10 @@ import androidx.recyclerview.widget.RecyclerView;
  *
  * Task adapter for the task Recycler view
  */
-public class TodoFeedAdapter extends RecyclerView.Adapter<TodoFeedAdapter.MyViewHolder> {
-    private static final String TAG = "TodoFeedAdapter";
+public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyViewHolder> {
+    private static final String TAG = "TaskFeedAdapter";
     
-    private ArrayList<Todo> todos;
+    private ArrayList<Task> tasks;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -51,13 +52,13 @@ public class TodoFeedAdapter extends RecyclerView.Adapter<TodoFeedAdapter.MyView
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public TodoFeedAdapter(ArrayList<Todo> todos) {
-        this.todos = todos;
+    public TaskFeedAdapter(ArrayList<Task> tasks) {
+        this.tasks = tasks;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public TodoFeedAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
+    public TaskFeedAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
                                                            int viewType) {
         // create a new view
         View v = (View) LayoutInflater.from(parent.getContext())
@@ -72,8 +73,8 @@ public class TodoFeedAdapter extends RecyclerView.Adapter<TodoFeedAdapter.MyView
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.title.setText(todos.get(position).getTitle());
-        holder.description.setText(todos.get(position).getDescription());
+        holder.title.setText(tasks.get(position).getTitle());
+        holder.description.setText(tasks.get(position).getDescription());
         // Expand / retract details
         holder.expandBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,13 +95,13 @@ public class TodoFeedAdapter extends RecyclerView.Adapter<TodoFeedAdapter.MyView
         });
 
         // Favorite
-        holder.favoriteIcon.setVisibility(todos.get(position).isFavorite() ? View.VISIBLE : View.GONE);
+        holder.favoriteIcon.setVisibility(tasks.get(position).isFavorite() ? View.VISIBLE : View.GONE);
 
         // Checkbox
         holder.checkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                todos.get(position).setDone(holder.checkButton.isChecked());
+                tasks.get(position).setDone(holder.checkButton.isChecked());
             }
         });
     }
@@ -108,6 +109,6 @@ public class TodoFeedAdapter extends RecyclerView.Adapter<TodoFeedAdapter.MyView
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return todos.size();
+        return tasks.size();
     }
 }

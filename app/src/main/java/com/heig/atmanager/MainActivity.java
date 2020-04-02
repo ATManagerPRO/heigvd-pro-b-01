@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.heig.atmanager.calendar.CalendarFragment;
+import com.heig.atmanager.goals.GoalsFragment;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -1,9 +1,13 @@
-package com.heig.atmanager;
+package com.heig.atmanager.goals;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.heig.atmanager.Interval;
+import com.heig.atmanager.R;
+import com.heig.atmanager.Utils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -56,7 +60,7 @@ public class GoalsFragment extends Fragment {
         Date dueDateGoal4 = calendar.getTime();
 
 
-        Goal daily_goal1 = new Goal("SQUATS", 20, 1,Interval.DAY, dueDateGoal1);
+        Goal daily_goal1 = new Goal("SQUATS", 20, 1, Interval.DAY, dueDateGoal1);
         Goal daily_goal2 = new Goal("FRUITS", 5, 1,Interval.DAY, dueDateGoal2);
         Goal weekly_goal3 = new Goal("KMS", 4, 1,Interval.WEEK, dueDateGoal3);
         Goal monthly_goal4 = new Goal("GIT PUSH", 4, 1,Interval.MONTH, dueDateGoal4);

@@ -1,9 +1,11 @@
 package com.heig.atmanager;
 
-import android.content.Context;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Adapter;
+
+import com.heig.atmanager.goals.GoalFeedAdapter;
+import com.heig.atmanager.goals.GoalTodo;
+import com.heig.atmanager.tasks.Task;
+import com.heig.atmanager.tasks.TaskFeedAdapter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,7 +37,7 @@ public class Utils {
         rv.setAdapter(adapter);
     }
 
-    public static void setupTodosFeed(View v, RecyclerView rv, ArrayList<Todo> todos) {
+    public static void setupTodosFeed(View v, RecyclerView rv, ArrayList<Task> tasks) {
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         rv.setHasFixedSize(true);
@@ -45,7 +47,7 @@ public class Utils {
         rv.setLayoutManager(manager);
 
         // specify an adapter (see also next example)
-        RecyclerView.Adapter adapter = new TodoFeedAdapter(todos);
+        RecyclerView.Adapter adapter = new TaskFeedAdapter(tasks);
         rv.setAdapter(adapter);
     }
 

@@ -1,14 +1,11 @@
-package com.heig.atmanager;
+package com.heig.atmanager.calendar;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.util.Log;
 
+import com.heig.atmanager.R;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
-
-import java.util.Random;
 
 import androidx.core.content.ContextCompat;
 
