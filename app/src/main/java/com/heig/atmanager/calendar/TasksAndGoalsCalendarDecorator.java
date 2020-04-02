@@ -3,10 +3,15 @@ package com.heig.atmanager.calendar;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 
+import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
+
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
 
 import androidx.core.content.ContextCompat;
 
@@ -29,8 +34,7 @@ public class TasksAndGoalsCalendarDecorator implements DayViewDecorator {
 
     @Override
     public boolean shouldDecorate(CalendarDay day) {
-        // TODO: return getTotalTodosAndGoals(day) != 0;
-        return true;
+        return ((MainActivity) context).dummyUser.getTotalActivityForDay(convertCalendarDayToDate(day)) != 0;
     }
 
     @Override
@@ -42,5 +46,15 @@ public class TasksAndGoalsCalendarDecorator implements DayViewDecorator {
 
         // Daily notifications
         view.addSpan(new CalendarDayNotification(color));
+    }
+
+    private Date convertCalendarDayToDate(CalendarDay day) {
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.set(Calendar.YEAR, day.getYear());
+        calendar.set(Calendar.MONTH, day.getMonth());
+        calendar.set(Calendar.DAY_OF_MONTH, day.getDay());
+
+        return calendar.getTime();
     }
 }
