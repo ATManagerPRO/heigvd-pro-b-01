@@ -1,5 +1,7 @@
 package com.heig.atmanager;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -42,6 +44,10 @@ public class DummyData {
         dummyUser.addTask(new Todo("Task2", "Rendre labo 1 :\n> Fiche technique\n> Rapport (10 pages)\n> Code source (C++)"));
         dummyUser.addTask(new Todo("Task3", "..."));
         dummyUser.addTask(new Todo("Task4", "..."));
+
+        dummyUser.setTags(new ArrayList<>(Arrays.asList("Urgent", "Normal")));
+
+        dummyUser.setDirectories(new ArrayList<>(Arrays.asList("Personal", "School")));
 
         return dummyUser;
     }

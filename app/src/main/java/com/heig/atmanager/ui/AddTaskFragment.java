@@ -2,6 +2,7 @@ package com.heig.atmanager.ui;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -23,8 +24,10 @@ import android.widget.TimePicker;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputLayout;
+import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
 import com.heig.atmanager.Todo;
+import com.heig.atmanager.User;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,8 +47,7 @@ public class AddTaskFragment extends Fragment {
     private int mYear;
     private int mHour;
     private int mMinute;
-    ArrayList<String> directory = new ArrayList<>(Arrays.asList("bla"));
-    ArrayList<String> userTags = new ArrayList<>(Arrays.asList("Urgent", "Normal"));
+
 
     private String selectedDirectory;
 
@@ -82,6 +84,9 @@ public class AddTaskFragment extends Fragment {
         titleLayout = mView.findViewById(R.id.frag_add_task_title_layout);
 
         final Button validationButton = mView.findViewById(R.id.frag_validation_button);
+
+        final User currentUser =((AddTaskGoalActivity) getActivity()).dummyUser;
+
 
         // Picker for date and time
         dueDateTextView.setOnClickListener(new View.OnClickListener() {
@@ -120,9 +125,9 @@ public class AddTaskFragment extends Fragment {
             }
         });
 
+
         // Tags
-        //TODO get user tags
-        ArrayAdapter<String> chipsAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, userTags);
+        final ArrayAdapter<String> chipsAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, currentUser.getTags());
 
         final AutoCompleteTextView autoCompleteTextView = mView.findViewById(R.id.frag_add_task_autocomplete_textview);
         autoCompleteTextView.setAdapter(chipsAdapter);
@@ -136,12 +141,10 @@ public class AddTaskFragment extends Fragment {
             }
         });
 
-
         // Directory spinner
-        //TODO get user directory
         final Spinner tagSpinner = mView.findViewById(R.id.frag_directory_choice_tag_spinner);
 
-        ArrayAdapter tagAdapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, directory);
+        ArrayAdapter tagAdapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, currentUser.getDirectories());
         tagAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         tagSpinner.setAdapter(tagAdapter);
         selectedDirectory = tagSpinner.getSelectedItem().toString();
@@ -163,9 +166,16 @@ public class AddTaskFragment extends Fragment {
                 Date selectedDate = new GregorianCalendar(mYear, mMonth, mDay, mHour, mMinute).getTime();
 
                 // TODO add to the user todo
-                new Todo(title, description, selectedDate, selectedDirectory);
+                currentUser.addTask(new Todo(title, description, selectedDate, selectedDirectory));
+
+                for (Todo t : currentUser.getTodos()){
+                    Log.d("AddTaskFragment", "onClick: " + t.getTitle());
+                }
+
+                startActivity(new Intent(getContext(), MainActivity.class));
             }
         });
+
 
         return mView;
     }
