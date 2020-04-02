@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.stats:
                         selectedFragment = new StatsFragment();
                         break;
+                    default:
+                        return false;
                 }
                 loadFragment(selectedFragment);
                 return true;
