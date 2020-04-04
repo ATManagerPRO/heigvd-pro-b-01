@@ -51,7 +51,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/add_task"
-                    android:elevation="8dp"
+                    android:elevation="2dp"
+                    android:background="@drawable/rounded_conner"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -78,7 +79,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/add_goal"
-                    android:elevation="8dp"
+                    android:elevation="2dp"
+                    android:background="@drawable/rounded_conner"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
