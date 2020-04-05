@@ -2,6 +2,8 @@ package com.heig.atmanager;
 
 import android.view.View;
 
+import com.heig.atmanager.folders.Folder;
+import com.heig.atmanager.folders.FolderAdapter;
 import com.heig.atmanager.goals.GoalFeedAdapter;
 import com.heig.atmanager.goals.GoalTodo;
 import com.heig.atmanager.tasks.Task;

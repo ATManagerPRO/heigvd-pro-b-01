@@ -1,10 +1,10 @@
-package com.heig.atmanager;
+package com.heig.atmanager.taskLists;
 
-public class Folder {
+public class TaskList {
 
     private String name;
 
-    public Folder(String name){
+    public TaskList(String name){
         this.name = name;
     }
 

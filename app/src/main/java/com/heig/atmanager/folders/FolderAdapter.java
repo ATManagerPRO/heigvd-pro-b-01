@@ -1,17 +1,20 @@
-package com.heig.atmanager;
+package com.heig.atmanager.folders;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.heig.atmanager.R;
+
 import java.util.ArrayList;
 
-class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder> {
+public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder> {
 
     private ArrayList<Folder> folders;
 
@@ -19,6 +22,9 @@ class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder> {
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
         public TextView nameTextView;
+        private Button expandBtn;
+        private Button retractBtn;
+        private LinearLayout expandedView;
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
@@ -28,6 +34,9 @@ class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder> {
             super(v);
 
             nameTextView = (TextView) v.findViewById(R.id.folderTitle);
+            expandBtn    = v.findViewById(R.id.expand_button);
+            retractBtn   = v.findViewById(R.id.retract_button);
+            expandedView = v.findViewById(R.id.task_expanded_view);
         }
     }
 
@@ -48,11 +57,30 @@ class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         Folder folder = folders.get(position);
 
         TextView textView = holder.nameTextView;
         textView.setText(folder.getName());
+
+        holder.expandBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                holder.expandedView.setVisibility(View.VISIBLE);
+                holder.retractBtn.setVisibility(View.VISIBLE);
+                holder.expandBtn.setVisibility(View.GONE);
+            }
+        });
+
+        holder.retractBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                holder.expandedView.setVisibility(View.GONE);
+                holder.retractBtn.setVisibility(View.GONE);
+                holder.expandBtn.setVisibility(View.VISIBLE);
+            }
+        });
+
     }
 
     @Override
