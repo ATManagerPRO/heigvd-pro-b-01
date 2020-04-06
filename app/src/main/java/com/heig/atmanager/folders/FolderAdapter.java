@@ -1,5 +1,6 @@
 package com.heig.atmanager.folders;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.heig.atmanager.R;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder> {
 
     private ArrayList<Folder> folders;
+    private Context context;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // Your holder should contain a member variable
@@ -25,6 +28,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
         private Button expandBtn;
         private Button retractBtn;
         private LinearLayout expandedView;
+        private RecyclerView tasklists;
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
@@ -33,10 +37,12 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
             // to access the context from any ViewHolder instance.
             super(v);
 
-            nameTextView = (TextView) v.findViewById(R.id.folderTitle);
+            nameTextView = v.findViewById(R.id.listTitle);
             expandBtn    = v.findViewById(R.id.expand_button);
             retractBtn   = v.findViewById(R.id.retract_button);
             expandedView = v.findViewById(R.id.task_expanded_view);
+            tasklists = itemView.findViewById(R.id.list_recycler_view);
+
         }
     }
 
@@ -53,6 +59,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
                 .inflate(R.layout.folder_button, parent, false);
         // Return a new holder instance
         FolderAdapter.ViewHolder viewHolder = new FolderAdapter.ViewHolder(v);
+        context = parent.getContext();
         return viewHolder;
     }
 
@@ -80,6 +87,9 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
                 holder.expandBtn.setVisibility(View.VISIBLE);
             }
         });
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context,    LinearLayoutManager.VERTICAL, false);
+        holder.tasklists.setLayoutManager(linearLayoutManager);
 
     }
 

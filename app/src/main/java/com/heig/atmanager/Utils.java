@@ -6,6 +6,8 @@ import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.folders.FolderAdapter;
 import com.heig.atmanager.goals.GoalFeedAdapter;
 import com.heig.atmanager.goals.GoalTodo;
+import com.heig.atmanager.taskLists.TaskList;
+import com.heig.atmanager.taskLists.TaskListAdapter;
 import com.heig.atmanager.tasks.Task;
 import com.heig.atmanager.tasks.TaskFeedAdapter;
 
@@ -51,6 +53,21 @@ public class Utils {
 
         // specify an adapter (see also next example)
         RecyclerView.Adapter adapter = new FolderAdapter(folders);
+        rv.setAdapter(adapter);
+    }
+
+    public static void setupTaskListFeed(View v, RecyclerView rv, ArrayList<TaskList> taskLists) {
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        rv.setHasFixedSize(false);
+
+        // use a (horizontal) linear layout manager
+        LinearLayoutManager manager = new LinearLayoutManager(v.getContext(), LinearLayoutManager.VERTICAL, false);
+        rv.setLayoutManager(manager);
+
+        // specify an adapter (see also next example)
+        RecyclerView.Adapter adapter = new TaskListAdapter(taskLists);
         rv.setAdapter(adapter);
     }
 

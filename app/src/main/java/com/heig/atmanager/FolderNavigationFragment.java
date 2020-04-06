@@ -35,7 +35,12 @@ public class FolderNavigationFragment extends Fragment {
         // ----------- TEMP -----------
         folders = new ArrayList<>();
         folders.add(new Folder("Administration"));
+        folders.get(0).addList("first list");
+        folders.get(0).addList("second list");
+        folders.get(0).addList("third list");
         folders.add(new Folder("gaming"));
+        folders.get(1).addList("fourth list");
+        folders.get(1).addList("fifth list");
         folders.add(new Folder("ANA"));
         folders.add(new Folder("PCO"));
         folders.add(new Folder("PCO"));

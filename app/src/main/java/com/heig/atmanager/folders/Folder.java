@@ -1,5 +1,7 @@
 package com.heig.atmanager.folders;
 
+import android.view.View;
+
 import com.heig.atmanager.taskLists.TaskList;
 
 import java.util.ArrayList;
@@ -7,7 +9,6 @@ import java.util.ArrayList;
 public class Folder {
 
     private String name;
-
     private ArrayList<TaskList> taskLists;
 
     public Folder(String name){
@@ -47,10 +48,11 @@ public class Folder {
         return true;
     }
 
-
     public String getName() {
         return name;
     }
 
-
+    public ArrayList<TaskList> getTaskLists() {
+        return taskLists;
+    }
 }
