@@ -13,9 +13,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.heig.atmanager.R;
+import com.heig.atmanager.taskLists.TaskList;
+import com.heig.atmanager.taskLists.TaskListAdapter;
 
 import java.util.ArrayList;
 
+/**
+ *  Author : Teo Ferrari
+ *  Date   : 06.04.2020
+ *
+ *  Folder adapter for recycler view
+ */
 public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder> {
 
     private ArrayList<Folder> folders;
@@ -88,8 +96,10 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
             }
         });
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context,    LinearLayoutManager.VERTICAL, false);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         holder.tasklists.setLayoutManager(linearLayoutManager);
+        holder.tasklists.setAdapter(new TaskListAdapter(folders.get(position).getTaskLists()));
 
     }
 

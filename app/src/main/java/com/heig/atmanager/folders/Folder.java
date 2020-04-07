@@ -1,11 +1,15 @@
 package com.heig.atmanager.folders;
 
-import android.view.View;
-
 import com.heig.atmanager.taskLists.TaskList;
 
 import java.util.ArrayList;
 
+/**
+ *  Author : Teo Ferrari
+ *  Date   : 06.04.2020
+ *
+ *  Class folder representing a folder containing different tasklists for organisation
+ */
 public class Folder {
 
     private String name;
