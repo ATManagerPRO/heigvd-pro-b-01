@@ -11,63 +11,19 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-        <!--<com.google.android.material.navigation.NavigationView
-            android:id="@+id/navigation_view"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:clipToPadding="false"
-            app:menu="@menu/top_navigation_menu"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />-->
-
-        <!--<androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:menu="@menu/top_navigation_menu" />-->
+        android:layout_height="match_parent"
+        android:background="@color/transparent">
 
         <FrameLayout
             android:id="@+id/fragment_container"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             app:layout_constraintBottom_toTopOf="@+id/dock_container"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
             android:label="Home sweet home">
-
         </FrameLayout>
-
-        <!--<FrameLayout
-            android:id="@+id/folder_fragment_container"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="120dp"
-            android:background="@color/colorPrimary"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/dock_container"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar">
-
-
-            <fragment
-                android:id="@+id/folders_fragment"
-                android:name="com.heig.atmanager.FolderNavigationFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </FrameLayout>-->
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="wrap_content"

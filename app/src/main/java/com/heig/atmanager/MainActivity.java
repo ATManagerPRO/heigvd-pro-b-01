@@ -53,10 +53,8 @@ public class MainActivity extends AppCompatActivity {
         navView = (NavigationView) findViewById(R.id.navView);
         updateDrawerItems(navView);
 
-
         // First fragment to load : Home
         loadFragment(new HomeFragment());
-
     }
 
     // Menu icons are inflated just as they were with actionbar
