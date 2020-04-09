@@ -1,28 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/mytasks"
-        android:title="@string/drawer_my_tasks" />
 
-
-    <item android:title="HEIG-VD">
-        <menu>
-            <item
-                android:id="@+id/test"
-                android:title="   GEN" />
-            <item
-                android:id="@+id/test2"
-                android:title="   SIO" />
-            <item
-                android:id="@+id/test3"
-                android:title="   POO2" />
-            <item
-                android:id="@+id/test4"
-                android:title="   RES" />
-            <item
-                android:id="@+id/test5"
-                android:title="   SER" />
-        </menu>
-    </item>
 
 </menu>
