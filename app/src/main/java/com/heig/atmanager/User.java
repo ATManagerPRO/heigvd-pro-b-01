@@ -22,8 +22,6 @@ public class User {
 
     private ArrayList<Folder> folders;
 
-    private ArrayList<String> directories;
-
     public User(String userName, String googleToken) {
         this.userName = userName;
         this.googleToken = googleToken;
@@ -31,7 +29,6 @@ public class User {
         goals = new ArrayList<>();
         tags = new ArrayList<>();
         folders = new ArrayList<>();
-        directories = new ArrayList<>();
     }
 
     public String getUserName() {
@@ -72,15 +69,6 @@ public class User {
 
     public ArrayList<Folder> getFolders() {
         return folders;
-    }
-    public  ArrayList<String> getDirectories() {
-        return directories;
-    }
-
-
-
-    public void setDirectories(ArrayList<String> directories) {
-        this.directories = directories;
     }
 
     public ArrayList<Task> getTasks() {
