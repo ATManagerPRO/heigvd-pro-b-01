@@ -1,5 +1,6 @@
 package com.heig.atmanager;
 
+import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.tasks.Task;
 
@@ -53,8 +54,43 @@ public class DummyData {
 
             dummyUser.setDirectories(new ArrayList<>(Arrays.asList("Personal", "School")));
 
+            //create folders
+            Folder folder1 = new Folder("Ecole");
+            folder1.addList("first list");
+            folder1.addList("second list");
+            folder1.addList("third list");
+            Folder folder2 = new Folder("Travail");
+            folder2.addList("fourth list");
+            folder2.addList("fifth list");
+            Folder folder3 = new Folder("Jeux");
+            folder3.addList("list");
+            folder3.addList("list1");
+            folder3.addList("list2");
+            folder3.addList("list3");
+            folder3.addList("list4");
+            folder3.addList("list5");
+            folder3.addList("list6");
+            folder3.addList("list7");
+            folder3.addList("list8");
+            folder3.addList("list9");
+            folder3.addList("list0");
+            folder3.addList("list10");
+            folder3.addList("list11");
+            folder3.addList("list22");
+            folder3.addList("list24");
+            folder3.addList("list33");
+            folder3.addList("list55");
+            folder3.addList("list66");
+            folder3.addList("list77");
+            folder3.addList("list88");
+            folder3.addList("list99");
+            dummyUser.addFolder(folder1);
+            dummyUser.addFolder(folder2);
+            dummyUser.addFolder(folder3);
+
             user  = new UserViewModel(dummyUser);
         }
         return user;
+
     }
 }
