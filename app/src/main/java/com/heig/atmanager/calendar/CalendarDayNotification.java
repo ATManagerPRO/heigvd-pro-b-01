@@ -34,6 +34,7 @@ public class CalendarDayNotification implements LineBackgroundSpan {
         this.color = color;
         this.context = context;
 
+        // TODO : Should be computed once outside...
         this.maxTodosAndGoals   = ((MainActivity) context).dummyUser.getMaxActivityPerDay();
     }
 

@@ -52,7 +52,7 @@ public class TasksAndGoalsCalendarDecorator implements DayViewDecorator {
         Calendar calendar = Calendar.getInstance();
 
         calendar.set(Calendar.YEAR, day.getYear());
-        calendar.set(Calendar.MONTH, day.getMonth());
+        calendar.set(Calendar.MONTH, day.getMonth() - 1); // -1 because Calendar stores month from 0 to 11
         calendar.set(Calendar.DAY_OF_MONTH, day.getDay());
 
         return calendar.getTime();

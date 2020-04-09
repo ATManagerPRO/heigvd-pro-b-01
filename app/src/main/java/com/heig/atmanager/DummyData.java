@@ -52,8 +52,8 @@ public class DummyData {
         taskCal1.add(Calendar.WEEK_OF_MONTH, 1);
         Calendar taskCal3 = Calendar.getInstance();
         taskCal1.add(Calendar.WEEK_OF_MONTH, 1);
-        dummyUser.addTask(new Task("Task1", "This is a really useful task.", taskCal));
-        dummyUser.addTask(new Task("Task2", "Rendre labo 1 :\n> Fiche technique\n> Rapport (10 pages)\n> Code source (C++)", taskCal1));
+        dummyUser.addTask(new Task("Task1", "...", taskCal));
+        dummyUser.addTask(new Task("Task2", "...", taskCal1));
         dummyUser.addTask(new Task("Task3", "...", taskCal2));
         dummyUser.addTask(new Task("Task4", "...", taskCal3));
 
