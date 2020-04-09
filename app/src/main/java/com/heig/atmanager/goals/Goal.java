@@ -30,15 +30,15 @@ public class Goal {
     private int quantity;
     private int intervalNumber;
     private Interval interval;
-    private Date dueDate;
+    private Calendar calendarDueDate;
     private ArrayList<GoalTodo> goalTodos;
 
-    public Goal(String unit, int quantity, int intervalNumber, Interval interval, Date dueDate) {
+    public Goal(String unit, int quantity, int intervalNumber, Interval interval, Calendar calendarDueDate) {
         this.unit     = unit;
         this.quantity = quantity;
         this.intervalNumber = intervalNumber;
         this.interval = interval;
-        this.dueDate  = dueDate;
+        this.calendarDueDate  = calendarDueDate;
 
         // Generate the todos automatically (once) for the user
         goalTodos = generateTodos();
@@ -55,8 +55,8 @@ public class Goal {
         Calendar calendar = getCalendarInstance();
 
         // Adding new goalsTodo while it's equal or before the due date
-        while(calendar.getTime().equals(dueDate) || calendar.getTime().before(dueDate)) {
-            goals.add(new GoalTodo(this, 0, calendar.getTime(), dueDate));
+        while(calendar.equals(calendarDueDate) || calendar.before(calendarDueDate)) {
+            goals.add(new GoalTodo(this, 0, calendar.getTime(), calendarDueDate));
             calendar.add(interval.getCalendarInterval(),1);
         }
 

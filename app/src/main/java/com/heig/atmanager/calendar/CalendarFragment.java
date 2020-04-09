@@ -48,7 +48,7 @@ public class CalendarFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_calendar, container, false);
 
         calendarView = v.findViewById(R.id.calendar_view);
-        tasks = new ArrayList<>();
+        tasks        = new ArrayList<>();
         goals        = new ArrayList<>();
 
         // Calendar setup

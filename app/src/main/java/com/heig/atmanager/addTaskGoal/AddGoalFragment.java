@@ -22,8 +22,6 @@ import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
 
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 /**
  * Author   : Chau Ying Kot
@@ -160,11 +158,7 @@ public class AddGoalFragment extends Fragment {
                 quantity = Integer.parseInt(quantityTextInput.getText().toString());
                 intervalNumber = Integer.parseInt(intervalNumberTextInput.getText().toString());
 
-                Date selectedDate = new GregorianCalendar(mYear, mMonth, mDay).getTime();
-
-
-                ((AddTaskGoalActivity) getActivity()).dummyUser.addGoal(new Goal(unit, quantity, intervalNumber, interval, selectedDate));
-
+                ((AddTaskGoalActivity) getActivity()).dummyUser.addGoal(new Goal(unit, quantity, intervalNumber, interval, Calendar.getInstance()));
 
                 startActivity(new Intent(getContext(), MainActivity.class));
 

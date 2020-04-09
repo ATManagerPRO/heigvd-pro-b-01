@@ -17,32 +17,30 @@ public class Task {
     private String description;
     private boolean done;
     private boolean favorite;
-    private Date dueDate;
-    private Date doneDate;
+    private Calendar calendarDueDate;
     private Date reminderDate;
     private String directory;
-
 
     public Task(String title, String description) {
         this(title, description, null, null, false);
     }
 
-    public Task(String title, String description, Date dueDate) {
-        this(title, description, dueDate, null, false);
+    public Task(String title, String description, Calendar calendarDueDate) {
+        this(title, description, calendarDueDate, null, false);
     }
 
     public Task(String title, String description, boolean favorite) {
         this(title, description, null,null, favorite);
     }
 
-    public Task(String title, String description, Date dueDate, String directory) {
-        this(title, description, dueDate, directory, false);
+    public Task(String title, String description, Calendar calendarDueDate, String directory) {
+        this(title, description, calendarDueDate, directory, false);
     }
 
-    public Task(String title, String description, Date dueDate, String directory, boolean favorite) {
+    public Task(String title, String description, Calendar calendarDueDate, String directory, boolean favorite) {
         this.title       = title;
         this.description = description;
-        this.dueDate     = dueDate;
+        this.calendarDueDate     = calendarDueDate;
         this.directory   = directory;
         this.favorite    = favorite;
     }
@@ -55,19 +53,23 @@ public class Task {
         return description;
     }
 
-    public void setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
+    public void setCalendarDueDate(Calendar calendarDueDate) {
+        this.calendarDueDate = calendarDueDate;
     }
 
     public Date getDueDate() {
-        return dueDate;
+        if(calendarDueDate == null)
+            return null;
+
+        return calendarDueDate.getTime();
     }
 
     public LocalDate getLocalDueDate() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(dueDate);
-        return LocalDate.of(calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        if(calendarDueDate == null)
+            return null;
+
+        return LocalDate.of(calendarDueDate.get(Calendar.YEAR),
+                calendarDueDate.get(Calendar.MONTH), calendarDueDate.get(Calendar.DAY_OF_MONTH));
     }
 
     public void setTitle(String title) {
@@ -88,5 +90,18 @@ public class Task {
 
     public boolean isFavorite() {
         return favorite;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", done=" + done +
+                ", favorite=" + favorite +
+                ", calendarDueDate=" + (calendarDueDate == null ? "none" : calendarDueDate.get(Calendar.DAY_OF_MONTH) + "/" + calendarDueDate.get(Calendar.MONTH) + "/" + calendarDueDate.get(Calendar.YEAR)) +
+                ", reminderDate=" + reminderDate +
+                ", directory='" + directory + '\'' +
+                '}';
     }
 }

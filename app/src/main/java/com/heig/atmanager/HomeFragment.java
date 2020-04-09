@@ -10,7 +10,6 @@ import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.goals.GoalTodo;
 import com.heig.atmanager.tasks.Task;
 
-import java.util.Date;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,26 +39,8 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
-        // ----------- TEMP -----------
-        goals = new ArrayList<>();
-        // GOAL : 20 squats every day for 5 days
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, 5);
-        Date dueDateGoal1 = calendar.getTime();
-        calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, 1);
-        Date dueDateGoal2 = calendar.getTime();
-
-        Goal goal1 = new Goal("SQUATS", 20, 2,Interval.DAY, dueDateGoal1);
-        Goal goal2 = new Goal("BREAK", 1, 1,Interval.HOUR, dueDateGoal2);
-        goals = goal1.getGoalsTodoForDay(calendar.getTime()); // Generates 1 goalTodo for 20 squats
-        goals.addAll(goal2.getGoalsTodoForDay(calendar.getTime())); // Generates 1 break every hour
         tasks = new ArrayList<>();
-        tasks.add(new Task("Task1", "This is a really useful task.", true));
-        tasks.add(new Task("Task2", "Rendre labo 1 :\n> Fiche technique\n> Rapport (10 pages)\n> Code source (C++)"));
-        tasks.add(new Task("Task3", "..."));
-        tasks.add(new Task("Task4", "..."));
-        // --------- END TEMP ---------
+        goals = new ArrayList<>();
 
         // Greeting
         greetingText = (TextView) v.findViewById(R.id.greeting_text);

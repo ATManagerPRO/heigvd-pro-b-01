@@ -25,13 +25,13 @@ public class GoalTodo {
     private Goal goal;
     private int quantityDone;
     private Date doneDate;
-    private Date dueDate;
+    private Calendar calendarDueDate;
 
-    public GoalTodo(Goal goal, int quantityDone, Date doneDate, Date dueDate) {
+    public GoalTodo(Goal goal, int quantityDone, Date doneDate, Calendar calendarDueDate) {
         this.goal = goal;
         this.quantityDone = quantityDone;
         this.doneDate = doneDate;
-        this.dueDate = dueDate;
+        this.calendarDueDate = calendarDueDate;
     }
 
     public void addQuantity(int quantity) {
@@ -85,10 +85,8 @@ public class GoalTodo {
 
 
     public LocalDate getLocalDueDate() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(dueDate);
-        return LocalDate.of(calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        return LocalDate.of(calendarDueDate.get(Calendar.YEAR),
+                calendarDueDate.get(Calendar.MONTH), calendarDueDate.get(Calendar.DAY_OF_MONTH));
     }
 
 }

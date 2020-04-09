@@ -8,8 +8,7 @@ import android.text.style.LineBackgroundSpan;
 
 import com.heig.atmanager.MainActivity;
 
-import java.util.Random;
-
+import java.util.Calendar;
 import androidx.annotation.NonNull;
 
 /**
@@ -29,9 +28,11 @@ public class CalendarDayNotification implements LineBackgroundSpan {
     private int totalTodosAndGoals;
     private int maxTodosAndGoals;
     private int color;
+    private Context context;
 
     public CalendarDayNotification(Context context, int color) {
         this.color = color;
+        this.context = context;
 
         this.maxTodosAndGoals   = ((MainActivity) context).dummyUser.getMaxActivityPerDay();
     }
@@ -44,13 +45,14 @@ public class CalendarDayNotification implements LineBackgroundSpan {
             int start, int end, int lineNum
     ) {
         int oldColor = paint.getColor();
-        Random rand = new Random(); // random for now
         paint.setColor(color);
-        paint.setAlpha(getDensityAlpha(rand.nextInt(maxTodosAndGoals)));
 
+        // Setting the proper shade of color depending on the user's activity (total tasks/goals)
         // rem : charSequence = day of the month
-        // user.getTodosAndGoalsForDay(Integer.parseInt(charSequence))
-        //paint.setAlpha((255 * Integer.parseInt(charSequence.toString())) / maxTodosAndGoals);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(charSequence.toString()));
+        int totalForDay = ((MainActivity) context).dummyUser.getTotalActivityForDay(calendar.getTime());
+        paint.setAlpha(getDensityAlpha(totalForDay));
 
         canvas.drawRoundRect(left + PADDING, top - HEIGHT + PADDING,
                 right - PADDING, bottom + HEIGHT - PADDING, CORNER_RADIUS,

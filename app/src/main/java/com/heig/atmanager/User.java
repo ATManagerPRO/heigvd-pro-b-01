@@ -49,7 +49,7 @@ public class User {
         return googleToken;
     }
 
-    public ArrayList<Task> getTodos() {
+    public ArrayList<Task> getTasks() {
         return tasks;
     }
 
@@ -80,10 +80,13 @@ public class User {
     public int getTotalTasksForDay(Date day) {
         int totalTasks = 0;
 
+        System.out.println("----------------TASKS----------------");
         for(Task task : tasks) {
+            System.out.println(task);
             if (task.getDueDate() != null && isSameSimpleDate(task.getDueDate(), day))
                 totalTasks++;
         }
+        System.out.println("-------------------------------------");
 
         return totalTasks;
     }
