@@ -41,6 +41,8 @@ public class HomeFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
         // ----------- TEMP -----------
+        // TODO
+        // goals = ((MainActivity) getActivity()).dummyUser.getGoals().getValue();
         goals = new ArrayList<>();
         // GOAL : 20 squats every day for 5 days
         Calendar calendar = Calendar.getInstance();
@@ -54,11 +56,7 @@ public class HomeFragment extends Fragment {
         Goal goal2 = new Goal("BREAK", 1, 1,Interval.HOUR, dueDateGoal2);
         goals = goal1.getGoalsTodoForDay(calendar.getTime()); // Generates 1 goalTodo for 20 squats
         goals.addAll(goal2.getGoalsTodoForDay(calendar.getTime())); // Generates 1 break every hour
-        tasks = new ArrayList<>();
-        tasks.add(new Task("Task1", "This is a really useful task.", true));
-        tasks.add(new Task("Task2", "Rendre labo 1 :\n> Fiche technique\n> Rapport (10 pages)\n> Code source (C++)"));
-        tasks.add(new Task("Task3", "..."));
-        tasks.add(new Task("Task4", "..."));
+        tasks = ((MainActivity) getActivity()).dummyUser.getTasks().getValue();
         // --------- END TEMP ---------
 
         // Greeting

@@ -17,7 +17,7 @@ import com.heig.atmanager.calendar.CalendarFragment;
 import com.heig.atmanager.goals.GoalsFragment;
 
 public class MainActivity extends AppCompatActivity {
-    public User dummyUser;
+    public UserViewModel dummyUser;
 
 
     private BottomNavigationView dock;
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // To get this variable from the fragments ((MainActivity)getActivity()).dummyUser
-        dummyUser = new DummyData().initData();
+        dummyUser = DummyData.getUser();
 
         loadFragment(new HomeFragment());
 

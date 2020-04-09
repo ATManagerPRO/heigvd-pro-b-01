@@ -66,4 +66,8 @@ public class User {
     public void setDirectories(ArrayList<String> directories) {
         this.directories = directories;
     }
+
+    public ArrayList<Task> getTasks() {
+        return tasks;
+    }
 }

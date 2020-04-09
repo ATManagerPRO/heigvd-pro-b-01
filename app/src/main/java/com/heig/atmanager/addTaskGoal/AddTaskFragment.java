@@ -26,6 +26,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
 import com.heig.atmanager.User;
+import com.heig.atmanager.UserViewModel;
 import com.heig.atmanager.tasks.Task;
 
 import java.util.ArrayList;
@@ -84,7 +85,7 @@ public class AddTaskFragment extends Fragment {
 
         final Button validationButton = mView.findViewById(R.id.frag_validation_button);
 
-        final User currentUser =((AddTaskGoalActivity) getActivity()).dummyUser;
+        final UserViewModel currentUser =((AddTaskGoalActivity) getActivity()).dummyUser;
 
 
         // Picker for date and time
@@ -126,7 +127,7 @@ public class AddTaskFragment extends Fragment {
 
 
         // Tags
-        final ArrayAdapter<String> chipsAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, currentUser.getTags());
+        final ArrayAdapter<String> chipsAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, currentUser.getTags().getValue());
 
         final AutoCompleteTextView autoCompleteTextView = mView.findViewById(R.id.frag_add_task_autocomplete_textview);
         autoCompleteTextView.setAdapter(chipsAdapter);
@@ -143,7 +144,7 @@ public class AddTaskFragment extends Fragment {
         // Directory spinner
         final Spinner tagSpinner = mView.findViewById(R.id.frag_directory_choice_tag_spinner);
 
-        ArrayAdapter tagAdapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, currentUser.getDirectories());
+        ArrayAdapter tagAdapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, currentUser.getDirectories().getValue());
         tagAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         tagSpinner.setAdapter(tagAdapter);
         selectedDirectory = tagSpinner.getSelectedItem().toString();
