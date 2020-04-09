@@ -23,7 +23,7 @@
     <!-- Calendar -->
     <color name="outline_selection">#000000</color>
     <color name="outline_today">#FF1818</color>
-    <color name="day_background_notification">#0794CC</color>
+    <color name="day_background_notification">#63CFFF</color>
 
 
 </resources>

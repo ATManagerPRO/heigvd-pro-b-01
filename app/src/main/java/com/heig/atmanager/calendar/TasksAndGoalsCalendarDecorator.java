@@ -1,20 +1,15 @@
 package com.heig.atmanager.calendar;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import com.heig.atmanager.MainActivity;
-import com.heig.atmanager.R;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 
-import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
-
-import androidx.core.content.ContextCompat;
 
 /**
  * Author : Stéphane Bottin
@@ -29,6 +24,7 @@ public class TasksAndGoalsCalendarDecorator implements DayViewDecorator {
 
     private Context context;
     private int color;
+    private int totalTasks;
 
     public TasksAndGoalsCalendarDecorator(Context context, int color) {
         this.context = context;
@@ -37,9 +33,8 @@ public class TasksAndGoalsCalendarDecorator implements DayViewDecorator {
 
     @Override
     public boolean shouldDecorate(CalendarDay day) {
-        int totalActivity = ((MainActivity) context).dummyUser.getTotalActivityForDay(convertCalendarDayToDate(day));
-        Log.d(TAG, "shouldDecorate: " + day + " : " + totalActivity);
-        return totalActivity != 0;
+        totalTasks = ((MainActivity) context).dummyUser.getTotalTasksForDay(convertCalendarDayToDate(day));
+        return totalTasks != 0;
     }
 
     @Override
@@ -52,7 +47,7 @@ public class TasksAndGoalsCalendarDecorator implements DayViewDecorator {
         Calendar calendar = Calendar.getInstance();
 
         calendar.set(Calendar.YEAR, day.getYear());
-        calendar.set(Calendar.MONTH, day.getMonth() - 1); // -1 because Calendar stores month from 0 to 11
+        calendar.set(Calendar.MONTH, day.getMonth() - 1);
         calendar.set(Calendar.DAY_OF_MONTH, day.getDay());
 
         return calendar.getTime();

@@ -43,7 +43,7 @@ public class DummyData {
         dummyUser.addGoal(weekly_goal3);
         dummyUser.addGoal(monthly_goal4);*/
 
-        // Add Tasks (2 tomorrow, 2 in a week)
+        // Add Tasks
         Calendar taskCal = Calendar.getInstance();
         taskCal.add(Calendar.DAY_OF_MONTH, 1);
         Calendar taskCal1 = Calendar.getInstance();
@@ -52,10 +52,22 @@ public class DummyData {
         taskCal1.add(Calendar.WEEK_OF_MONTH, 1);
         Calendar taskCal3 = Calendar.getInstance();
         taskCal1.add(Calendar.WEEK_OF_MONTH, 1);
+        Calendar taskCal4 = Calendar.getInstance();
+        taskCal4.add(Calendar.DAY_OF_MONTH, 3);
+        Calendar taskCal5 = Calendar.getInstance();
+        taskCal5.add(Calendar.WEEK_OF_MONTH, 2);
+        Calendar taskCal6 = Calendar.getInstance();
+        taskCal6.add(Calendar.DAY_OF_MONTH, 9);
         dummyUser.addTask(new Task("Task1", "...", taskCal));
         dummyUser.addTask(new Task("Task2", "...", taskCal1));
         dummyUser.addTask(new Task("Task3", "...", taskCal2));
         dummyUser.addTask(new Task("Task4", "...", taskCal3));
+        dummyUser.addTask(new Task("Task5", "...", taskCal1));
+        dummyUser.addTask(new Task("Task6", "...", taskCal));
+        dummyUser.addTask(new Task("Task7", "...", taskCal1));
+        dummyUser.addTask(new Task("Task8", "...", taskCal4));
+        dummyUser.addTask(new Task("Task9", "...", taskCal5));
+        dummyUser.addTask(new Task("Task10", "...", taskCal6));
 
         dummyUser.setTags(new ArrayList<>(Arrays.asList("Urgent", "Normal")));
 

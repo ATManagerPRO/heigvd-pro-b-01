@@ -93,13 +93,15 @@ public class User {
     public int getTotalTasksForDay(Date day) {
         int totalTasks = 0;
 
-        Log.d(TAG, "getTotalTasksForDay: TASKS -------------------------------------");
+        Log.d(TAG, "getTotalTasksForDay: TASKS (" + tasks.size() + ")-------------------------------------");
         for (Task task : tasks) {
             Log.d(TAG, "getTotalTasksForDay: " + task);
-            if (task.getDueDate() != null && isSameSimpleDate(task.getDueDate(), day))
+            if (task.getDueDate() != null && isSameSimpleDate(task.getDueDate(), day)) {
+                Log.d(TAG, "getTotalTasksForDay: +1");
                 totalTasks++;
+            }
         }
-        Log.d(TAG, "getTotalTasksForDay: -------------------------------------------");
+        Log.d(TAG, "getTotalTasksForDay:" + totalTasks + " -------------------------------------------");
 
         return totalTasks;
     }

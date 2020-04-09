@@ -32,7 +32,6 @@ public class CalendarFragment extends Fragment {
 
     // Calendar
     private MaterialCalendarView calendarView;
-    private int notificationDotColor = Color.rgb(255, 0, 0);
 
     // Goal feed
     private ArrayList<GoalTodo> goals; // user data
@@ -60,9 +59,10 @@ public class CalendarFragment extends Fragment {
         );
         // Notification decorator for todos and goals
         calendarView.addDecorator(new TasksAndGoalsCalendarDecorator(v.getContext(),
-                v.getResources().getColor(R.color.outline_today, null)));
+                v.getResources().getColor(R.color.day_background_notification, null)));
         // Today's date decorator
-        calendarView.addDecorator(new TodayCalendarDecorator(today, notificationDotColor));
+        calendarView.addDecorator(new TodayCalendarDecorator(today,
+                v.getResources().getColor(R.color.outline_today, null)));
         // Date selection
         calendarView.addDecorator(new SelectionCalendarDecorator(v.getContext()));
 
