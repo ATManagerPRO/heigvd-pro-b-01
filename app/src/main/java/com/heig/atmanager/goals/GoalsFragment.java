@@ -45,6 +45,8 @@ public class GoalsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_goals, container, false);
 
+        goals = new ArrayList<>();
+
         // Displaying the generating GoalTodo from the goals by intervals
         ArrayList<GoalTodo> todayGoals = new ArrayList<>();
         ArrayList<GoalTodo> weekGoals  = new ArrayList<>();
