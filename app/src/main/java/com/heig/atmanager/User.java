@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class User {
 
     private String userName;
-    private  ArrayList<String> directories;
+    private ArrayList<String> directories;
     private String googleToken;
 
     private ArrayList<Task> tasks;

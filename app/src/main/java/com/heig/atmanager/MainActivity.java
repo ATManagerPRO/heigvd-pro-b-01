@@ -1,17 +1,18 @@
 package com.heig.atmanager;
 
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.heig.atmanager.calendar.CalendarFragment;
 import com.heig.atmanager.goals.GoalsFragment;
+import com.heig.atmanager.stats.StatsFragment;
 
 public class MainActivity extends AppCompatActivity {
     public User dummyUser;
