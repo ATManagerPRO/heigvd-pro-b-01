@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,14 +16,15 @@ import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.heig.atmanager.addTaskGoal.AddTaskGoalActivity;
 import com.heig.atmanager.calendar.CalendarFragment;
+import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.goals.GoalsFragment;
+import com.heig.atmanager.taskLists.TaskList;
 
 public class MainActivity extends AppCompatActivity {
     public User dummyUser;
-
-    private View fragmentContainer;
 
     private BottomNavigationView dock;
 
@@ -32,11 +34,15 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
+    private NavigationView navView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // To get this variable from the fragments ((MainActivity)getActivity()).dummyUser
+        dummyUser = new DummyData().initData();
 
         // Drawer layout
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
@@ -44,9 +50,9 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        navView = (NavigationView) findViewById(R.id.navView);
+        updateDrawerItems(navView);
 
-        // To get this variable from the fragments ((MainActivity)getActivity()).dummyUser
-        dummyUser = new DummyData().initData();
 
         // First fragment to load : Home
         loadFragment(new HomeFragment());
@@ -146,6 +152,22 @@ public class MainActivity extends AppCompatActivity {
 
         // Commit the transaction
         transaction.commit();
+    }
+
+    private void updateDrawerItems(NavigationView navigationView) {
+
+        // get menu from navigationView
+        Menu menu = navigationView.getMenu();
+
+        for(Folder folder : dummyUser.getFolders()) {
+            Menu submenu = menu.addSubMenu(folder.getName());
+
+            for(TaskList taskList : folder.getTaskLists())
+                submenu.add(taskList.getName());
+
+        }
+
+        navigationView.invalidate();
     }
 
 }
