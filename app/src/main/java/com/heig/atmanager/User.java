@@ -1,5 +1,7 @@
 package com.heig.atmanager;
 
+import android.util.Log;
+
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.goals.GoalTodo;
@@ -144,7 +146,20 @@ public class User {
         return maxEntry == null ? 0 : maxEntry.getValue();
     }
 
+    public ArrayList<Task> getTasksForDay(Date day) {
+        ArrayList<Task> tasksForDay = new ArrayList<>();
+
+        for (Task task : tasks) {
+            if (task.getDueDate() != null && isSameSimpleDate(task.getDueDate(), day)) {
+                tasksForDay.add(task);
+            }
+        }
+
+        return tasksForDay;
+    }
+
     private boolean isSameSimpleDate(Date d1, Date d2) {
+        Log.d(TAG, "isSameSimpleDate: " + d1 + " / " + d2);
         Calendar calendar_d1 = Calendar.getInstance();
         Calendar calendar_d2 = Calendar.getInstance();
         calendar_d1.setTime(d1);

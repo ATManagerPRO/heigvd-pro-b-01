@@ -16,7 +16,7 @@ import androidx.core.content.ContextCompat;
  * Author : Stéphane Bottin
  * Date   : 02.04.2020
  */
-public class SelectionCalendarDecorator  implements DayViewDecorator {
+public class SelectionCalendarDecorator implements DayViewDecorator {
 
     private static final String TAG = "SelectionCalendarDecorator";
 
