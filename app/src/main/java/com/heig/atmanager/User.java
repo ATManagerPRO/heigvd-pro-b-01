@@ -77,12 +77,8 @@ public class User {
         return directories;
     }
 
-
-
     public void setDirectories(ArrayList<String> directories) {
         this.directories = directories;
     }
-
-
-
+    
 }
