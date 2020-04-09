@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.tasks.Task;
 
@@ -24,6 +25,8 @@ public class UserViewModel extends ViewModel {
     private MutableLiveData<ArrayList<Goal>> goals;
 
     private MutableLiveData<ArrayList<String>> tags;
+
+    private MutableLiveData<ArrayList<Folder>> folders;
 
     public String getUserName() {
         return userName;
@@ -61,6 +64,11 @@ public class UserViewModel extends ViewModel {
             tags.setValue(user.getTags());
         }
 
+        folders = new MutableLiveData<>();
+        if (user.getFolders() != null) {
+            folders.setValue(user.getFolders());
+        }
+
     }
 
     public MutableLiveData<ArrayList<String>> getDirectories() {
@@ -94,6 +102,14 @@ public class UserViewModel extends ViewModel {
             tags = new MutableLiveData<>();
         }
         return tags;
+    }
+
+    public MutableLiveData<ArrayList<Folder>> getFolders() {
+        if (folders == null) {
+            folders = new MutableLiveData<>();
+        }
+
+        return folders;
     }
 
     public void addTask(Task task){
