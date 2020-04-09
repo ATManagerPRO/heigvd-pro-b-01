@@ -1,9 +1,5 @@
 package com.heig.atmanager;
 
-
-import android.icu.text.CaseMap;
-import android.util.Log;
-
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.goals.GoalTodo;
@@ -93,15 +89,11 @@ public class User {
     public int getTotalTasksForDay(Date day) {
         int totalTasks = 0;
 
-        Log.d(TAG, "getTotalTasksForDay: TASKS (" + tasks.size() + ")-------------------------------------");
         for (Task task : tasks) {
-            Log.d(TAG, "getTotalTasksForDay: " + task);
             if (task.getDueDate() != null && isSameSimpleDate(task.getDueDate(), day)) {
-                Log.d(TAG, "getTotalTasksForDay: +1");
                 totalTasks++;
             }
         }
-        Log.d(TAG, "getTotalTasksForDay:" + totalTasks + " -------------------------------------------");
 
         return totalTasks;
     }

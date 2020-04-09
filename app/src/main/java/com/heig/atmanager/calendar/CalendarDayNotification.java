@@ -2,11 +2,9 @@ package com.heig.atmanager.calendar;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.text.style.LineBackgroundSpan;
-import android.util.Log;
 
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
@@ -29,16 +27,15 @@ public class CalendarDayNotification implements LineBackgroundSpan {
     private static final int PADDING       = 10;
     private static final int CORNER_RADIUS = 20;
 
-    private static final int[] alphaDensity = new int[] {0, 50, 100, 150, 230};
-    private static final int minAlpha = 50;
-    private static final int maxAlpha = 255;
+    private static final int ALPHA_MIN     = 50;
+    private static final int ALPHA_MAX     = 255;
 
     private int maxTasks;
     private int color;
     private Context context;
 
     public CalendarDayNotification(Context context, int color) {
-        this.color = ContextCompat.getColor(context, R.color.day_background_notification);
+        this.color   = color;
         this.context = context;
 
         // TODO : Should be computed once outside...
@@ -75,6 +72,6 @@ public class CalendarDayNotification implements LineBackgroundSpan {
      * @return an alpha value from the alphaDensity array
      */
     private int getDensityAlpha(int totalTasks) {
-        return Math.max(maxAlpha * totalTasks / maxTasks, minAlpha);
+        return Math.max(ALPHA_MAX * totalTasks / maxTasks, ALPHA_MIN);
     }
 }
