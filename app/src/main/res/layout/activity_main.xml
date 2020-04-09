@@ -8,13 +8,111 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </FrameLayout>
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/dock_container"/>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/dock_container"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/fab_dial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_marginBottom="16dp"
+            android:visibility="invisible"
+            android:gravity="center_vertical"
+            app:layout_anchor="@id/fab"
+            android:orientation="vertical"
+            android:layout_marginEnd="26dp"
+            android:padding="8dp"
+            android:paddingEnd="0dp"
+            app:layout_anchorGravity="top|center_horizontal"
+            app:layout_behavior="com.google.android.material.transformation.FabTransformationScrimBehavior"
+            tools:ignore="RtlSymmetry">
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="bottom|end">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/add_task"
+                    android:elevation="2dp"
+                    android:background="@drawable/rounded_conner"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fab_add_task"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_add_black_24dp"
+                    android:layout_margin="4dp"
+                    android:backgroundTint="@color/colorAccent"
+                    android:layout_gravity="bottom|end"
+                    app:fabSize="mini"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="bottom|end">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/add_goal"
+                    android:elevation="2dp"
+                    android:background="@drawable/rounded_conner"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fab_add_goal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_add_black_24dp"
+                    android:layout_margin="4dp"
+                    android:backgroundTint="@color/colorAccent"
+                    android:layout_gravity="bottom|end"
+                    app:fabSize="mini"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="26dp"
+            app:srcCompat="@drawable/ic_add_black_24dp"
+            android:backgroundTint="@color/colorAccent"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 
     <include layout="@layout/dock"
         android:id="@+id/dock_container"/>
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

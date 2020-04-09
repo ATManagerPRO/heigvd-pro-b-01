@@ -5,18 +5,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.heig.atmanager.addTaskGoal.AddTaskGoalActivity;
 import com.heig.atmanager.calendar.CalendarFragment;
 import com.heig.atmanager.goals.GoalsFragment;
 
 public class MainActivity extends AppCompatActivity {
     public User dummyUser;
 
-    BottomNavigationView dock;
+
+    private BottomNavigationView dock;
+
+    private FloatingActionButton fab;
+    private FloatingActionButton fabAddTask;
+    private FloatingActionButton fabAddGoal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +42,12 @@ public class MainActivity extends AppCompatActivity {
 
         View dockView = findViewById(R.id.dock_container);
         dock = dockView.findViewById(R.id.dock);
+
+        fab = findViewById(R.id.fab);
+        fabAddGoal = findViewById(R.id.fab_add_goal);
+        fabAddTask = findViewById(R.id.fab_add_task);
+
+
         dock.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -61,6 +75,32 @@ public class MainActivity extends AppCompatActivity {
 
         // Load fragment
         loadFragment(new HomeFragment());
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fab.setExpanded(!fab.isExpanded());
+            }
+        });
+
+        fabAddTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), AddTaskGoalActivity.class);
+                intent.putExtra("fragToLoad", R.id.frag_add_task);
+                startActivity(intent);
+            }
+        });
+
+        fabAddGoal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), AddTaskGoalActivity.class);
+                intent.putExtra("fragToLoad", R.id.frag_add_goal);
+                startActivity(intent);
+            }
+        });
+
     }
 
 

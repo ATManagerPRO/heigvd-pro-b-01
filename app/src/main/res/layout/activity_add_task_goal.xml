@@ -7,10 +7,10 @@
     android:background="@color/colorPrimary"
     tools:context=".addTaskGoal.AddTaskGoalActivity">
 
-    <fragment
-        android:id="@+id/main_fragment"
-        android:name="com.heig.atmanager.addTaskGoal.AddTaskFragment"
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
