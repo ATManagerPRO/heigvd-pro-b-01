@@ -133,5 +133,18 @@ public class Goal {
         return goalTodos;
     }
 
+    public Date getDueDate() {
+        return dueDate;
+    }
+
+    public double getOverallPercentage() {
+        double percentage = 0;
+
+        for(GoalTodo goalTodo : goalTodos)
+            percentage += goalTodo.getQuantityDone();
+
+        return percentage / goalTodos.size();
+    }
+
 
 }

@@ -74,26 +74,26 @@ public class GoalsFragment extends Fragment {
         Date today = Calendar.getInstance().getTime();
 
         // Displaying the generating GoalTodo from the goals by intervals
-        ArrayList<GoalTodo> todayGoals = new ArrayList<>();
-        ArrayList<GoalTodo> weekGoals  = new ArrayList<>();
-        ArrayList<GoalTodo> monthGoals = new ArrayList<>();
+        ArrayList<Goal> todayGoals = new ArrayList<>();
+        ArrayList<Goal> weekGoals  = new ArrayList<>();
+        ArrayList<Goal> monthGoals = new ArrayList<>();
         for(Goal goal : goals) {
             switch(goal.getInterval()) {
-                case DAY:
-                    todayGoals.add(goal.getGoalTodos().get(0));
+                case Interval.DAY:
+                    todayGoals.add(goal);
                     break;
-                case WEEK:
-                    weekGoals.add(goal.getGoalTodos().get(0));
+                case Interval.WEEK:
+                    weekGoals.add(goal);
                     break;
-                case MONTH:
-                    monthGoals.add(goal.getGoalTodos().get(0));
+                case Interval.MONTH:
+                    monthGoals.add(goal);
                     break;
             }
         }
 
         // Goals feeds setup
         goalsTodayRecyclerView = (RecyclerView) v.findViewById(R.id.goals_today_rv);
-        Utils.setupGoalsFeed(v, goalsTodayRecyclerView, todayGoals);
+        Utils.setupLinedGoalsFeed(v, goalsTodayRecyclerView, todayGoals);
 
         goalsWeekRecyclerView = (RecyclerView) v.findViewById(R.id.goals_week_rv);
         Utils.setupGoalsFeed(v, goalsWeekRecyclerView, weekGoals);

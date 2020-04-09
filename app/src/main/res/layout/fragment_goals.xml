@@ -6,9 +6,12 @@
     android:orientation="vertical">
     
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/ic_goals"
+        android:backgroundTint="@color/grey"
+        android:layout_margin="30dp"/>
 
     <!-- TODO : Refactor in a goalDisplay layout -->
 

@@ -4,7 +4,9 @@ import android.view.View;
 
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.folders.FolderAdapter;
-import com.heig.atmanager.goals.GoalFeedAdapter;
+import com.heig.atmanager.goals.Goal;
+import com.heig.atmanager.goals.GoalBubbleFeedAdapter;
+import com.heig.atmanager.goals.GoalLineFeedAdapter;
 import com.heig.atmanager.goals.GoalTodo;
 import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.taskLists.TaskListAdapter;
@@ -37,7 +39,22 @@ public class Utils {
         rv.setLayoutManager(manager);
 
         // specify an adapter (see also next example)
-        RecyclerView.Adapter adapter = new GoalFeedAdapter(goals);
+        RecyclerView.Adapter adapter = new GoalBubbleFeedAdapter(goals);
+        rv.setAdapter(adapter);
+    }
+
+    public static void setupLinedGoalsFeed(View v, RecyclerView rv, ArrayList<Goal> goals) {
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        rv.setHasFixedSize(true);
+
+        // use a (horizontal) linear layout manager
+        LinearLayoutManager manager = new LinearLayoutManager(v.getContext(), LinearLayoutManager.HORIZONTAL, false);
+        rv.setLayoutManager(manager);
+
+        // specify an adapter (see also next example)
+        RecyclerView.Adapter adapter = new GoalLineFeedAdapter(goals);
         rv.setAdapter(adapter);
     }
 

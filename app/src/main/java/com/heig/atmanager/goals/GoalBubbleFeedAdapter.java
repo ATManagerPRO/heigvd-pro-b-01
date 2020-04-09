@@ -29,7 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
  *
  * Goal feed adapter for the home view
  */
-public class GoalFeedAdapter extends RecyclerView.Adapter<GoalFeedAdapter.MyViewHolder> {
+public class GoalBubbleFeedAdapter extends RecyclerView.Adapter<GoalBubbleFeedAdapter.MyViewHolder> {
 private ArrayList<GoalTodo> goals;
 
 // Provide a reference to the views for each data item
@@ -62,25 +62,25 @@ public static class MyViewHolder extends RecyclerView.ViewHolder {
 }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public GoalFeedAdapter(ArrayList<GoalTodo> goals) {
+    public GoalBubbleFeedAdapter(ArrayList<GoalTodo> goals) {
         this.goals = goals;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public GoalFeedAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                                           int viewType) {
+    public GoalBubbleFeedAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
+                                                                 int viewType) {
         // create a new view
         View v = (View) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.goal, parent, false);
+                .inflate(R.layout.goal_bubble, parent, false);
 
-        GoalFeedAdapter.MyViewHolder vh = new GoalFeedAdapter.MyViewHolder(v);
+        GoalBubbleFeedAdapter.MyViewHolder vh = new GoalBubbleFeedAdapter.MyViewHolder(v);
         return vh;
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(final GoalFeedAdapter.MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final GoalBubbleFeedAdapter.MyViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.unit.setText(goals.get(position).getUnit());
