@@ -7,10 +7,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.heig.atmanager.R;
+import com.heig.atmanager.Utils;
+
+import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Author : Stephane
@@ -25,6 +29,10 @@ public class GoalsTodoFragment extends Fragment {
     private TextView title;
     private TextView date;
 
+    // GoalTodos
+    private ArrayList<GoalTodo> goalTodos;
+    private RecyclerView goalsTodoRecyclerView;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -37,6 +45,11 @@ public class GoalsTodoFragment extends Fragment {
         title.setText(getArguments().getString("goal_title"));
         date = (TextView) v.findViewById(R.id.title_date);
         date.setText(getArguments().getString("goal_date"));
+
+        // GoalTodos of the goal send in th bundle
+        goalTodos = ((Goal) getArguments().getSerializable("goal")).getGoalTodos();
+        goalsTodoRecyclerView = (RecyclerView) v.findViewById(R.id.goalstodo_rv);
+        Utils.setupGoalTodosFeedLined(v, goalsTodoRecyclerView, goalTodos);
 
         return v;
     }

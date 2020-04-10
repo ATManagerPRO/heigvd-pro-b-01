@@ -93,13 +93,13 @@ public class GoalsFragment extends Fragment {
 
         // Goals feeds setup
         goalsTodayRecyclerView = (RecyclerView) v.findViewById(R.id.goals_today_rv);
-        Utils.setupLinedGoalsFeed(getActivity(), v, goalsTodayRecyclerView, todayGoals);
+        Utils.setupGoalsFeed(getActivity(), v, goalsTodayRecyclerView, todayGoals);
 
         goalsWeekRecyclerView = (RecyclerView) v.findViewById(R.id.goals_week_rv);
-        Utils.setupLinedGoalsFeed(getActivity(), v, goalsWeekRecyclerView, weekGoals);
+        Utils.setupGoalsFeed(getActivity(), v, goalsWeekRecyclerView, weekGoals);
 
         goalsMonthRecyclerView = (RecyclerView) v.findViewById(R.id.goals_month_rv);
-        Utils.setupLinedGoalsFeed(getActivity(), v, goalsMonthRecyclerView, monthGoals);
+        Utils.setupGoalsFeed(getActivity(), v, goalsMonthRecyclerView, monthGoals);
         return v;
     }
 

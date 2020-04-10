@@ -99,6 +99,7 @@ public class GoalLineFeedAdapter extends RecyclerView.Adapter<GoalLineFeedAdapte
                 bundle.putString("goal_interval", interval);
                 bundle.putString("goal_title", title);
                 bundle.putString("goal_date", date);
+                bundle.putSerializable("goal", goals.get(position));
                 GoalsTodoFragment goalsTodoFragment = new GoalsTodoFragment();
                 goalsTodoFragment.setArguments(bundle);
 

@@ -71,7 +71,7 @@ public class HomeFragment extends Fragment {
 
         // Goal feed
         goalsRecyclerView = (RecyclerView) v.findViewById(R.id.goals_rv);
-        Utils.setupGoalsFeed(v, goalsRecyclerView, goals);
+        Utils.setupGoalTodosFeedBubbled(v, goalsRecyclerView, goals);
 
         return v;
     }

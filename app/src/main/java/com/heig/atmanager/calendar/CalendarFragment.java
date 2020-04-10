@@ -69,8 +69,8 @@ public class CalendarFragment extends Fragment {
         Utils.setupTodosFeed(v, tasksRecyclerView, tasks);
 
         // Goal feed
-        goalsRecyclerView = (RecyclerView) v.findViewById(R.id.goals_rv);
-        Utils.setupGoalsFeed(v, goalsRecyclerView, goals);
+        //goalsRecyclerView = (RecyclerView) v.findViewById(R.id.goals_rv);
+        //Utils.setupGoalsFeed(v, goalsRecyclerView, goals);
 
         return v;
     }
