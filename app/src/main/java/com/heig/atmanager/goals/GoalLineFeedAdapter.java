@@ -96,10 +96,10 @@ public class GoalLineFeedAdapter extends RecyclerView.Adapter<GoalLineFeedAdapte
 
                 // Data to pass in the fragment
                 Bundle bundle = new Bundle();
-                bundle.putString("goal_interval", interval);
-                bundle.putString("goal_title", title);
-                bundle.putString("goal_date", date);
-                bundle.putSerializable("goal", goals.get(position));
+                bundle.putString(Goal.INTERVAL_KEY, interval);
+                bundle.putString(Goal.TITLE_KEY, title);
+                bundle.putString(Goal.DATE_KEY, date);
+                bundle.putSerializable(Goal.SERIAL_GOAL_KEY, goals.get(position));
                 GoalsTodoFragment goalsTodoFragment = new GoalsTodoFragment();
                 goalsTodoFragment.setArguments(bundle);
 

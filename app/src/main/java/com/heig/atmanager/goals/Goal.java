@@ -24,6 +24,12 @@ import java.util.Date;
  */
 public class Goal implements Serializable {
 
+    // Bundle keys for goalTodo header
+    public static final String TITLE_KEY       = "goal_title";
+    public static final String INTERVAL_KEY    = "goal_interval";
+    public static final String DATE_KEY        = "goal_date";
+    public static final String SERIAL_GOAL_KEY = "goal_serial";
+
     private static final String TAG = "Goal";
     
     private String unit;

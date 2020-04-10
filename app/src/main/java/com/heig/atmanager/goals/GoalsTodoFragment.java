@@ -40,14 +40,14 @@ public class GoalsTodoFragment extends Fragment {
 
         // Header setup
         interval = (TextView) v.findViewById(R.id.title_interval);
-        interval.setText(getArguments().getString("goal_interval"));
+        interval.setText(getArguments().getString(Goal.INTERVAL_KEY));
         title = (TextView) v.findViewById(R.id.title);
-        title.setText(getArguments().getString("goal_title"));
+        title.setText(getArguments().getString(Goal.TITLE_KEY));
         date = (TextView) v.findViewById(R.id.title_date);
-        date.setText(getArguments().getString("goal_date"));
+        date.setText(getArguments().getString(Goal.DATE_KEY));
 
         // GoalTodos of the goal send in th bundle
-        goalTodos = ((Goal) getArguments().getSerializable("goal")).getGoalTodos();
+        goalTodos = ((Goal) getArguments().getSerializable(Goal.SERIAL_GOAL_KEY)).getGoalTodos();
         goalsTodoRecyclerView = (RecyclerView) v.findViewById(R.id.goalstodo_rv);
         Utils.setupGoalTodosFeedLined(v, goalsTodoRecyclerView, goalTodos);
 
