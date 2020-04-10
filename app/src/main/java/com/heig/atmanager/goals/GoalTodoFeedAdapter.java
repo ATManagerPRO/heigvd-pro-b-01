@@ -24,10 +24,10 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * Author : Stephane
+ * Author : Stéphane Bottin
  * Date   : 10.04.2020
- * <p>
- * This class better be good.
+ *
+ * Adapter for goalsTodo bubbled or line by line
  */
 public class GoalTodoFeedAdapter extends RecyclerView.Adapter<GoalTodoFeedAdapter.MyViewHolder> {
     private ArrayList<GoalTodo> goals;

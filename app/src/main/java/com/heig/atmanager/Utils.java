@@ -5,7 +5,6 @@ import android.view.View;
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.folders.FolderAdapter;
 import com.heig.atmanager.goals.Goal;
-import com.heig.atmanager.goals.GoalTodoBubbleFeedAdapter;
 import com.heig.atmanager.goals.GoalLineFeedAdapter;
 import com.heig.atmanager.goals.GoalTodo;
 import com.heig.atmanager.goals.GoalTodoFeedAdapter;

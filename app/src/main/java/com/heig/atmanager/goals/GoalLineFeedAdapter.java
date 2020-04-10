@@ -1,6 +1,5 @@
 package com.heig.atmanager.goals;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +13,8 @@ import com.heig.atmanager.R;
 import com.heig.atmanager.Utils;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
