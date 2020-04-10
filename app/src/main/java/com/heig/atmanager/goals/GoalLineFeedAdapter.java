@@ -1,36 +1,36 @@
 package com.heig.atmanager.goals;
 
-import android.text.TextUtils;
-import android.view.KeyEvent;
+import android.app.Activity;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationSet;
-import android.view.animation.AnimationUtils;
-import android.view.animation.RotateAnimation;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
+
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.heig.atmanager.R;
 import com.heig.atmanager.Utils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
-import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * Author : Stephane
+ * Author : Stéphane Bottin
  * Date   : 09.04.2020
- * <p>
- * This class better be good.
+ *
+ * Recycler View adapter for the goals line by line
  */
 public class GoalLineFeedAdapter extends RecyclerView.Adapter<GoalLineFeedAdapter.MyViewHolder> {
+
     private ArrayList<Goal> goals;
+    private FragmentActivity fa;
 
     // Provide a reference to the views for each data item
 // Complex data items may need more than one view per item, and
@@ -55,8 +55,9 @@ public class GoalLineFeedAdapter extends RecyclerView.Adapter<GoalLineFeedAdapte
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public GoalLineFeedAdapter(ArrayList<Goal> goals) {
+    public GoalLineFeedAdapter(FragmentActivity fa, ArrayList<Goal> goals) {
         this.goals = goals;
+        this.fa = fa;
     }
 
     // Create new views (invoked by the layout manager)
@@ -65,7 +66,7 @@ public class GoalLineFeedAdapter extends RecyclerView.Adapter<GoalLineFeedAdapte
                                                                  int viewType) {
         // create a new view
         View v = (View) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.goal_bubble, parent, false);
+                .inflate(R.layout.goal_line, parent, false);
 
         GoalLineFeedAdapter.MyViewHolder vh = new GoalLineFeedAdapter.MyViewHolder(v);
         return vh;
@@ -74,20 +75,39 @@ public class GoalLineFeedAdapter extends RecyclerView.Adapter<GoalLineFeedAdapte
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(final GoalLineFeedAdapter.MyViewHolder holder, final int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
-        holder.title.setText(goals.get(position).getQuantity() + " " + goals.get(position).getUnit());
-        holder.date.setText(goals.get(position).getDueDate().toString());
+
+        final String interval = goals.get(position).getIntervalNumber() == 1 ?
+                goals.get(position).getInterval().getAdverb() + " GOAL" :
+                "EVERY " + goals.get(position).getIntervalNumber() + " " + goals.get(position).getInterval().getNoun() + " GOAL";
+        final String title    = goals.get(position).getQuantity() + " " + goals.get(position).getUnit();
+        final String date     = goals.get(position).getDueDate() == null ?
+                "↻ Till hell freezes over" :
+                "→ " + Utils.dateToString(goals.get(position).getDueDate());
+
+        holder.title.setText(title);
+        holder.date.setText(date);
+        holder.percentage.setText((int) goals.get(position).getOverallPercentage() + "%");
         holder.progress.setProgress((int) goals.get(position).getOverallPercentage());
 
         // Add a quantity to a GoalTodo
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO : opens goals todos view
+
+                // Data to pass in the fragment
+                Bundle bundle = new Bundle();
+                bundle.putString("goal_interval", interval);
+                bundle.putString("goal_title", title);
+                bundle.putString("goal_date", date);
+                GoalsTodoFragment goalsTodoFragment = new GoalsTodoFragment();
+                goalsTodoFragment.setArguments(bundle);
+
+                // Load goalsTodos fragment
+                fa.getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, goalsTodoFragment)
+                        .commit();
             }
         });
-
     }
 
     // Return the size of your dataset (invoked by the layout manager)

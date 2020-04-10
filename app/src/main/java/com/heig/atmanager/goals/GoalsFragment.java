@@ -79,13 +79,13 @@ public class GoalsFragment extends Fragment {
         ArrayList<Goal> monthGoals = new ArrayList<>();
         for(Goal goal : goals) {
             switch(goal.getInterval()) {
-                case Interval.DAY:
+                case DAY:
                     todayGoals.add(goal);
                     break;
-                case Interval.WEEK:
+                case WEEK:
                     weekGoals.add(goal);
                     break;
-                case Interval.MONTH:
+                case MONTH:
                     monthGoals.add(goal);
                     break;
             }
@@ -93,13 +93,13 @@ public class GoalsFragment extends Fragment {
 
         // Goals feeds setup
         goalsTodayRecyclerView = (RecyclerView) v.findViewById(R.id.goals_today_rv);
-        Utils.setupLinedGoalsFeed(v, goalsTodayRecyclerView, todayGoals);
+        Utils.setupLinedGoalsFeed(getActivity(), v, goalsTodayRecyclerView, todayGoals);
 
         goalsWeekRecyclerView = (RecyclerView) v.findViewById(R.id.goals_week_rv);
-        Utils.setupGoalsFeed(v, goalsWeekRecyclerView, weekGoals);
+        Utils.setupLinedGoalsFeed(getActivity(), v, goalsWeekRecyclerView, weekGoals);
 
         goalsMonthRecyclerView = (RecyclerView) v.findViewById(R.id.goals_month_rv);
-        Utils.setupGoalsFeed(v, goalsMonthRecyclerView, monthGoals);
+        Utils.setupLinedGoalsFeed(getActivity(), v, goalsMonthRecyclerView, monthGoals);
         return v;
     }
 

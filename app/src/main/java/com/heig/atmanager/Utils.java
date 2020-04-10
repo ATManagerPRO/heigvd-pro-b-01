@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,18 +44,18 @@ public class Utils {
         rv.setAdapter(adapter);
     }
 
-    public static void setupLinedGoalsFeed(View v, RecyclerView rv, ArrayList<Goal> goals) {
+    public static void setupLinedGoalsFeed(FragmentActivity fa, View v, RecyclerView rv, ArrayList<Goal> goals) {
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         rv.setHasFixedSize(true);
 
         // use a (horizontal) linear layout manager
-        LinearLayoutManager manager = new LinearLayoutManager(v.getContext(), LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager manager = new LinearLayoutManager(v.getContext(), LinearLayoutManager.VERTICAL, false);
         rv.setLayoutManager(manager);
 
-        // specify an adapter (see also next example)
-        RecyclerView.Adapter adapter = new GoalLineFeedAdapter(goals);
+        // specify an adapter
+        RecyclerView.Adapter adapter = new GoalLineFeedAdapter(fa, goals);
         rv.setAdapter(adapter);
     }
 
@@ -68,7 +69,7 @@ public class Utils {
         LinearLayoutManager manager = new LinearLayoutManager(v.getContext(), LinearLayoutManager.VERTICAL, false);
         rv.setLayoutManager(manager);
 
-        // specify an adapter (see also next example)
+        // specify an adapter
         RecyclerView.Adapter adapter = new FolderAdapter(folders);
         rv.setAdapter(adapter);
     }
@@ -107,6 +108,14 @@ public class Utils {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return cal.get(Calendar.DAY_OF_MONTH);
+    }
+
+    public static String dateToString(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return formatNumber(cal.get(Calendar.DAY_OF_MONTH)) + "/" +
+                formatNumber(cal.get(Calendar.MONTH)) + "/" +
+                formatNumber(cal.get(Calendar.YEAR));
     }
 
     public static String formatNumber(int number) {
