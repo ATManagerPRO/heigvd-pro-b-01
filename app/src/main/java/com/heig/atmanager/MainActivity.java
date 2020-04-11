@@ -24,7 +24,7 @@ import com.heig.atmanager.goals.GoalsFragment;
 import com.heig.atmanager.taskLists.TaskList;
 
 public class MainActivity extends AppCompatActivity {
-    public User dummyUser;
+    public UserViewModel dummyUser;
 
     private BottomNavigationView dock;
 
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // To get this variable from the fragments ((MainActivity)getActivity()).dummyUser
-        dummyUser = new DummyData().initData();
+        dummyUser = DummyData.getUser();
 
         // Drawer layout
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
