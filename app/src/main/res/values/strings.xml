@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">ATManager</string>
-    
+
+    <!-- Drawer -->
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+    <string name="drawer_my_tasks">MyTasks</string>
+
     <!-- Dock -->
     <string name="dock_home">Home</string>
     <string name="dock_calendar">Calendar</string>
