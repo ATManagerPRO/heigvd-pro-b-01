@@ -52,8 +52,6 @@ public class DummyData {
 
             dummyUser.setTags(new ArrayList<>(Arrays.asList("Urgent", "Normal")));
 
-            dummyUser.setDirectories(new ArrayList<>(Arrays.asList("Personal", "School")));
-
             //create folders
             Folder folder1 = new Folder("Ecole");
             folder1.addList("first list");

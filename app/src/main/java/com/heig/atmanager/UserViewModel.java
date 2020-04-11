@@ -17,7 +17,6 @@ import java.util.ArrayList;
 public class UserViewModel extends ViewModel {
 
     private String userName;
-    private MutableLiveData<ArrayList<String>> directories;
     private String googleToken;
 
     private MutableLiveData<ArrayList<Task>> tasks;
@@ -39,16 +38,6 @@ public class UserViewModel extends ViewModel {
         userName = user.getUserName();
         googleToken = user.getGoogleToken();
 
-        directories = new MutableLiveData<>();
-        if (user.getDirectories() != null) {
-            directories.setValue(user.getDirectories());
-        }
-
-        directories = new MutableLiveData<>();
-        if (user.getDirectories() != null) {
-            directories.setValue(user.getDirectories());
-        }
-
         tasks = new MutableLiveData<>();
         if (user.getTasks() != null) {
             tasks.setValue(user.getTasks());
@@ -69,14 +58,6 @@ public class UserViewModel extends ViewModel {
             folders.setValue(user.getFolders());
         }
 
-    }
-
-    public MutableLiveData<ArrayList<String>> getDirectories() {
-        if (directories == null) {
-            directories = new MutableLiveData<>();
-        }
-
-        return directories;
     }
 
     public String getGoogleToken() {
