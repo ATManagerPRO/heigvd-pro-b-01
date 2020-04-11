@@ -1,11 +1,14 @@
 package com.heig.atmanager.goals;
 
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
 import com.heig.atmanager.Utils;
 
@@ -13,16 +16,17 @@ import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * Author : Stephane
+ * Author : Stéphane Bottin
  * Date   : 10.04.2020
- * <p>
- * This class better be good.
  */
 public class GoalsTodoFragment extends Fragment {
+
+    public static final String FRAG_GOALS_TODO_ID = "GoalsTodo_Fragment";
 
     // Header
     private TextView interval;
@@ -37,6 +41,10 @@ public class GoalsTodoFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_goals_todo, container, false);
+
+        // Change top button as back button
+        MainActivity.previousFragment = GoalsFragment.FRAG_GOALS_ID;
+        MainActivity.enableBackButton((AppCompatActivity) getActivity(), true);
 
         // Header setup
         interval = (TextView) v.findViewById(R.id.title_interval);
@@ -53,4 +61,5 @@ public class GoalsTodoFragment extends Fragment {
 
         return v;
     }
+
 }

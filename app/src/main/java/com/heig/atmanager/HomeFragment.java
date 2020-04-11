@@ -22,6 +22,9 @@ import java.util.Calendar;
  * Fragment for the Home view (User's Tasks and Goals of the day)
  */
 public class HomeFragment extends Fragment {
+
+    public static final String FRAG_HOME_ID = "Home_Fragment";
+
     // Greeting message
     private TextView greetingText;
 

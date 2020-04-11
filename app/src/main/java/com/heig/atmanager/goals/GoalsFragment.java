@@ -28,6 +28,8 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 public class GoalsFragment extends Fragment {
 
+    public static final String FRAG_GOALS_ID = "Goals_Fragment";
+
     // Today's goal feed
     ArrayList<Goal> goals; // user data
     private RecyclerView goalsTodayRecyclerView;
