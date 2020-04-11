@@ -4,8 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- TODO : Refactor in a goalDisplay layout -->
-
+    
     <!-- Daily goals display -->
 
     <LinearLayout
