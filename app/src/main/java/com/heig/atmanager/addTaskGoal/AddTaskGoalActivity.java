@@ -9,15 +9,16 @@ import androidx.fragment.app.FragmentTransaction;
 import com.heig.atmanager.DummyData;
 import com.heig.atmanager.R;
 import com.heig.atmanager.User;
+import com.heig.atmanager.UserViewModel;
 
 public class AddTaskGoalActivity extends AppCompatActivity  {
 
-    User dummyUser;
+    UserViewModel dummyUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dummyUser = new DummyData().initData();
+        dummyUser = DummyData.getUser();
         setContentView(R.layout.activity_add_task_goal);
 
         int fragmentToShow = getIntent().getExtras().getInt("fragToLoad");

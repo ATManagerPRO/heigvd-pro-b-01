@@ -83,6 +83,7 @@ public class User {
         this.directories = directories;
     }
 
-
-
+    public ArrayList<Task> getTasks() {
+        return tasks;
+    }
 }
