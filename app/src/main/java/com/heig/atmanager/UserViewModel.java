@@ -67,6 +67,14 @@ public class UserViewModel extends ViewModel {
         return googleToken;
     }
 
+    public MutableLiveData<ArrayList<TaskList>> getTaskLists() {
+        if (taskLists == null) {
+            taskLists = new MutableLiveData<>();
+        }
+
+        return taskLists;
+    }
+
     public MutableLiveData<ArrayList<Task>> getTasks() {
         if (tasks == null) {
             tasks = new MutableLiveData<>();

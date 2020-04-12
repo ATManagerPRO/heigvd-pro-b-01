@@ -79,9 +79,9 @@ public class DummyData {
             // Tags
             dummyUser.setTags(new ArrayList<>(Arrays.asList("Urgent", "Normal")));
 
-            // Add the folders to the user
-            dummyUser.addFolder(f1);
-            dummyUser.addFolder(f2);
+            // Add the data to the user from the folders (folders, tasklists and tasks)
+            dummyUser.addAllFromFolder(f1);
+            dummyUser.addAllFromFolder(f2);
 
             user  = new UserViewModel(dummyUser);
         }

@@ -36,4 +36,8 @@ public class TaskList {
     public String getName() {
         return name;
     }
+
+    public ArrayList<Task> getTasks() {
+        return tasks;
+    }
 }

@@ -1,8 +1,6 @@
 package com.heig.atmanager;
 
 
-import android.icu.text.CaseMap;
-
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.taskLists.TaskList;
@@ -16,6 +14,7 @@ public class User {
     private String googleToken;
     private ArrayList<Goal> goals;
     private ArrayList<TaskList> taskLists;
+    private ArrayList<Task> tasks;
     private ArrayList<String> tags;
     private ArrayList<Folder> folders;
 
@@ -23,6 +22,7 @@ public class User {
         this.userName = userName;
         this.googleToken = googleToken;
         taskLists = new ArrayList<>();
+        tasks = new ArrayList<>();
         goals = new ArrayList<>();
         tags = new ArrayList<>();
         folders = new ArrayList<>();
@@ -44,10 +44,8 @@ public class User {
         return goals;
     }
 
-    public void addTask(TaskList taskList, Task task) {
-        for(TaskList tl : taskLists)
-            if(tl.equals(taskList))
-                tl.addTask(task);
+    public void addTask(Task task) {
+        tasks.add(task);
     }
 
     public void addTaskList(TaskList taskList) {
@@ -72,5 +70,16 @@ public class User {
 
     public ArrayList<Folder> getFolders() {
         return folders;
+    }
+
+    public void addAllFromFolder(Folder folder) {
+        folders.add(folder);
+
+        for(TaskList taskList : folder.getTaskLists()) {
+            addTaskList(taskList);
+            for(Task task : taskList.getTasks())
+                addTask(task);
+        }
+
     }
 }
