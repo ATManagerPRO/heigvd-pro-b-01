@@ -3,6 +3,7 @@ package com.heig.atmanager.taskLists;
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.tasks.Task;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -11,7 +12,9 @@ import java.util.ArrayList;
  *
  *  Class tasklist representing a list of tasks
  */
-public class TaskList {
+public class TaskList implements Serializable {
+
+    public static String SERIAL_TASK_LIST_KEY = "taskList";
 
     public static TaskList defaultList = new TaskList("My Tasks");
 

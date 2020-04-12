@@ -21,7 +21,10 @@ public class User {
     public User(String userName, String googleToken) {
         this.userName = userName;
         this.googleToken = googleToken;
+        // TaskLists always has MyTasks by default
         taskLists = new ArrayList<>();
+        taskLists.add(TaskList.defaultList);
+
         tasks = new ArrayList<>();
         goals = new ArrayList<>();
         tags = new ArrayList<>();

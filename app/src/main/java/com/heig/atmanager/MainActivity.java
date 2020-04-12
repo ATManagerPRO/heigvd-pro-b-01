@@ -23,8 +23,10 @@ import com.google.android.material.navigation.NavigationView;
 import com.heig.atmanager.addTaskGoal.AddTaskGoalActivity;
 import com.heig.atmanager.calendar.CalendarFragment;
 import com.heig.atmanager.folders.Folder;
+import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.goals.GoalsFragment;
 import com.heig.atmanager.taskLists.TaskList;
+import com.heig.atmanager.taskLists.TaskListFragment;
 
 public class MainActivity extends AppCompatActivity {
     public UserViewModel dummyUser;
@@ -182,9 +184,19 @@ public class MainActivity extends AppCompatActivity {
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
-                // TODO : change to task list fragment
-
                 drawerLayout.closeDrawer(GravityCompat.START);
+
+                // Data to pass in the fragment
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(TaskList.SERIAL_TASK_LIST_KEY, dummyUser.getFolders().getValue().get(i).getTaskLists().get(i1));
+
+                TaskListFragment taskListFragment = new TaskListFragment();
+                taskListFragment.setArguments(bundle);
+
+                // Load goalsTodos fragment
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, taskListFragment)
+                        .commit();
                 return false;
             }
         });

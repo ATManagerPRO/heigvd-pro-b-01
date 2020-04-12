@@ -175,12 +175,11 @@ public class AddTaskFragment extends Fragment {
 
                 Task newTask = new Task(title, description, selectedDate);
 
-                // Add the task to a taskList
+                // Add the task to a selected taskList
                 for(TaskList taskList : currentUser.getTaskLists().getValue())
                     if(taskList.getName().equals(selectedDirectory))
                         taskList.addTask(newTask);
 
-                Log.d(TAG, "onClick: new task created : " + newTask.toString());
                 startActivity(new Intent(getContext(), MainActivity.class));
             }
         });
