@@ -3,6 +3,7 @@ package com.heig.atmanager;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -13,6 +14,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -32,9 +35,13 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton fabAddTask;
     private FloatingActionButton fabAddGoal;
 
+    // Drawer
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
+    // Navigation view (drawer)
     private NavigationView navView;
+    private ExpandableListView expandableListView;
+    private ExpandableListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +57,10 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        navView = (NavigationView) findViewById(R.id.navView);
-        updateDrawerItems(navView);
+        //navView = (NavigationView) findViewById(R.id.navView);
+        //updateDrawerItems(navView);
+        expandableListView = (ExpandableListView) findViewById(R.id.navList);
+        updateDrawerItems();
 
         // First fragment to load : Home
         loadFragment(new HomeFragment());
@@ -152,20 +161,53 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-    private void updateDrawerItems(NavigationView navigationView) {
+    /**
+     * Updates the items of the drawer menu with the current user's data
+     */
+    private void updateDrawerItems() {
+        adapter = new FolderDrawerListAdapter(this, dummyUser.getFolders().getValue());
+        expandableListView.setAdapter(adapter);
+        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            @Override
+            public void onGroupExpand(int i) {
+                // TODO
+            }
+        });
+
+        expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+            @Override
+            public void onGroupCollapse(int i) {
+                // TODO
+            }
+        });
+
+        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
+                // TODO : change to task list fragment
+
+                drawerLayout.closeDrawer(GravityCompat.START);
+                return false;
+            }
+        });
+
 
         // get menu from navigationView
-        Menu menu = navigationView.getMenu();
+        //Menu menu = navigationView.getMenu();
 
-        for(Folder folder : dummyUser.getFolders().getValue()) {
+        // First we add the tasklists
+        // TODO: Waiting for ViewModel data update
+
+        // Then we add the folders
+        /*for(Folder folder : dummyUser.getFolders().getValue()) {
             Menu submenu = menu.addSubMenu(folder.getName());
 
             for(TaskList taskList : folder.getTaskLists())
                 submenu.add(taskList.getName());
-
         }
 
-        navigationView.invalidate();
+        // Update view
+        navigationView.invalidate();*/
     }
 
 }
