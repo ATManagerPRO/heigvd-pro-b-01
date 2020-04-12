@@ -148,8 +148,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-
     private void loadFragment(Fragment fragment) {
 
         // Create new fragment and transaction
@@ -165,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Updates the items of the drawer menu with the current user's data
+     * Updates the items of the drawer menu with the current user's data (tasklists then folders)
      */
     private void updateDrawerItems() {
         final ArrayList<TaskList> standaloneTaskLists = new ArrayList<>();
@@ -179,7 +177,6 @@ public class MainActivity extends AppCompatActivity {
         expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
-                Log.d(TAG, "onGroupClick: clicked on " + i);
                 if(i >= standaloneTaskLists.size())
                     return false;
 
@@ -192,7 +189,6 @@ public class MainActivity extends AppCompatActivity {
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
-                Log.d(TAG, "onChildClick: clicked on : " + i + "/" + i1);
                 drawerLayout.closeDrawer(GravityCompat.START);
 
                 loadTaskListFragment(
