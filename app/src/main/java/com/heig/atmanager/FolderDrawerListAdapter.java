@@ -11,13 +11,12 @@ import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.taskLists.TaskList;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Author : Stephane
+ * Author : Stéphane Bottin
  * Date   : 12.04.2020
- * <p>
- * This class better be good.
+ *
+ * Adapter to display the tasklists and (collapsing) folders in the drawer menu
  */
 public class FolderDrawerListAdapter extends BaseExpandableListAdapter {
 
@@ -84,7 +83,7 @@ public class FolderDrawerListAdapter extends BaseExpandableListAdapter {
         if(view == null)
             view = LayoutInflater.from(context).inflate(R.layout.drawer_list_item, null);
 
-        TextView title = (TextView) view.findViewById(R.id.expandableListItem);
+        TextView title = (TextView) view.findViewById(R.id.taskListTitle);
         title.setText(taskListName);
 
         return view;

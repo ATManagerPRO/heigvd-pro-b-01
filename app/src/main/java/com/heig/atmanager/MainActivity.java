@@ -57,8 +57,6 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //navView = (NavigationView) findViewById(R.id.navView);
-        //updateDrawerItems(navView);
         expandableListView = (ExpandableListView) findViewById(R.id.navList);
         updateDrawerItems();
 
@@ -190,24 +188,6 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-
-        // get menu from navigationView
-        //Menu menu = navigationView.getMenu();
-
-        // First we add the tasklists
-        // TODO: Waiting for ViewModel data update
-
-        // Then we add the folders
-        /*for(Folder folder : dummyUser.getFolders().getValue()) {
-            Menu submenu = menu.addSubMenu(folder.getName());
-
-            for(TaskList taskList : folder.getTaskLists())
-                submenu.add(taskList.getName());
-        }
-
-        // Update view
-        navigationView.invalidate();*/
     }
 
 }
