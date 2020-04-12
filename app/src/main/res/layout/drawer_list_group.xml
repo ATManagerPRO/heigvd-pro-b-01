@@ -12,7 +12,7 @@
         android:padding="10dp"/>
 
     <TextView
-        android:id="@+id/folderTitle"
+        android:id="@+id/drawer_object_title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="10dp"

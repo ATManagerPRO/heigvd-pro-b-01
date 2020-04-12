@@ -38,7 +38,7 @@ public class TaskListFragment extends Fragment {
         // Opened tasklist
         TaskList taskList = ((TaskList) getArguments().getSerializable(TaskList.SERIAL_TASK_LIST_KEY));
 
-        // Setup the data into the XML
+        // Setup the data into the XML (new thread ?)
         title.setText(taskList.getName());
         Utils.setupTasksFeed(v, tasksRv, taskList.getTasks());
 

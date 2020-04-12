@@ -9,7 +9,9 @@ import android.widget.TextView;
 
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.taskLists.TaskList;
+import com.heig.atmanager.tasks.Task;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -18,34 +20,37 @@ import java.util.ArrayList;
  *
  * Adapter to display the tasklists and (collapsing) folders in the drawer menu
  */
-public class FolderDrawerListAdapter extends BaseExpandableListAdapter {
+public class DrawerListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
-    private ArrayList<Folder> folders;
+    private ArrayList<DrawerObject> objects;
 
-    public FolderDrawerListAdapter(Context context, ArrayList<Folder> folders) {
+    public DrawerListAdapter(Context context, ArrayList<TaskList> taskLists,
+                             ArrayList<Folder> folders) {
         this.context = context;
-        this.folders = folders;
+        this.objects = new ArrayList<>();
+        this.objects.addAll(taskLists);
+        this.objects.addAll(folders);
     }
 
     @Override
     public int getGroupCount() {
-        return folders.size();
+        return objects.size();
     }
 
     @Override
     public int getChildrenCount(int i) {
-        return folders.get(i).getTaskLists().size();
+        return objects.get(i).isFolder() ? ((Folder) objects.get(i)).getTaskLists().size() : 0;
     }
 
     @Override
     public Object getGroup(int i) {
-        return folders.get(i);
+        return objects.get(i);
     }
 
     @Override
     public Object getChild(int i, int i1) {
-        return folders.get(i).getTaskLists().get(i1);
+        return objects.get(i).isFolder() ? ((Folder) objects.get(i)).getTaskLists().get(i1) : null;
     }
 
     @Override
@@ -65,13 +70,17 @@ public class FolderDrawerListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int i, boolean b, View view, ViewGroup viewGroup) {
-        String folderName = ((Folder) getGroup(i)).getName();
+
+        String name = ((DrawerObject) getGroup(i)).getName();
 
         if(view == null)
-            view = LayoutInflater.from(context).inflate(R.layout.drawer_list_group, null);
+            view = LayoutInflater.from(context).inflate(
+                    ((DrawerObject) getGroup(i)).isFolder() ?
+                            R.layout.drawer_list_group : R.layout.drawer_list_item
+                    , null);
 
-        TextView title = (TextView) view.findViewById(R.id.folderTitle);
-        title.setText(folderName);
+        TextView title = (TextView) view.findViewById(R.id.drawer_object_title);
+        title.setText(name);
 
         return view;
     }
@@ -83,7 +92,7 @@ public class FolderDrawerListAdapter extends BaseExpandableListAdapter {
         if(view == null)
             view = LayoutInflater.from(context).inflate(R.layout.drawer_list_item, null);
 
-        TextView title = (TextView) view.findViewById(R.id.taskListTitle);
+        TextView title = (TextView) view.findViewById(R.id.drawer_object_title);
         title.setText(taskListName);
 
         return view;

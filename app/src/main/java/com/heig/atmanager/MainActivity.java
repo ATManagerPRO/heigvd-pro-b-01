@@ -7,7 +7,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.Navigation;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,11 +21,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.heig.atmanager.addTaskGoal.AddTaskGoalActivity;
 import com.heig.atmanager.calendar.CalendarFragment;
-import com.heig.atmanager.folders.Folder;
-import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.goals.GoalsFragment;
 import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.taskLists.TaskListFragment;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     public UserViewModel dummyUser;
@@ -165,7 +164,12 @@ public class MainActivity extends AppCompatActivity {
      * Updates the items of the drawer menu with the current user's data
      */
     private void updateDrawerItems() {
-        adapter = new FolderDrawerListAdapter(this, dummyUser.getFolders().getValue());
+        ArrayList<TaskList> standaloneTaskLists = new ArrayList<>();
+        for(TaskList taskList : dummyUser.getTaskLists().getValue())
+            if(taskList.isStandalone())
+                standaloneTaskLists.add(taskList);
+
+        adapter = new DrawerListAdapter(this, standaloneTaskLists, dummyUser.getFolders().getValue());
         expandableListView.setAdapter(adapter);
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
@@ -188,8 +192,8 @@ public class MainActivity extends AppCompatActivity {
 
                 // Data to pass in the fragment
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(TaskList.SERIAL_TASK_LIST_KEY, dummyUser.getFolders().getValue().get(i).getTaskLists().get(i1));
-
+                bundle.putSerializable(TaskList.SERIAL_TASK_LIST_KEY,
+                        dummyUser.getFolders().getValue().get(i).getTaskLists().get(i1));
                 TaskListFragment taskListFragment = new TaskListFragment();
                 taskListFragment.setArguments(bundle);
 
