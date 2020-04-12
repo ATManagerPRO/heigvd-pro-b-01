@@ -5,6 +5,7 @@ import android.icu.text.CaseMap;
 
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.goals.Goal;
+import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.tasks.Task;
 
 import java.util.ArrayList;
@@ -13,19 +14,15 @@ public class User {
 
     private String userName;
     private String googleToken;
-
-    private ArrayList<Task> tasks;
-
     private ArrayList<Goal> goals;
-
+    private ArrayList<TaskList> taskLists;
     private ArrayList<String> tags;
-
     private ArrayList<Folder> folders;
 
     public User(String userName, String googleToken) {
         this.userName = userName;
         this.googleToken = googleToken;
-        tasks = new ArrayList<>();
+        taskLists = new ArrayList<>();
         goals = new ArrayList<>();
         tags = new ArrayList<>();
         folders = new ArrayList<>();
@@ -39,16 +36,22 @@ public class User {
         return googleToken;
     }
 
-    public ArrayList<Task> getTodos() {
-        return tasks;
+    public ArrayList<TaskList> getTaskLists() {
+        return taskLists;
     }
 
     public ArrayList<Goal> getGoals() {
         return goals;
     }
 
-    public void addTask(Task task) {
-        tasks.add(task);
+    public void addTask(TaskList taskList, Task task) {
+        for(TaskList tl : taskLists)
+            if(tl.equals(taskList))
+                tl.addTask(task);
+    }
+
+    public void addTaskList(TaskList taskList) {
+        taskLists.add(taskList);
     }
 
     public void addGoal(Goal goal) {
@@ -69,9 +72,5 @@ public class User {
 
     public ArrayList<Folder> getFolders() {
         return folders;
-    }
-
-    public ArrayList<Task> getTasks() {
-        return tasks;
     }
 }

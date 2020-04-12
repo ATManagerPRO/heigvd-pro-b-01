@@ -39,16 +39,17 @@ public class Folder {
     /**
      * Adds a list from folder
      *
-     * @param name Name of the list to add
+     * @param list : tasklist to add
      * @return success of the operation
      */
-    public boolean addList(String name){
-        for(TaskList list : taskLists){
-            if(list.getName().equals(name)){
+    public boolean addList(TaskList list){
+        for(TaskList taskList : taskLists){
+            if(taskList.getName().equals(list.getName())){
                 return false;
             }
         }
-        taskLists.add(new TaskList(name));
+
+        taskLists.add(list);
         return true;
     }
 

@@ -1,5 +1,7 @@
 package com.heig.atmanager.tasks;
 
+import com.heig.atmanager.taskLists.TaskList;
+
 import java.util.Date;
 
 /**
@@ -16,30 +18,27 @@ public class Task {
     private Date dueDate;
     private Date doneDate;
     private Date reminderDate;
-    private String directory;
-
 
     public Task(String title, String description) {
-        this(title, description, null, null, false);
+        this(title, description, null, false);
     }
 
     public Task(String title, String description, Date dueDate) {
-        this(title, description, dueDate, null, false);
+        this(title, description, dueDate, false);
     }
 
     public Task(String title, String description, boolean favorite) {
-        this(title, description, null,null, favorite);
+        this(title, description, null, favorite);
     }
 
-    public Task(String title, String description, Date dueDate, String directory) {
-        this(title, description, dueDate, directory, false);
+    public Task(String title, String description, Date dueDate, TaskList taskList) {
+        this(title, description, dueDate, false);
     }
 
-    public Task(String title, String description, Date dueDate, String directory, boolean favorite) {
+    public Task(String title, String description, Date dueDate, boolean favorite) {
         this.title       = title;
         this.description = description;
         this.dueDate     = dueDate;
-        this.directory   = directory;
         this.favorite    = favorite;
     }
 
@@ -65,10 +64,6 @@ public class Task {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public void setDirectory(String directory) {
-        this.directory = directory;
     }
 
     public void setDone(boolean status) {
