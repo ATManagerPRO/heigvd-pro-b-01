@@ -1,14 +1,16 @@
 package com.heig.atmanager;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -27,7 +29,7 @@ import com.heig.atmanager.taskLists.TaskList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "MainActivity1";
     
     public UserViewModel dummyUser;
 
@@ -40,10 +42,9 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton fabAddTask;
     private FloatingActionButton fabAddGoal;
 
-    private static DrawerLayout drawerLayout;
-    private static ActionBarDrawerToggle drawerToggle;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle drawerToggle;
     private NavigationView navView;
-    private static boolean mToolBarNavigationListenerIsRegistered;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Drawer layout
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
-        drawerLayout.addDrawerListener(drawerToggle);
-        drawerToggle.syncState();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        enableBackButton(false);
         navView = (NavigationView) findViewById(R.id.navView);
         updateDrawerItems(navView);
 
@@ -142,6 +140,15 @@ public class MainActivity extends AppCompatActivity {
         if(drawerToggle.onOptionsItemSelected(item))
             return true;
 
+        switch(item.getItemId()) {
+            // Back button
+            case R.id.home:
+            case R.id.homeAsUp:
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -179,53 +186,31 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Enables the back button instead of the drawer menu
      *
-     * src: https://stackoverflow.com/questions/36579799/android-switch-actionbar-back-button-to-navigation-button
-     * @param enable
+     * @param enable : back button status
      */
-    public static void enableBackButton(final AppCompatActivity activity, boolean enable) {
+    public void enableBackButton(boolean enable) {
 
-        // To keep states of ActionBar and ActionBarDrawerToggle synchronized,
-        // when you enable on one, you disable on the other.
-        // And as you may notice, the order for this operation is disable first, then enable - VERY VERY IMPORTANT.
         if(enable) {
-            //You may not want to open the drawer on swipe from the left in this case
+            // Disable slide-to-open drawer navigation
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-            // Remove hamburger
+            // Hide drawer icon
             drawerToggle.setDrawerIndicatorEnabled(false);
-            // Show back button
-            activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            // when DrawerToggle is disabled i.e. setDrawerIndicatorEnabled(false), navigation icon
-            // clicks are disabled i.e. the UP button will not work.
-            // We need to add a listener, as in below, so DrawerToggle will forward
-            // click events to this listener.
-            if(!mToolBarNavigationListenerIsRegistered) {
-                drawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        activity.onBackPressed();
-                    }
-                });
-
-                mToolBarNavigationListenerIsRegistered = true;
-            }
-
+            // Show back arrow icon
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         } else {
-            //You must regain the power of swipe for the drawer.
+            // Enable slide-to-open drawer navigation
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
 
-            // Remove back button
-            activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            // Show hamburger
-            drawerToggle.setDrawerIndicatorEnabled(true);
-            // Remove the/any drawer toggle listener
-            drawerToggle.setToolbarNavigationClickListener(null);
-            mToolBarNavigationListenerIsRegistered = false;
+            // Create and sync drawer toggle
+            drawerToggle = new ActionBarDrawerToggle (this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
+            drawerLayout.addDrawerListener(drawerToggle);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            drawerToggle.syncState();
         }
     }
 
     @Override
     public void onBackPressed() {
-        Log.d(TAG, "onBackPressed: PRESSED");
         displayPreviousFragment(previousFragment);
     }
 

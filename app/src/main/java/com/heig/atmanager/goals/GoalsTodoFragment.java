@@ -3,11 +3,13 @@ package com.heig.atmanager.goals;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.material.navigation.NavigationView;
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
 import com.heig.atmanager.Utils;
@@ -16,7 +18,6 @@ import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 public class GoalsTodoFragment extends Fragment {
 
+    private static final String TAG = "GoalsTodoFragment";
     public static final String FRAG_GOALS_TODO_ID = "GoalsTodo_Fragment";
 
     // Header
@@ -44,7 +46,7 @@ public class GoalsTodoFragment extends Fragment {
 
         // Change top button as back button
         MainActivity.previousFragment = GoalsFragment.FRAG_GOALS_ID;
-        MainActivity.enableBackButton((AppCompatActivity) getActivity(), true);
+        ((MainActivity) getActivity()).enableBackButton(true);
 
         // Header setup
         interval = (TextView) v.findViewById(R.id.title_interval);
