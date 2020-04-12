@@ -124,23 +124,23 @@
 
         <!-- Task details (expanded) -->
         <FrameLayout
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginStart="-65dp">
 
             <Button
                 android:id="@+id/expand_button"
+                style="@style/AppTheme.MoreButton"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                style="@style/AppTheme.MoreButton"/>
+                android:layout_height="match_parent" />
 
             <Button
                 android:id="@+id/retract_button"
+                style="@style/AppTheme.MoreButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                style="@style/AppTheme.MoreButton"
                 android:rotation="180"
-                android:visibility="gone"/>
+                android:visibility="gone" />
         </FrameLayout>
 
 

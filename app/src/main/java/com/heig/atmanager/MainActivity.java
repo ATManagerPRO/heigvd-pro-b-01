@@ -1,10 +1,12 @@
 package com.heig.atmanager;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,14 +16,15 @@ import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.heig.atmanager.addTaskGoal.AddTaskGoalActivity;
 import com.heig.atmanager.calendar.CalendarFragment;
+import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.goals.GoalsFragment;
+import com.heig.atmanager.taskLists.TaskList;
 
 public class MainActivity extends AppCompatActivity {
-    public User dummyUser;
-
-    private View fragmentContainer;
+    public UserViewModel dummyUser;
 
     private BottomNavigationView dock;
 
@@ -29,25 +32,29 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton fabAddTask;
     private FloatingActionButton fabAddGoal;
 
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle drawerToggle;
+    private NavigationView navView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         // To get this variable from the fragments ((MainActivity)getActivity()).dummyUser
-        dummyUser = new DummyData().initData();
+        dummyUser = DummyData.getUser();
 
+        // Drawer layout
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
+        drawerLayout.addDrawerListener(drawerToggle);
+        drawerToggle.syncState();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        navView = (NavigationView) findViewById(R.id.navView);
+        updateDrawerItems(navView);
+
+        // First fragment to load : Home
         loadFragment(new HomeFragment());
-
-        //instantly switches to the Profile activity for testing purposes
-        //Intent myIntent = new Intent(MainActivity.this, ProfileActivity.class);
-        //MainActivity.this.startActivity(myIntent);
-        fragmentContainer = findViewById(R.id.folder_fragment_container);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.mipmap.ic_atmanager_launcher);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
     }
 
     // Menu icons are inflated just as they were with actionbar
@@ -61,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
         fab = findViewById(R.id.fab);
         fabAddGoal = findViewById(R.id.fab_add_goal);
         fabAddTask = findViewById(R.id.fab_add_task);
-
 
         dock.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -122,23 +128,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                return true;
 
-            case R.id.action_folders:
-                if(fragmentContainer.getVisibility() == View.GONE){
-                    fragmentContainer.setVisibility(View.VISIBLE);
-                    fragmentContainer.bringToFront();
-                } else{
-                    fragmentContainer.setVisibility(View.GONE);
-                }
-                return true;
+        // Drawer button
+        if(drawerToggle.onOptionsItemSelected(item))
+            return true;
 
-            default:
-                return super.onOptionsItemSelected(item);
-
-        }
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -155,6 +150,22 @@ public class MainActivity extends AppCompatActivity {
 
         // Commit the transaction
         transaction.commit();
+    }
+
+    private void updateDrawerItems(NavigationView navigationView) {
+
+        // get menu from navigationView
+        Menu menu = navigationView.getMenu();
+
+        for(Folder folder : dummyUser.getFolders().getValue()) {
+            Menu submenu = menu.addSubMenu(folder.getName());
+
+            for(TaskList taskList : folder.getTaskLists())
+                submenu.add(taskList.getName());
+
+        }
+
+        navigationView.invalidate();
     }
 
 }
