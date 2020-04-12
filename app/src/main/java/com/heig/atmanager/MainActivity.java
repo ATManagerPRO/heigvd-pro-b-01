@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +29,9 @@ import com.heig.atmanager.taskLists.TaskListFragment;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "MainActivity";
+
     public UserViewModel dummyUser;
 
     private BottomNavigationView dock;
@@ -164,46 +168,53 @@ public class MainActivity extends AppCompatActivity {
      * Updates the items of the drawer menu with the current user's data
      */
     private void updateDrawerItems() {
-        ArrayList<TaskList> standaloneTaskLists = new ArrayList<>();
+        final ArrayList<TaskList> standaloneTaskLists = new ArrayList<>();
         for(TaskList taskList : dummyUser.getTaskLists().getValue())
             if(taskList.isStandalone())
                 standaloneTaskLists.add(taskList);
 
         adapter = new DrawerListAdapter(this, standaloneTaskLists, dummyUser.getFolders().getValue());
         expandableListView.setAdapter(adapter);
-        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-            @Override
-            public void onGroupExpand(int i) {
-                // TODO
-            }
-        });
 
-        expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+        expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
-            public void onGroupCollapse(int i) {
-                // TODO
+            public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
+                Log.d(TAG, "onGroupClick: clicked on " + i);
+                if(i >= standaloneTaskLists.size())
+                    return false;
+
+                drawerLayout.closeDrawer(GravityCompat.START);
+                loadTaskListFragment(dummyUser.getTaskLists().getValue().get(i));
+                return true;
             }
         });
 
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
+                Log.d(TAG, "onChildClick: clicked on : " + i + "/" + i1);
                 drawerLayout.closeDrawer(GravityCompat.START);
 
-                // Data to pass in the fragment
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(TaskList.SERIAL_TASK_LIST_KEY,
-                        dummyUser.getFolders().getValue().get(i).getTaskLists().get(i1));
-                TaskListFragment taskListFragment = new TaskListFragment();
-                taskListFragment.setArguments(bundle);
-
-                // Load goalsTodos fragment
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, taskListFragment)
-                        .commit();
-                return false;
+                loadTaskListFragment(
+                        dummyUser.getFolders().getValue().get(i - standaloneTaskLists.size()).getTaskLists().get(i1)
+                );
+                return true;
             }
         });
+    }
+
+    private void loadTaskListFragment(TaskList taskList) {
+
+        // Data to pass in the fragment
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(TaskList.SERIAL_TASK_LIST_KEY, taskList);
+        TaskListFragment taskListFragment = new TaskListFragment();
+        taskListFragment.setArguments(bundle);
+
+        // Load goalsTodos fragment
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, taskListFragment)
+                .commit();
     }
 
 }
