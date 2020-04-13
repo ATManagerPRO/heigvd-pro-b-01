@@ -27,8 +27,6 @@ public class User {
 
     private ArrayList<Folder> folders;
 
-    private ArrayList<String> directories;
-
     public User(String userName, String googleToken) {
         this.userName = userName;
         this.googleToken = googleToken;
@@ -36,7 +34,6 @@ public class User {
         goals = new ArrayList<>();
         tags = new ArrayList<>();
         folders = new ArrayList<>();
-        directories = new ArrayList<>();
     }
 
     public String getUserName() {
@@ -78,6 +75,7 @@ public class User {
     public ArrayList<Folder> getFolders() {
         return folders;
     }
+
     public  ArrayList<String> getDirectories() {
         return directories;
     }
@@ -153,4 +151,9 @@ public class User {
                 calendar_d1.get(Calendar.MONTH) == calendar_d2.get(Calendar.MONTH) &&
                 calendar_d1.get(Calendar.DAY_OF_MONTH) == calendar_d2.get(Calendar.DAY_OF_MONTH);
     }
+
+    public ArrayList<Task> getTasks() {
+        return tasks;
+    }
+
 }

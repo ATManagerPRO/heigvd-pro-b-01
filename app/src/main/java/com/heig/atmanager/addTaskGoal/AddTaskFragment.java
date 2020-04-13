@@ -26,6 +26,9 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
 import com.heig.atmanager.User;
+import com.heig.atmanager.UserViewModel;
+import com.heig.atmanager.folders.Folder;
+import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.tasks.Task;
 
 import java.util.ArrayList;
@@ -84,7 +87,7 @@ public class AddTaskFragment extends Fragment {
 
         final Button validationButton = mView.findViewById(R.id.frag_validation_button);
 
-        final User currentUser =((AddTaskGoalActivity) getActivity()).dummyUser;
+        final UserViewModel currentUser = ((AddTaskGoalActivity) getActivity()).dummyUser;
 
 
         // Picker for date and time
@@ -96,6 +99,7 @@ public class AddTaskFragment extends Fragment {
                 mMonth = calendar.get(Calendar.MONTH);
                 mYear = calendar.get(Calendar.YEAR);
 
+                // Bind the picker value to ours variable
                 picker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -103,6 +107,7 @@ public class AddTaskFragment extends Fragment {
                         dueDateTextView.setText(dueDateString);
                     }
                 }, mYear, mMonth, mDay);
+                // Show the picker
                 picker.show();
             }
         });
@@ -112,7 +117,6 @@ public class AddTaskFragment extends Fragment {
             public void onClick(View v) {
                 mHour = calendar.get(Calendar.HOUR_OF_DAY);
                 mMinute = calendar.get(Calendar.MINUTE);
-
 
                 TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
@@ -126,8 +130,8 @@ public class AddTaskFragment extends Fragment {
 
 
         // Tags
-        final ArrayAdapter<String> chipsAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, currentUser.getTags());
-
+        final ArrayAdapter<String> chipsAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, currentUser.getTags().getValue());
+        // App detect the input to suggest the tag
         final AutoCompleteTextView autoCompleteTextView = mView.findViewById(R.id.frag_add_task_autocomplete_textview);
         autoCompleteTextView.setAdapter(chipsAdapter);
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -141,12 +145,19 @@ public class AddTaskFragment extends Fragment {
         });
 
         // Directory spinner
-        final Spinner tagSpinner = mView.findViewById(R.id.frag_directory_choice_tag_spinner);
+        final Spinner folderSpinner = mView.findViewById(R.id.frag_directory_choice_tag_spinner);
 
-        ArrayAdapter tagAdapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, currentUser.getDirectories());
-        tagAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        tagSpinner.setAdapter(tagAdapter);
-        selectedDirectory = tagSpinner.getSelectedItem().toString();
+
+        ArrayList<TaskList> taskLists = new ArrayList<>();
+
+        for (Folder f : currentUser.getFolders().getValue()) {
+            taskLists.addAll(f.getTaskLists());
+        }
+
+        ArrayAdapter<TaskList> spinnerAdapter = new AddTaskSipnnerAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, taskLists);
+        spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        folderSpinner.setAdapter(spinnerAdapter);
+        selectedDirectory = folderSpinner.getSelectedItem().toString();
 
         // Button
         validationButton.setOnClickListener(new View.OnClickListener() {
@@ -176,7 +187,8 @@ public class AddTaskFragment extends Fragment {
 
     /**
      * Add a string as chip into the given chip group
-     * @param tag a name
+     *
+     * @param tag       a name
      * @param chipGroup where to add
      */
     private void addChipToGroup(String tag, final ChipGroup chipGroup) {

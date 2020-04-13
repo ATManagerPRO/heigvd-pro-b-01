@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.goals.GoalTodo;
 import com.heig.atmanager.tasks.Task;
 
@@ -24,14 +23,14 @@ import java.util.Calendar;
  */
 public class HomeFragment extends Fragment {
     // Greeting message
-    TextView greetingText;
+    private TextView greetingText;
 
     // Goal feed
-    ArrayList<GoalTodo> goals; // user data
+    private ArrayList<GoalTodo> goals; // user data
     private RecyclerView goalsRecyclerView;
 
     // Task feed
-    ArrayList<Task> tasks; // user data
+    private ArrayList<Task> tasks; // user data
     private RecyclerView tasksRecyclerView;
 
     @Override
