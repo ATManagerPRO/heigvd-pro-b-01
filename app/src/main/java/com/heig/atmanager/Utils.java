@@ -31,90 +31,67 @@ public class Utils {
 
     public static void setupGoalTodosFeedBubbled(View v, RecyclerView rv, ArrayList<GoalTodo> goals) {
 
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
         rv.setHasFixedSize(true);
 
-        // use a (horizontal) linear layout manager
         LinearLayoutManager manager = new LinearLayoutManager(v.getContext(), LinearLayoutManager.HORIZONTAL, false);
         rv.setLayoutManager(manager);
 
-        // specify an adapter (see also next example)
         RecyclerView.Adapter adapter = new GoalTodoFeedAdapter(true, goals);
         rv.setAdapter(adapter);
     }
 
     public static void setupGoalTodosFeedLined(View v, RecyclerView rv, ArrayList<GoalTodo> goals) {
 
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
         rv.setHasFixedSize(true);
 
-        // use a (horizontal) linear layout manager
         LinearLayoutManager manager = new LinearLayoutManager(v.getContext(), LinearLayoutManager.VERTICAL, false);
         rv.setLayoutManager(manager);
 
-        // specify an adapter (see also next example)
         RecyclerView.Adapter adapter = new GoalTodoFeedAdapter(false, goals);
         rv.setAdapter(adapter);
     }
 
     public static void setupGoalsFeed(FragmentActivity fa, View v, RecyclerView rv, ArrayList<Goal> goals) {
 
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
         rv.setHasFixedSize(true);
 
-        // use a (horizontal) linear layout manager
         LinearLayoutManager manager = new LinearLayoutManager(v.getContext(), LinearLayoutManager.VERTICAL, false);
         rv.setLayoutManager(manager);
 
-        // specify an adapter
         RecyclerView.Adapter adapter = new GoalLineFeedAdapter(fa, goals);
         rv.setAdapter(adapter);
     }
 
     public static void setupFoldersFeed(View v, RecyclerView rv, ArrayList<Folder> folders) {
 
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
         rv.setHasFixedSize(false);
 
-        // use a (horizontal) linear layout manager
         LinearLayoutManager manager = new LinearLayoutManager(v.getContext(), LinearLayoutManager.VERTICAL, false);
         rv.setLayoutManager(manager);
 
-        // specify an adapter
         RecyclerView.Adapter adapter = new FolderAdapter(folders);
         rv.setAdapter(adapter);
     }
 
     public static void setupTaskListFeed(View v, RecyclerView rv, ArrayList<TaskList> taskLists) {
 
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
         rv.setHasFixedSize(false);
 
-        // use a (horizontal) linear layout manager
         LinearLayoutManager manager = new LinearLayoutManager(v.getContext(), LinearLayoutManager.VERTICAL, false);
         rv.setLayoutManager(manager);
 
-        // specify an adapter (see also next example)
         RecyclerView.Adapter adapter = new TaskListAdapter(taskLists);
         rv.setAdapter(adapter);
     }
 
 
     public static void setupTodosFeed(View v, RecyclerView rv, ArrayList<Task> tasks) {
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
+
         rv.setHasFixedSize(true);
 
-        // use a linear layout manager
         RecyclerView.LayoutManager manager = new LinearLayoutManager(v.getContext());
         rv.setLayoutManager(manager);
 
-        // specify an adapter (see also next example)
         RecyclerView.Adapter adapter = new TaskFeedAdapter(tasks);
         rv.setAdapter(adapter);
     }
