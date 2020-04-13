@@ -12,6 +12,7 @@ import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -69,6 +70,19 @@ public class AddGoalFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Override OnBacPressed to show hidden components
+        final OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                getFragmentManager().popBackStack();
+
+                getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
+                getActivity().findViewById(R.id.dock).setVisibility(View.VISIBLE);
+            }
+        };
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -90,6 +104,7 @@ public class AddGoalFragment extends Fragment {
         unitLayout = view.findViewById(R.id.frag_add_goal_unit_layout);
         quantityLayout = view.findViewById(R.id.frag_add_goal_quantity_layout);
         intervalNumberLayout = view.findViewById(R.id.frag_add_goal_interval_number_layout);
+
 
         // Set the interval spinner
         ArrayAdapter intervalAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, Interval.values());
@@ -163,10 +178,12 @@ public class AddGoalFragment extends Fragment {
                 Date selectedDate = new GregorianCalendar(mYear, mMonth, mDay).getTime();
 
 
-                ((AddTaskGoalActivity) getActivity()).dummyUser.addGoal(new Goal(unit, quantity, intervalNumber, interval, selectedDate));
+                ((MainActivity) getActivity()).dummyUser.addGoal(new Goal(unit, quantity, intervalNumber, interval, selectedDate));
 
+                getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
+                getActivity().findViewById(R.id.dock).setVisibility(View.VISIBLE);
+                getFragmentManager().popBackStack();
 
-                startActivity(new Intent(getContext(), MainActivity.class));
 
             }
         });
