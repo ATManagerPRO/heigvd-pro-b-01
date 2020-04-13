@@ -1,5 +1,6 @@
 package com.heig.atmanager;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -14,11 +15,12 @@ import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.heig.atmanager.addTaskGoal.AddTaskGoalActivity;
+import com.heig.atmanager.addTaskGoal.AddGoalFragment;
+import com.heig.atmanager.addTaskGoal.AddTaskFragment;
 import com.heig.atmanager.calendar.CalendarFragment;
 import com.heig.atmanager.goals.GoalsFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
     public UserViewModel dummyUser;
 
     private View fragmentContainer;
@@ -101,18 +103,22 @@ public class MainActivity extends AppCompatActivity {
         fabAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), AddTaskGoalActivity.class);
-                intent.putExtra("fragToLoad", R.id.frag_add_task);
-                startActivity(intent);
+                // Hide Fab and dock
+                findViewById(R.id.fab_container).setVisibility(View.GONE);
+                findViewById(R.id.dock).setVisibility(View.GONE);
+                fab.setExpanded(false);
+                loadFragment(new AddTaskFragment());
             }
         });
 
         fabAddGoal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), AddTaskGoalActivity.class);
-                intent.putExtra("fragToLoad", R.id.frag_add_goal);
-                startActivity(intent);
+                // Hide Fab and dock
+                findViewById(R.id.fab_container).setVisibility(View.GONE);
+                findViewById(R.id.dock).setVisibility(View.GONE);
+                fab.setExpanded(false);
+                loadFragment(new AddGoalFragment());
             }
         });
 
