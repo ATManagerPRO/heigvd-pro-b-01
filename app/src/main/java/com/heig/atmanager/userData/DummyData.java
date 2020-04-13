@@ -25,7 +25,7 @@ public class DummyData {
     public static UserViewModel getUser() {
         if (user == null){
             // Add goals
-            Calendar calendar = Calendar.getInstance();
+            /*Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.DAY_OF_MONTH, 5);
             Date dueDateGoal1 = calendar.getTime();
             calendar = Calendar.getInstance();
@@ -85,7 +85,7 @@ public class DummyData {
             folder3.addList("list99");
             dummyUser.addFolder(folder1);
             dummyUser.addFolder(folder2);
-            dummyUser.addFolder(folder3);
+            dummyUser.addFolder(folder3);*/
 
             user  = new UserViewModel(dummyUser);
         }
