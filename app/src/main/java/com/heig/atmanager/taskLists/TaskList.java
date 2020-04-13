@@ -8,13 +8,19 @@ package com.heig.atmanager.taskLists;
  */
 public class TaskList {
 
+    private long id;
     private String name;
 
-    public TaskList(String name){
+    public TaskList(long id, String name){
+        this.id = id;
         this.name = name;
     }
 
     public String getName() {
         return name;
+    }
+
+    public long getId() {
+        return id;
     }
 }

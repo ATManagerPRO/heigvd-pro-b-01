@@ -1,7 +1,4 @@
-package com.heig.atmanager;
-
-
-import android.icu.text.CaseMap;
+package com.heig.atmanager.userData;
 
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.goals.Goal;

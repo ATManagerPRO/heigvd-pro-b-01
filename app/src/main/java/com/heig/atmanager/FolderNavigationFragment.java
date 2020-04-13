@@ -11,9 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.heig.atmanager.folders.Folder;
-
-import java.util.ArrayList;
+import com.heig.atmanager.userData.DummyData;
 
 
 /**

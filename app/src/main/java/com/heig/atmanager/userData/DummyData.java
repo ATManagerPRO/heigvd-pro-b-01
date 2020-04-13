@@ -1,5 +1,6 @@
-package com.heig.atmanager;
+package com.heig.atmanager.userData;
 
+import com.heig.atmanager.Interval;
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.tasks.Task;
@@ -35,7 +36,7 @@ public class DummyData {
             calendar.add(Calendar.MONTH, 3);
             Date dueDateGoal4 = calendar.getTime();
 
-            Goal daily_goal1 = new Goal("SQUATS", 20, 1,Interval.DAY, dueDateGoal1);
+            Goal daily_goal1 = new Goal("SQUATS", 20, 1, Interval.DAY, dueDateGoal1);
             Goal daily_goal2 = new Goal("FRUITS", 5, 1,Interval.DAY, dueDateGoal2);
             Goal weekly_goal3 = new Goal("KMS", 4, 1,Interval.WEEK, dueDateGoal3);
             Goal monthly_goal4 = new Goal("GIT PUSH", 4, 1,Interval.MONTH, dueDateGoal4);

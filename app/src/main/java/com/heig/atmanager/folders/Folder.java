@@ -12,12 +12,18 @@ import java.util.ArrayList;
  */
 public class Folder {
 
+    private long id;
     private String name;
     private ArrayList<TaskList> taskLists;
 
-    public Folder(String name){
+    public Folder(long id, String name){
+        this(id, name, new ArrayList<TaskList>());
+    }
+
+    public Folder(long id, String name, ArrayList<TaskList> taskLists){
+        this.id = id;
         this.name = name;
-        this.taskLists = new ArrayList<TaskList>();
+        this.taskLists = taskLists;
     }
 
     /**
@@ -39,16 +45,15 @@ public class Folder {
     /**
      * Adds a list from folder
      *
-     * @param name Name of the list to add
+     * @param taskList : taskList to add
      * @return success of the operation
      */
-    public boolean addList(String name){
-        for(TaskList list : taskLists){
-            if(list.getName().equals(name)){
+    public boolean addList(TaskList taskList){
+        for(TaskList list : taskLists)
+            if(list.getId() == taskList.getId())
                 return false;
-            }
-        }
-        taskLists.add(new TaskList(name));
+
+        taskLists.add(taskList);
         return true;
     }
 

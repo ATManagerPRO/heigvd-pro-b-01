@@ -1,12 +1,12 @@
-package com.heig.atmanager;
+package com.heig.atmanager.userData;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.tasks.Task;
+import com.heig.atmanager.userData.User;
 
 import java.util.ArrayList;
 

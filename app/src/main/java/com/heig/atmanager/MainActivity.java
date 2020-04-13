@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.Navigation;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,6 +21,8 @@ import com.heig.atmanager.calendar.CalendarFragment;
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.goals.GoalsFragment;
 import com.heig.atmanager.taskLists.TaskList;
+import com.heig.atmanager.userData.DummyData;
+import com.heig.atmanager.userData.UserViewModel;
 
 public class MainActivity extends AppCompatActivity {
     public UserViewModel dummyUser;
