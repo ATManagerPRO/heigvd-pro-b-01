@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.heig.atmanager.UserController;
 import com.heig.atmanager.tasks.Task;
 import com.heig.atmanager.goals.GoalTodo;
 import com.heig.atmanager.R;
@@ -46,6 +47,8 @@ public class CalendarFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_calendar, container, false);
 
+        UserController user = ((UserController) getArguments().getSerializable(UserController.SERIAL_USER_KEY));
+
         calendarView = v.findViewById(R.id.calendar_view);
         tasks        = new ArrayList<>();
         goals        = new ArrayList<>();
@@ -58,8 +61,8 @@ public class CalendarFragment extends Fragment {
                 calendar.get(Calendar.DAY_OF_MONTH)
         );
         // Notification decorator for todos and goals
-        calendarView.addDecorator(new TasksAndGoalsCalendarDecorator(v.getContext(),
-                v.getResources().getColor(R.color.day_background_notification, null)));
+        calendarView.addDecorator(new TasksAndGoalsCalendarDecorator(
+                v.getResources().getColor(R.color.day_background_notification, null), user));
         // Today's date decorator
         calendarView.addDecorator(new TodayCalendarDecorator(today,
                 v.getResources().getColor(R.color.outline_today, null)));

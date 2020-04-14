@@ -8,6 +8,7 @@ import android.text.style.LineBackgroundSpan;
 
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
+import com.heig.atmanager.UserController;
 
 import java.util.Calendar;
 import androidx.annotation.NonNull;
@@ -32,14 +33,12 @@ public class CalendarDayNotification implements LineBackgroundSpan {
 
     private int maxTasks;
     private int color;
-    private Context context;
+    private UserController user;
 
-    public CalendarDayNotification(Context context, int color) {
+    public CalendarDayNotification(int color, UserController user, int maxTasks) {
         this.color   = color;
-        this.context = context;
-
-        // TODO : Should be computed once outside...
-        this.maxTasks = ((MainActivity) context).dummyUser.getMaxActivityPerDay();
+        this.user = user;
+        this.maxTasks = maxTasks;
     }
 
     @Override
@@ -56,7 +55,7 @@ public class CalendarDayNotification implements LineBackgroundSpan {
         // rem : charSequence = day of the month
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(charSequence.toString()));
-        paint.setAlpha(getDensityAlpha(((MainActivity) context).dummyUser.getTotalTasksForDay(calendar.getTime())));
+        paint.setAlpha(getDensityAlpha(user.getViewModel().getTotalTasksForDay(calendar.getTime())));
 
         canvas.drawRoundRect(left + PADDING, top - HEIGHT + PADDING,
                 right - PADDING, bottom + HEIGHT - PADDING, CORNER_RADIUS,

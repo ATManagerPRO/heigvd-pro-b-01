@@ -3,6 +3,7 @@ package com.heig.atmanager.calendar;
 import android.content.Context;
 
 import com.heig.atmanager.MainActivity;
+import com.heig.atmanager.UserController;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
@@ -19,23 +20,26 @@ import java.util.Date;
  */
 public class TasksAndGoalsCalendarDecorator implements DayViewDecorator {
 
-    private Context context;
+    private int maxTasksForADay = 0;
     private int color;
+    private UserController user;
 
-    public TasksAndGoalsCalendarDecorator(Context context, int color) {
-        this.context = context;
+    public TasksAndGoalsCalendarDecorator(int color, UserController user) {
         this.color = color;
+        this.user = user;
+
+        maxTasksForADay = user.getViewModel().getMaxActivityPerDay();
     }
 
     @Override
     public boolean shouldDecorate(CalendarDay day) {
-        return ((MainActivity) context).dummyUser.getTotalTasksForDay(convertCalendarDayToDate(day)) != 0;
+        return user.getViewModel().getTotalTasksForDay(convertCalendarDayToDate(day)) != 0;
     }
 
     @Override
     public void decorate(DayViewFacade view) {
         // Daily notifications
-        view.addSpan(new CalendarDayNotification(context, color));
+        view.addSpan(new CalendarDayNotification(color, user, maxTasksForADay));
     }
 
     private Date convertCalendarDayToDate(CalendarDay day) {
