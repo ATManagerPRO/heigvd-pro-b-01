@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.Navigation;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,7 +23,8 @@ import com.heig.atmanager.goals.GoalsFragment;
 import com.heig.atmanager.taskLists.TaskList;
 
 public class MainActivity extends AppCompatActivity {
-    public UserViewModel dummyUser;
+
+    private UserController user;
 
     private BottomNavigationView dock;
 
@@ -41,8 +41,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // To get this variable from the fragments ((MainActivity)getActivity()).dummyUser
-        dummyUser = DummyData.getUser();
+        // User initialisation
+        user = new UserController("John", "googleToken");
+        user.updateViewModel();
 
         // Drawer layout
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
@@ -89,6 +90,11 @@ public class MainActivity extends AppCompatActivity {
                     default:
                         return false;
                 }
+
+                // Loading the fragment with the user as arguments
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(UserController.SERIAL_USER_KEY, user);
+                selectedFragment.setArguments(bundle);
                 loadFragment(selectedFragment);
                 return true;
             }
@@ -157,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
         // get menu from navigationView
         Menu menu = navigationView.getMenu();
 
-        for(Folder folder : dummyUser.getFolders().getValue()) {
+        for(Folder folder : user.getFolders().getValue()) {
             Menu submenu = menu.addSubMenu(folder.getName());
 
             for(TaskList taskList : folder.getTaskLists())

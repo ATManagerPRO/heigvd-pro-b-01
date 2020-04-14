@@ -17,7 +17,7 @@ import java.util.Date;
 
 public class DummyData {
 
-    private static User dummyUser = new User("Joe", "GoogleToken");
+    /*private static User dummyUser = new User("Joe", "GoogleToken");
 
     private static UserViewModel user;
 
@@ -45,7 +45,7 @@ public class DummyData {
             dummyUser.addGoal(monthly_goal4);*/
 
             // Add Tasks
-            Calendar taskCal = Calendar.getInstance();
+            /*Calendar taskCal = Calendar.getInstance();
             taskCal.add(Calendar.DAY_OF_MONTH, 1);
             Calendar taskCal1 = Calendar.getInstance();
             taskCal1.add(Calendar.DAY_OF_MONTH, 1);
@@ -110,5 +110,5 @@ public class DummyData {
         }
         return user;
 
-    }
+    }*/
 }

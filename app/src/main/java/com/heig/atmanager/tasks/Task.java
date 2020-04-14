@@ -1,7 +1,5 @@
 package com.heig.atmanager.tasks;
 
-import com.prolificinteractive.materialcalendarview.CalendarDay;
-
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;

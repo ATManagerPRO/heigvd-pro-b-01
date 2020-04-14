@@ -48,7 +48,7 @@ This software requires Java 8 or above and the following libraries:
 
 ## Documentation
 
-com.heig.atmanager.User manual: see file xxxxx.
+com.heig.atmanager.UserController manual: see file xxxxx.
 
 API documentation: see file yyyyy.
 

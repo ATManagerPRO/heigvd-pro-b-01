@@ -26,11 +26,11 @@ public class HomeFragment extends Fragment {
     private TextView greetingText;
 
     // Goal feed
-    private ArrayList<GoalTodo> goals; // user data
+    private ArrayList<GoalTodo> goals;
     private RecyclerView goalsRecyclerView;
 
     // Task feed
-    private ArrayList<Task> tasks; // user data
+    private ArrayList<Task> tasks;
     private RecyclerView tasksRecyclerView;
 
     @Override
@@ -38,8 +38,13 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
-        tasks = new ArrayList<>();
-        goals = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+        UserController user = ((UserController) getArguments().getSerializable(UserController.SERIAL_USER_KEY));
+
+        tasks = user != null ? user.getViewModel().getTasksOfDay(calendar.getTime()) :
+                                new ArrayList<Task>();
+        goals = user != null ? user.getViewModel().getGoalTodosOfDay(calendar.getTime()) :
+                                new ArrayList<GoalTodo>();
 
         // Greeting
         greetingText = (TextView) v.findViewById(R.id.greeting_text);
