@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.heig.atmanager.Interval;
+import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
 import com.heig.atmanager.UserController;
 import com.heig.atmanager.Utils;
@@ -17,6 +18,7 @@ import java.util.Date;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,6 +31,8 @@ import androidx.recyclerview.widget.RecyclerView;
  *       category. Same goes for weeks and months. This is to avoid unhelpful duplicates.
  */
 public class GoalsFragment extends Fragment {
+
+    public static final String FRAG_GOALS_ID = "Goals_Fragment";
 
     // Today's goal feed
     ArrayList<Goal> goals; // user data

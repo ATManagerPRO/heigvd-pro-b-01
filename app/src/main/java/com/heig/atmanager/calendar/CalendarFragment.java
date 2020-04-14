@@ -21,6 +21,7 @@ import java.util.Calendar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,6 +32,8 @@ import androidx.recyclerview.widget.RecyclerView;
  * Calendar view of todos and goals
  */
 public class CalendarFragment extends Fragment {
+
+    public static final String FRAG_CALENDAR_ID = "Calendar_Fragment";
 
     // Calendar
     private MaterialCalendarView calendarView;

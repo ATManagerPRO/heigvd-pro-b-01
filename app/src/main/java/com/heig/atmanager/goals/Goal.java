@@ -3,7 +3,7 @@ package com.heig.atmanager.goals;
 import com.heig.atmanager.Interval;
 import com.heig.atmanager.Utils;
 
-import java.time.LocalDate;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -22,7 +22,13 @@ import java.util.Date;
  * The app will then generate the goals (cf GoalTodo) for the user to interact with.
  *
  */
-public class Goal {
+public class Goal implements Serializable {
+
+    // Bundle keys for goalTodo header
+    public static final String TITLE_KEY       = "goal_title";
+    public static final String INTERVAL_KEY    = "goal_interval";
+    public static final String DATE_KEY        = "goal_date";
+    public static final String SERIAL_GOAL_KEY = "goal_serial";
 
     private static final String TAG = "Goal";
     
@@ -30,15 +36,15 @@ public class Goal {
     private int quantity;
     private int intervalNumber;
     private Interval interval;
-    private Calendar calendarDueDate;
+    private Date dueDate;
     private ArrayList<GoalTodo> goalTodos;
 
-    public Goal(String unit, int quantity, int intervalNumber, Interval interval, Calendar calendarDueDate) {
+    public Goal(String unit, int quantity, int intervalNumber, Interval interval, Date dueDate) {
         this.unit     = unit;
         this.quantity = quantity;
         this.intervalNumber = intervalNumber;
         this.interval = interval;
-        this.calendarDueDate  = calendarDueDate;
+        this.dueDate  = dueDate;
 
         // Generate the todos automatically (once) for the user
         goalTodos = generateTodos();
@@ -55,8 +61,8 @@ public class Goal {
         Calendar calendar = getCalendarInstance();
 
         // Adding new goalsTodo while it's equal or before the due date
-        while(calendar.equals(calendarDueDate) || calendar.before(calendarDueDate)) {
-            goals.add(new GoalTodo(this, 0, calendar.getTime(), calendarDueDate));
+        while(calendar.getTime().equals(dueDate) || calendar.getTime().before(dueDate)) {
+            goals.add(new GoalTodo(this, 0, calendar.getTime(), dueDate));
             calendar.add(interval.getCalendarInterval(),1);
         }
 
@@ -134,6 +140,18 @@ public class Goal {
         return goalTodos;
     }
 
+    public Date getDueDate() {
+        return dueDate;
+    }
+
+    public double getOverallPercentage() {
+        double percentage = 0;
+
+        for(GoalTodo goalTodo : goalTodos)
+            percentage += goalTodo.getQuantityDone();
+
+        return percentage / goalTodos.size();
+    }
 
 
 }
