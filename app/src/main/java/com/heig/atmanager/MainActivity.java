@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
         // get menu from navigationView
         Menu menu = navigationView.getMenu();
 
-        for(Folder folder : user.getFolders().getValue()) {
+        for(Folder folder : user.getViewModel().getFolders()) {
             Menu submenu = menu.addSubMenu(folder.getName());
 
             for(TaskList taskList : folder.getTaskLists())
