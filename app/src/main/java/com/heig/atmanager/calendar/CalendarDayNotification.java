@@ -39,7 +39,7 @@ public class CalendarDayNotification implements LineBackgroundSpan {
         this.context = context;
 
         // TODO : Should be computed once outside...
-        this.maxTasks = ((MainActivity) context).dummyUser.getMaxActivityPerDay();
+        this.maxTasks = ((MainActivity) context).dummyUser.getUser().getMaxActivityPerDay();
     }
 
     @Override
@@ -56,7 +56,7 @@ public class CalendarDayNotification implements LineBackgroundSpan {
         // rem : charSequence = day of the month
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(charSequence.toString()));
-        paint.setAlpha(getDensityAlpha(((MainActivity) context).dummyUser.getTotalTasksForDay(calendar.getTime())));
+        paint.setAlpha(getDensityAlpha(((MainActivity) context).dummyUser.getUser().getTotalTasksForDay(calendar.getTime())));
 
         canvas.drawRoundRect(left + PADDING, top - HEIGHT + PADDING,
                 right - PADDING, bottom + HEIGHT - PADDING, CORNER_RADIUS,

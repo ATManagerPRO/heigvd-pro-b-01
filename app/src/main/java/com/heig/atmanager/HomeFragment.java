@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.heig.atmanager.goals.GoalTodo;
 import com.heig.atmanager.tasks.Task;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,12 +34,22 @@ public class HomeFragment extends Fragment {
     private ArrayList<Task> tasks; // user data
     private RecyclerView tasksRecyclerView;
 
+    private UserViewModel userVM ;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        //Get user viewmodel from parent activity
+        userVM =  ((MainActivity) getActivity()).dummyUser;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
-        tasks = new ArrayList<>();
+        tasks = userVM.getTasks().getValue();
         goals = new ArrayList<>();
 
         // Greeting

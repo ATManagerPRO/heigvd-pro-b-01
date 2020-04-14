@@ -76,14 +76,6 @@ public class User {
         return folders;
     }
 
-    public  ArrayList<String> getDirectories() {
-        return directories;
-    }
-
-    public void setDirectories(ArrayList<String> directories) {
-        this.directories = directories;
-    }
-
     public int getTotalTasksForDay(Date day) {
         int totalTasks = 0;
 
@@ -150,10 +142,6 @@ public class User {
         return calendar_d1.get(Calendar.YEAR) == calendar_d2.get(Calendar.YEAR) &&
                 calendar_d1.get(Calendar.MONTH) == calendar_d2.get(Calendar.MONTH) &&
                 calendar_d1.get(Calendar.DAY_OF_MONTH) == calendar_d2.get(Calendar.DAY_OF_MONTH);
-    }
-
-    public ArrayList<Task> getTasks() {
-        return tasks;
     }
 
 }

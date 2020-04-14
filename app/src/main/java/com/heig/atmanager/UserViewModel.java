@@ -16,8 +16,7 @@ import java.util.ArrayList;
  **/
 public class UserViewModel extends ViewModel {
 
-    private String userName;
-    private String googleToken;
+    private User user;
 
     private MutableLiveData<ArrayList<Task>> tasks;
 
@@ -27,16 +26,8 @@ public class UserViewModel extends ViewModel {
 
     private MutableLiveData<ArrayList<Folder>> folders;
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public UserViewModel() {
-    }
-
     public UserViewModel(User user) {
-        userName = user.getUserName();
-        googleToken = user.getGoogleToken();
+        this.user = user;
 
         tasks = new MutableLiveData<>();
         if (user.getTasks() != null) {
@@ -58,10 +49,6 @@ public class UserViewModel extends ViewModel {
             folders.setValue(user.getFolders());
         }
 
-    }
-
-    public String getGoogleToken() {
-        return googleToken;
     }
 
     public MutableLiveData<ArrayList<Task>> getTasks() {
@@ -100,4 +87,9 @@ public class UserViewModel extends ViewModel {
     public void addGoal(Goal goal){
         goals.getValue().add(goal);
     }
+
+    public User getUser() {
+        return user;
+    }
 }
+

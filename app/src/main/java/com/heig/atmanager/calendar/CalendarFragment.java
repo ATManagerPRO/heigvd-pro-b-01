@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.heig.atmanager.MainActivity;
+import com.heig.atmanager.UserViewModel;
 import com.heig.atmanager.tasks.Task;
 import com.heig.atmanager.goals.GoalTodo;
 import com.heig.atmanager.R;
@@ -20,6 +22,7 @@ import java.util.Calendar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
@@ -41,13 +44,23 @@ public class CalendarFragment extends Fragment {
     private ArrayList<Task> tasks; // user data
     private RecyclerView tasksRecyclerView;
 
+    private UserViewModel userVM;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        //Get user viewmodel from parent activity
+        userVM = ((MainActivity) getActivity()).dummyUser;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_calendar, container, false);
 
         calendarView = v.findViewById(R.id.calendar_view);
-        tasks        = new ArrayList<>();
+        tasks        = userVM.getTasks().getValue();
         goals        = new ArrayList<>();
 
         // Calendar setup
