@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.heig.atmanager.Interval;
+import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
 import com.heig.atmanager.Utils;
 
@@ -15,6 +16,7 @@ import java.util.Date;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,6 +29,8 @@ import androidx.recyclerview.widget.RecyclerView;
  *       category. Same goes for weeks and months. This is to avoid unhelpful duplicates.
  */
 public class GoalsFragment extends Fragment {
+
+    public static final String FRAG_GOALS_ID = "Goals_Fragment";
 
     // Today's goal feed
     ArrayList<Goal> goals; // user data
@@ -44,6 +48,10 @@ public class GoalsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_goals, container, false);
+
+        // Change top button to drawer icon
+        ((MainActivity) getActivity()).enableBackButton(false);
+
 
         // ----------- TEMP -----------
         goals = new ArrayList<>();
@@ -74,32 +82,32 @@ public class GoalsFragment extends Fragment {
         Date today = Calendar.getInstance().getTime();
 
         // Displaying the generating GoalTodo from the goals by intervals
-        ArrayList<GoalTodo> todayGoals = new ArrayList<>();
-        ArrayList<GoalTodo> weekGoals  = new ArrayList<>();
-        ArrayList<GoalTodo> monthGoals = new ArrayList<>();
+        ArrayList<Goal> todayGoals = new ArrayList<>();
+        ArrayList<Goal> weekGoals  = new ArrayList<>();
+        ArrayList<Goal> monthGoals = new ArrayList<>();
         for(Goal goal : goals) {
             switch(goal.getInterval()) {
                 case DAY:
-                    todayGoals.add(goal.getGoalTodos().get(0));
+                    todayGoals.add(goal);
                     break;
                 case WEEK:
-                    weekGoals.add(goal.getGoalTodos().get(0));
+                    weekGoals.add(goal);
                     break;
                 case MONTH:
-                    monthGoals.add(goal.getGoalTodos().get(0));
+                    monthGoals.add(goal);
                     break;
             }
         }
 
         // Goals feeds setup
         goalsTodayRecyclerView = (RecyclerView) v.findViewById(R.id.goals_today_rv);
-        Utils.setupGoalsFeed(v, goalsTodayRecyclerView, todayGoals);
+        Utils.setupGoalsFeed(getActivity(), v, goalsTodayRecyclerView, todayGoals);
 
         goalsWeekRecyclerView = (RecyclerView) v.findViewById(R.id.goals_week_rv);
-        Utils.setupGoalsFeed(v, goalsWeekRecyclerView, weekGoals);
+        Utils.setupGoalsFeed(getActivity(), v, goalsWeekRecyclerView, weekGoals);
 
         goalsMonthRecyclerView = (RecyclerView) v.findViewById(R.id.goals_month_rv);
-        Utils.setupGoalsFeed(v, goalsMonthRecyclerView, monthGoals);
+        Utils.setupGoalsFeed(getActivity(), v, goalsMonthRecyclerView, monthGoals);
         return v;
     }
 
