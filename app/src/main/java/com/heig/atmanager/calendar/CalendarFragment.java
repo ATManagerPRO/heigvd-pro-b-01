@@ -2,6 +2,7 @@ package com.heig.atmanager.calendar;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,8 +51,10 @@ public class CalendarFragment extends Fragment {
         UserController user = ((UserController) getArguments().getSerializable(UserController.SERIAL_USER_KEY));
 
         calendarView = v.findViewById(R.id.calendar_view);
-        tasks        = new ArrayList<>();
-        goals        = new ArrayList<>();
+
+        // Display the tasks of today
+        tasks = user != null ? user.getViewModel().getTasksOfDay(Calendar.getInstance().getTime()) :
+                new ArrayList<Task>();
 
         // Calendar setup
         Calendar calendar = Calendar.getInstance();
@@ -72,10 +75,6 @@ public class CalendarFragment extends Fragment {
         // Task feed
         tasksRecyclerView = (RecyclerView) v.findViewById(R.id.tasks_rv);
         Utils.setupTodosFeed(v, tasksRecyclerView, tasks);
-
-        // Goal feed
-        goalsRecyclerView = (RecyclerView) v.findViewById(R.id.goals_rv);
-        Utils.setupGoalsFeed(v, goalsRecyclerView, goals);
 
         return v;
     }
