@@ -21,9 +21,9 @@ import java.util.List;
  *
  * Custom Adapter containing a list of TaskList
  **/
-public class AddTaskSipnnerAdapter extends ArrayAdapter<TaskList> {
+public class AddTaskSpinnerAdapter extends ArrayAdapter<TaskList> {
 
-    public AddTaskSipnnerAdapter(@NonNull Context context, int resource, @NonNull List<TaskList> objects) {
+    public AddTaskSpinnerAdapter(@NonNull Context context, int resource, @NonNull List<TaskList> objects) {
         super(context, resource, objects);
     }
 

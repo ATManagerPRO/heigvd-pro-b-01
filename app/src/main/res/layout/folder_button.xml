@@ -20,7 +20,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_weight="0"
-            app:srcCompat="@drawable/ic_folder_black_24dp" />
+            app:srcCompat="@drawable/ic_folder_grey_24dp" />
 
         <TextView
             android:id="@+id/listTitle"

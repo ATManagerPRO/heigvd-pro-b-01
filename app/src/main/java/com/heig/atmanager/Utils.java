@@ -85,8 +85,7 @@ public class Utils {
     }
 
 
-    public static void setupTodosFeed(View v, RecyclerView rv, ArrayList<Task> tasks) {
-
+    public static void setupTasksFeed(View v, RecyclerView rv, ArrayList<Task> tasks) {
         rv.setHasFixedSize(true);
 
         RecyclerView.LayoutManager manager = new LinearLayoutManager(v.getContext());

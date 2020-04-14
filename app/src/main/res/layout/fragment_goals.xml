@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" 
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    
+  
     <ImageView
         android:layout_width="70dp"
         android:layout_height="70dp"
@@ -13,23 +12,13 @@
         android:backgroundTint="@color/grey"
         android:layout_margin="30dp"/>
 
+    
     <!-- Daily goals display -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/goals_today"
-        android:fontFamily="@font/arial"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:textColor="@color/grey"
-        android:textAlignment="center"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp">
+        android:orientation="vertical">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/goals_today_rv"
@@ -38,79 +27,96 @@
             android:scrollbars="vertical" />
     </LinearLayout>
 
-    <!-- Weekly goals display -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/goals_week"
-        android:fontFamily="@font/arial"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:textColor="@color/grey"
-        android:textAlignment="center"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/goals_today_rv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scrollbars="horizontal" />
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/goals_week_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="horizontal"/>
-    </LinearLayout>
+            android:fontFamily="@font/arial"
+            android:text="@string/goals_week"
+            android:textAlignment="center"
+            android:textColor="@color/grey"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-    <!-- Monthly goals display -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/goals_month"
-        android:fontFamily="@font/arial"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:textColor="@color/grey"
-        android:textAlignment="center"/>
-    <LinearLayout
-        android:id="@+id/goals_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/goals_month_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="horizontal"/>
-    </LinearLayout>
+            android:fontFamily="@font/arial"
+            android:text="@string/goals_month"
+            android:textAlignment="center"
+            android:textColor="@color/grey"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-    <!-- Yearly goals display -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/goals_year"
-        android:fontFamily="@font/arial"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:textColor="@color/grey"
-        android:textAlignment="center"/>
+        <LinearLayout
+            android:id="@+id/goals_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/goals_month_rv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scrollbars="horizontal" />
+
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/goals_year_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="horizontal"/>
+            android:fontFamily="@font/arial"
+            android:text="@string/goals_year"
+            android:textAlignment="center"
+            android:textColor="@color/grey"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/goals_year_rv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scrollbars="horizontal" />
+        </LinearLayout>
+
     </LinearLayout>
 
-</LinearLayout>
+    <!-- Weekly goals display -->
+
+    <!-- Monthly goals display -->
+
+    <!-- Yearly goals display -->
+
+</ScrollView>
