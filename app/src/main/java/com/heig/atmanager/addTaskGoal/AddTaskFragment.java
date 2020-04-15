@@ -30,6 +30,7 @@ import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
 import com.heig.atmanager.User;
 import com.heig.atmanager.UserViewModel;
+import com.heig.atmanager.Utils;
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.tasks.Task;
@@ -108,7 +109,9 @@ public class AddTaskFragment extends Fragment {
                 picker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        String dueDateString = dayOfMonth + "." + (month + 1) + "." + year;
+                        String dueDateString = Utils.formatNumber(dayOfMonth) + "." +
+                                Utils.formatNumber(month + 1) + "." +
+                                Utils.formatNumber(year);
                         dueDateTextView.setText(dueDateString);
                     }
                 }, mYear, mMonth, mDay);
@@ -126,7 +129,8 @@ public class AddTaskFragment extends Fragment {
                 TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        dueTimeTextView.setText(hourOfDay + ":" + minute);
+                        dueTimeTextView.setText(
+                                Utils.formatNumber(hourOfDay) + ":" + Utils.formatNumber(minute));
                     }
                 }, mHour, mMinute, true);
                 timePickerDialog.show();
