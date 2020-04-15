@@ -45,8 +45,9 @@
     <string name="goal_title">New goal</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
-    <string name="due_date">Due Date</string>
-    <string name="due_time">Due Time</string>
+    <string name="due_date_title">Due date</string>
+    <string name="due_date">DD.MM.YYYY</string>
+    <string name="due_time">HH.MM</string>
     <string name="tags">Tags</string>
     <string name="add_task">Add Task</string>
     <string name="add_goal">Add Goal</string>
