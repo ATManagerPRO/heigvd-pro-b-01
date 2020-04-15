@@ -59,6 +59,13 @@ public class DummyData {
         Calendar taskCal6 = Calendar.getInstance();
         taskCal6.add(Calendar.DAY_OF_MONTH, 9);
         dummyUser.addTask(new Task("Task1", "...", taskCal));
+        dummyUser.addTask(new Task("Task1", "...", taskCal));
+        dummyUser.addTask(new Task("Task1", "...", taskCal));
+        dummyUser.addTask(new Task("Task1", "...", taskCal));
+        dummyUser.addTask(new Task("Task1", "...", taskCal));
+        dummyUser.addTask(new Task("Task1", "...", taskCal));
+        dummyUser.addTask(new Task("Task1", "...", taskCal));
+        dummyUser.addTask(new Task("Task1", "...", taskCal));
         dummyUser.addTask(new Task("Task2", "...", taskCal1));
         dummyUser.addTask(new Task("Task3", "...", taskCal2));
         dummyUser.addTask(new Task("Task4", "...", taskCal3));
