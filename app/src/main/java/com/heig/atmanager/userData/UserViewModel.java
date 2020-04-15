@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.goals.Goal;
+import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.tasks.Task;
 import com.heig.atmanager.userData.User;
 
@@ -18,6 +19,8 @@ public class UserViewModel extends ViewModel {
 
     private String userName;
     private String googleToken;
+
+    private MutableLiveData<ArrayList<TaskList>> taskLists;
 
     private MutableLiveData<ArrayList<Task>> tasks;
 
@@ -38,9 +41,9 @@ public class UserViewModel extends ViewModel {
         userName = user.getUserName();
         googleToken = user.getGoogleToken();
 
-        tasks = new MutableLiveData<>();
-        if (user.getTasks() != null) {
-            tasks.setValue(user.getTasks());
+        taskLists = new MutableLiveData<>();
+        if (user.getTaskLists() != null) {
+            taskLists.setValue(user.getTaskLists());
         }
 
         goals = new MutableLiveData<>();
@@ -62,6 +65,14 @@ public class UserViewModel extends ViewModel {
 
     public String getGoogleToken() {
         return googleToken;
+    }
+
+    public MutableLiveData<ArrayList<TaskList>> getTaskLists() {
+        if (taskLists == null) {
+            taskLists = new MutableLiveData<>();
+        }
+
+        return taskLists;
     }
 
     public MutableLiveData<ArrayList<Task>> getTasks() {

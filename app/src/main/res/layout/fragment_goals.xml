@@ -3,6 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+  
+    <ImageView
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/ic_goals"
+        android:backgroundTint="@color/grey"
+        android:layout_margin="30dp"/>
 
     
     <!-- Daily goals display -->
@@ -12,15 +20,12 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/goals_today_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/arial"
-            android:text="@string/goals_today"
-            android:textAlignment="center"
-            android:textColor="@color/grey"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:scrollbars="vertical" />
+    </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,7 +41,8 @@
                 android:scrollbars="horizontal" />
         </LinearLayout>
 
-        <TextView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/goals_week_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/arial"
@@ -53,14 +59,8 @@
             android:layout_marginBottom="20dp"
             android:gravity="center">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/goals_week_rv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scrollbars="horizontal" />
-        </LinearLayout>
-
-        <TextView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/goals_month_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/arial"
@@ -86,7 +86,8 @@
 
         </LinearLayout>
 
-        <TextView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/goals_year_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/arial"

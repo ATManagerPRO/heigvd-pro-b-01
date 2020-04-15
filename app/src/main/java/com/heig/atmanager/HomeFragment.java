@@ -22,6 +22,9 @@ import java.util.Calendar;
  * Fragment for the Home view (User's Tasks and Goals of the day)
  */
 public class HomeFragment extends Fragment {
+
+    public static final String FRAG_HOME_ID = "Home_Fragment";
+
     // Greeting message
     private TextView greetingText;
 
@@ -47,11 +50,11 @@ public class HomeFragment extends Fragment {
 
         // Task feed
         tasksRecyclerView = (RecyclerView) v.findViewById(R.id.tasks_rv);
-        Utils.setupTodosFeed(v, tasksRecyclerView, tasks);
+        Utils.setupTasksFeed(v, tasksRecyclerView, tasks);
 
         // Goal feed
         goalsRecyclerView = (RecyclerView) v.findViewById(R.id.goals_rv);
-        Utils.setupGoalsFeed(v, goalsRecyclerView, goals);
+        Utils.setupGoalTodosFeedBubbled(v, goalsRecyclerView, goals);
 
         return v;
     }

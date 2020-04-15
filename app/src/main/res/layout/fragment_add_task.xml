@@ -161,7 +161,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:adjustViewBounds="true"
-            android:src="@drawable/ic_folder_black_24dp" />
+            android:src="@drawable/ic_folder_grey_24dp" />
 
         <Spinner
             android:id="@+id/frag_directory_choice_tag_spinner"

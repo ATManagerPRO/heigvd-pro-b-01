@@ -3,6 +3,7 @@ package com.heig.atmanager.goals;
 import com.heig.atmanager.Interval;
 import com.heig.atmanager.Utils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,7 +22,13 @@ import java.util.Date;
  * The app will then generate the goals (cf GoalTodo) for the user to interact with.
  *
  */
-public class Goal {
+public class Goal implements Serializable {
+
+    // Bundle keys for goalTodo header
+    public static final String TITLE_KEY       = "goal_title";
+    public static final String INTERVAL_KEY    = "goal_interval";
+    public static final String DATE_KEY        = "goal_date";
+    public static final String SERIAL_GOAL_KEY = "goal_serial";
 
     private static final String TAG = "Goal";
     
@@ -131,6 +138,19 @@ public class Goal {
 
     public ArrayList<GoalTodo> getGoalTodos() {
         return goalTodos;
+    }
+
+    public Date getDueDate() {
+        return dueDate;
+    }
+
+    public double getOverallPercentage() {
+        double percentage = 0;
+
+        for(GoalTodo goalTodo : goalTodos)
+            percentage += goalTodo.getQuantityDone();
+
+        return percentage / goalTodos.size();
     }
 
 
