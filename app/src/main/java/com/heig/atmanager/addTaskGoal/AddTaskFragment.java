@@ -7,9 +7,12 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -39,6 +42,8 @@ import java.util.GregorianCalendar;
 
 
 public class AddTaskFragment extends Fragment {
+
+    private static final String TAG = "AddTaskFragment";
 
     private String title;
     private String description;
@@ -130,22 +135,24 @@ public class AddTaskFragment extends Fragment {
 
 
         // Tags
-        final ArrayAdapter<String> chipsAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, currentUser.getTags().getValue());
-        /*ArrayList<String> test = new ArrayList<>();
+        //final ArrayAdapter<String> chipsAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, currentUser.getTags().getValue());
+        ArrayList<String> test = new ArrayList<>();
         test.add("tag1");
         test.add("tag2");
         final ArrayAdapter<String> chipsAdapter = new ArrayAdapter<>(getActivity(),
-                R.layout.support_simple_spinner_dropdown_item, test);*/
+                R.layout.support_simple_spinner_dropdown_item, test);
         // App detect the input to suggest the tag
         final AutoCompleteTextView autoCompleteTextView = mView.findViewById(R.id.frag_add_task_autocomplete_textview);
         autoCompleteTextView.setAdapter(chipsAdapter);
-        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        autoCompleteTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                autoCompleteTextView.setText(null);
-                String text = (String) adapterView.getItemAtPosition(i);
-                ChipGroup chipGroup = mView.findViewById(R.id.frag_add_task_chipgroup);
-                addChipToGroup(text, chipGroup);
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    ChipGroup chipGroup = mView.findViewById(R.id.frag_add_task_chipgroup);
+                    addChipToGroup(autoCompleteTextView.getText().toString().trim(), chipGroup);
+                    autoCompleteTextView.setText(null);
+                }
+                return false;
             }
         });
 
