@@ -131,6 +131,11 @@ public class AddTaskFragment extends Fragment {
 
         // Tags
         final ArrayAdapter<String> chipsAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, currentUser.getTags().getValue());
+        /*ArrayList<String> test = new ArrayList<>();
+        test.add("tag1");
+        test.add("tag2");
+        final ArrayAdapter<String> chipsAdapter = new ArrayAdapter<>(getActivity(),
+                R.layout.support_simple_spinner_dropdown_item, test);*/
         // App detect the input to suggest the tag
         final AutoCompleteTextView autoCompleteTextView = mView.findViewById(R.id.frag_add_task_autocomplete_textview);
         autoCompleteTextView.setAdapter(chipsAdapter);
