@@ -9,6 +9,8 @@ import java.util.Date;
  * Task object
  */
 public class Task {
+
+    private long id;
     private String title;
     private String description;
     private boolean done;
@@ -16,47 +18,21 @@ public class Task {
     private Date dueDate;
     private Date doneDate;
     private Date reminderDate;
-    private String directory;
 
-
-    public Task(String title, String description) {
-        this(title, description, null, null, false);
-    }
-
-    public Task(String title, String description, Date dueDate) {
-        this(title, description, dueDate, null, false);
-    }
-
-    public Task(String title, String description, boolean favorite) {
-        this(title, description, null,null, favorite);
-    }
-
-    public Task(String title, String description, Date dueDate, String directory) {
-        this(title, description, dueDate, directory, false);
-    }
-
-    public Task(String title, String description, Date dueDate, String directory, boolean favorite) {
-        this.title       = title;
+    public Task(long id, String title, String description, boolean done, boolean favorite,
+                Date dueDate, Date doneDate, Date reminderDate) {
+        this.id = id;
+        this.title = title;
         this.description = description;
-        this.dueDate     = dueDate;
-        this.directory   = directory;
-        this.favorite    = favorite;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getDescription() {
-        return description;
+        this.done = done;
+        this.favorite = favorite;
+        this.dueDate = dueDate;
+        this.doneDate = doneDate;
+        this.reminderDate = reminderDate;
     }
 
     public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
-    }
-
-    public Date getDueDate() {
-        return dueDate;
     }
 
     public void setTitle(String title) {
@@ -67,12 +43,20 @@ public class Task {
         this.description = description;
     }
 
-    public void setDirectory(String directory) {
-        this.directory = directory;
-    }
-
     public void setDone(boolean status) {
         this.done = status;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Date getDueDate() {
+        return dueDate;
     }
 
     public boolean isFavorite() {

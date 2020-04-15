@@ -1,17 +1,21 @@
 package com.heig.atmanager.userData;
 
 import android.icu.text.CaseMap;
+import android.icu.text.SimpleDateFormat;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.taskLists.TaskList;
+import com.heig.atmanager.tasks.Task;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -26,6 +30,7 @@ public class UserJsonParser extends AsyncTask<Void, Void, Void> {
 
     // Http urls
     private static final String URL_FOLDERS_AND_TASKLISTS = "http://...";
+    private static final String URL_TODAY_TASKS_GOALS     = "http://...";
 
     // Data keywords
     // - Folders
@@ -36,6 +41,19 @@ public class UserJsonParser extends AsyncTask<Void, Void, Void> {
     private static final String TASKLISTS_KEY   = "tasklists";
     private static final String TASKLISTS_ID    = "tasklists_id";
     private static final String TASKLISTS_TITLE = "tasklists_title";
+    // - Tasks
+    private static final String TASK_KEY           = "task";
+    private static final String TASK_ID            = "task_id";
+    private static final String TASK_TITLE         = "task_title";
+    private static final String TASK_DESCRIPTION   = "task_description";
+    private static final String TASK_DONE          = "task_done";
+    private static final String TASK_FAVORITE      = "task_favorite";
+    private static final String TASK_DUE_DATE      = "task_due_date";
+    private static final String TASK_DONE_DATE     = "task_done_date";
+    private static final String TASK_REMINDER_DATE = "task_reminder_date";
+    private static final String TASK_DIRECTORY_ID  = "task_directory_id";
+
+    // - Goals
 
 
     @Override
@@ -49,10 +67,15 @@ public class UserJsonParser extends AsyncTask<Void, Void, Void> {
 
         // Side drawer data
         loadFoldersAndTasklists();
+        // Home Fragment data
+        loadTodaysTasksAndGoals();
 
         return null;
     }
 
+    /**
+     * Loads the folders and tasklists of the user
+     */
     private void loadFoldersAndTasklists() {
         HttpHandler sh = new HttpHandler();
         // Making a request to url and getting response
@@ -108,6 +131,63 @@ public class UserJsonParser extends AsyncTask<Void, Void, Void> {
 
             } catch (final JSONException e) {
                 Log.e(TAG, "Json parsing error: " + e.getMessage());
+            }
+        } else {
+            Log.e(TAG, "Couldn't get json from server.");
+        }
+    }
+
+    /**
+     * Loads the tasks and goals of the user for today
+     */
+    private void loadTodaysTasksAndGoals() {
+        HttpHandler sh = new HttpHandler();
+        // Making a request to url and getting response
+        String jsonStr = sh.makeServiceCall(URL_TODAY_TASKS_GOALS);
+
+        Log.e(TAG, "Response from url: " + jsonStr);
+        if (jsonStr != null) {
+            try {
+                JSONObject jsonObj = new JSONObject(jsonStr);
+
+                // Getting JSON Array node
+                JSONArray tasks = jsonObj.getJSONArray(TASK_KEY);
+                // TODO : JSONArray goals = jsonObj.getJSONArray(GOAL_KEY);
+
+                // looping through all tasks
+                for (int i = 0; i < tasks.length(); i++) {
+                    JSONObject c = tasks.getJSONObject(i);
+
+                    // Task data
+                    long id                = c.getLong(TASK_ID);
+                    String title           = c.getString(TASK_TITLE);
+                    String description     = c.getString(TASK_DESCRIPTION);
+                    boolean done           = c.getBoolean(TASK_DONE);
+                    boolean favorite       = c.getBoolean(TASK_FAVORITE);
+                    String dueDateStr      = c.getString(TASK_DUE_DATE);
+                    String doneDateStr     = c.getString(TASK_DONE_DATE);
+                    String reminderDateStr = c.getString(TASK_REMINDER_DATE);
+
+                    // Date parser
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date dueDate         = sdf.parse(dueDateStr);
+                    Date doneDate        = sdf.parse(doneDateStr);
+                    Date reminderDate    = sdf.parse(reminderDateStr);
+
+                    // Creating the task and adding it to the current user
+                    Task task = new Task(id, title, description, done, favorite, dueDate, doneDate, reminderDate);
+                    // TODO : user.addTask(task)
+                }
+
+                // TODO : looping through all goals
+                //for (int i = 0; i < goals.length(); i++) {
+
+                //}
+
+            } catch (final JSONException e) {
+                Log.e(TAG, "Json parsing error: " + e.getMessage());
+            } catch (ParseException e) {
+                Log.e(TAG, "Parsing error : " + e);
             }
         } else {
             Log.e(TAG, "Couldn't get json from server.");
