@@ -1,6 +1,5 @@
-package com.heig.atmanager.userData;
+package com.heig.atmanager;
 
-import android.icu.text.CaseMap;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -12,7 +11,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Author : Stéphane Bottin
@@ -76,7 +74,7 @@ public class UserJsonParser extends AsyncTask<Void, Void, Void> {
                     String title = c.getString(TASKLISTS_TITLE);
 
                     // Creating the tasklist and adding it to the current user
-                    TaskList tl = new TaskList(Long.parseLong(id), title);
+                    //TaskList tl = new TaskList(Long.parseLong(id), title);
                     // TODO : user.addTaskList(tl)
                 }
 
@@ -97,12 +95,12 @@ public class UserJsonParser extends AsyncTask<Void, Void, Void> {
                         String folder_tasklist_title = tasklist.getString(TASKLISTS_TITLE);
 
                         // Creating the tasklist and adding it to the list
-                        folder_tasklists.add(new TaskList(Long.parseLong(folder_tasklist_id),
-                                folder_tasklist_title));
+                        //folder_tasklists.add(new TaskList(Long.parseLong(folder_tasklist_id),
+                        //       folder_tasklist_title));
                     }
 
                     // Creating the folder and adding it to the user
-                    Folder folder = new Folder(Long.parseLong(id), title, folder_tasklists);
+                    //Folder folder = new Folder(Long.parseLong(id), title, folder_tasklists);
                     // TODO : user.add(folder)
                 }
 

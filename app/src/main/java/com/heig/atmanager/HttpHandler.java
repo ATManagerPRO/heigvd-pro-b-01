@@ -1,4 +1,4 @@
-package com.heig.atmanager.userData;
+package com.heig.atmanager;
 
 import android.util.Log;
 

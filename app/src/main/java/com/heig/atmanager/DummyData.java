@@ -1,7 +1,5 @@
 package com.heig.atmanager;
 
-import android.icu.text.CaseMap;
-
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.taskLists.TaskList;
@@ -20,7 +18,7 @@ import java.util.Date;
 
 public class DummyData {
 
-    private static User dummyUser = new User("Joe", "GoogleToken");
+    private static com.heig.atmanager.User dummyUser = new com.heig.atmanager.User("Joe", "GoogleToken");
 
     private static UserViewModel user;
 

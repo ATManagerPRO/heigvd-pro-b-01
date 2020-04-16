@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -29,11 +27,9 @@ import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
 import com.heig.atmanager.UserViewModel;
 import com.heig.atmanager.Utils;
-import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.tasks.Task;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;

@@ -6,9 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.heig.atmanager.userData.DummyData;
+import com.heig.atmanager.DummyData;
 import com.heig.atmanager.R;
-import com.heig.atmanager.userData.UserViewModel;
+import com.heig.atmanager.UserViewModel;
 
 public class AddTaskGoalActivity extends AppCompatActivity  {
 

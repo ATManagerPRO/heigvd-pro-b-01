@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.heig.atmanager.userData.DummyData;
+import com.heig.atmanager.DummyData;
 
 
 /**

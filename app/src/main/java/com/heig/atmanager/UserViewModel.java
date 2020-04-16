@@ -1,5 +1,6 @@
-package com.heig.atmanager.userData;
+package com.heig.atmanager;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -7,7 +8,6 @@ import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.tasks.Task;
-import com.heig.atmanager.userData.User;
 
 import java.util.ArrayList;
 
@@ -37,7 +37,7 @@ public class UserViewModel extends ViewModel {
     public UserViewModel() {
     }
 
-    public UserViewModel(User user) {
+    public UserViewModel(com.heig.atmanager.User user) {
         userName = user.getUserName();
         googleToken = user.getGoogleToken();
 
