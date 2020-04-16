@@ -37,7 +37,7 @@ public class UserViewModel extends ViewModel {
     public UserViewModel() {
     }
 
-    public UserViewModel(com.heig.atmanager.User user) {
+    public UserViewModel(User user) {
         userName = user.getUserName();
         googleToken = user.getGoogleToken();
 

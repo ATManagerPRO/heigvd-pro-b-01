@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // To get this variable from the fragments ((MainActivity)getActivity()).dummyUser
-        //dummyUser = com.heig.atmanager.DummyData.getUser();
+        dummyUser = DummyData.getUser();
 
         // Drawer layout
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
