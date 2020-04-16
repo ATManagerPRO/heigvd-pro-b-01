@@ -76,6 +76,11 @@ public class GoalsFragment extends Fragment {
         goals.add(daily_goal2);
         goals.add(weekly_goal3);
         goals.add(monthly_goal4);
+        goals.add(monthly_goal4);
+        goals.add(monthly_goal4);
+        goals.add(monthly_goal4);
+        goals.add(monthly_goal4);
+        goals.add(monthly_goal4);
         // --------- END TEMP ---------
 
         // Calendar instances (for readability)
