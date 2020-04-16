@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,26 +21,28 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputLayout;
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
-import com.heig.atmanager.User;
 import com.heig.atmanager.UserViewModel;
+import com.heig.atmanager.Utils;
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.tasks.Task;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
 
 public class AddTaskFragment extends Fragment {
+
+    private static final String TAG = "AddTaskFragment";
 
     private String title;
     private String description;
@@ -117,7 +120,8 @@ public class AddTaskFragment extends Fragment {
                 picker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        String dueDateString = dayOfMonth + "." + (month + 1) + "." + year;
+                        String dueDateString = Utils.formatNumber(dayOfMonth) + "." +
+                                Utils.formatNumber(month + 1) + "." + Utils.formatNumber(year);
                         dueDateTextView.setText(dueDateString);
                     }
                 }, mYear, mMonth, mDay);
@@ -160,18 +164,11 @@ public class AddTaskFragment extends Fragment {
 
         // Directory spinner
         final Spinner folderSpinner = mView.findViewById(R.id.frag_directory_choice_tag_spinner);
-
-
-        ArrayList<TaskList> taskLists = new ArrayList<>();
-
-        for (Folder f : currentUser.getFolders().getValue()) {
-            taskLists.addAll(f.getTaskLists());
-        }
-
-        ArrayAdapter<TaskList> spinnerAdapter = new AddTaskSipnnerAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, taskLists);
+        ArrayAdapter<TaskList> spinnerAdapter = new AddTaskSpinnerAdapter(getActivity(),
+                R.layout.support_simple_spinner_dropdown_item,
+                currentUser.getTaskLists().getValue());
         spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         folderSpinner.setAdapter(spinnerAdapter);
-        selectedDirectory = folderSpinner.getSelectedItem().toString();
 
         // Button
         validationButton.setOnClickListener(new View.OnClickListener() {
@@ -179,6 +176,7 @@ public class AddTaskFragment extends Fragment {
             public void onClick(View view) {
                 title = titleEditText.getText().toString();
                 description = descriptionEditText.getText().toString();
+                selectedDirectory = folderSpinner.getSelectedItem().toString();
 
                 if (title.isEmpty()) {
                     titleLayout.setError(getString(R.string.input_missing));
@@ -189,7 +187,12 @@ public class AddTaskFragment extends Fragment {
 
                 Date selectedDate = new GregorianCalendar(mYear, mMonth, mDay, mHour, mMinute).getTime();
 
-                currentUser.addTask(new Task(title, description, selectedDate, selectedDirectory));
+                Task newTask = new Task(title, description, selectedDate);
+
+                // Add the task to a selected taskList
+                for(TaskList taskList : currentUser.getTaskLists().getValue())
+                    if(taskList.getName().equals(selectedDirectory))
+                        taskList.addTask(newTask);
 
                 getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
                 getActivity().findViewById(R.id.dock).setVisibility(View.VISIBLE);

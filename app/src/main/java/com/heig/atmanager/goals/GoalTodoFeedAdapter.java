@@ -25,68 +25,92 @@ import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Author : Stéphane Bottin
- * Date   : 12.03.2020
+ * Date   : 10.04.2020
  *
- * Goal feed adapter for the home view
+ * Adapter for goalsTodo bubbled or line by line
  */
-public class GoalFeedAdapter extends RecyclerView.Adapter<GoalFeedAdapter.MyViewHolder> {
-private ArrayList<GoalTodo> goals;
+public class GoalTodoFeedAdapter extends RecyclerView.Adapter<GoalTodoFeedAdapter.MyViewHolder> {
+    private ArrayList<GoalTodo> goals;
+    private boolean bubbled;
 
-// Provide a reference to the views for each data item
+    // Provide a reference to the views for each data item
 // Complex data items may need more than one view per item, and
 // you provide access to all the views for a data item in a view holder
-public static class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-    // each data item is just a string in this case
-    private TextView unit;
-    private TextView totalValue;
-    private TextView currentValue;
-    private TextView timerValue;
-    private ProgressBar progress;
-    private ToggleButton addBtn;
-    private EditText addNumValue;
-    private LinearLayout background;
+        // each data item is just a string in this case
+        private TextView title;
+        private TextView doneDate;
+        private TextView percentage;
+        private TextView unit;
+        private TextView totalValue;
+        private TextView currentValue;
+        private TextView timerValue;
+        private ProgressBar progress;
+        private ToggleButton addBtn;
+        private EditText addNumValue;
+        private LinearLayout background;
 
-    public MyViewHolder(View v) {
-        super(v);
-        unit         = (TextView) v.findViewById(R.id.unit_text);
-        currentValue = (TextView) v.findViewById(R.id.current_value_text);
-        totalValue   = (TextView) v.findViewById(R.id.total_value_text);
-        timerValue   = (TextView) v.findViewById(R.id.goal_timer);
-        progress     = (ProgressBar) v.findViewById(R.id.goal_progress);
-        addBtn       = (ToggleButton) v.findViewById(R.id.goal_add_button);
-        addNumValue  = (EditText) v.findViewById(R.id.goal_value_input);
-        background   = (LinearLayout) v.findViewById(R.id.goal_background);
+        public MyViewHolder(View v) {
+            super(v);
 
+            // Line design specifics
+            title        = (TextView) v.findViewById(R.id.goal_title);
+            doneDate     = (TextView) v.findViewById(R.id.goal_date);
+            percentage   = (TextView) v.findViewById(R.id.goal_percentage);
+
+            // Bubbled design specifics
+            unit         = (TextView) v.findViewById(R.id.unit_text);
+            currentValue = (TextView) v.findViewById(R.id.current_value_text);
+            totalValue   = (TextView) v.findViewById(R.id.total_value_text);
+            timerValue   = (TextView) v.findViewById(R.id.goal_timer);
+            background   = (LinearLayout) v.findViewById(R.id.goal_background);
+
+            // Shared views
+            progress     = (ProgressBar) v.findViewById(R.id.goal_progress);
+            addBtn       = (ToggleButton) v.findViewById(R.id.goal_add_button);
+            addNumValue  = (EditText) v.findViewById(R.id.goal_value_input);
+
+        }
     }
-}
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public GoalFeedAdapter(ArrayList<GoalTodo> goals) {
-        this.goals = goals;
+    public GoalTodoFeedAdapter(boolean bubbled, ArrayList<GoalTodo> goals) {
+        this.bubbled = bubbled;
+        this.goals   = goals;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public GoalFeedAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                                           int viewType) {
+    public GoalTodoFeedAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
+                                                                     int viewType) {
         // create a new view
         View v = (View) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.goal, parent, false);
+                .inflate(bubbled ? R.layout.goal_todo_bubble : R.layout.goal_todo_line, parent, false);
 
-        GoalFeedAdapter.MyViewHolder vh = new GoalFeedAdapter.MyViewHolder(v);
+        GoalTodoFeedAdapter.MyViewHolder vh = new GoalTodoFeedAdapter.MyViewHolder(v);
         return vh;
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(final GoalFeedAdapter.MyViewHolder holder, final int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
-        holder.unit.setText(goals.get(position).getUnit());
-        holder.currentValue.setText(Utils.formatNumber(goals.get(position).getQuantityDone()));
-        holder.totalValue.setText("/" + Utils.formatNumber(goals.get(position).getTotalQuantity()));
-        holder.timerValue.setText(goals.get(position).getTimerValue());
+    public void onBindViewHolder(final GoalTodoFeedAdapter.MyViewHolder holder, final int position) {
+
+        String unit    = goals.get(position).getUnit();
+        String doneQt  = Utils.formatNumber(goals.get(position).getQuantityDone());
+        String totalQt = Utils.formatNumber(goals.get(position).getTotalQuantity());
+
+        if(bubbled) {
+            holder.unit.setText(unit);
+            holder.currentValue.setText(doneQt);
+            holder.totalValue.setText("/" + totalQt);
+            holder.timerValue.setText(goals.get(position).getTimerValue());
+        } else {
+            holder.title.setText(doneQt + "/" + totalQt + " " + unit);
+            holder.doneDate.setText(Utils.dateToString(goals.get(position).getDoneDate()));
+            holder.percentage.setText(goals.get(position).getPercentage() + "%");
+        }
+
         holder.progress.setProgress(goals.get(position).getPercentage());
 
         // Add a quantity to a GoalTodo

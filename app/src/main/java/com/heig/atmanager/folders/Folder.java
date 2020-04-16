@@ -1,5 +1,6 @@
 package com.heig.atmanager.folders;
 
+import com.heig.atmanager.DrawerObject;
 import com.heig.atmanager.taskLists.TaskList;
 
 import java.util.ArrayList;
@@ -10,14 +11,13 @@ import java.util.ArrayList;
  *
  *  Class folder representing a folder containing different tasklists for organisation
  */
-public class Folder {
+public class Folder extends DrawerObject {
 
-    private String name;
     private ArrayList<TaskList> taskLists;
 
     public Folder(String name){
-        this.name = name;
-        this.taskLists = new ArrayList<TaskList>();
+        super(name);
+        this.taskLists = new ArrayList<>();
     }
 
     /**
@@ -39,24 +39,28 @@ public class Folder {
     /**
      * Adds a list from folder
      *
-     * @param name Name of the list to add
+     * @param list : tasklist to add
      * @return success of the operation
      */
-    public boolean addList(String name){
-        for(TaskList list : taskLists){
-            if(list.getName().equals(name)){
+    public boolean addList(TaskList list){
+        for(TaskList taskList : taskLists){
+            if(taskList.getName().equals(list.getName())){
                 return false;
             }
         }
-        taskLists.add(new TaskList(name));
-        return true;
-    }
 
-    public String getName() {
-        return name;
+        taskLists.add(list);
+        list.setParent(this);
+        return true;
     }
 
     public ArrayList<TaskList> getTaskLists() {
         return taskLists;
+    }
+
+
+    @Override
+    public boolean isFolder() {
+        return true;
     }
 }

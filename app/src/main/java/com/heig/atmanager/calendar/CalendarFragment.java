@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.heig.atmanager.MainActivity;
+import com.heig.atmanager.goals.GoalsFragment;
 import com.heig.atmanager.tasks.Task;
 import com.heig.atmanager.goals.GoalTodo;
 import com.heig.atmanager.R;
@@ -19,6 +21,7 @@ import java.util.Calendar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,6 +32,8 @@ import androidx.recyclerview.widget.RecyclerView;
  * Calendar view of todos and goals
  */
 public class CalendarFragment extends Fragment {
+
+    public static final String FRAG_CALENDAR_ID = "Calendar_Fragment";
 
     // Calendar
     private MaterialCalendarView calendarView;
@@ -66,11 +71,11 @@ public class CalendarFragment extends Fragment {
 
         // Task feed
         tasksRecyclerView = (RecyclerView) v.findViewById(R.id.tasks_rv);
-        Utils.setupTodosFeed(v, tasksRecyclerView, tasks);
+        Utils.setupTasksFeed(v, tasksRecyclerView, tasks);
 
         // Goal feed
-        goalsRecyclerView = (RecyclerView) v.findViewById(R.id.goals_rv);
-        Utils.setupGoalsFeed(v, goalsRecyclerView, goals);
+        //goalsRecyclerView = (RecyclerView) v.findViewById(R.id.goals_rv);
+        //Utils.setupGoalsFeed(v, goalsRecyclerView, goals);
 
         return v;
     }
