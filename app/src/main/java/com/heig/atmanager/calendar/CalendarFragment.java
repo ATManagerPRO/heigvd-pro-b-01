@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.UserViewModel;
+import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.tasks.Task;
 import com.heig.atmanager.goals.GoalTodo;
 import com.heig.atmanager.R;
@@ -52,6 +53,7 @@ public class CalendarFragment extends Fragment {
 
         //Get user viewmodel from parent activity
         userVM = ((MainActivity) getActivity()).dummyUser;
+        goals = new ArrayList<>();
     }
 
     @Nullable
@@ -61,7 +63,10 @@ public class CalendarFragment extends Fragment {
 
         calendarView = v.findViewById(R.id.calendar_view);
         tasks        = userVM.getTasks().getValue();
-        goals        = new ArrayList<>();
+
+        for (Goal g: userVM.getGoals().getValue()){
+            goals.addAll(g.getGoalTodos());
+        }
 
         // Calendar setup
         Calendar calendar = Calendar.getInstance();

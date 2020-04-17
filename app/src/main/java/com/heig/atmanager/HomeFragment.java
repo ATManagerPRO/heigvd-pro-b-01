@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.goals.GoalTodo;
 import com.heig.atmanager.tasks.Task;
 
@@ -42,6 +43,7 @@ public class HomeFragment extends Fragment {
 
         //Get user viewmodel from parent activity
         userVM =  ((MainActivity) getActivity()).dummyUser;
+        goals = new ArrayList<>();
     }
 
     @Override
@@ -50,7 +52,9 @@ public class HomeFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
         tasks = userVM.getTasks().getValue();
-        goals = new ArrayList<>();
+        for(Goal g : userVM.getGoals().getValue()){
+            goals.addAll(g.getGoalTodos());
+        }
 
         // Greeting
         greetingText = (TextView) v.findViewById(R.id.greeting_text);
