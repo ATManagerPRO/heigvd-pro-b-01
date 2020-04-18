@@ -13,7 +13,15 @@ import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
 import com.anychart.chart.common.dataentry.DataEntry;
 import com.anychart.chart.common.dataentry.ValueDataEntry;
+import com.anychart.charts.Cartesian;
 import com.anychart.charts.Pie;
+import com.anychart.core.cartesian.series.Line;
+import com.anychart.data.Mapping;
+import com.anychart.data.Set;
+import com.anychart.enums.Anchor;
+import com.anychart.enums.MarkerType;
+import com.anychart.enums.TooltipPositionMode;
+import com.anychart.graphics.vector.Stroke;
 import com.heig.atmanager.R;
 
 import java.util.ArrayList;
@@ -26,29 +34,25 @@ import java.util.List;
 public class StatsFragment  extends Fragment {
 
     private AnyChartView pieChart;
-   // private AnyChartView lineChart;
+    private AnyChartView lineChart;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_stats, container, false);
 
-        pieChart = v.findViewById(R.id.pie_chart);
-        /*
+        //pieChart = v.findViewById(R.id.pie_chart);
         lineChart = v.findViewById(R.id.line_chart);
-        lineChart.setProgressBar(v.findViewById(R.id.progress_bar));*/
+        lineChart.setProgressBar(v.findViewById(R.id.progress_bar));
+
+        //makePieChart();
+        makeLineChart();
 
         return v;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        makePieChart();
-       // makeLineChart();
-    }
-
     private void makePieChart(){
+
         Pie pie = AnyChart.pie();
 
         List<DataEntry> data = new ArrayList<>();
@@ -60,7 +64,7 @@ public class StatsFragment  extends Fragment {
 
         pieChart.setChart(pie);
     }
-/*
+
     private void makeLineChart(){
 
         Cartesian cartesian = AnyChart.line();
@@ -166,6 +170,6 @@ public class StatsFragment  extends Fragment {
             setValue("value3", value3);
         }
 
-    }*/
+    }
 
 }
