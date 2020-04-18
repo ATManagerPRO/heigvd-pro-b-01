@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.anychart.APIlib;
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
 import com.anychart.chart.common.dataentry.DataEntry;
@@ -41,12 +42,15 @@ public class StatsFragment  extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_stats, container, false);
 
-        //pieChart = v.findViewById(R.id.pie_chart);
+        pieChart = v.findViewById(R.id.pie_chart);
+       // pieChart.setProgressBar(R.id.progress_bar);
         lineChart = v.findViewById(R.id.line_chart);
         lineChart.setProgressBar(v.findViewById(R.id.progress_bar));
 
-        //makePieChart();
+        APIlib.getInstance().setActiveAnyChartView(lineChart);
         makeLineChart();
+        APIlib.getInstance().setActiveAnyChartView(pieChart);
+        makePieChart();
 
         return v;
     }
