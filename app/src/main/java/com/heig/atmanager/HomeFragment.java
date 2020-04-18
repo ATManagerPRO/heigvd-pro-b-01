@@ -74,7 +74,6 @@ public class HomeFragment extends Fragment {
         Calendar calendar = Calendar.getInstance();
         String greeting = "";
         String user_info = "";
-        String user = "User123";
 
         // Hour (0 - 23)
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -102,7 +101,7 @@ public class HomeFragment extends Fragment {
                     + goals.size() + " goal" + (goals.size() > 1 ? "s" : "") + " for today.";
         }
 
-        greeting += user + ",\n" + user_info;
+        greeting += user.getUserName() + ",\n" + user_info;
 
         return greeting;
     }
