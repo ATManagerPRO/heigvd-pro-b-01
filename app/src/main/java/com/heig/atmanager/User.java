@@ -83,6 +83,9 @@ public class User {
             for(Task task : taskList.getTasks())
                 addTask(task);
         }
+    }
 
+    public ArrayList<Task> getTasks() {
+        return tasks;
     }
 }

@@ -61,6 +61,11 @@ public class UserViewModel extends ViewModel {
             folders.setValue(user.getFolders());
         }
 
+        tasks = new MutableLiveData<>();
+        if (user.getFolders() != null) {
+            tasks.setValue(user.getTasks());
+        }
+
     }
 
     public String getGoogleToken() {

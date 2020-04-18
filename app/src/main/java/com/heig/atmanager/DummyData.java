@@ -66,15 +66,19 @@ public class DummyData {
             TaskList.defaultList.addTask(new Task("Task3", "..."));
             TaskList.defaultList.addTask(new Task("Task4", "..."));
             tl1.addTask(new Task("Send report X", "Must DO!!!"));
-            tl1.addTask(new Task("Task test", "this is a test"));
-            tl2.addTask(new Task("Task test", "this is a test"));
-            tl2.addTask(new Task("Task test", "this is a test"));
-            tl3.addTask(new Task("Task test", "this is a test"));
-            tl3.addTask(new Task("Task test", "this is a test"));
-            tl3.addTask(new Task("Task test", "this is a test"));
-            tl4.addTask(new Task("Task test", "this is a test"));
-            tl5.addTask(new Task("Task test", "this is a test"));
-            tl5.addTask(new Task("Task test", "this is a test"));
+            tl1.addTask(new Task("Watch video", "Chapter 4"));
+
+            tl2.addTask(new Task("User case", "Exercises 1 and 3"));
+            tl2.addTask(new Task("Labo 1 Report", "Report and schema"));
+
+            tl3.addTask(new Task("Set Up Maven", "Read doc for more information"));
+            tl3.addTask(new Task("Send requirement", "Miss client side requirement"));
+            tl3.addTask(new Task("Test 1", "Chapter 1 to 3"));
+
+            tl4.addTask(new Task("Clean the bathroom", "Don't forget to clean the bathtub !"));
+
+            tl5.addTask(new Task("Milk", "light calorie"));
+            tl5.addTask(new Task("Flour", "1 kg"));
 
             // Tags
             dummyUser.setTags(new ArrayList<>(Arrays.asList("Urgent", "Normal")));
