@@ -23,7 +23,11 @@ import com.anychart.enums.Anchor;
 import com.anychart.enums.MarkerType;
 import com.anychart.enums.TooltipPositionMode;
 import com.anychart.graphics.vector.Stroke;
+import com.heig.atmanager.DummyData;
 import com.heig.atmanager.R;
+import com.heig.atmanager.User;
+import com.heig.atmanager.goals.Goal;
+import com.heig.atmanager.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,10 +41,16 @@ public class StatsFragment  extends Fragment {
     private AnyChartView pieChart;
     private AnyChartView lineChart;
 
+    private User user;
+    private ArrayList<Task> tasks;
+    private ArrayList<Goal> goals;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_stats, container, false);
+
+        user = DummyData.initData();
 
         pieChart = v.findViewById(R.id.pie_chart);
        // pieChart.setProgressBar(R.id.progress_bar);
@@ -59,12 +69,23 @@ public class StatsFragment  extends Fragment {
 
         Pie pie = AnyChart.pie();
 
+        tasks = user.getTodos();
         List<DataEntry> data = new ArrayList<>();
-        data.add(new ValueDataEntry("John", 10000));
-        data.add(new ValueDataEntry("Jake", 12000));
-        data.add(new ValueDataEntry("Peter", 18000));
+        int tasksDone = 0, tasksToDo = 0;
 
-        pie.data(data);
+        for(Task t : tasks){
+            if(t.isDone())
+                ++tasksDone;
+            else
+                ++tasksToDo;
+        }
+
+        data.add(new ValueDataEntry("Done", tasksDone + 1));
+        data.add(new ValueDataEntry("Todo", tasksToDo));
+
+        pie.palette(new String[]{"#0000FF","#FF0000"}); //colors
+        pie.data(data); //data
+        pie.title(Task.class.getSimpleName()); //title
 
         pieChart.setChart(pie);
     }

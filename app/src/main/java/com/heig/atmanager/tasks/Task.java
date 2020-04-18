@@ -18,7 +18,6 @@ public class Task {
     private Date reminderDate;
     private String directory;
 
-
     public Task(String title, String description) {
         this(title, description, null, null, false);
     }
@@ -77,5 +76,9 @@ public class Task {
 
     public boolean isFavorite() {
         return favorite;
+    }
+
+    public boolean isDone() {
+        return done;
     }
 }
