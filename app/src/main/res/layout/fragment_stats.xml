@@ -46,11 +46,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="300dp" />
 
-            <com.anychart.AnyChartView
-                android:id="@+id/line_chart_goals"
-                android:layout_width="match_parent"
-                android:layout_height="300dp" />
-
         </LinearLayout>
     </ScrollView>
 
