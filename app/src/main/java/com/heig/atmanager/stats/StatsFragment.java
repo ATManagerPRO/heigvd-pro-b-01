@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.anychart.APIlib;
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
 import com.anychart.chart.common.dataentry.DataEntry;
@@ -26,6 +27,7 @@ import com.anychart.enums.Anchor;
 import com.anychart.enums.MarkerType;
 import com.anychart.enums.TooltipPositionMode;
 import com.anychart.graphics.vector.Stroke;
+import com.heig.atmanager.DummyData;
 import com.heig.atmanager.R;
 import com.heig.atmanager.User;
 import com.heig.atmanager.goals.Goal;
@@ -66,7 +68,7 @@ public class StatsFragment  extends Fragment {
 
 
         //Charts
-        /*
+
         user = DummyData.initData();
         pieChart = v.findViewById(R.id.pie_chart);
        // pieChart.setProgressBar(R.id.progress_bar);
@@ -76,7 +78,7 @@ public class StatsFragment  extends Fragment {
         APIlib.getInstance().setActiveAnyChartView(lineChart);
         makeLineChart();
         APIlib.getInstance().setActiveAnyChartView(pieChart);
-        makePieChart();*/
+        makePieChart();
 
         return v;
     }
