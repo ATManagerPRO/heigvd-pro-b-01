@@ -1,15 +1,18 @@
 package com.heig.atmanager.stats;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.anychart.APIlib;
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
 import com.anychart.chart.common.dataentry.DataEntry;
@@ -23,7 +26,6 @@ import com.anychart.enums.Anchor;
 import com.anychart.enums.MarkerType;
 import com.anychart.enums.TooltipPositionMode;
 import com.anychart.graphics.vector.Stroke;
-import com.heig.atmanager.DummyData;
 import com.heig.atmanager.R;
 import com.heig.atmanager.User;
 import com.heig.atmanager.goals.Goal;
@@ -31,12 +33,16 @@ import com.heig.atmanager.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Author : Stéphane Bottin, Mattei Simon
  * Date   : 09.04.2020
  */
 public class StatsFragment  extends Fragment {
+
+    private Spinner menu;
+    private static final String[] items = new String[]{"Today","This Week","This Month"};
 
     private AnyChartView pieChart;
     private AnyChartView lineChart;
@@ -50,8 +56,18 @@ public class StatsFragment  extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_stats, container, false);
 
-        user = DummyData.initData();
+        //DropDown menu
+        menu = v.findViewById(R.id.menuXML);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>
+                (Objects.requireNonNull(this.getActivity()), android.R.layout.simple_spinner_dropdown_item, items);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        menu.setAdapter(adapter);
+        menu.setOnItemSelectedListener(new menuActivity());
 
+
+        //Charts
+        /*
+        user = DummyData.initData();
         pieChart = v.findViewById(R.id.pie_chart);
        // pieChart.setProgressBar(R.id.progress_bar);
         lineChart = v.findViewById(R.id.line_chart);
@@ -60,9 +76,22 @@ public class StatsFragment  extends Fragment {
         APIlib.getInstance().setActiveAnyChartView(lineChart);
         makeLineChart();
         APIlib.getInstance().setActiveAnyChartView(pieChart);
-        makePieChart();
+        makePieChart();*/
 
         return v;
+    }
+
+    class menuActivity extends Activity implements AdapterView.OnItemSelectedListener {
+
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
     }
 
     private void makePieChart(){

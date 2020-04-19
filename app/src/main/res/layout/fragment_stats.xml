@@ -3,13 +3,28 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
 
+    <Spinner
+        android:id="@+id/menuXML"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+<!--
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/menuXML">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -19,22 +34,16 @@
             <com.anychart.AnyChartView
                 android:id="@+id/pie_chart"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                />
+                android:layout_height="300dp" />
 
             <com.anychart.AnyChartView
                 android:id="@+id/line_chart"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                />
-<!--
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="80dp"/>
--->
+                android:layout_height="300dp" />
+
         </LinearLayout>
     </ScrollView>
-
+-->
     <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
