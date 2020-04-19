@@ -32,12 +32,22 @@
             android:orientation="vertical">
 
             <com.anychart.AnyChartView
-                android:id="@+id/pie_chart"
+                android:id="@+id/pie_chart_tasks"
                 android:layout_width="match_parent"
                 android:layout_height="300dp" />
 
             <com.anychart.AnyChartView
-                android:id="@+id/line_chart"
+                android:id="@+id/line_chart_tasks"
+                android:layout_width="match_parent"
+                android:layout_height="300dp" />
+
+            <com.anychart.AnyChartView
+                android:id="@+id/pie_chart_goals"
+                android:layout_width="match_parent"
+                android:layout_height="300dp" />
+
+            <com.anychart.AnyChartView
+                android:id="@+id/line_chart_goals"
                 android:layout_width="match_parent"
                 android:layout_height="300dp" />
 

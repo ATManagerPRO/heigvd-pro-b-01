@@ -44,10 +44,15 @@ import java.util.Objects;
 public class StatsFragment  extends Fragment {
 
     private Spinner menu;
-    private static final String[] items = new String[]{"Today","This Week","This Month"};
+    private static final String[] items = new String[]{"Today","This Week","This Month","This Year"};
+    enum Period {TODAY, WEEK, MONTH, YEAR};
 
-    private AnyChartView pieChart;
-    private AnyChartView lineChart;
+    private AnyChartView pieChartTasks;
+    private AnyChartView lineChartTasks;
+    private AnyChartView pieChartGoals;
+    private AnyChartView lineChartGoals;
+
+    private static String bgColor;
 
     private User user;
     private ArrayList<Task> tasks;
@@ -68,21 +73,26 @@ public class StatsFragment  extends Fragment {
 
 
         //Charts
-
         user = DummyData.initData();
-        pieChart = v.findViewById(R.id.pie_chart);
-       // pieChart.setProgressBar(R.id.progress_bar);
-        lineChart = v.findViewById(R.id.line_chart);
-        lineChart.setProgressBar(v.findViewById(R.id.progress_bar));
+        //TODO : get this by colors, not working for some reason
+        bgColor = "#F1F1F1";
 
-        APIlib.getInstance().setActiveAnyChartView(lineChart);
-        makeLineChart();
-        APIlib.getInstance().setActiveAnyChartView(pieChart);
-        makePieChart();
+        pieChartTasks = v.findViewById(R.id.pie_chart_tasks);
+        pieChartTasks.setBackgroundColor(bgColor);
+        lineChartTasks = v.findViewById(R.id.line_chart_tasks);
+        lineChartTasks.setBackgroundColor(bgColor);
+        lineChartTasks.setProgressBar(v.findViewById(R.id.progress_bar));
+        pieChartGoals = v.findViewById(R.id.pie_chart_goals);
+        pieChartGoals.setBackgroundColor(bgColor);
+        lineChartGoals = v.findViewById(R.id.line_chart_goals);
+        lineChartGoals.setBackgroundColor(bgColor);
+
+        makeCharts(Period.TODAY);
 
         return v;
     }
 
+    //Dropdown menu listener
     class menuActivity extends Activity implements AdapterView.OnItemSelectedListener {
 
         @Override
@@ -92,15 +102,28 @@ public class StatsFragment  extends Fragment {
 
         @Override
         public void onNothingSelected(AdapterView<?> parent) {
-
         }
     }
 
-    private void makePieChart(){
+    private void makeCharts(Period p){
+
+        //TODO : Select goals/Tasks based on period
+        tasks = user.getTodos();
+        goals = user.getGoals();
+
+        APIlib.getInstance().setActiveAnyChartView(pieChartTasks);
+        makePieChartTasks();
+        APIlib.getInstance().setActiveAnyChartView(lineChartTasks);
+        makeLineChartTasks();
+        APIlib.getInstance().setActiveAnyChartView(pieChartGoals);
+        makePieChartGoals();
+        APIlib.getInstance().setActiveAnyChartView(lineChartGoals);
+        makeLineChartGoals();
+    }
+
+    private void makePieChartTasks(){
 
         Pie pie = AnyChart.pie();
-
-        tasks = user.getTodos();
         List<DataEntry> data = new ArrayList<>();
         int tasksDone = 0, tasksToDo = 0;
 
@@ -116,12 +139,13 @@ public class StatsFragment  extends Fragment {
 
         pie.palette(new String[]{"#0000FF","#FF0000"}); //colors
         pie.data(data); //data
-        pie.title(Task.class.getSimpleName()); //title
+        pie.title(Task.class.getSimpleName()+ "s"); //title
+        pie.background().fill(bgColor);
 
-        pieChart.setChart(pie);
+        pieChartTasks.setChart(pie);
     }
 
-    private void makeLineChart(){
+    private void makeLineChartTasks(){
 
         Cartesian cartesian = AnyChart.line();
 
@@ -213,8 +237,130 @@ public class StatsFragment  extends Fragment {
         cartesian.legend().enabled(true);
         cartesian.legend().fontSize(13d);
         cartesian.legend().padding(0d, 0d, 10d, 0d);
+        cartesian.background().fill(bgColor);
 
-        lineChart.setChart(cartesian);
+        lineChartTasks.setChart(cartesian);
+    }
+
+    private void makePieChartGoals(){
+
+        Pie pie = AnyChart.pie();
+        List<DataEntry> data = new ArrayList<>();
+        int tasksDone = 0, tasksToDo = 0;
+
+        for(Task t : tasks){
+            if(t.isDone())
+                ++tasksDone;
+            else
+                ++tasksToDo;
+        }
+
+        data.add(new ValueDataEntry("Done", tasksDone + 1));
+        data.add(new ValueDataEntry("Todo", tasksToDo));
+
+        pie.palette(new String[]{"#80EB5A","#FF9745"}); //colors
+        pie.data(data); //data
+        pie.title(Task.class.getSimpleName()+ "s"); //title
+        pie.background().fill(bgColor);
+
+        pieChartGoals.setChart(pie);
+    }
+
+    private void makeLineChartGoals(){
+
+        Cartesian cartesian = AnyChart.line();
+
+        cartesian.animation(true);
+
+        cartesian.padding(10d, 20d, 5d, 20d);
+
+        cartesian.crosshair().enabled(true);
+        cartesian.crosshair()
+                .yLabel(true)
+                // TODO ystroke
+                .yStroke((Stroke) null, null, null, (String) null, (String) null);
+
+        cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
+
+        cartesian.title("Trend of Sales of the Most Popular Products of ACME Corp.");
+
+        cartesian.yAxis(0).title("Number of Bottles Sold (thousands)");
+        cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
+
+        List<DataEntry> seriesData = new ArrayList<>();
+        seriesData.add(new CustomDataEntry("1986", 3.6, 2.3, 2.8));
+        seriesData.add(new CustomDataEntry("1987", 7.1, 4.0, 4.1));
+        seriesData.add(new CustomDataEntry("1988", 8.5, 6.2, 5.1));
+        seriesData.add(new CustomDataEntry("1989", 9.2, 11.8, 6.5));
+        seriesData.add(new CustomDataEntry("1990", 10.1, 13.0, 12.5));
+        seriesData.add(new CustomDataEntry("1991", 11.6, 13.9, 18.0));
+        seriesData.add(new CustomDataEntry("1992", 16.4, 18.0, 21.0));
+        seriesData.add(new CustomDataEntry("1993", 18.0, 23.3, 20.3));
+        seriesData.add(new CustomDataEntry("1994", 13.2, 24.7, 19.2));
+        seriesData.add(new CustomDataEntry("1995", 12.0, 18.0, 14.4));
+        seriesData.add(new CustomDataEntry("1996", 3.2, 15.1, 9.2));
+        seriesData.add(new CustomDataEntry("1997", 4.1, 11.3, 5.9));
+        seriesData.add(new CustomDataEntry("1998", 6.3, 14.2, 5.2));
+        seriesData.add(new CustomDataEntry("1999", 9.4, 13.7, 4.7));
+        seriesData.add(new CustomDataEntry("2000", 11.5, 9.9, 4.2));
+        seriesData.add(new CustomDataEntry("2001", 13.5, 12.1, 1.2));
+        seriesData.add(new CustomDataEntry("2002", 14.8, 13.5, 5.4));
+        seriesData.add(new CustomDataEntry("2003", 16.6, 15.1, 6.3));
+        seriesData.add(new CustomDataEntry("2004", 18.1, 17.9, 8.9));
+        seriesData.add(new CustomDataEntry("2005", 17.0, 18.9, 10.1));
+        seriesData.add(new CustomDataEntry("2006", 16.6, 20.3, 11.5));
+        seriesData.add(new CustomDataEntry("2007", 14.1, 20.7, 12.2));
+        seriesData.add(new CustomDataEntry("2008", 15.7, 21.6, 10));
+        seriesData.add(new CustomDataEntry("2009", 12.0, 22.5, 8.9));
+
+        Set set = Set.instantiate();
+        set.data(seriesData);
+        Mapping series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
+        Mapping series2Mapping = set.mapAs("{ x: 'x', value: 'value2' }");
+        Mapping series3Mapping = set.mapAs("{ x: 'x', value: 'value3' }");
+
+        Line series1 = cartesian.line(series1Mapping);
+        series1.name("Brandy");
+        series1.hovered().markers().enabled(true);
+        series1.hovered().markers()
+                .type(MarkerType.CIRCLE)
+                .size(4d);
+        series1.tooltip()
+                .position("right")
+                .anchor(Anchor.LEFT_CENTER)
+                .offsetX(5d)
+                .offsetY(5d);
+
+        Line series2 = cartesian.line(series2Mapping);
+        series2.name("Whiskey");
+        series2.hovered().markers().enabled(true);
+        series2.hovered().markers()
+                .type(MarkerType.CIRCLE)
+                .size(4d);
+        series2.tooltip()
+                .position("right")
+                .anchor(Anchor.LEFT_CENTER)
+                .offsetX(5d)
+                .offsetY(5d);
+
+        Line series3 = cartesian.line(series3Mapping);
+        series3.name("Tequila");
+        series3.hovered().markers().enabled(true);
+        series3.hovered().markers()
+                .type(MarkerType.CIRCLE)
+                .size(4d);
+        series3.tooltip()
+                .position("right")
+                .anchor(Anchor.LEFT_CENTER)
+                .offsetX(5d)
+                .offsetY(5d);
+
+        cartesian.legend().enabled(true);
+        cartesian.legend().fontSize(13d);
+        cartesian.legend().padding(0d, 0d, 10d, 0d);
+        cartesian.background().fill(bgColor);
+
+        lineChartGoals.setChart(cartesian);
     }
 
 
