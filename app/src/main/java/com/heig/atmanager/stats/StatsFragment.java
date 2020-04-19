@@ -40,6 +40,7 @@ import java.util.Objects;
 /**
  * Author : Stéphane Bottin, Mattei Simon
  * Date   : 09.04.2020
+ * TODO : GRAPH DON'T REFRESH PRORERLY
  */
 public class StatsFragment  extends Fragment {
 
@@ -69,7 +70,6 @@ public class StatsFragment  extends Fragment {
         menu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
                 switch(position){
                     case 0 : makeCharts(Interval.DAY); break;
                     case 1 : makeCharts(Interval.WEEK); break;
@@ -97,8 +97,6 @@ public class StatsFragment  extends Fragment {
         lineChartTasks.setBackgroundColor(bgColor);
         pieChartGoals = v.findViewById(R.id.pie_chart_goals);
         pieChartGoals.setBackgroundColor(bgColor);
-
-        makeCharts(Interval.DAY);
 
         return v;
     }
@@ -153,14 +151,13 @@ public class StatsFragment  extends Fragment {
         cartesian.crosshair().enabled(true);
         cartesian.crosshair()
                 .yLabel(true)
-                // TODO ystroke
                 .yStroke((Stroke) null, null, null, (String) null, (String) null);
 
         cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
 
         cartesian.title("Tasks done last " + interval.toString().toLowerCase());
 
-        //TODO : set title accordingly to interval
+        //TODO : set title and stuff accordingly to interval
         cartesian.xAxis(0).title("Hours/Days/Months");
         cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
 
@@ -199,6 +196,7 @@ public class StatsFragment  extends Fragment {
         List<DataEntry> data = new ArrayList<>();
         int tasksDone = 0, tasksToDo = 0;
 
+        //TODO : use goals
         for(Task t : tasks){
             if(t.isDone())
                 ++tasksDone;
@@ -216,5 +214,6 @@ public class StatsFragment  extends Fragment {
 
         pieChartGoals.setChart(pie);
     }
+
 
 }
