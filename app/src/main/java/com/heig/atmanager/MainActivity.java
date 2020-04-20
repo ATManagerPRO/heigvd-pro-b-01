@@ -203,6 +203,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Data to pass in the fragment
         Bundle bundle = new Bundle();
+        // TODO TaksList is not Serializable (Solution : Task need to be Serializable too)
         bundle.putSerializable(TaskList.SERIAL_TASK_LIST_KEY, taskList);
         TaskListFragment taskListFragment = new TaskListFragment();
         taskListFragment.setArguments(bundle);

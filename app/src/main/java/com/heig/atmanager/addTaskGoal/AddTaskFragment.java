@@ -90,7 +90,7 @@ public class AddTaskFragment extends Fragment {
 
         final Button validationButton = mView.findViewById(R.id.frag_validation_button);
 
-        final UserViewModel currentUser = ((AddTaskGoalActivity) getActivity()).dummyUser;
+        final UserViewModel viewModel = ((AddTaskGoalActivity) getActivity()).dummyUser;
 
 
         // Picker for date and time
@@ -134,7 +134,7 @@ public class AddTaskFragment extends Fragment {
 
 
         // Tags
-        final ArrayAdapter<String> chipsAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, currentUser.getTags().getValue());
+        final ArrayAdapter<String> chipsAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, viewModel.getTags().getValue());
         // App detect the input to suggest the tag
         final AutoCompleteTextView autoCompleteTextView = mView.findViewById(R.id.frag_add_task_autocomplete_textview);
         autoCompleteTextView.setAdapter(chipsAdapter);
@@ -152,7 +152,7 @@ public class AddTaskFragment extends Fragment {
         final Spinner folderSpinner = mView.findViewById(R.id.frag_directory_choice_tag_spinner);
         ArrayAdapter<TaskList> spinnerAdapter = new AddTaskSpinnerAdapter(getActivity(),
                 R.layout.support_simple_spinner_dropdown_item,
-                currentUser.getTaskLists().getValue());
+                viewModel.getTaskLists().getValue());
         spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         folderSpinner.setAdapter(spinnerAdapter);
 
@@ -175,10 +175,11 @@ public class AddTaskFragment extends Fragment {
 
                 Task newTask = new Task(title, description, selectedDate);
 
+
                 // Add the task to a selected taskList
-                for(TaskList taskList : currentUser.getTaskLists().getValue())
-                    if(taskList.getName().equals(selectedDirectory))
-                        taskList.addTask(newTask);
+
+                viewModel.addTask(newTask, selectedDirectory);
+
 
                 startActivity(new Intent(getContext(), MainActivity.class));
             }

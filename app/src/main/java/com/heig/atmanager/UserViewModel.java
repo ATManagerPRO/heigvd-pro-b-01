@@ -17,9 +17,6 @@ import java.util.ArrayList;
  **/
 public class UserViewModel extends ViewModel {
 
-    private String userName;
-    private String googleToken;
-
     private MutableLiveData<ArrayList<TaskList>> taskLists;
 
     private MutableLiveData<ArrayList<Task>> tasks;
@@ -30,19 +27,20 @@ public class UserViewModel extends ViewModel {
 
     private MutableLiveData<ArrayList<Folder>> folders;
 
+    private User user;
+
     public String getUserName() {
-        return userName;
+        return user.getUserName();
     }
 
     public UserViewModel() {
     }
 
     public UserViewModel(User user) {
-        userName = user.getUserName();
-        googleToken = user.getGoogleToken();
+        this.user = user;
 
         taskLists = new MutableLiveData<>();
-        if (user.getTaskLists() != null) {
+        if (user.getFolders() != null) {
             taskLists.setValue(user.getTaskLists());
         }
 
@@ -69,51 +67,43 @@ public class UserViewModel extends ViewModel {
     }
 
     public String getGoogleToken() {
-        return googleToken;
+        return user.getGoogleToken();
     }
 
     public MutableLiveData<ArrayList<TaskList>> getTaskLists() {
-        if (taskLists == null) {
-            taskLists = new MutableLiveData<>();
-        }
-
         return taskLists;
     }
 
     public MutableLiveData<ArrayList<Task>> getTasks() {
-        if (tasks == null) {
-            tasks = new MutableLiveData<>();
-        }
         return tasks;
     }
 
     public MutableLiveData<ArrayList<Goal>> getGoals() {
-        if (goals == null) {
-            goals = new MutableLiveData<>();
-        }
+
         return goals;
     }
 
     public MutableLiveData<ArrayList<String>> getTags() {
-        if (tags == null) {
-            tags = new MutableLiveData<>();
-        }
+
         return tags;
     }
 
     public MutableLiveData<ArrayList<Folder>> getFolders() {
-        if (folders == null) {
-            folders = new MutableLiveData<>();
-        }
-
         return folders;
     }
 
-    public void addTask(Task task){
-        tasks.getValue().add(task);
+    public void addTask(Task task, String listName) {
+        /*for (TaskList taskList : user.getTaskLists()) {
+            if (taskList.getName().equals(listName)) {
+                taskList.addTask(task);
+                tasks.setValue(user.getTasks());
+            }
+        }*/
+        user.addTask(task);
+        tasks.setValue(user.getTasks());
     }
 
-    public void addGoal(Goal goal){
+    public void addGoal(Goal goal) {
         goals.getValue().add(goal);
     }
 }
