@@ -6,11 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.goals.GoalTodo;
 import com.heig.atmanager.tasks.Task;
 
-import java.util.Date;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,14 +23,14 @@ import java.util.Calendar;
  */
 public class HomeFragment extends Fragment {
     // Greeting message
-    TextView greetingText;
+    private TextView greetingText;
 
     // Goal feed
-    ArrayList<GoalTodo> goals; // user data
+    private ArrayList<GoalTodo> goals; // user data
     private RecyclerView goalsRecyclerView;
 
     // Task feed
-    ArrayList<Task> tasks; // user data
+    private ArrayList<Task> tasks; // user data
     private RecyclerView tasksRecyclerView;
 
     @Override
@@ -40,24 +38,8 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
-        // ----------- TEMP -----------
-        // TODO
-        // goals = ((MainActivity) getActivity()).dummyUser.getGoals().getValue();
+        tasks = new ArrayList<>();
         goals = new ArrayList<>();
-        // GOAL : 20 squats every day for 5 days
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, 5);
-        Date dueDateGoal1 = calendar.getTime();
-        calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, 1);
-        Date dueDateGoal2 = calendar.getTime();
-
-        Goal goal1 = new Goal("SQUATS", 20, 2,Interval.DAY, dueDateGoal1);
-        Goal goal2 = new Goal("BREAK", 1, 1,Interval.HOUR, dueDateGoal2);
-        goals = goal1.getGoalsTodoForDay(calendar.getTime()); // Generates 1 goalTodo for 20 squats
-        goals.addAll(goal2.getGoalsTodoForDay(calendar.getTime())); // Generates 1 break every hour
-        tasks = ((MainActivity) getActivity()).dummyUser.getTasks().getValue();
-        // --------- END TEMP ---------
 
         // Greeting
         greetingText = (TextView) v.findViewById(R.id.greeting_text);
@@ -65,7 +47,7 @@ public class HomeFragment extends Fragment {
 
         // Task feed
         tasksRecyclerView = (RecyclerView) v.findViewById(R.id.tasks_rv);
-        Utils.setupTodosFeed(v, tasksRecyclerView, tasks);
+        Utils.setupTasksFeed(v, tasksRecyclerView, tasks);
 
         // Goal feed
         goalsRecyclerView = (RecyclerView) v.findViewById(R.id.goals_rv);
