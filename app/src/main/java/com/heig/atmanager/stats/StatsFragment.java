@@ -87,6 +87,7 @@ public class StatsFragment  extends Fragment {
 
         //Charts
         user = DummyData.getUser();
+
         //TODO : get this by values.colors, not working for some reason
         bgColor = "#F1F1F1";
 
@@ -98,21 +99,28 @@ public class StatsFragment  extends Fragment {
         pieChartGoals = v.findViewById(R.id.pie_chart_goals);
         pieChartGoals.setBackgroundColor(bgColor);
 
+        makeCharts(Interval.DAY);
+
         return v;
     }
 
     private void makeCharts(Interval interval){
 
         //TODO : Select goals/Tasks based on Interval
-        tasks = user.getTasks().getValue();
+        tasks = user.getTaskLists().getValue().get(0).getTasks();
         goals = user.getGoals().getValue();
 
-        APIlib.getInstance().setActiveAnyChartView(pieChartTasks);
-        makePieChartTasks();
-        APIlib.getInstance().setActiveAnyChartView(lineChartTasks);
-        makeLineChartTasks(interval);
-        APIlib.getInstance().setActiveAnyChartView(pieChartGoals);
-        makePieChartGoals();
+        if(tasks != null) { //TODO : Something with no tasks
+            APIlib.getInstance().setActiveAnyChartView(pieChartTasks);
+            makePieChartTasks();
+            APIlib.getInstance().setActiveAnyChartView(lineChartTasks);
+            makeLineChartTasks(interval);
+        }
+
+        if(goals != null) { //TODO : Something with no goals
+            APIlib.getInstance().setActiveAnyChartView(pieChartGoals);
+            makePieChartGoals();
+        }
     }
 
     private void makePieChartTasks(){
@@ -188,6 +196,7 @@ public class StatsFragment  extends Fragment {
         cartesian.background().fill(bgColor);
 
         lineChartTasks.setChart(cartesian);
+        lineChartTasks.invalidate();
     }
 
     private void makePieChartGoals(){
