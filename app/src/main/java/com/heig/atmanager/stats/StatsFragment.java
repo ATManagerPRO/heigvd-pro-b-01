@@ -29,7 +29,7 @@ import com.anychart.graphics.vector.Stroke;
 import com.heig.atmanager.DummyData;
 import com.heig.atmanager.Interval;
 import com.heig.atmanager.R;
-import com.heig.atmanager.User;
+import com.heig.atmanager.UserViewModel;
 import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.tasks.Task;
 
@@ -53,7 +53,7 @@ public class StatsFragment  extends Fragment {
 
     private static String bgColor;
 
-    private User user;
+    private UserViewModel user;
     private ArrayList<Task> tasks;
     private ArrayList<Goal> goals;
 
@@ -86,7 +86,7 @@ public class StatsFragment  extends Fragment {
 
 
         //Charts
-        user = DummyData.initData();
+        user = DummyData.getUser();
         //TODO : get this by values.colors, not working for some reason
         bgColor = "#F1F1F1";
 
@@ -104,8 +104,8 @@ public class StatsFragment  extends Fragment {
     private void makeCharts(Interval interval){
 
         //TODO : Select goals/Tasks based on Interval
-        tasks = user.getTodos();
-        goals = user.getGoals();
+        tasks = user.getTasks().getValue();
+        goals = user.getGoals().getValue();
 
         APIlib.getInstance().setActiveAnyChartView(pieChartTasks);
         makePieChartTasks();

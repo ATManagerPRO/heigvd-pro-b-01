@@ -5,19 +5,51 @@ import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+import com.heig.atmanager.addTaskGoal.AddTaskGoalActivity;
 import com.heig.atmanager.calendar.CalendarFragment;
 import com.heig.atmanager.goals.GoalsFragment;
 import com.heig.atmanager.stats.StatsFragment;
 
-public class MainActivity extends AppCompatActivity {
-    public User dummyUser;
+import java.util.ArrayList;
 
-    BottomNavigationView dock;
+public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "MainActivity";
+
+    public UserViewModel dummyUser;
+
+    private BottomNavigationView dock;
+
+    private FloatingActionButton fab;
+    private FloatingActionButton fabAddTask;
+    private FloatingActionButton fabAddGoal;
+
+    // Drawer
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle drawerToggle;
+    // Navigation view (drawer)
+    private NavigationView navView;
+    private ExpandableListView expandableListView;
+    private ExpandableListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,16 +57,33 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // To get this variable from the fragments ((MainActivity)getActivity()).dummyUser
-        dummyUser = new DummyData().initData();
+        dummyUser = DummyData.getUser();
 
+        // Drawer layout
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
+        drawerLayout.addDrawerListener(drawerToggle);
+        drawerToggle.syncState();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        expandableListView = (ExpandableListView) findViewById(R.id.navList);
+        updateDrawerItems();
+
+        // First fragment to load : Home
         loadFragment(new HomeFragment());
+    }
 
-        //instantly switches to the Profile activity for testing purposes
-        //Intent myIntent = new Intent(MainActivity.this, ProfileActivity.class);
-        //MainActivity.this.startActivity(myIntent);
-
+    // Menu icons are inflated just as they were with actionbar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.top_navigation_menu, menu);
         View dockView = findViewById(R.id.dock_container);
         dock = dockView.findViewById(R.id.dock);
+
+        fab = findViewById(R.id.fab);
+        fabAddGoal = findViewById(R.id.fab_add_goal);
+        fabAddTask = findViewById(R.id.fab_add_task);
+
         dock.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -62,8 +111,45 @@ public class MainActivity extends AppCompatActivity {
 
         // Load fragment
         loadFragment(new HomeFragment());
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fab.setExpanded(!fab.isExpanded());
+            }
+        });
+
+        fabAddTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), AddTaskGoalActivity.class);
+                intent.putExtra("fragToLoad", R.id.frag_add_task);
+                startActivity(intent);
+            }
+        });
+
+        fabAddGoal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), AddTaskGoalActivity.class);
+                intent.putExtra("fragToLoad", R.id.frag_add_goal);
+                startActivity(intent);
+            }
+        });
+
+        return true;
+
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        // Drawer button
+        if(drawerToggle.onOptionsItemSelected(item))
+            return true;
+
+        return super.onOptionsItemSelected(item);
+    }
 
     private void loadFragment(Fragment fragment) {
 
@@ -77,6 +163,57 @@ public class MainActivity extends AppCompatActivity {
 
         // Commit the transaction
         transaction.commit();
+    }
+
+    /**
+     * Updates the items of the drawer menu with the current user's data (tasklists then folders)
+     */
+    private void updateDrawerItems() {
+        final ArrayList<TaskList> standaloneTaskLists = new ArrayList<>();
+        for(TaskList taskList : dummyUser.getTaskLists().getValue())
+            if(taskList.isStandalone())
+                standaloneTaskLists.add(taskList);
+
+        adapter = new DrawerListAdapter(this, standaloneTaskLists, dummyUser.getFolders().getValue());
+        expandableListView.setAdapter(adapter);
+
+        expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
+                if(i >= standaloneTaskLists.size())
+                    return false;
+
+                drawerLayout.closeDrawer(GravityCompat.START);
+                loadTaskListFragment(dummyUser.getTaskLists().getValue().get(i));
+                return true;
+            }
+        });
+
+        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
+                drawerLayout.closeDrawer(GravityCompat.START);
+
+                loadTaskListFragment(
+                        dummyUser.getFolders().getValue().get(i - standaloneTaskLists.size()).getTaskLists().get(i1)
+                );
+                return true;
+            }
+        });
+    }
+
+    private void loadTaskListFragment(TaskList taskList) {
+
+        // Data to pass in the fragment
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(TaskList.SERIAL_TASK_LIST_KEY, taskList);
+        TaskListFragment taskListFragment = new TaskListFragment();
+        taskListFragment.setArguments(bundle);
+
+        // Load goalsTodos fragment
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, taskListFragment)
+                .commit();
     }
 
 }

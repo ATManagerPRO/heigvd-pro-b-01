@@ -47,6 +47,7 @@ dependencies {
 
     // Custom calendar view
     implementation 'com.github.prolificinteractive:material-calendarview:2.0.0'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
     /*Copyright (c) 2018 Prolific Interactive
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
