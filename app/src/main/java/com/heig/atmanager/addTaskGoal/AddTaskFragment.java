@@ -173,7 +173,7 @@ public class AddTaskFragment extends Fragment {
 
                 Date selectedDate = new GregorianCalendar(mYear, mMonth, mDay, mHour, mMinute).getTime();
 
-                currentUser.addTask(new Task(title, description, selectedDate, selectedDirectory));
+                //currentUser.addTask(new Task(title, description, selectedDate, selectedDirectory));
 
                 startActivity(new Intent(getContext(), MainActivity.class));
             }

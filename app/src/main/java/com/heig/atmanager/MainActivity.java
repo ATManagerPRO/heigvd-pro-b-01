@@ -9,10 +9,17 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -22,9 +29,17 @@ import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.goals.GoalsFragment;
 import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.userData.DummyData;
+import com.heig.atmanager.userData.UserJsonParser;
 import com.heig.atmanager.userData.UserViewModel;
 
+import org.json.JSONObject;
+
+import java.util.Queue;
+
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "MainActivity";
+    
     public UserViewModel dummyUser;
 
     private BottomNavigationView dock;
@@ -37,10 +52,16 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle drawerToggle;
     private NavigationView navView;
 
+    // JSON Parser
+    private UserJsonParser jsonParser;
+    private RequestQueue queue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        queue = Volley.newRequestQueue(this);
 
         // To get this variable from the fragments ((MainActivity)getActivity()).dummyUser
         dummyUser = DummyData.getUser();
@@ -53,6 +74,10 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         navView = (NavigationView) findViewById(R.id.navView);
         updateDrawerItems(navView);
+
+        // Loading the data from the server into the user
+        jsonParser = new UserJsonParser();
+        jsonParser.loadAllDataIntoUser(queue);
 
         // First fragment to load : Home
         loadFragment(new HomeFragment());
@@ -137,8 +162,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-
     private void loadFragment(Fragment fragment) {
 
         // Create new fragment and transaction
@@ -150,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
         transaction.addToBackStack(null);
 
         // Commit the transaction
-        transaction.commit();
+        transaction.commitAllowingStateLoss();
     }
 
     private void updateDrawerItems(NavigationView navigationView) {
