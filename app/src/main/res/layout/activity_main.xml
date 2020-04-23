@@ -21,8 +21,7 @@
             app:layout_constraintBottom_toTopOf="@+id/dock_container"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar"
-            android:label="Home sweet home">
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
         </FrameLayout>
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -124,13 +123,18 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navView"
-        android:layout_width="wrap_content"
+    <!-- TaskLists & Folders view -->
+    <ExpandableListView
+        android:layout_width="235dp"
         android:layout_height="match_parent"
+        android:id="@+id/navList"
+        android:layout_gravity="left|start"
         android:background="@color/white"
-        app:itemTextColor="@color/black"
-        app:menu="@menu/side_drawer_menu"
-        android:layout_gravity="start"/>
+        android:divider="@color/grey"
+        android:dividerHeight="0.5dp"
+        android:groupIndicator="@null">
+
+
+    </ExpandableListView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

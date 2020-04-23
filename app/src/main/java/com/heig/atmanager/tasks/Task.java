@@ -1,9 +1,7 @@
 package com.heig.atmanager.tasks;
 
-import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.heig.atmanager.taskLists.TaskList;
 
-import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -17,31 +15,30 @@ public class Task {
     private String description;
     private boolean done;
     private boolean favorite;
-    private Calendar calendarDueDate;
+    private Date dueDate;
+    private Date doneDate;
     private Date reminderDate;
-    private String directory;
 
     public Task(String title, String description) {
-        this(title, description, null, null, false);
+        this(title, description, null, false);
     }
 
-    public Task(String title, String description, Calendar calendarDueDate) {
-        this(title, description, calendarDueDate, null, false);
+    public Task(String title, String description, Date dueDate) {
+        this(title, description, dueDate, false);
     }
 
     public Task(String title, String description, boolean favorite) {
-        this(title, description, null,null, favorite);
+        this(title, description, null, favorite);
     }
 
-    public Task(String title, String description, Calendar calendarDueDate, String directory) {
-        this(title, description, calendarDueDate, directory, false);
+    public Task(String title, String description, Date dueDate, TaskList taskList) {
+        this(title, description, dueDate, false);
     }
 
-    public Task(String title, String description, Calendar calendarDueDate, String directory, boolean favorite) {
+    public Task(String title, String description, Date dueDate, boolean favorite) {
         this.title       = title;
         this.description = description;
-        this.calendarDueDate     = calendarDueDate;
-        this.directory   = directory;
+        this.dueDate     = dueDate;
         this.favorite    = favorite;
     }
 
@@ -53,23 +50,12 @@ public class Task {
         return description;
     }
 
-    public void setCalendarDueDate(Calendar calendarDueDate) {
-        this.calendarDueDate = calendarDueDate;
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
     }
 
     public Date getDueDate() {
-        if(calendarDueDate == null)
-            return null;
-
-        return calendarDueDate.getTime();
-    }
-
-    public LocalDate getLocalDueDate() {
-        if(calendarDueDate == null)
-            return null;
-
-        return LocalDate.of(calendarDueDate.get(Calendar.YEAR),
-                calendarDueDate.get(Calendar.MONTH), calendarDueDate.get(Calendar.DAY_OF_MONTH));
+        return dueDate;
     }
 
     public void setTitle(String title) {
@@ -80,28 +66,11 @@ public class Task {
         this.description = description;
     }
 
-    public void setDirectory(String directory) {
-        this.directory = directory;
-    }
-
     public void setDone(boolean status) {
         this.done = status;
     }
 
     public boolean isFavorite() {
         return favorite;
-    }
-
-    @Override
-    public String toString() {
-        return "Task{" +
-                "title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", done=" + done +
-                ", favorite=" + favorite +
-                ", calendarDueDate=" + (calendarDueDate == null ? "none" : calendarDueDate.get(Calendar.DAY_OF_MONTH) + "/" + calendarDueDate.get(Calendar.MONTH) + "/" + calendarDueDate.get(Calendar.YEAR)) +
-                ", reminderDate=" + reminderDate +
-                ", directory='" + directory + '\'' +
-                '}';
     }
 }

@@ -16,7 +16,8 @@
         android:textColor="@color/black"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="10dp"/>
     
     <!-- Tasks feed (list) -->
     <androidx.recyclerview.widget.RecyclerView

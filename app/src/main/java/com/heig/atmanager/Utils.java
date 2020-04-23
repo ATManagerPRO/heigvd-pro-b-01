@@ -72,7 +72,7 @@ public class Utils {
     }
 
 
-    public static void setupTodosFeed(View v, RecyclerView rv, ArrayList<Task> tasks) {
+    public static void setupTasksFeed(View v, RecyclerView rv, ArrayList<Task> tasks) {
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         rv.setHasFixedSize(true);
