@@ -39,13 +39,15 @@ public class UserJsonParser {
 
     // Data keywords
     // - Folders
-    private static final String FOLDERS_KEY   = "folders";
-    private static final String FOLDERS_ID    = "id";
-    private static final String FOLDERS_TITLE = "title";
+    private static final String FOLDERS_KEY       = "folders";
+    private static final String FOLDERS_ID        = "id";
+    private static final String FOLDERS_TITLE     = "label";
+    private static final String FOLDERS_TASKLISTS = "todolist";
     // - TaskLists
-    private static final String TASKLISTS_KEY   = "taskLists";
-    private static final String TASKLISTS_ID    = "id";
-    private static final String TASKLISTS_TITLE = "title";
+    private static final String TASKLISTS_KEY       = "todoLists";
+    private static final String TASKLISTS_ID        = "id";
+    private static final String TASKLISTS_TITLE     = "title";
+    private static final String TASKLISTS_FOLDER_ID = "folder_id";
     // - Tasks
     private static final String TASK_KEY           = "task";
     private static final String TASK_ID            = "id";
@@ -65,7 +67,7 @@ public class UserJsonParser {
         loadFoldersAndTasklists(queue);
 
         // Home Fragment data (today's activities)
-        loadTodaysTasksAndGoals(queue);
+        //loadTodaysTasksAndGoals(queue);
     }
 
     /**
@@ -86,12 +88,12 @@ public class UserJsonParser {
                         JSONObject c = tasklists.getJSONObject(i);
 
                         // Tasklist data
-                        String id    = c.getString(TASKLISTS_ID);
-                        String title = c.getString(TASKLISTS_TITLE);
+                        String id        = c.getString(TASKLISTS_ID);
+                        String title     = c.getString(TASKLISTS_TITLE);
+                        String folder_id = c.isNull(TASKLISTS_FOLDER_ID) ? "-1" : c.getString(TASKLISTS_FOLDER_ID);
 
                         // Creating the tasklist and adding it to the current user
-                        TaskList tl = new TaskList(Long.parseLong(id), title);
-                        Log.d(TAG, "onResponse: Added tasklist : " + tl.getName());
+                        TaskList tl = new TaskList(Long.parseLong(id), title, Long.parseLong(folder_id));
                         // TODO : user.addTaskList(tl)
                     }
 
@@ -103,8 +105,9 @@ public class UserJsonParser {
                         String id    = c.getString(FOLDERS_ID);
                         String title = c.getString(FOLDERS_TITLE);
                         ArrayList<TaskList> folder_tasklists = new ArrayList<>();
-                        JSONArray folder_tasklists_json = c.getJSONArray(TASKLISTS_KEY);
-                        for (int j = 0; j < folder_tasklists_json.length(); i++) {
+
+                        JSONArray folder_tasklists_json = c.getJSONArray(FOLDERS_TASKLISTS);
+                        for (int j = 0; j < folder_tasklists_json.length(); j++) {
                             JSONObject tasklist = folder_tasklists_json.getJSONObject(i);
 
                             // Tasklist data
@@ -113,13 +116,12 @@ public class UserJsonParser {
 
                             // Creating the tasklist and adding it to the list
                             folder_tasklists.add(new TaskList(Long.parseLong(folder_tasklist_id),
-                                    folder_tasklist_title));
+                                    folder_tasklist_title, Long.parseLong(id)));
                         }
 
                         // Creating the folder and adding it to the user
                         Folder folder = new Folder(Long.parseLong(id), title, folder_tasklists);
                         // TODO : user.add(folder)
-                        Log.d(TAG, "onResponse: Added folder : " + folder.getName());
 
                     }
                 } catch (final JSONException e) {

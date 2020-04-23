@@ -10,10 +10,12 @@ public class TaskList {
 
     private long id;
     private String name;
+    private long folder_id;
 
-    public TaskList(long id, String name){
-        this.id = id;
-        this.name = name;
+    public TaskList(long id, String name, long folder_id){
+        this.id        = id;
+        this.name      = name;
+        this.folder_id = folder_id;
     }
 
     public String getName() {
