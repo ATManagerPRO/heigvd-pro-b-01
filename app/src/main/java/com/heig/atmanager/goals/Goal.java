@@ -1,14 +1,11 @@
-package com.heig.atmanager;
+package com.heig.atmanager.goals;
 
-import android.util.Log;
+import com.heig.atmanager.Interval;
+import com.heig.atmanager.Utils;
 
-import java.lang.reflect.Array;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 /**
  * Author : Stéphane Bottin
@@ -30,13 +27,15 @@ public class Goal {
     
     private String unit;
     private int quantity;
+    private int intervalNumber;
     private Interval interval;
     private Date dueDate;
     private ArrayList<GoalTodo> goalTodos;
 
-    public Goal(String unit, int quantity, Interval interval, Date dueDate) {
+    public Goal(String unit, int quantity, int intervalNumber, Interval interval, Date dueDate) {
         this.unit     = unit;
         this.quantity = quantity;
+        this.intervalNumber = intervalNumber;
         this.interval = interval;
         this.dueDate  = dueDate;
 
@@ -120,6 +119,10 @@ public class Goal {
 
     public String getUnit() {
         return unit;
+    }
+
+    public int getIntervalNumber() {
+        return intervalNumber;
     }
 
     public Interval getInterval() {

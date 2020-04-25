@@ -1,6 +1,6 @@
 # ATManager (Another Task Manager)
 
-An application dedicated to the management of several to-do lists. The user is able to create different lists and todos, and to manage them, notifications will remind the user of upcoming deadlines and the user is able to use different views (one day, one week, one month, etc...) to keep track of his todos. One of the main focuses is the multi-users aspect : list sharing and administratives permissions of different users on the same list.
+An application dedicated to the management of several to-do lists. The user is able to create different lists and tasks, and to manage them, notifications will remind the user of upcoming deadlines and the user is able to use different views (one day, one week, one month, etc...) to keep track of his tasks. One of the main focuses is the multi-users aspect : list sharing and administratives permissions of different users on the same list.
 
 This software was developed as semester project (PRO) at HEIG-VD,
 academic year 2019/2020.
@@ -48,7 +48,7 @@ This software requires Java 8 or above and the following libraries:
 
 ## Documentation
 
-User manual: see file xxxxx.
+com.heig.atmanager.User manual: see file xxxxx.
 
 API documentation: see file yyyyy.
 

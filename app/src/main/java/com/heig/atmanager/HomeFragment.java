@@ -6,9 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.Date;
+import com.heig.atmanager.goals.GoalTodo;
+import com.heig.atmanager.tasks.Task;
+
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -22,45 +23,23 @@ import java.util.Calendar;
  */
 public class HomeFragment extends Fragment {
     // Greeting message
-    TextView greetingText;
+    private TextView greetingText;
 
     // Goal feed
-    ArrayList<GoalTodo> goals; // user data
+    private ArrayList<GoalTodo> goals; // user data
     private RecyclerView goalsRecyclerView;
-    private RecyclerView.Adapter goalsAdapter;
-    private RecyclerView.LayoutManager goalslayoutManager;
 
     // Task feed
-    ArrayList<Todo> todos; // user data
+    private ArrayList<Task> tasks; // user data
     private RecyclerView tasksRecyclerView;
-    private RecyclerView.Adapter tasksAdapter;
-    private RecyclerView.LayoutManager taskslayoutManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
-        // ----------- TEMP -----------
+        tasks = new ArrayList<>();
         goals = new ArrayList<>();
-        // GOAL : 20 squats every day for 5 days
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, 5);
-        Date dueDateGoal1 = calendar.getTime();
-        calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, 1);
-        Date dueDateGoal2 = calendar.getTime();
-
-        Goal goal1 = new Goal("SQUATS", 20, Interval.DAY, dueDateGoal1);
-        Goal goal2 = new Goal("BREAK", 1, Interval.HOUR, dueDateGoal2);
-        goals = goal1.getGoalsTodoForDay(calendar.getTime()); // Generates 1 goalTodo for 20 squats
-        goals.addAll(goal2.getGoalsTodoForDay(calendar.getTime())); // Generates 1 break every hour
-        todos = new ArrayList<>();
-        todos.add(new Todo("Task1", "This is a really useful task."));
-        todos.add(new Todo("Task2", "Rendre labo 1 :\n> Fiche technique\n> Rapport (10 pages)\n> Code source (C++)"));
-        todos.add(new Todo("Task3", "..."));
-        todos.add(new Todo("Task4", "..."));
-        // --------- END TEMP ---------
 
         // Greeting
         greetingText = (TextView) v.findViewById(R.id.greeting_text);
@@ -68,7 +47,7 @@ public class HomeFragment extends Fragment {
 
         // Task feed
         tasksRecyclerView = (RecyclerView) v.findViewById(R.id.tasks_rv);
-        Utils.setupTodosFeed(v, tasksRecyclerView, todos);
+        Utils.setupTasksFeed(v, tasksRecyclerView, tasks);
 
         // Goal feed
         goalsRecyclerView = (RecyclerView) v.findViewById(R.id.goals_rv);
@@ -102,14 +81,14 @@ public class HomeFragment extends Fragment {
         }
 
         // Select user info sentence (total tasks/goals for the day)
-        if(todos.size() == 0 && goals.size() == 0) {
+        if(tasks.size() == 0 && goals.size() == 0) {
             user_info = "relax! You have nothing to do today.";
-        } else if (todos.size() != 0 && goals.size() == 0) {
-            user_info = getSingleUserInfoGreeting(todos.size()) + " for today.";
-        } else if (todos.size() == 0) { // goals != 0 always true
+        } else if (tasks.size() != 0 && goals.size() == 0) {
+            user_info = getSingleUserInfoGreeting(tasks.size()) + " for today.";
+        } else if (tasks.size() == 0) { // goals != 0 always true
             user_info = getSingleUserInfoGreeting(goals.size()) + " for today.";
         } else {
-            user_info = getSingleUserInfoGreeting(todos.size()) + " and "
+            user_info = getSingleUserInfoGreeting(tasks.size()) + " and "
                     + goals.size() + " goal" + (goals.size() > 1 ? "s" : "") + " for today.";
         }
 

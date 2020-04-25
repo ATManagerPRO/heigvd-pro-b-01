@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
     android:layout_marginTop="5dp"
     android:layout_marginBottom="5dp">
 
@@ -32,6 +31,7 @@
             android:textStyle="bold"
             android:textColor="@color/grey"/>
     </LinearLayout>
+
 
     <!-- Task View (expanded) -->
     <LinearLayout
@@ -82,11 +82,15 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <!-- Check box -->
-        <Button
+        <ToggleButton
+            android:id="@+id/check_button"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            style="@style/AppTheme.CheckBox"/>
-
+            android:background="@drawable/task_checkbox"
+            android:shadowColor="@color/transparent"
+            style="?android:attr/borderlessButtonStyle"
+            android:textOff=""
+            android:textOn=""/>
 
         <!-- Task info (title and list) -->
         <LinearLayout
@@ -120,27 +124,40 @@
 
         <!-- Task details (expanded) -->
         <FrameLayout
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginStart="-65dp">
 
             <Button
                 android:id="@+id/expand_button"
+                style="@style/AppTheme.MoreButton"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                style="@style/AppTheme.MoreButton"/>
+                android:layout_height="match_parent" />
 
             <Button
                 android:id="@+id/retract_button"
+                style="@style/AppTheme.MoreButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                style="@style/AppTheme.MoreButton"
                 android:rotation="180"
-                android:visibility="gone"/>
+                android:visibility="gone" />
         </FrameLayout>
 
 
     </LinearLayout>
+
+
+    <!-- Favorite icon <3 -->
+    <ImageView
+        android:id="@+id/favorite_icon"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:visibility="visible"
+        android:src="@drawable/favorite_icon"
+        app:layout_constraintLeft_toRightOf="@id/time_container"
+        app:layout_constraintTop_toTopOf="parent"
+        android:translationX="-7dp"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="45dp"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="45dp"
+        android:layout_height="45dp"/>
+
+    <TextView
+        android:id="@+id/drawer_object_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:text="TaskList title"
+        android:textSize="17sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/arial"
+        android:gravity="center_vertical"
+        />
+
+</LinearLayout>
