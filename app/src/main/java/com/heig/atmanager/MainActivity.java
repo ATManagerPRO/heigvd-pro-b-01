@@ -1,5 +1,14 @@
 package com.heig.atmanager;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,7 +28,8 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.heig.atmanager.addTaskGoal.AddTaskGoalActivity;
+import com.heig.atmanager.addTaskGoal.AddGoalFragment;
+import com.heig.atmanager.addTaskGoal.AddTaskFragment;
 import com.heig.atmanager.calendar.CalendarFragment;
 import com.heig.atmanager.goals.GoalsFragment;
 import com.heig.atmanager.stats.StatsFragment;
@@ -119,18 +129,22 @@ public class MainActivity extends AppCompatActivity {
         fabAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), AddTaskGoalActivity.class);
-                intent.putExtra("fragToLoad", R.id.frag_add_task);
-                startActivity(intent);
+                // Hide Fab and dock
+                findViewById(R.id.fab_container).setVisibility(View.GONE);
+                findViewById(R.id.dock).setVisibility(View.GONE);
+                fab.setExpanded(false);
+                loadFragment(new AddTaskFragment());
             }
         });
 
         fabAddGoal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), AddTaskGoalActivity.class);
-                intent.putExtra("fragToLoad", R.id.frag_add_goal);
-                startActivity(intent);
+                // Hide Fab and dock
+                findViewById(R.id.fab_container).setVisibility(View.GONE);
+                findViewById(R.id.dock).setVisibility(View.GONE);
+                fab.setExpanded(false);
+                loadFragment(new AddGoalFragment());
             }
         });
 

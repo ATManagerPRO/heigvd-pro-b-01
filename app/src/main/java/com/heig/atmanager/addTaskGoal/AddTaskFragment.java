@@ -5,12 +5,15 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -71,6 +74,19 @@ public class AddTaskFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Override OnBacPressed to show hidden components
+        final OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                getFragmentManager().popBackStack();
+
+                getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
+                getActivity().findViewById(R.id.dock).setVisibility(View.VISIBLE);
+            }
+        };
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
     @Override
@@ -90,7 +106,7 @@ public class AddTaskFragment extends Fragment {
 
         final Button validationButton = mView.findViewById(R.id.frag_validation_button);
 
-        final UserViewModel currentUser = ((AddTaskGoalActivity) getActivity()).dummyUser;
+        final UserViewModel currentUser = ((MainActivity) getActivity()).dummyUser;
 
 
         // Picker for date and time
@@ -107,7 +123,8 @@ public class AddTaskFragment extends Fragment {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         String dueDateString = Utils.formatNumber(dayOfMonth) + "." +
-                                Utils.formatNumber(month + 1) + "." + Utils.formatNumber(year);
+                                Utils.formatNumber(month + 1) + "." +
+                                Utils.formatNumber(year);
                         dueDateTextView.setText(dueDateString);
                     }
                 }, mYear, mMonth, mDay);
@@ -125,7 +142,8 @@ public class AddTaskFragment extends Fragment {
                 TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        dueTimeTextView.setText(hourOfDay + ":" + minute);
+                        dueTimeTextView.setText(
+                                Utils.formatNumber(hourOfDay) + ":" + Utils.formatNumber(minute));
                     }
                 }, mHour, mMinute, true);
                 timePickerDialog.show();
@@ -134,17 +152,24 @@ public class AddTaskFragment extends Fragment {
 
 
         // Tags
-        final ArrayAdapter<String> chipsAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, currentUser.getTags().getValue());
+        //final ArrayAdapter<String> chipsAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, currentUser.getTags().getValue());
+        ArrayList<String> test = new ArrayList<>();
+        test.add("tag1");
+        test.add("tag2");
+        final ArrayAdapter<String> chipsAdapter = new ArrayAdapter<>(getActivity(),
+                R.layout.support_simple_spinner_dropdown_item, test);
         // App detect the input to suggest the tag
         final AutoCompleteTextView autoCompleteTextView = mView.findViewById(R.id.frag_add_task_autocomplete_textview);
         autoCompleteTextView.setAdapter(chipsAdapter);
-        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        autoCompleteTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                autoCompleteTextView.setText(null);
-                String text = (String) adapterView.getItemAtPosition(i);
-                ChipGroup chipGroup = mView.findViewById(R.id.frag_add_task_chipgroup);
-                addChipToGroup(text, chipGroup);
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    ChipGroup chipGroup = mView.findViewById(R.id.frag_add_task_chipgroup);
+                    addChipToGroup(autoCompleteTextView.getText().toString().trim(), chipGroup);
+                    autoCompleteTextView.setText(null);
+                }
+                return false;
             }
         });
 
@@ -180,13 +205,17 @@ public class AddTaskFragment extends Fragment {
                     if(taskList.getName().equals(selectedDirectory))
                         taskList.addTask(newTask);
 
-                startActivity(new Intent(getContext(), MainActivity.class));
+                getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
+                getActivity().findViewById(R.id.dock).setVisibility(View.VISIBLE);
+                getFragmentManager().popBackStack();
             }
         });
 
 
         return mView;
     }
+
+
 
     /**
      * Add a string as chip into the given chip group
