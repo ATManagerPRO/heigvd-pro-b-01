@@ -1,7 +1,5 @@
 package com.heig.atmanager;
 
-import android.icu.text.CaseMap;
-
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.taskLists.TaskList;

@@ -73,4 +73,8 @@ public class Task {
     public boolean isFavorite() {
         return favorite;
     }
+
+    public boolean isDone() {
+        return done;
+    }
 }
