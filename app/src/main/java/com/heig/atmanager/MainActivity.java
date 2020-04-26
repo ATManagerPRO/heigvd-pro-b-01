@@ -1,8 +1,9 @@
 package com.heig.atmanager;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,22 +12,19 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Intent;
-import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -60,13 +58,30 @@ public class MainActivity extends AppCompatActivity {
     private ExpandableListView expandableListView;
     private ExpandableListAdapter adapter;
 
+
+    private GoogleSignInClient mGoogleSignInClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        GoogleSignInOptions gso =
+                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestIdToken(BuildConfig.GoogleSignInKey)
+                        .requestEmail()
+                        .build();
+
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+
         // To get this variable from the fragments ((MainActivity)getActivity()).dummyUser
         dummyUser = DummyData.getUser();
+
+        fab = findViewById(R.id.fab);
+        fabAddGoal = findViewById(R.id.fab_add_goal);
+        fabAddTask = findViewById(R.id.fab_add_task);
 
         // Drawer layout
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
@@ -88,10 +103,6 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.top_navigation_menu, menu);
         View dockView = findViewById(R.id.dock_container);
         dock = dockView.findViewById(R.id.dock);
-
-        fab = findViewById(R.id.fab);
-        fabAddGoal = findViewById(R.id.fab_add_goal);
-        fabAddTask = findViewById(R.id.fab_add_task);
 
         dock.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -158,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         // Drawer button
-        if(drawerToggle.onOptionsItemSelected(item))
+        if (drawerToggle.onOptionsItemSelected(item))
             return true;
 
         return super.onOptionsItemSelected(item);
@@ -183,8 +194,8 @@ public class MainActivity extends AppCompatActivity {
      */
     private void updateDrawerItems() {
         final ArrayList<TaskList> standaloneTaskLists = new ArrayList<>();
-        for(TaskList taskList : dummyUser.getTaskLists().getValue())
-            if(taskList.isStandalone())
+        for (TaskList taskList : dummyUser.getTaskLists().getValue())
+            if (taskList.isStandalone())
                 standaloneTaskLists.add(taskList);
 
         adapter = new DrawerListAdapter(this, standaloneTaskLists, dummyUser.getFolders().getValue());
@@ -193,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
         expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
-                if(i >= standaloneTaskLists.size())
+                if (i >= standaloneTaskLists.size())
                     return false;
 
                 drawerLayout.closeDrawer(GravityCompat.START);
@@ -229,4 +240,9 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
+    private void signOut(){
+        mGoogleSignInClient.signOut();
+        Intent intent = new Intent(MainActivity.this,SignInActivity.class);
+        startActivity(intent);
+    }
 }
