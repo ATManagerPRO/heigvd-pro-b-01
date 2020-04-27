@@ -76,14 +76,6 @@ public class User {
         return folders;
     }
 
-    public  ArrayList<String> getDirectories() {
-        return directories;
-    }
-
-    public void setDirectories(ArrayList<String> directories) {
-        this.directories = directories;
-    }
-
     public int getTotalTasksForDay(Date day) {
         int totalTasks = 0;
 
@@ -152,8 +144,16 @@ public class User {
                 calendar_d1.get(Calendar.DAY_OF_MONTH) == calendar_d2.get(Calendar.DAY_OF_MONTH);
     }
 
-    public ArrayList<Task> getTasks() {
-        return tasks;
+    public ArrayList<Task> getTasksForDay(Date day) {
+        ArrayList<Task> tasksForDay = new ArrayList<>();
+
+        for (Task task : tasks) {
+            if (task.getDueDate() != null && isSameSimpleDate(task.getDueDate(), day)) {
+                tasksForDay.add(task);
+            }
+        }
+
+        return tasksForDay;
     }
 
 }

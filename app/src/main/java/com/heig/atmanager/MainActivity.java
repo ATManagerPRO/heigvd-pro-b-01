@@ -24,7 +24,7 @@ import com.heig.atmanager.goals.GoalsFragment;
 import com.heig.atmanager.taskLists.TaskList;
 
 public class MainActivity extends AppCompatActivity {
-    public UserViewModel dummyUser;
+    public static User user;
 
     private BottomNavigationView dock;
 
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // To get this variable from the fragments ((MainActivity)getActivity()).dummyUser
-        dummyUser = DummyData.getUser();
+        user = new User("Joe", "GoogleToken");
 
         // Drawer layout
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
         // get menu from navigationView
         Menu menu = navigationView.getMenu();
 
-        for(Folder folder : dummyUser.getFolders().getValue()) {
+        for(Folder folder : user.getFolders()) {
             Menu submenu = menu.addSubMenu(folder.getName());
 
             for(TaskList taskList : folder.getTaskLists())
@@ -168,4 +168,7 @@ public class MainActivity extends AppCompatActivity {
         navigationView.invalidate();
     }
 
+    public static User getUser() {
+        return user;
+    }
 }
