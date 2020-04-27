@@ -56,6 +56,8 @@
     <string name="tags">Tags</string>
     <string name="add_task">Add Task</string>
     <string name="add_goal">Add Goal</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="welcome_message">Please login with you google account</string>
 
     <!-- Calendar -->
     <string-array
@@ -83,4 +85,6 @@
         <item>November</item>
         <item>December</item>
     </string-array>
+
+    <string name="server_client_id">14387612601-7b1lq5as1gdenabv9kch220obav46525.apps.googleusercontent.com</string>
 </resources>

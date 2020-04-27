@@ -6,4 +6,10 @@
         android:title="Settings"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/sign_out"
+        android:title="@string/sign_out"
+        />
+
+
 </menu>
