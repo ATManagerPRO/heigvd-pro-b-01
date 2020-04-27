@@ -67,7 +67,7 @@ public class HomeFragment extends Fragment {
         Calendar calendar = Calendar.getInstance();
         String greeting = "";
         String user_info = "";
-        String user = "User123";
+        String user = ((MainActivity) getContext()).getUser().getUserName();
 
         // Hour (0 - 23)
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
