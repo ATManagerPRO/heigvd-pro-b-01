@@ -76,15 +76,18 @@ public class User {
         TaskList.defaultList.addTask(new Task("Task3", "..."));
         TaskList.defaultList.addTask(new Task("Task4", "..."));
         tl1.addTask(new Task("Send report X", "Must DO!!!", dueDateGoal1));
-        tl1.addTask(new Task("Task test", "this is a test", dueDateGoal1));
-        tl2.addTask(new Task("Task test", "this is a test", dueDateGoal2));
-        tl2.addTask(new Task("Task test", "this is a test", dueDateGoal2));
-        tl3.addTask(new Task("Task test", "this is a test", dueDateGoal3));
-        tl3.addTask(new Task("Task test", "this is a test", dueDateGoal3));
-        tl3.addTask(new Task("Task test", "this is a test", dueDateGoal4));
-        tl4.addTask(new Task("Task test", "this is a test", dueDateGoal4));
-        tl5.addTask(new Task("Task test", "this is a test", dueDateGoal4));
-        tl5.addTask(new Task("Task test", "this is a test", dueDateGoal4));
+        tl1.addTask(new Task("Task test1", "this is a test", dueDateGoal1));
+        tl2.addTask(new Task("Task test2", "this is a test", dueDateGoal2));
+        tl2.addTask(new Task("Task test3", "this is a test", dueDateGoal2));
+        tl2.addTask(new Task("Task test4", "this is a test", dueDateGoal2));
+        tl2.addTask(new Task("Task test5", "this is a test", dueDateGoal2));
+        tl2.addTask(new Task("Task test6", "this is a test", dueDateGoal2));
+        tl3.addTask(new Task("Task test7", "this is a test", dueDateGoal3));
+        tl3.addTask(new Task("Task test8", "this is a test", dueDateGoal3));
+        tl3.addTask(new Task("Task test9", "this is a test", dueDateGoal4));
+        tl4.addTask(new Task("Task test10", "this is a test", dueDateGoal4));
+        tl5.addTask(new Task("Task test11", "this is a test", dueDateGoal4));
+        tl5.addTask(new Task("Task test12", "this is a test", dueDateGoal4));
 
         // Tags
         this.setTags(new ArrayList<>(Arrays.asList("Urgent", "Normal")));
