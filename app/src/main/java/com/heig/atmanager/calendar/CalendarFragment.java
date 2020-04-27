@@ -91,9 +91,9 @@ public class CalendarFragment extends Fragment {
                 dateCalendar.set(Calendar.DAY_OF_MONTH, date.getDay());
                 dateCalendar.set(Calendar.MONTH, date.getMonth() - 1);
                 dateCalendar.set(Calendar.YEAR, date.getYear());
-                tasks = ((MainActivity) getContext()).dummyUser.getTasksForDay(dateCalendar.getTime());
+                tasks = ((MainActivity) getContext()).getUser().getTasksForDay(dateCalendar.getTime());
                 Log.d(TAG, "onDateSelected: tasks total for " + date + " : " + tasks.size());
-                Utils.setupTodosFeed(getView(), tasksRecyclerView, tasks);
+                Utils.setupTasksFeed(getView(), tasksRecyclerView, tasks);
             }
         });
 

@@ -6,7 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.heig.atmanager.Interval;
+import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
+import com.heig.atmanager.UserViewModel;
 import com.heig.atmanager.Utils;
 
 import java.util.ArrayList;
@@ -40,10 +42,15 @@ public class GoalsFragment extends Fragment {
 
     // This year's goal feed
     private RecyclerView goalsYearRecyclerView;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_goals, container, false);
+
+        //goals = userVm.getGoals().getValue();
+
+        goals = new ArrayList<>();
 
         // Displaying the generating GoalTodo from the goals by intervals
         ArrayList<GoalTodo> todayGoals = new ArrayList<>();

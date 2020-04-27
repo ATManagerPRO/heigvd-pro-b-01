@@ -34,6 +34,7 @@ public class FolderNavigationFragment extends Fragment {
         folderRecyclerView = (RecyclerView) v.findViewById(R.id.folder_recycler_view);
         //Utils.setupFoldersFeed(v, folderRecyclerView, new DummyData().initData().getFolders());
 
+
         return v;
     }
 }

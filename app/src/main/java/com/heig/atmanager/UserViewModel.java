@@ -1,11 +1,11 @@
 package com.heig.atmanager;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.goals.Goal;
-import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.tasks.Task;
 
 import java.util.ArrayList;
@@ -16,10 +16,7 @@ import java.util.ArrayList;
  **/
 public class UserViewModel extends ViewModel {
 
-    private String userName;
-    private String googleToken;
-
-    private MutableLiveData<ArrayList<TaskList>> taskLists;
+    private User user;
 
     private MutableLiveData<ArrayList<Task>> tasks;
 
@@ -29,20 +26,12 @@ public class UserViewModel extends ViewModel {
 
     private MutableLiveData<ArrayList<Folder>> folders;
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public UserViewModel() {
-    }
-
     public UserViewModel(User user) {
-        userName = user.getUserName();
-        googleToken = user.getGoogleToken();
+        this.user = user;
 
-        taskLists = new MutableLiveData<>();
-        if (user.getTaskLists() != null) {
-            taskLists.setValue(user.getTaskLists());
+        tasks = new MutableLiveData<>();
+        if (user.getTasks() != null) {
+            tasks.setValue(user.getTasks());
         }
 
         goals = new MutableLiveData<>();
@@ -60,18 +49,6 @@ public class UserViewModel extends ViewModel {
             folders.setValue(user.getFolders());
         }
 
-    }
-
-    public String getGoogleToken() {
-        return googleToken;
-    }
-
-    public MutableLiveData<ArrayList<TaskList>> getTaskLists() {
-        if (taskLists == null) {
-            taskLists = new MutableLiveData<>();
-        }
-
-        return taskLists;
     }
 
     public MutableLiveData<ArrayList<Task>> getTasks() {
@@ -110,4 +87,9 @@ public class UserViewModel extends ViewModel {
     public void addGoal(Goal goal){
         goals.getValue().add(goal);
     }
+
+    public User getUser() {
+        return user;
+    }
 }
+

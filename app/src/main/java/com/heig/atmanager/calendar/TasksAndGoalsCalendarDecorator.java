@@ -29,7 +29,7 @@ public class TasksAndGoalsCalendarDecorator implements DayViewDecorator {
 
     @Override
     public boolean shouldDecorate(CalendarDay day) {
-        return ((MainActivity) context).dummyUser.getTotalTasksForDay(convertCalendarDayToDate(day)) != 0;
+        return ((MainActivity) context).getUser().getTotalTasksForDay(convertCalendarDayToDate(day)) != 0;
     }
 
     @Override
