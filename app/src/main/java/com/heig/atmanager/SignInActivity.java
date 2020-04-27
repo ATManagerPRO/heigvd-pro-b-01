@@ -46,7 +46,7 @@ public class SignInActivity extends Activity implements View.OnClickListener {
         // Request email allows to also access their email
         GoogleSignInOptions gso =
                 new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestIdToken(getString(R.string.server_client_id))
+                        .requestIdToken(BuildConfig.GoogleSignInKey)
                         .requestEmail()
                         .build();
 

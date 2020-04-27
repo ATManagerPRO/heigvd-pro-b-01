@@ -20,7 +20,6 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".SignInActivity"/>
-
     </application>
 
 </manifest>
