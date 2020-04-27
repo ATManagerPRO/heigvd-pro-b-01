@@ -22,7 +22,6 @@ public class TodayCalendarDecorator implements DayViewDecorator {
 
     @Override
     public boolean shouldDecorate(CalendarDay day) {
-        // We decorate all dates with notifications
         return day.equals(today);
     }
 

@@ -17,5 +17,14 @@
     <color name="close_button">#C70039</color>
     <color name="white_50">#80FFFFFF</color>
     <color name="red">#FF0000</color>
+
+    <!-- Tasks -->
     <color name="favorite_bg">#FF0051</color>
+
+    <!-- Calendar -->
+    <color name="outline_selection">#000000</color>
+    <color name="outline_today">#FF1818</color>
+    <color name="day_background_notification">#63CFFF</color>
+
+
 </resources>

@@ -26,9 +26,10 @@ import com.anychart.enums.Anchor;
 import com.anychart.enums.MarkerType;
 import com.anychart.enums.TooltipPositionMode;
 import com.anychart.graphics.vector.Stroke;
-import com.heig.atmanager.DummyData;
 import com.heig.atmanager.Interval;
+import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
+import com.heig.atmanager.User;
 import com.heig.atmanager.UserViewModel;
 import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.tasks.Task;
@@ -53,7 +54,7 @@ public class StatsFragment  extends Fragment {
 
     private static String bgColor;
 
-    private UserViewModel user;
+    //private User user;
     private ArrayList<Task> tasks;
     private ArrayList<Goal> goals;
 
@@ -71,10 +72,10 @@ public class StatsFragment  extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 switch(position){
-                    case 0 : makeCharts(Interval.DAY); break;
+                    /*case 0 : makeCharts(Interval.DAY); break;
                     case 1 : makeCharts(Interval.WEEK); break;
                     case 2 : makeCharts(Interval.MONTH); break;
-                    case 3 : makeCharts(Interval.YEAR); break;
+                    case 3 : makeCharts(Interval.YEAR); break;*/
                 }
             }
 
@@ -86,7 +87,7 @@ public class StatsFragment  extends Fragment {
 
 
         //Charts
-        user = DummyData.getUser();
+        //user = ((MainActivity) getContext()).getUser();
 
         //TODO : get this by values.colors, not working for some reason
         bgColor = "#F1F1F1";
@@ -99,12 +100,12 @@ public class StatsFragment  extends Fragment {
         pieChartGoals = v.findViewById(R.id.pie_chart_goals);
         pieChartGoals.setBackgroundColor(bgColor);
 
-        makeCharts(Interval.DAY);
+        //makeCharts(Interval.DAY);
 
         return v;
     }
 
-    private void makeCharts(Interval interval){
+    /*private void makeCharts(Interval interval){
 
         //TODO : Select goals/Tasks based on Interval
         tasks = user.getTaskLists().getValue().get(0).getTasks();
@@ -121,7 +122,7 @@ public class StatsFragment  extends Fragment {
             APIlib.getInstance().setActiveAnyChartView(pieChartGoals);
             makePieChartGoals();
         }
-    }
+    }*/
 
     private void makePieChartTasks(){
 
