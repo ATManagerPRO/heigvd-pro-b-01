@@ -1,6 +1,8 @@
 package com.heig.atmanager;
 
 
+import android.util.Log;
+
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.taskLists.TaskList;
@@ -74,16 +76,16 @@ public class User {
         TaskList.defaultList.addTask(new Task("Task2", "Rendre labo 1 :\n> Fiche technique\n> Rapport (10 pages)\n> Code source (C++)"));
         TaskList.defaultList.addTask(new Task("Task3", "..."));
         TaskList.defaultList.addTask(new Task("Task4", "..."));
-        tl1.addTask(new Task("Send report X", "Must DO!!!"));
-        tl1.addTask(new Task("Task test", "this is a test"));
-        tl2.addTask(new Task("Task test", "this is a test"));
-        tl2.addTask(new Task("Task test", "this is a test"));
-        tl3.addTask(new Task("Task test", "this is a test"));
-        tl3.addTask(new Task("Task test", "this is a test"));
-        tl3.addTask(new Task("Task test", "this is a test"));
-        tl4.addTask(new Task("Task test", "this is a test"));
-        tl5.addTask(new Task("Task test", "this is a test"));
-        tl5.addTask(new Task("Task test", "this is a test"));
+        tl1.addTask(new Task("Send report X", "Must DO!!!", dueDateGoal1));
+        tl1.addTask(new Task("Task test", "this is a test", dueDateGoal1));
+        tl2.addTask(new Task("Task test", "this is a test", dueDateGoal2));
+        tl2.addTask(new Task("Task test", "this is a test", dueDateGoal2));
+        tl3.addTask(new Task("Task test", "this is a test", dueDateGoal3));
+        tl3.addTask(new Task("Task test", "this is a test", dueDateGoal3));
+        tl3.addTask(new Task("Task test", "this is a test", dueDateGoal4));
+        tl4.addTask(new Task("Task test", "this is a test", dueDateGoal4));
+        tl5.addTask(new Task("Task test", "this is a test", dueDateGoal4));
+        tl5.addTask(new Task("Task test", "this is a test", dueDateGoal4));
 
         // Tags
         this.setTags(new ArrayList<>(Arrays.asList("Urgent", "Normal")));
