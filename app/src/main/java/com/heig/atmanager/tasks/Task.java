@@ -1,5 +1,7 @@
 package com.heig.atmanager.tasks;
 
+import com.heig.atmanager.taskLists.TaskList;
+
 import java.util.Date;
 
 /**
@@ -18,21 +20,49 @@ public class Task {
     private Date dueDate;
     private Date doneDate;
     private Date reminderDate;
+    private TaskList tasklist;
 
-    public Task(long id, String title, String description, boolean done, boolean favorite,
-                Date dueDate, Date doneDate, Date reminderDate) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.done = done;
-        this.favorite = favorite;
-        this.dueDate = dueDate;
-        this.doneDate = doneDate;
+    public Task(String title, String description) {
+        this(title, description, false, false, null, null, null, TaskList.defaultList);
+    }
+
+    public Task(String title, String description, Date dueDate) {
+        this(title, description, false, false, dueDate, null, null, TaskList.defaultList);
+    }
+
+    public Task(String title, String description, boolean favorite) {
+        this(title, description, false, favorite, null, null, null, TaskList.defaultList);
+    }
+
+    public Task(String title, String description, Date dueDate, TaskList taskList) {
+        this(title, description, false, false, dueDate, null, null, TaskList.defaultList);
+    }
+
+    public Task(String title, String description, boolean done, boolean favorite, Date dueDate, Date doneDate, Date reminderDate, TaskList tasklist) {
+        this.title        = title;
+        this.description  = description;
+        this.done         = done;
+        this.favorite     = favorite;
+        this.dueDate      = dueDate;
+        this.doneDate     = doneDate;
         this.reminderDate = reminderDate;
+        this.tasklist     = tasklist;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public Date getDueDate() {
+        return dueDate;
     }
 
     public void setTitle(String title) {
@@ -47,19 +77,12 @@ public class Task {
         this.done = status;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public Date getDueDate() {
-        return dueDate;
-    }
 
     public boolean isFavorite() {
         return favorite;
+    }
+
+    public boolean isDone() {
+        return done;
     }
 }

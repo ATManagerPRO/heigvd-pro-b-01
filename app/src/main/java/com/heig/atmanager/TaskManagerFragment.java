@@ -11,14 +11,16 @@ import androidx.fragment.app.Fragment;
 
 /**
  * Author : Stéphane Bottin
- * Date   : 01.04.2020
+ * Date   : 02.04.2020
+ *
+ * Task Manager to allow the user to see the tasks selected in the drawer menu
  */
-public class StatsFragment  extends Fragment {
+public class TaskManagerFragment extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_stats, container, false);
+        View v = inflater.inflate(R.layout.fragment_task_manager, container, false);
 
         return v;
     }

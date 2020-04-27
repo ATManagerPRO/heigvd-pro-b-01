@@ -20,9 +20,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
-        <activity android:name=".addTaskGoal.AddTaskGoalActivity" />
         <activity android:name=".ProfileActivity" />
-
+        <activity android:name=".SignInActivity"/>
     </application>
 
 </manifest>

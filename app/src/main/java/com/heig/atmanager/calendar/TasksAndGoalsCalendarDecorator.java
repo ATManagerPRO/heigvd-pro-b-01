@@ -1,14 +1,14 @@
 package com.heig.atmanager.calendar;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 
-import com.heig.atmanager.R;
+import com.heig.atmanager.MainActivity;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 
-import androidx.core.content.ContextCompat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Author : Stéphane Bottin
@@ -29,18 +29,22 @@ public class TasksAndGoalsCalendarDecorator implements DayViewDecorator {
 
     @Override
     public boolean shouldDecorate(CalendarDay day) {
-        // TODO: return getTotalTodosAndGoals(day) != 0;
-        return true;
+        return ((MainActivity) context).getUser().getTotalTasksForDay(convertCalendarDayToDate(day)) != 0;
     }
 
     @Override
     public void decorate(DayViewFacade view) {
-        // Selection outline when pressing on a day
-        Drawable selection_outline = ContextCompat.getDrawable(context, R.drawable.calendar_selection);
-        if(selection_outline != null)
-            view.setSelectionDrawable(selection_outline);
-
         // Daily notifications
-        view.addSpan(new CalendarDayNotification(color));
+        view.addSpan(new CalendarDayNotification(context, color));
+    }
+
+    private Date convertCalendarDayToDate(CalendarDay day) {
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.set(Calendar.YEAR, day.getYear());
+        calendar.set(Calendar.MONTH, day.getMonth() - 1);
+        calendar.set(Calendar.DAY_OF_MONTH, day.getDay());
+
+        return calendar.getTime();
     }
 }
