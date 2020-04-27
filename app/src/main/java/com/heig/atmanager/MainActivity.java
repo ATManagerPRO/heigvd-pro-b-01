@@ -41,11 +41,12 @@ import com.heig.atmanager.goals.GoalsFragment;
 import com.heig.atmanager.stats.StatsFragment;
 import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.taskLists.TaskListFragment;
+import com.heig.atmanager.userData.UserJsonParser;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    public static User user;
+    public static com.heig.atmanager.User user;
 
     private static final String TAG = "MainActivity";
 
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // To get this variable from the fragments ((MainActivity)getActivity()).dummyUser
-        user = new User("Joe", "GoogleToken");
+        user = new com.heig.atmanager.User("Joe", "GoogleToken");
 
         fab = findViewById(R.id.fab);
         fabAddGoal = findViewById(R.id.fab_add_goal);
@@ -219,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
     private void updateDrawerItems() {
         final ArrayList<TaskList> standaloneTaskLists = new ArrayList<>();
         for(TaskList taskList : user.getTaskLists())
-            if(taskList.isStandalone())
+            if(!taskList.isFolder())
                 standaloneTaskLists.add(taskList);
 
         adapter = new DrawerListAdapter(this, standaloneTaskLists, user.getFolders());
@@ -264,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
-    public static User getUser() {
+    public static com.heig.atmanager.User getUser() {
         return user;
     }
     /**

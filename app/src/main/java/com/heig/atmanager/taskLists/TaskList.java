@@ -16,23 +16,21 @@ import java.util.ArrayList;
 public class TaskList extends DrawerObject implements Serializable {
 
     public static String SERIAL_TASK_LIST_KEY = "taskList";
+    public static TaskList defaultList = new TaskList(0, "My Tasks");
 
     private long id;
     private String name;
     private long folder_id;
-    public static TaskList defaultList = new TaskList("My Tasks");
-
-    private Folder parent;
     private ArrayList<Task> tasks;
 
-    public TaskList(String name){
+    public TaskList(long id, String name) {
         super(name);
-        tasks = new ArrayList<>();
+        this.id = id;
     }
 
-    public TaskList(String name, Folder parent) {
-        this(name);
-        this.parent = parent;
+    public TaskList(long id, String name, long folder_id) {
+        this(id, name);
+        this.folder_id = folder_id;
     }
 
     public void addTask(Task task) {
@@ -43,12 +41,8 @@ public class TaskList extends DrawerObject implements Serializable {
         return tasks;
     }
 
-    public void setParent(Folder folder) {
-        this.parent = folder;
-    }
-
-    public boolean isStandalone() {
-        return parent == null;
+    public void setFolderId(long id) {
+        this.folder_id = id;
     }
 
     @Override
