@@ -3,6 +3,7 @@ package com.heig.atmanager.goals;
 import com.heig.atmanager.Interval;
 import com.heig.atmanager.Utils;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -52,9 +53,11 @@ public class Goal {
         ArrayList<GoalTodo> goals = new ArrayList<>();
 
         Calendar calendar = getCalendarInstance();
+        Calendar calendarDueDate = Calendar.getInstance();
+        calendarDueDate.setTime(dueDate);
 
         // Adding new goalsTodo while it's equal or before the due date
-        while(calendar.getTime().equals(dueDate) || calendar.getTime().before(dueDate)) {
+        while(calendar.equals(calendarDueDate) || calendar.before(calendarDueDate)) {
             goals.add(new GoalTodo(this, 0, calendar.getTime(), dueDate));
             calendar.add(interval.getCalendarInterval(),1);
         }
@@ -132,6 +135,7 @@ public class Goal {
     public ArrayList<GoalTodo> getGoalTodos() {
         return goalTodos;
     }
+
 
 
 }

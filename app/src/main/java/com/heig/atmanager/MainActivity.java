@@ -39,10 +39,7 @@ import com.heig.atmanager.taskLists.TaskListFragment;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
-    private static final String TAG = "MainActivity";
-
-    public UserViewModel dummyUser;
+    public static User user;
 
     private BottomNavigationView dock;
 
@@ -64,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // To get this variable from the fragments ((MainActivity)getActivity()).dummyUser
-        dummyUser = DummyData.getUser();
+        user = new User("Joe", "GoogleToken");
 
         // Drawer layout
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
@@ -181,11 +178,11 @@ public class MainActivity extends AppCompatActivity {
      */
     private void updateDrawerItems() {
         final ArrayList<TaskList> standaloneTaskLists = new ArrayList<>();
-        for(TaskList taskList : dummyUser.getTaskLists().getValue())
+        for(TaskList taskList : user.getTaskLists())
             if(taskList.isStandalone())
                 standaloneTaskLists.add(taskList);
 
-        adapter = new DrawerListAdapter(this, standaloneTaskLists, dummyUser.getFolders().getValue());
+        adapter = new DrawerListAdapter(this, standaloneTaskLists, user.getFolders());
         expandableListView.setAdapter(adapter);
 
         expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -195,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
                     return false;
 
                 drawerLayout.closeDrawer(GravityCompat.START);
-                loadTaskListFragment(dummyUser.getTaskLists().getValue().get(i));
+                loadTaskListFragment(user.getTaskLists().get(i));
                 return true;
             }
         });
@@ -206,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
                 drawerLayout.closeDrawer(GravityCompat.START);
 
                 loadTaskListFragment(
-                        dummyUser.getFolders().getValue().get(i - standaloneTaskLists.size()).getTaskLists().get(i1)
+                        user.getFolders().get(i - standaloneTaskLists.size()).getTaskLists().get(i1)
                 );
                 return true;
             }
@@ -227,4 +224,7 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
+    public static User getUser() {
+        return user;
+    }
 }

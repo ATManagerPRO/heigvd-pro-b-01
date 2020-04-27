@@ -2,6 +2,7 @@ package com.heig.atmanager.goals;
 
 import com.heig.atmanager.Utils;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -81,5 +82,12 @@ public class GoalTodo {
     public Date getDoneDate() {
         return doneDate;
     }
+
+    public Date getDueDate() { return dueDate; }
+
+    /*public LocalDate getLocalDueDate() {
+        return LocalDate.of(calendarDueDate.get(Calendar.YEAR),
+                calendarDueDate.get(Calendar.MONTH), calendarDueDate.get(Calendar.DAY_OF_MONTH));
+    }*/
 
 }

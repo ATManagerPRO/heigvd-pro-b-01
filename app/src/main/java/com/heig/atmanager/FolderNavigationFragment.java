@@ -32,7 +32,8 @@ public class FolderNavigationFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_folder_navigation, container, false);
 
         folderRecyclerView = (RecyclerView) v.findViewById(R.id.folder_recycler_view);
-        Utils.setupFoldersFeed(v, folderRecyclerView, DummyData.getUser().getFolders().getValue());
+        //Utils.setupFoldersFeed(v, folderRecyclerView, new DummyData().initData().getFolders());
+
 
         return v;
     }
