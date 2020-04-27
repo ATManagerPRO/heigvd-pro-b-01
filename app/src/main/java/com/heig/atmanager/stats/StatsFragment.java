@@ -40,7 +40,6 @@ import java.util.Objects;
 /**
  * Author : Stéphane Bottin, Mattei Simon
  * Date   : 09.04.2020
- * TODO : GRAPH DON'T REFRESH PRORERLY
  */
 public class StatsFragment  extends Fragment {
 
@@ -123,16 +122,16 @@ public class StatsFragment  extends Fragment {
         goals = user.getGoals().getValue();
 
         if(tasks != null) { //TODO : Something with no tasks
-            makePieChartTasks();
+            makePieChartTasks(interval);
             makeLineChartTasks(interval);
         }
 
         if(goals != null) { //TODO : Something with no goals
-            makePieChartGoals();
+            makePieChartGoals(interval);
         }
     }
 
-    private void makePieChartTasks(){
+    private void makePieChartTasks(Interval interval){
 
         APIlib.getInstance().setActiveAnyChartView(pieChartTasksView);
 
@@ -171,7 +170,7 @@ public class StatsFragment  extends Fragment {
 
         lineChartTasks.tooltip().positionMode(TooltipPositionMode.POINT);
 
-        lineChartTasks.title("Tasks done the past " + interval.name());
+        lineChartTasks.title("Tasks done the past " + interval.name().toLowerCase());
 
         //TODO : set title and stuff accordingly to interval
         lineChartTasks.xAxis(0).title("Hours");
@@ -204,7 +203,7 @@ public class StatsFragment  extends Fragment {
         lineChartTasks.background().fill(bgColor);
     }
 
-    private void makePieChartGoals(){
+    private void makePieChartGoals(Interval interval){
 
         APIlib.getInstance().setActiveAnyChartView(pieChartGoalsView);
 
