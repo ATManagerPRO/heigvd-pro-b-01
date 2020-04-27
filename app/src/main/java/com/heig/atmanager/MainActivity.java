@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListAdapter;
@@ -21,10 +20,8 @@ import android.widget.ExpandableListView;
 
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -66,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // TODO Need to found maybe another way to capture the account
         GoogleSignInOptions gso =
                 new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                         .requestIdToken(BuildConfig.GoogleSignInKey)
@@ -168,11 +166,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+        // TODO a way to made it cleaner
         // Drawer button
         if (drawerToggle.onOptionsItemSelected(item))
             return true;
+        else {
+            switch (item.getItemId()) {
+                case R.id.sign_out:
+                    signOut();
+                    return true;
+                default:
+                    return super.onOptionsItemSelected(item);
+            }
+        }
 
-        return super.onOptionsItemSelected(item);
     }
 
     private void loadFragment(Fragment fragment) {
@@ -240,6 +247,9 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
+    /**
+     * Sign out google account
+     */
     private void signOut(){
         mGoogleSignInClient.signOut();
         Intent intent = new Intent(MainActivity.this,SignInActivity.class);

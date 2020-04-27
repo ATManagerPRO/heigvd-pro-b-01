@@ -57,6 +57,7 @@
     <string name="add_task">Add Task</string>
     <string name="add_goal">Add Goal</string>
     <string name="sign_out">Sign Out</string>
+    <string name="welcome_message">Please login with you google account</string>
 
     <!-- Calendar -->
     <string-array
