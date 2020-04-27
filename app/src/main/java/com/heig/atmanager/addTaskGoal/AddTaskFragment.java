@@ -5,11 +5,15 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -19,26 +23,28 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputLayout;
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
-import com.heig.atmanager.User;
 import com.heig.atmanager.UserViewModel;
+import com.heig.atmanager.Utils;
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.tasks.Task;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
 
 public class AddTaskFragment extends Fragment {
+
+    private static final String TAG = "AddTaskFragment";
 
     private String title;
     private String description;
@@ -68,6 +74,19 @@ public class AddTaskFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Override OnBacPressed to show hidden components
+        final OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                getFragmentManager().popBackStack();
+
+                getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
+                getActivity().findViewById(R.id.dock).setVisibility(View.VISIBLE);
+            }
+        };
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
     @Override
@@ -87,7 +106,7 @@ public class AddTaskFragment extends Fragment {
 
         final Button validationButton = mView.findViewById(R.id.frag_validation_button);
 
-        final UserViewModel currentUser = ((AddTaskGoalActivity) getActivity()).dummyUser;
+        final UserViewModel currentUser = ((MainActivity) getActivity()).dummyUser;
 
 
         // Picker for date and time
@@ -103,7 +122,9 @@ public class AddTaskFragment extends Fragment {
                 picker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        String dueDateString = dayOfMonth + "." + (month + 1) + "." + year;
+                        String dueDateString = Utils.formatNumber(dayOfMonth) + "." +
+                                Utils.formatNumber(month + 1) + "." +
+                                Utils.formatNumber(year);
                         dueDateTextView.setText(dueDateString);
                     }
                 }, mYear, mMonth, mDay);
@@ -121,7 +142,8 @@ public class AddTaskFragment extends Fragment {
                 TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        dueTimeTextView.setText(hourOfDay + ":" + minute);
+                        dueTimeTextView.setText(
+                                Utils.formatNumber(hourOfDay) + ":" + Utils.formatNumber(minute));
                     }
                 }, mHour, mMinute, true);
                 timePickerDialog.show();
@@ -130,34 +152,34 @@ public class AddTaskFragment extends Fragment {
 
 
         // Tags
-        final ArrayAdapter<String> chipsAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, currentUser.getTags().getValue());
+        //final ArrayAdapter<String> chipsAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, currentUser.getTags().getValue());
+        ArrayList<String> test = new ArrayList<>();
+        test.add("tag1");
+        test.add("tag2");
+        final ArrayAdapter<String> chipsAdapter = new ArrayAdapter<>(getActivity(),
+                R.layout.support_simple_spinner_dropdown_item, test);
         // App detect the input to suggest the tag
         final AutoCompleteTextView autoCompleteTextView = mView.findViewById(R.id.frag_add_task_autocomplete_textview);
         autoCompleteTextView.setAdapter(chipsAdapter);
-        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        autoCompleteTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                autoCompleteTextView.setText(null);
-                String text = (String) adapterView.getItemAtPosition(i);
-                ChipGroup chipGroup = mView.findViewById(R.id.frag_add_task_chipgroup);
-                addChipToGroup(text, chipGroup);
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    ChipGroup chipGroup = mView.findViewById(R.id.frag_add_task_chipgroup);
+                    addChipToGroup(autoCompleteTextView.getText().toString().trim(), chipGroup);
+                    autoCompleteTextView.setText(null);
+                }
+                return false;
             }
         });
 
         // Directory spinner
         final Spinner folderSpinner = mView.findViewById(R.id.frag_directory_choice_tag_spinner);
-
-
-        ArrayList<TaskList> taskLists = new ArrayList<>();
-
-        for (Folder f : currentUser.getFolders().getValue()) {
-            taskLists.addAll(f.getTaskLists());
-        }
-
-        ArrayAdapter<TaskList> spinnerAdapter = new AddTaskSipnnerAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, taskLists);
+        ArrayAdapter<TaskList> spinnerAdapter = new AddTaskSpinnerAdapter(getActivity(),
+                R.layout.support_simple_spinner_dropdown_item,
+                currentUser.getTaskLists().getValue());
         spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         folderSpinner.setAdapter(spinnerAdapter);
-        selectedDirectory = folderSpinner.getSelectedItem().toString();
 
         // Button
         validationButton.setOnClickListener(new View.OnClickListener() {
@@ -165,6 +187,7 @@ public class AddTaskFragment extends Fragment {
             public void onClick(View view) {
                 title = titleEditText.getText().toString();
                 description = descriptionEditText.getText().toString();
+                selectedDirectory = folderSpinner.getSelectedItem().toString();
 
                 if (title.isEmpty()) {
                     titleLayout.setError(getString(R.string.input_missing));
@@ -175,15 +198,24 @@ public class AddTaskFragment extends Fragment {
 
                 Date selectedDate = new GregorianCalendar(mYear, mMonth, mDay, mHour, mMinute).getTime();
 
-                //currentUser.addTask(new Task(title, description, selectedDate, selectedDirectory));
+                Task newTask = new Task(title, description, selectedDate);
 
-                startActivity(new Intent(getContext(), MainActivity.class));
+                // Add the task to a selected taskList
+                for(TaskList taskList : currentUser.getTaskLists().getValue())
+                    if(taskList.getName().equals(selectedDirectory))
+                        taskList.addTask(newTask);
+
+                getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
+                getActivity().findViewById(R.id.dock).setVisibility(View.VISIBLE);
+                getFragmentManager().popBackStack();
             }
         });
 
 
         return mView;
     }
+
+
 
     /**
      * Add a string as chip into the given chip group

@@ -1,7 +1,9 @@
 package com.heig.atmanager;
 
+
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.goals.Goal;
+import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.goals.GoalTodo;
 import com.heig.atmanager.tasks.Task;
 
@@ -19,18 +21,19 @@ public class User {
 
     private String userName;
     private String googleToken;
-
-    private ArrayList<Task> tasks;
-
     private ArrayList<Goal> goals;
-
+    private ArrayList<TaskList> taskLists;
+    private ArrayList<Task> tasks;
     private ArrayList<String> tags;
-
     private ArrayList<Folder> folders;
 
     public User(String userName, String googleToken) {
         this.userName = userName;
         this.googleToken = googleToken;
+        // TaskLists always has MyTasks by default
+        taskLists = new ArrayList<>();
+        taskLists.add(TaskList.defaultList);
+
         tasks = new ArrayList<>();
         goals = new ArrayList<>();
         tags = new ArrayList<>();
@@ -126,6 +129,10 @@ public class User {
         return googleToken;
     }
 
+    public ArrayList<TaskList> getTaskLists() {
+        return taskLists;
+    }
+
     public ArrayList<Task> getTasks() {
         return tasks;
     }
@@ -136,6 +143,10 @@ public class User {
 
     public void addTask(Task task) {
         tasks.add(task);
+    }
+
+    public void addTaskList(TaskList taskList) {
+        taskLists.add(taskList);
     }
 
     public void addGoal(Goal goal) {
@@ -156,6 +167,16 @@ public class User {
 
     public ArrayList<Folder> getFolders() {
         return folders;
+    }
+
+    public void addAllFromFolder(Folder folder) {
+        folders.add(folder);
+
+        for (TaskList taskList : folder.getTaskLists()) {
+            addTaskList(taskList);
+            for (Task task : taskList.getTasks())
+                addTask(task);
+        }
     }
 
     public int getTotalTasksForDay(Date day) {
