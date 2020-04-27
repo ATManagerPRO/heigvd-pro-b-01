@@ -24,7 +24,8 @@
     <include
         layout="@layout/task_and_goal_feed"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/calendar_view"/>
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendar_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
