@@ -23,6 +23,8 @@ import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
 
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Author   : Chau Ying Kot
@@ -176,7 +178,7 @@ public class AddGoalFragment extends Fragment {
                 Date selectedDate = new GregorianCalendar(mYear, mMonth, mDay).getTime();
 
 
-                ((MainActivity) getActivity()).dummyUser.addGoal(new Goal(unit, quantity, intervalNumber, interval, selectedDate));
+                ((MainActivity) getActivity()).getUser().addGoal(new Goal(unit, quantity, intervalNumber, interval, selectedDate));
 
                 getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
                 getActivity().findViewById(R.id.dock).setVisibility(View.VISIBLE);

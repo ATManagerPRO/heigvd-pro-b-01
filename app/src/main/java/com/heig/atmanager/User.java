@@ -28,96 +28,69 @@ public class User {
     private ArrayList<Folder> folders;
 
     public User(String userName, String googleToken) {
-        this.userName = userName;
+        this.userName    = userName;
         this.googleToken = googleToken;
-        // TaskLists always has MyTasks by default
-        taskLists = new ArrayList<>();
-        taskLists.add(TaskList.defaultList);
+        this.goals       = new ArrayList<>();
+        this.taskLists   = new ArrayList<>();
+        this.tasks       = new ArrayList<>();
+        this.folders     = new ArrayList<>();
 
-        tasks = new ArrayList<>();
-        goals = new ArrayList<>();
-        tags = new ArrayList<>();
-        folders = new ArrayList<>();
-        // Add goals
+        // Goals
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_MONTH, 5);
-        Goal daily_goal1 = new Goal("SQUATS", 20, 1, Interval.DAY, calendar);
-
+        Date dueDateGoal1 = calendar.getTime();
+        calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_MONTH, 1);
-        Goal daily_goal2 = new Goal("FRUITS", 5, 1, Interval.DAY, calendar);
-
+        Date dueDateGoal2 = calendar.getTime();
         calendar.add(Calendar.WEEK_OF_MONTH, 4);
-        Goal weekly_goal3 = new Goal("KMS", 4, 1, Interval.WEEK, calendar);
-
+        Date dueDateGoal3 = calendar.getTime();
         calendar.add(Calendar.MONTH, 3);
-        Goal monthly_goal4 = new Goal("GIT PUSH", 4, 1, Interval.MONTH, calendar);
-
+        Date dueDateGoal4 = calendar.getTime();
+        Goal daily_goal1 = new Goal("SQUATS", 20, 1,Interval.DAY, dueDateGoal1);
+        Goal daily_goal2 = new Goal("FRUITS", 5, 1,Interval.DAY, dueDateGoal2);
+        Goal weekly_goal3 = new Goal("KMS", 4, 1,Interval.WEEK, dueDateGoal3);
+        Goal monthly_goal4 = new Goal("GIT PUSH", 4, 1,Interval.MONTH, dueDateGoal4);
         this.addGoal(daily_goal1);
         this.addGoal(daily_goal2);
         this.addGoal(weekly_goal3);
         this.addGoal(monthly_goal4);
+        // Folders
+        Folder f1 = new Folder("HEIG-VD");
+        Folder f2 = new Folder("Home stuff");
+        // TaskLists
+        this.addTaskList(TaskList.defaultList);
+        TaskList tl1 = new TaskList("SIO");
+        TaskList tl2 = new TaskList("GEN");
+        TaskList tl3 = new TaskList("RES");
+        TaskList tl4 = new TaskList("Chores");
+        TaskList tl5 = new TaskList("Groceries");
+        f1.addList(tl1);
+        f1.addList(tl2);
+        f1.addList(tl3);
+        f2.addList(tl4);
+        f2.addList(tl5);
+        // Tasks
+        TaskList.defaultList.addTask(new Task("Task1", "This is a really useful task.", true));
+        TaskList.defaultList.addTask(new Task("Task2", "Rendre labo 1 :\n> Fiche technique\n> Rapport (10 pages)\n> Code source (C++)"));
+        TaskList.defaultList.addTask(new Task("Task3", "..."));
+        TaskList.defaultList.addTask(new Task("Task4", "..."));
+        tl1.addTask(new Task("Send report X", "Must DO!!!"));
+        tl1.addTask(new Task("Task test", "this is a test"));
+        tl2.addTask(new Task("Task test", "this is a test"));
+        tl2.addTask(new Task("Task test", "this is a test"));
+        tl3.addTask(new Task("Task test", "this is a test"));
+        tl3.addTask(new Task("Task test", "this is a test"));
+        tl3.addTask(new Task("Task test", "this is a test"));
+        tl4.addTask(new Task("Task test", "this is a test"));
+        tl5.addTask(new Task("Task test", "this is a test"));
+        tl5.addTask(new Task("Task test", "this is a test"));
 
-        // Add Tasks
-        Calendar taskCal = Calendar.getInstance();
-        taskCal.add(Calendar.DAY_OF_MONTH, 1);
-        Calendar taskCal1 = Calendar.getInstance();
-        taskCal1.add(Calendar.DAY_OF_MONTH, 1);
-        Calendar taskCal2 = Calendar.getInstance();
-        taskCal1.add(Calendar.WEEK_OF_MONTH, 1);
-        Calendar taskCal3 = Calendar.getInstance();
-        taskCal1.add(Calendar.WEEK_OF_MONTH, 1);
-        Calendar taskCal4 = Calendar.getInstance();
-        taskCal4.add(Calendar.DAY_OF_MONTH, 3);
-        Calendar taskCal5 = Calendar.getInstance();
-        taskCal5.add(Calendar.WEEK_OF_MONTH, 2);
-        Calendar taskCal6 = Calendar.getInstance();
-        taskCal6.add(Calendar.DAY_OF_MONTH, 9);
-        this.addTask(new Task("Task1", "...", taskCal));
-        this.addTask(new Task("Task2", "...", taskCal1));
-        this.addTask(new Task("Task3", "...", taskCal2));
-        this.addTask(new Task("Task4", "...", taskCal3));
-        this.addTask(new Task("Task5", "...", taskCal1));
-        this.addTask(new Task("Task6", "...", taskCal));
-        this.addTask(new Task("Task7", "...", taskCal1));
-        this.addTask(new Task("Task8", "...", taskCal4));
-        this.addTask(new Task("Task9", "...", taskCal5));
-        this.addTask(new Task("Task10", "...", taskCal6));
-
+        // Tags
         this.setTags(new ArrayList<>(Arrays.asList("Urgent", "Normal")));
 
-        //create folders
-        Folder folder1 = new Folder("Ecole");
-        folder1.addList("first list");
-        folder1.addList("second list");
-        folder1.addList("third list");
-        Folder folder2 = new Folder("Travail");
-        folder2.addList("fourth list");
-        folder2.addList("fifth list");
-        Folder folder3 = new Folder("Jeux");
-        folder3.addList("list");
-        folder3.addList("list1");
-        folder3.addList("list2");
-        folder3.addList("list3");
-        folder3.addList("list4");
-        folder3.addList("list5");
-        folder3.addList("list6");
-        folder3.addList("list7");
-        folder3.addList("list8");
-        folder3.addList("list9");
-        folder3.addList("list0");
-        folder3.addList("list10");
-        folder3.addList("list11");
-        folder3.addList("list22");
-        folder3.addList("list24");
-        folder3.addList("list33");
-        folder3.addList("list55");
-        folder3.addList("list66");
-        folder3.addList("list77");
-        folder3.addList("list88");
-        folder3.addList("list99");
-        this.addFolder(folder1);
-        this.addFolder(folder2);
-        this.addFolder(folder3);
+        // Add the data to the user from the folders (folders, tasklists and tasks)
+        this.addAllFromFolder(f1);
+        this.addAllFromFolder(f2);
 
     }
 
@@ -207,12 +180,12 @@ public class User {
     }
 
     public int getMaxActivityPerDay() {
-        Map.Entry<LocalDate, Integer> maxEntry = null;
-        Map<LocalDate, Integer> hm = new HashMap<>();
+        Map.Entry<Date, Integer> maxEntry = null;
+        Map<Date, Integer> hm = new HashMap<>();
 
         // Count tasks recurrences for each date
         for(Task task : tasks) {
-            LocalDate date = task.getLocalDueDate();
+            Date date = task.getDueDate();
             Integer j = hm.get(date);
             hm.put(date, (j == null) ? 1 : j + 1);
         }
@@ -220,14 +193,14 @@ public class User {
         // Count goals recurrences for each date
         for(Goal goal : goals) {
             for(GoalTodo goalTodo : goal.getGoalTodos()) {
-                LocalDate date = goalTodo.getLocalDueDate();
+                Date date = goalTodo.getDueDate();
                 Integer j = hm.get(date);
                 hm.put(date, (j == null) ? 1 : j + 1);
             }
         }
 
         // Find max
-        for (Map.Entry<LocalDate, Integer> entry : hm.entrySet()) {
+        for (Map.Entry<Date, Integer> entry : hm.entrySet()) {
             if (maxEntry == null || entry.getValue()
                     .compareTo(maxEntry.getValue()) > 0) {
                 maxEntry = entry;

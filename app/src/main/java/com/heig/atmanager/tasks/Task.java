@@ -18,28 +18,33 @@ public class Task {
     private Date dueDate;
     private Date doneDate;
     private Date reminderDate;
+    private TaskList tasklist;
 
     public Task(String title, String description) {
-        this(title, description, null, false);
+        this(title, description, false, false, null, null, null, TaskList.defaultList);
     }
 
     public Task(String title, String description, Date dueDate) {
-        this(title, description, dueDate, false);
+        this(title, description, false, false, dueDate, null, null, TaskList.defaultList);
     }
 
     public Task(String title, String description, boolean favorite) {
-        this(title, description, null, favorite);
+        this(title, description, false, favorite, null, null, null, TaskList.defaultList);
     }
 
     public Task(String title, String description, Date dueDate, TaskList taskList) {
-        this(title, description, dueDate, false);
+        this(title, description, false, false, dueDate, null, null, TaskList.defaultList);
     }
 
-    public Task(String title, String description, Date dueDate, boolean favorite) {
-        this.title       = title;
-        this.description = description;
-        this.dueDate     = dueDate;
-        this.favorite    = favorite;
+    public Task(String title, String description, boolean done, boolean favorite, Date dueDate, Date doneDate, Date reminderDate, TaskList tasklist) {
+        this.title        = title;
+        this.description  = description;
+        this.done         = done;
+        this.favorite     = favorite;
+        this.dueDate      = dueDate;
+        this.doneDate     = doneDate;
+        this.reminderDate = reminderDate;
+        this.tasklist     = tasklist;
     }
 
     public String getTitle() {

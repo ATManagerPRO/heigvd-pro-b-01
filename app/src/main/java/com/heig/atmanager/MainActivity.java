@@ -178,11 +178,11 @@ public class MainActivity extends AppCompatActivity {
      */
     private void updateDrawerItems() {
         final ArrayList<TaskList> standaloneTaskLists = new ArrayList<>();
-        for(TaskList taskList : dummyUser.getTaskLists().getValue())
+        for(TaskList taskList : user.getTaskLists())
             if(taskList.isStandalone())
                 standaloneTaskLists.add(taskList);
 
-        adapter = new DrawerListAdapter(this, standaloneTaskLists, dummyUser.getFolders().getValue());
+        adapter = new DrawerListAdapter(this, standaloneTaskLists, user.getFolders());
         expandableListView.setAdapter(adapter);
 
         expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -192,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
                     return false;
 
                 drawerLayout.closeDrawer(GravityCompat.START);
-                loadTaskListFragment(dummyUser.getTaskLists().getValue().get(i));
+                loadTaskListFragment(user.getTaskLists().get(i));
                 return true;
             }
         });
@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
                 drawerLayout.closeDrawer(GravityCompat.START);
 
                 loadTaskListFragment(
-                        dummyUser.getFolders().getValue().get(i - standaloneTaskLists.size()).getTaskLists().get(i1)
+                        user.getFolders().get(i - standaloneTaskLists.size()).getTaskLists().get(i1)
                 );
                 return true;
             }

@@ -106,9 +106,6 @@ public class AddTaskFragment extends Fragment {
 
         final Button validationButton = mView.findViewById(R.id.frag_validation_button);
 
-        final UserViewModel currentUser = ((MainActivity) getActivity()).dummyUser;
-
-
         // Picker for date and time
         dueDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,7 +174,7 @@ public class AddTaskFragment extends Fragment {
         final Spinner folderSpinner = mView.findViewById(R.id.frag_directory_choice_tag_spinner);
         ArrayAdapter<TaskList> spinnerAdapter = new AddTaskSpinnerAdapter(getActivity(),
                 R.layout.support_simple_spinner_dropdown_item,
-                currentUser.getTaskLists().getValue());
+                ((MainActivity) getContext()).getUser().getTaskLists());
         spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         folderSpinner.setAdapter(spinnerAdapter);
 
@@ -201,7 +198,7 @@ public class AddTaskFragment extends Fragment {
                 Task newTask = new Task(title, description, selectedDate);
 
                 // Add the task to a selected taskList
-                for(TaskList taskList : currentUser.getTaskLists().getValue())
+                for(TaskList taskList : ((MainActivity) getContext()).getUser().getTaskLists())
                     if(taskList.getName().equals(selectedDirectory))
                         taskList.addTask(newTask);
 
