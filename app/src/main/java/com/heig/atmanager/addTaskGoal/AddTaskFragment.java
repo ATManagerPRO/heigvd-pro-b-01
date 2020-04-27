@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -73,6 +74,19 @@ public class AddTaskFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Override OnBacPressed to show hidden components
+        final OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                getFragmentManager().popBackStack();
+
+                getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
+                getActivity().findViewById(R.id.dock).setVisibility(View.VISIBLE);
+            }
+        };
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
     @Override
@@ -92,7 +106,7 @@ public class AddTaskFragment extends Fragment {
 
         final Button validationButton = mView.findViewById(R.id.frag_validation_button);
 
-        final UserViewModel currentUser = ((AddTaskGoalActivity) getActivity()).dummyUser;
+        final UserViewModel currentUser = ((MainActivity) getActivity()).dummyUser;
 
 
         // Picker for date and time
@@ -191,13 +205,17 @@ public class AddTaskFragment extends Fragment {
                     if(taskList.getName().equals(selectedDirectory))
                         taskList.addTask(newTask);
 
-                startActivity(new Intent(getContext(), MainActivity.class));
+                getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
+                getActivity().findViewById(R.id.dock).setVisibility(View.VISIBLE);
+                getFragmentManager().popBackStack();
             }
         });
 
 
         return mView;
     }
+
+
 
     /**
      * Add a string as chip into the given chip group
