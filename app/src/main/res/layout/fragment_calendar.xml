@@ -10,22 +10,37 @@
         android:id="@+id/calendar_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:mcv_calendarMode="month"
-        app:mcv_arrowColor="@color/grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:mcv_weekDayLabels="@array/weekDays"
-        app:mcv_monthLabels="@array/months"
-        app:mcv_selectionMode="single"
+        app:mcv_arrowColor="@color/grey"
+        app:mcv_calendarMode="month"
         app:mcv_dateTextAppearance="@font/arial"
+        app:mcv_monthLabels="@array/months"
+        app:mcv_selectionColor="@color/transparent"
+        app:mcv_selectionMode="single"
         app:mcv_titleAnimationOrientation="horizontal"
-        app:mcv_selectionColor="@color/transparent"/>
+        app:mcv_weekDayLabels="@array/weekDays" />
 
-    <!-- Task & Goal feed -->
-    <include
-        layout="@layout/task_and_goal_feed"
+    <!-- Bottom shadow -->
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@drawable/shadow_bottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/calendar_view" />
+
+    <!-- Tasks feed (list) -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/tasks_rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:isScrollContainer="true"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calendar_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
