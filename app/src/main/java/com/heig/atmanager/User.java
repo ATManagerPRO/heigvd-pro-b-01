@@ -7,6 +7,7 @@ import com.heig.atmanager.tasks.Task;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -34,6 +35,87 @@ public class User {
         goals = new ArrayList<>();
         tags = new ArrayList<>();
         folders = new ArrayList<>();
+        // Add goals
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, 5);
+        Goal daily_goal1 = new Goal("SQUATS", 20, 1, Interval.DAY, calendar);
+
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        Goal daily_goal2 = new Goal("FRUITS", 5, 1, Interval.DAY, calendar);
+
+        calendar.add(Calendar.WEEK_OF_MONTH, 4);
+        Goal weekly_goal3 = new Goal("KMS", 4, 1, Interval.WEEK, calendar);
+
+        calendar.add(Calendar.MONTH, 3);
+        Goal monthly_goal4 = new Goal("GIT PUSH", 4, 1, Interval.MONTH, calendar);
+
+        this.addGoal(daily_goal1);
+        this.addGoal(daily_goal2);
+        this.addGoal(weekly_goal3);
+        this.addGoal(monthly_goal4);
+
+        // Add Tasks
+        Calendar taskCal = Calendar.getInstance();
+        taskCal.add(Calendar.DAY_OF_MONTH, 1);
+        Calendar taskCal1 = Calendar.getInstance();
+        taskCal1.add(Calendar.DAY_OF_MONTH, 1);
+        Calendar taskCal2 = Calendar.getInstance();
+        taskCal1.add(Calendar.WEEK_OF_MONTH, 1);
+        Calendar taskCal3 = Calendar.getInstance();
+        taskCal1.add(Calendar.WEEK_OF_MONTH, 1);
+        Calendar taskCal4 = Calendar.getInstance();
+        taskCal4.add(Calendar.DAY_OF_MONTH, 3);
+        Calendar taskCal5 = Calendar.getInstance();
+        taskCal5.add(Calendar.WEEK_OF_MONTH, 2);
+        Calendar taskCal6 = Calendar.getInstance();
+        taskCal6.add(Calendar.DAY_OF_MONTH, 9);
+        this.addTask(new Task("Task1", "...", taskCal));
+        this.addTask(new Task("Task2", "...", taskCal1));
+        this.addTask(new Task("Task3", "...", taskCal2));
+        this.addTask(new Task("Task4", "...", taskCal3));
+        this.addTask(new Task("Task5", "...", taskCal1));
+        this.addTask(new Task("Task6", "...", taskCal));
+        this.addTask(new Task("Task7", "...", taskCal1));
+        this.addTask(new Task("Task8", "...", taskCal4));
+        this.addTask(new Task("Task9", "...", taskCal5));
+        this.addTask(new Task("Task10", "...", taskCal6));
+
+        this.setTags(new ArrayList<>(Arrays.asList("Urgent", "Normal")));
+
+        //create folders
+        Folder folder1 = new Folder("Ecole");
+        folder1.addList("first list");
+        folder1.addList("second list");
+        folder1.addList("third list");
+        Folder folder2 = new Folder("Travail");
+        folder2.addList("fourth list");
+        folder2.addList("fifth list");
+        Folder folder3 = new Folder("Jeux");
+        folder3.addList("list");
+        folder3.addList("list1");
+        folder3.addList("list2");
+        folder3.addList("list3");
+        folder3.addList("list4");
+        folder3.addList("list5");
+        folder3.addList("list6");
+        folder3.addList("list7");
+        folder3.addList("list8");
+        folder3.addList("list9");
+        folder3.addList("list0");
+        folder3.addList("list10");
+        folder3.addList("list11");
+        folder3.addList("list22");
+        folder3.addList("list24");
+        folder3.addList("list33");
+        folder3.addList("list55");
+        folder3.addList("list66");
+        folder3.addList("list77");
+        folder3.addList("list88");
+        folder3.addList("list99");
+        this.addFolder(folder1);
+        this.addFolder(folder2);
+        this.addFolder(folder3);
+
     }
 
     public String getUserName() {

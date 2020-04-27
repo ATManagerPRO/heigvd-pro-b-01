@@ -43,21 +43,14 @@ public class GoalsFragment extends Fragment {
     // This year's goal feed
     private RecyclerView goalsYearRecyclerView;
 
-    private UserViewModel userVm;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        userVm = ((MainActivity) getActivity()).dummyUser;
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_goals, container, false);
 
-        goals = userVm.getGoals().getValue();
+        //goals = userVm.getGoals().getValue();
+
+        goals = new ArrayList<>();
 
         // Displaying the generating GoalTodo from the goals by intervals
         ArrayList<GoalTodo> todayGoals = new ArrayList<>();

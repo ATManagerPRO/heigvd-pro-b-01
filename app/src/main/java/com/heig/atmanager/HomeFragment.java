@@ -35,26 +35,14 @@ public class HomeFragment extends Fragment {
     private ArrayList<Task> tasks; // user data
     private RecyclerView tasksRecyclerView;
 
-    private UserViewModel userVM ;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        //Get user viewmodel from parent activity
-        userVM =  ((MainActivity) getActivity()).dummyUser;
-        goals = new ArrayList<>();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
-        tasks = userVM.getTasks().getValue();
-        for(Goal g : userVM.getGoals().getValue()){
-            goals.addAll(g.getGoalTodos());
-        }
+        goals = new ArrayList<>();
+
+        tasks = ((MainActivity) getContext()).getUser().getTasksForDay(Calendar.getInstance().getTime());
 
         // Greeting
         greetingText = (TextView) v.findViewById(R.id.greeting_text);
