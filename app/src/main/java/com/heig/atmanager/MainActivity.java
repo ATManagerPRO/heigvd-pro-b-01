@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         // TODO Need to found maybe another way to capture the account
         GoogleSignInOptions gso =
                 new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestIdToken(BuildConfig.GoogleSignInKey)
+                        .requestIdToken(getString(R.string.server_client_id))
                         .requestEmail()
                         .build();
 

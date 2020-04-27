@@ -85,4 +85,6 @@
         <item>November</item>
         <item>December</item>
     </string-array>
+
+    <string name="server_client_id">14387612601-7b1lq5as1gdenabv9kch220obav46525.apps.googleusercontent.com</string>
 </resources>

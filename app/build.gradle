@@ -1,10 +1,5 @@
 apply plugin: 'com.android.application'
 
-/*
-Load kex from properties
- */
-
-def GOOGLE_SIGNIN_KEY = server_client_id ?: "Google Sign in key not found in properties"
 
 android {
     compileSdkVersion 29
@@ -19,10 +14,6 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        each{
-            type ->
-                type.buildConfigField 'String', "GoogleSignInKey", GOOGLE_SIGNIN_KEY
-        }
     }
 
     buildTypes {
