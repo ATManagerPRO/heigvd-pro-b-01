@@ -35,6 +35,7 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 public class CalendarFragment extends Fragment {
 
+    public static final String FRAG_CALENDAR_ID = "Calendar_Fragment";
     private static final String TAG = "CalendarFragment";
 
     // Calendar

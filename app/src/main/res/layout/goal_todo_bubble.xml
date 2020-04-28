@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="140dp"
+    android:layout_height="140dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp">
+
+    <LinearLayout
+        android:id="@+id/goal_background"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="@drawable/goal_background"
+        android:layout_gravity="center">
+
+
+        <LinearLayout
+            android:id="@+id/counter_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="-10dp">
+
+            <TextView
+                android:id="@+id/current_value_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="99"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="40sp"/>
+
+            <TextView
+                android:id="@+id/total_value_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="/99"
+                android:textColor="@color/light_grey"
+                android:textStyle="bold"
+                android:textSize="20sp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/unit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SQUATS"
+            android:textColor="@color/light_grey"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:layout_marginBottom="10dp"/>
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/goal_progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:progress="40"
+        style="?android:progressBarStyleHorizontal"
+        android:progressDrawable="@drawable/goal_progressbar"
+        android:rotation="90"/>
+
+    <TextView
+        android:id="@+id/goal_timer"
+        android:layout_width="120dp"
+        android:layout_height="30dp"
+        android:background="@drawable/goal_timer_background"
+        android:text="XX hours left"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:layout_gravity="bottom|center" />
+
+    <EditText
+        android:id="@+id/goal_value_input"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:inputType="number"
+        android:background="@drawable/goal_add_input_text"
+        android:layout_gravity="end"
+        android:hint="##"
+        android:gravity="center_vertical"
+        android:paddingStart="15dp"
+        android:paddingEnd="45dp"
+        android:visibility="gone" />
+
+    <ToggleButton
+        android:id="@+id/goal_add_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/goal_add_button"
+        android:textSize="25sp"
+        android:textColor="@drawable/goal_add_button_colors"
+        android:fontFamily="@font/arial"
+        android:textStyle="bold"
+        android:layout_gravity="end"
+        android:textOn="@string/goal_add_input"
+        android:textOff="@string/goal_add_input"
+        style="@style/Widget.AppCompat.Button.Borderless"/>
+
+</FrameLayout>
