@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -21,7 +22,11 @@ import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.Interval;
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
+import com.heig.atmanager.goals.GoalLineFeedAdapter;
+import com.heig.atmanager.goals.GoalTodo;
+import com.heig.atmanager.goals.GoalTodoFeedAdapter;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -49,6 +54,9 @@ public class AddGoalFragment extends Fragment {
     private TextInputLayout quantityLayout;
     private TextInputLayout intervalNumberLayout;
 
+    private ArrayList<Goal> goals;
+
+    private RecyclerView goalRecyclerView;
 
     private final Calendar calendar = Calendar.getInstance();
 
@@ -69,7 +77,7 @@ public class AddGoalFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        goalRecyclerView = (RecyclerView) getActivity().findViewById(R.id.goals_today_rv);
         // Override OnBacPressed to show hidden components
         final OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
@@ -179,6 +187,9 @@ public class AddGoalFragment extends Fragment {
 
 
                 ((MainActivity) getActivity()).getUser().addGoal(new Goal(unit, quantity, intervalNumber, interval, selectedDate));
+
+                goals = ((MainActivity) getContext()).getUser().getGoals();
+                ((GoalLineFeedAdapter) goalRecyclerView.getAdapter()).setGoals(goals);
 
                 getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
                 getActivity().findViewById(R.id.dock).setVisibility(View.VISIBLE);
