@@ -26,12 +26,12 @@ public class User {
     private ArrayList<Folder> folders;
 
     public User(String userName, String googleToken) {
-        this.userName    = userName;
+        this.userName = userName;
         this.googleToken = googleToken;
-        this.goals       = new ArrayList<>();
-        this.taskLists   = new ArrayList<>();
-        this.tasks       = new ArrayList<>();
-        this.folders     = new ArrayList<>();
+        this.goals = new ArrayList<>();
+        this.taskLists = new ArrayList<>();
+        this.tasks = new ArrayList<>();
+        this.folders = new ArrayList<>();
 
         // Goals
         Calendar calendar = Calendar.getInstance();
@@ -44,10 +44,10 @@ public class User {
         Date dueDateGoal3 = calendar.getTime();
         calendar.add(Calendar.MONTH, 3);
         Date dueDateGoal4 = calendar.getTime();
-        Goal daily_goal1 = new Goal("SQUATS", 20, 1,Interval.DAY, dueDateGoal1);
-        Goal daily_goal2 = new Goal("FRUITS", 5, 1,Interval.DAY, dueDateGoal2);
-        Goal weekly_goal3 = new Goal("KMS", 4, 1,Interval.WEEK, dueDateGoal3);
-        Goal monthly_goal4 = new Goal("GIT PUSH", 4, 1,Interval.MONTH, dueDateGoal4);
+        Goal daily_goal1 = new Goal("SQUATS", 20, 1, Interval.DAY, dueDateGoal1);
+        Goal daily_goal2 = new Goal("FRUITS", 5, 1, Interval.DAY, dueDateGoal2);
+        Goal weekly_goal3 = new Goal("KMS", 4, 1, Interval.WEEK, dueDateGoal3);
+        Goal monthly_goal4 = new Goal("GIT PUSH", 4, 1, Interval.MONTH, dueDateGoal4);
         this.addGoal(daily_goal1);
         this.addGoal(daily_goal2);
         this.addGoal(weekly_goal3);
@@ -68,24 +68,23 @@ public class User {
         f2.addList(tl4);
         f2.addList(tl5);
         // Tasks
-        TaskList.defaultList.addTask(new Task("Task1", "This is a really useful task.", true));
-        TaskList.defaultList.addTask(new Task("Task2", "Rendre labo 1 :\n> Fiche technique\n> Rapport (10 pages)\n> Code source (C++)"));
-        TaskList.defaultList.addTask(new Task("Task3", "..."));
-        TaskList.defaultList.addTask(new Task("Task4", "..."));
-        tl1.addTask(new Task("Send report X", "Must DO!!!", dueDateGoal1));
-        tl1.addTask(new Task("Task test1", "this is a test", dueDateGoal1));
-        tl2.addTask(new Task("Task test2", "this is a test", dueDateGoal2));
-        tl2.addTask(new Task("Task test3", "this is a test", dueDateGoal2));
-        tl2.addTask(new Task("Task test4", "this is a test", dueDateGoal2));
-        tl2.addTask(new Task("Task test5", "this is a test", dueDateGoal2));
-        tl2.addTask(new Task("Task test6", "this is a test", dueDateGoal2));
-        tl3.addTask(new Task("Task test7", "this is a test", dueDateGoal3));
-        tl3.addTask(new Task("Task test8", "this is a test", dueDateGoal3));
-        tl3.addTask(new Task("Task test9", "this is a test", dueDateGoal4));
-        tl4.addTask(new Task("Task test10", "this is a test", dueDateGoal4));
-        tl5.addTask(new Task("Task test11", "this is a test", dueDateGoal4));
-        tl5.addTask(new Task("Task test12", "this is a test", dueDateGoal4));
-
+        addTask(new Task("Task1", "This is a really useful task.", null, tl1));
+        addTask(new Task("Task2", "Rendre labo 1 :\n> Fiche technique\n> Rapport (10 pages)\n> Code source (C++)"));
+        addTask(new Task("Task3", "..."));
+        addTask(new Task("Task4", "..."));
+        addTask(new Task("Send report X", "Must DO!!!", null, tl1));
+        addTask(new Task("Task test1", "this is a test", null, tl1));
+        addTask(new Task("Task test2", "this is a test", null, tl2));
+        addTask(new Task("Task test3", "this is a test", Calendar.getInstance().getTime(), tl2));
+        addTask(new Task("Task test4", "this is a test", dueDateGoal2, tl2));
+        addTask(new Task("Task test5", "this is a test", dueDateGoal2, tl2));
+        addTask(new Task("Task test6", "this is a test", dueDateGoal2, tl2));
+        addTask(new Task("Task test7", "this is a test", dueDateGoal3, tl3));
+        addTask(new Task("Task test8", "this is a test", dueDateGoal3, tl3));
+        addTask(new Task("Task test9", "this is a test", dueDateGoal4, tl3));
+        addTask(new Task("Task test10", "this is a test", dueDateGoal4, tl4));
+        addTask(new Task("Task test11", "this is a test", dueDateGoal4, tl5));
+        addTask(new Task("Task test12", "this is a test", dueDateGoal4, tl5));
         // Tags
         this.setTags(new ArrayList<>(Arrays.asList("Urgent", "Normal")));
 
@@ -148,8 +147,6 @@ public class User {
 
         for (TaskList taskList : folder.getTaskLists()) {
             addTaskList(taskList);
-            for (Task task : taskList.getTasks())
-                addTask(task);
         }
     }
 
@@ -185,15 +182,15 @@ public class User {
         Map<Date, Integer> hm = new HashMap<>();
 
         // Count tasks recurrences for each date
-        for(Task task : tasks) {
+        for (Task task : tasks) {
             Date date = task.getDueDate();
             Integer j = hm.get(date);
             hm.put(date, (j == null) ? 1 : j + 1);
         }
 
         // Count goals recurrences for each date
-        for(Goal goal : goals) {
-            for(GoalTodo goalTodo : goal.getGoalTodos()) {
+        for (Goal goal : goals) {
+            for (GoalTodo goalTodo : goal.getGoalTodos()) {
                 Date date = goalTodo.getDueDate();
                 Integer j = hm.get(date);
                 hm.put(date, (j == null) ? 1 : j + 1);
@@ -232,5 +229,30 @@ public class User {
 
         return tasksForDay;
     }
+
+    public ArrayList<Task> getTasksWithoutDate() {
+        ArrayList<Task> tasksForDay = new ArrayList<>();
+
+        for (Task task : tasks) {
+            if (task.getDueDate() == null) {
+                tasksForDay.add(task);
+            }
+        }
+
+        return tasksForDay;
+    }
+
+    public ArrayList<Task> getTasksDone() {
+        ArrayList<Task> tasksForDay = new ArrayList<>();
+
+        for (Task task : tasks) {
+            if (task.isDone()) {
+                tasksForDay.add(task);
+            }
+        }
+
+        return tasksForDay;
+    }
+
 
 }

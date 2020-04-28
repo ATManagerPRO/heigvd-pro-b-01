@@ -9,9 +9,11 @@ import android.widget.TextView;
 import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.goals.GoalTodo;
 import com.heig.atmanager.tasks.Task;
+import com.heig.atmanager.tasks.TaskFeedAdapter;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -46,6 +48,7 @@ public class HomeFragment extends Fragment {
         goals = new ArrayList<>();
 
         tasks = ((MainActivity) getContext()).getUser().getTasksForDay(Calendar.getInstance().getTime());
+        tasks.addAll((((MainActivity) getContext()).getUser().getTasksWithoutDate()));
 
         // Greeting
         greetingText = (TextView) v.findViewById(R.id.greeting_text);

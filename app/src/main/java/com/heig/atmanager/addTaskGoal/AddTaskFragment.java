@@ -202,14 +202,23 @@ public class AddTaskFragment extends Fragment {
                     titleLayout.setError(null);
                 }
 
-                Date selectedDate = new GregorianCalendar(mYear, mMonth, mDay, mHour, mMinute).getTime();
-
+                Date selectedDate;
+                if(mYear == 0) {
+                    selectedDate = null;
+                } else{
+                    selectedDate = new GregorianCalendar(mYear, mMonth, mDay, mHour, mMinute).getTime();
+                }
                 Task newTask = new Task(title, description, selectedDate);
 
                 // Add the task to a selected taskList
                 for(TaskList taskList : ((MainActivity) getContext()).getUser().getTaskLists()) {
                     if (taskList.toString().equals(selectedDirectory)) {
-                        taskList.addTask(newTask);
+                        newTask.setTasklist(taskList);
+                        ((MainActivity) getContext()).getUser().addTask(newTask);
+                        //update homeview
+                        tasks = (((MainActivity) getContext()).getUser().getTasksForDay(Calendar.getInstance().getTime()));
+                        tasks.addAll((((MainActivity) getContext()).getUser().getTasksWithoutDate()));
+                        ((TaskFeedAdapter)tasksRecyclerView.getAdapter()).setTasks(tasks);
                     }
                 }
                 getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);

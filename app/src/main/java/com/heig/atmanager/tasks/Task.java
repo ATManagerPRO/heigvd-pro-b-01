@@ -83,6 +83,10 @@ public class Task {
         return done;
     }
 
+    public void setTasklist(TaskList tasklist){
+        this.tasklist = tasklist;
+    }
+
     public TaskList getTasklist() {
         return tasklist;
     }
