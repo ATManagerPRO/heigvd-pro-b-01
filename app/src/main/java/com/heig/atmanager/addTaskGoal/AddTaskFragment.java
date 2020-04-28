@@ -210,8 +210,6 @@ public class AddTaskFragment extends Fragment {
                 for(TaskList taskList : ((MainActivity) getContext()).getUser().getTaskLists()) {
                     if (taskList.toString().equals(selectedDirectory)) {
                         taskList.addTask(newTask);
-                        tasks = ((MainActivity) getContext()).getUser().getTasks();
-                        ((TaskFeedAdapter) tasksRecyclerView.getAdapter()).setTasks(tasks);
                     }
                 }
                 getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
