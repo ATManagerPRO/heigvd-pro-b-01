@@ -30,6 +30,8 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 public class GoalsFragment extends Fragment {
 
+    public static final String FRAG_GOALS_ID = "Goals_Fragment";
+
     // Today's goal feed
     ArrayList<Goal> goals; // user data
     private RecyclerView goalsTodayRecyclerView;
@@ -50,35 +52,34 @@ public class GoalsFragment extends Fragment {
 
         //goals = userVm.getGoals().getValue();
 
-        goals = new ArrayList<>();
+        goals = ((MainActivity) getContext()).getUser().getGoals();
 
         // Displaying the generating GoalTodo from the goals by intervals
-        ArrayList<GoalTodo> todayGoals = new ArrayList<>();
-        ArrayList<GoalTodo> weekGoals  = new ArrayList<>();
-        ArrayList<GoalTodo> monthGoals = new ArrayList<>();
+        ArrayList<Goal> todayGoals = new ArrayList<>();
+        ArrayList<Goal> weekGoals  = new ArrayList<>();
+        ArrayList<Goal> monthGoals = new ArrayList<>();
         for(Goal goal : goals) {
             switch(goal.getInterval()) {
                 case DAY:
-                    todayGoals.add(goal.getGoalTodos().get(0));
+                    todayGoals.add(goal);
                     break;
                 case WEEK:
-                    weekGoals.add(goal.getGoalTodos().get(0));
+                    weekGoals.add(goal);
                     break;
                 case MONTH:
-                    monthGoals.add(goal.getGoalTodos().get(0));
+                    monthGoals.add(goal);
                     break;
             }
         }
-
         // Goals feeds setup
         goalsTodayRecyclerView = (RecyclerView) v.findViewById(R.id.goals_today_rv);
-        Utils.setupGoalsFeed(v, goalsTodayRecyclerView, todayGoals);
+        Utils.setupGoalsFeed(getActivity(), v, goalsTodayRecyclerView, todayGoals);
 
         goalsWeekRecyclerView = (RecyclerView) v.findViewById(R.id.goals_week_rv);
-        Utils.setupGoalsFeed(v, goalsWeekRecyclerView, weekGoals);
+        Utils.setupGoalsFeed(getActivity(), v, goalsWeekRecyclerView, weekGoals);
 
         goalsMonthRecyclerView = (RecyclerView) v.findViewById(R.id.goals_month_rv);
-        Utils.setupGoalsFeed(v, goalsMonthRecyclerView, monthGoals);
+        Utils.setupGoalsFeed(getActivity(), v, goalsMonthRecyclerView, monthGoals);
         return v;
     }
 
