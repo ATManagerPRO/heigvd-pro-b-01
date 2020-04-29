@@ -177,6 +177,9 @@ public class MainActivity extends AppCompatActivity {
                     DialogFragment addTagDiag = new AddTagsDiag();
                     addTagDiag.show(getSupportFragmentManager(), "addTag");
                     return true;
+                case R.id.add_folder:
+                    DialogFragment addFolderDiag = new AddFolderDiag();
+                    addFolderDiag.show(getSupportFragmentManager(), "addFolder");
                 default:
                     return super.onOptionsItemSelected(item);
             }
