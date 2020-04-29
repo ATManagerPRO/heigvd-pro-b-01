@@ -236,4 +236,8 @@ public class User {
         return tasksForDay;
     }
 
+    public void addTag(String tagName){
+        tags.add(tagName);
+    }
+
 }

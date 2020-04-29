@@ -9,9 +9,11 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -170,6 +172,10 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.sign_out:
                     signOut();
+                    return true;
+                case R.id.add_tag:
+                    DialogFragment addTagDiag = new AddTagsDiag();
+                    addTagDiag.show(getSupportFragmentManager(), "addTag");
                     return true;
                 default:
                     return super.onOptionsItemSelected(item);
