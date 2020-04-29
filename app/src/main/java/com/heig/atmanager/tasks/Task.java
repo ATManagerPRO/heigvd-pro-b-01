@@ -88,4 +88,12 @@ public class Task {
     public boolean isDone() {
         return done;
     }
+
+    public void setTasklist(TaskList tasklist){
+        this.tasklist = tasklist;
+    }
+
+    public TaskList getTasklist() {
+        return tasklist;
+    }
 }
