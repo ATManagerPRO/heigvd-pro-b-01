@@ -12,9 +12,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,12 +39,13 @@ import com.heig.atmanager.goals.GoalsTodoFragment;
 import com.heig.atmanager.stats.StatsFragment;
 import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.taskLists.TaskListFragment;
+import com.heig.atmanager.userData.User;
 import com.heig.atmanager.userData.UserJsonParser;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    public static com.heig.atmanager.User user;
+    public static User user;
 
     private static final String TAG = "MainActivity";
 
@@ -92,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // To get this variable from the fragments ((MainActivity)getActivity()).dummyUser
-        user = new com.heig.atmanager.User("Joe", "GoogleToken");
+        user = new User("Joe", "GoogleToken");
 
         fab = findViewById(R.id.fab);
         fabAddGoal = findViewById(R.id.fab_add_goal);
@@ -268,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
-    public static com.heig.atmanager.User getUser() {
+    public static User getUser() {
         return user;
     }
     /**
