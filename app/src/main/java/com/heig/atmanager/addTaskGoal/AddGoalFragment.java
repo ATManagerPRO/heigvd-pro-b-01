@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.heig.atmanager.Utils;
 import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.Interval;
 import com.heig.atmanager.MainActivity;
@@ -57,6 +58,9 @@ public class AddGoalFragment extends Fragment {
     private ArrayList<Goal> goals;
 
     private RecyclerView goalRecyclerView;
+    RecyclerView goalsTodayRecyclerView;
+    RecyclerView goalsWeekRecyclerView;
+    RecyclerView goalsMonthRecyclerView;
 
     private final Calendar calendar = Calendar.getInstance();
 
@@ -78,6 +82,9 @@ public class AddGoalFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         goalRecyclerView = (RecyclerView) getActivity().findViewById(R.id.goals_today_rv);
+        goalsTodayRecyclerView = (RecyclerView) getActivity().findViewById(R.id.goals_today_rv);
+        goalsWeekRecyclerView = (RecyclerView) getActivity().findViewById(R.id.goals_week_rv);
+        goalsMonthRecyclerView = (RecyclerView) getActivity().findViewById(R.id.goals_month_rv);
         // Override OnBacPressed to show hidden components
         final OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
@@ -118,7 +125,7 @@ public class AddGoalFragment extends Fragment {
         ArrayAdapter intervalAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, Interval.values());
         intervalAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         intervalSpinner.setAdapter(intervalAdapter);
-        interval = Interval.valueOf(intervalSpinner.getSelectedItem().toString());
+
 
         // Date picker
         dueDateTextView.setOnClickListener(new View.OnClickListener() {
@@ -133,6 +140,9 @@ public class AddGoalFragment extends Fragment {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         dueDateTextView.setText(dayOfMonth + "." + (month + 1) + "." + year);
+                        mYear = year;
+                        mMonth = month;
+                        mDay = dayOfMonth;
                     }
                 }, mYear, mMonth, mDay);
                 picker.show();
@@ -186,10 +196,33 @@ public class AddGoalFragment extends Fragment {
                 Date selectedDate = new GregorianCalendar(mYear, mMonth, mDay).getTime();
 
 
+                interval = Interval.valueOf(intervalSpinner.getSelectedItem().toString());
                 ((MainActivity) getActivity()).getUser().addGoal(new Goal(unit, quantity, intervalNumber, interval, selectedDate));
 
                 goals = ((MainActivity) getContext()).getUser().getGoals();
-                ((GoalLineFeedAdapter) goalRecyclerView.getAdapter()).setGoals(goals);
+
+                // Displaying the generating GoalTodo from the goals by intervals
+                ArrayList<Goal> todayGoals = new ArrayList<>();
+                ArrayList<Goal> weekGoals  = new ArrayList<>();
+                ArrayList<Goal> monthGoals = new ArrayList<>();
+                for(Goal goal : goals) {
+                    switch(goal.getInterval()) {
+                        case DAY:
+                            todayGoals.add(goal);
+                            break;
+                        case WEEK:
+                            weekGoals.add(goal);
+                            break;
+                        case MONTH:
+                            monthGoals.add(goal);
+                            break;
+                    }
+                }
+                // Goals feeds setup
+
+                ((GoalLineFeedAdapter) goalsTodayRecyclerView.getAdapter()).setGoals(todayGoals);
+                ((GoalLineFeedAdapter) goalsWeekRecyclerView.getAdapter()).setGoals(weekGoals);
+                ((GoalLineFeedAdapter) goalsMonthRecyclerView.getAdapter()).setGoals(monthGoals);
 
                 getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
                 getActivity().findViewById(R.id.dock).setVisibility(View.VISIBLE);
