@@ -132,6 +132,10 @@ public class AddTaskFragment extends Fragment {
                                 Utils.formatNumber(month + 1) + "." +
                                 Utils.formatNumber(year);
                         dueDateTextView.setText(dueDateString);
+                        mYear = year;
+                        mMonth = month;
+                        mDay
+                                 = dayOfMonth;
                     }
                 }, mYear, mMonth, mDay);
                 // Show the picker
