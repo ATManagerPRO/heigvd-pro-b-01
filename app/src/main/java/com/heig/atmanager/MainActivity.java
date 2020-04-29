@@ -180,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.add_folder:
                     DialogFragment addFolderDiag = new AddFolderDiag();
                     addFolderDiag.show(getSupportFragmentManager(), "addFolder");
+                    return true;
                 case R.id.add_tasklist:
                     DialogFragment addTasklistDiag = new AddTasklistDiag();
                     addTasklistDiag.show(getSupportFragmentManager(), "addTasklist");
