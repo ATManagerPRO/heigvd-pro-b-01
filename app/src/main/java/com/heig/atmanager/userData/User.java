@@ -1,5 +1,7 @@
 package com.heig.atmanager.userData;
 
+import android.util.Log;
+
 import com.heig.atmanager.Interval;
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.goals.Goal;
@@ -33,67 +35,6 @@ public class User {
         this.taskLists   = new ArrayList<>();
         this.tasks       = new ArrayList<>();
         this.folders     = new ArrayList<>();
-
-        /*// Goals
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, 5);
-        Date dueDateGoal1 = calendar.getTime();
-        calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, 1);
-        Date dueDateGoal2 = calendar.getTime();
-        calendar.add(Calendar.WEEK_OF_MONTH, 4);
-        Date dueDateGoal3 = calendar.getTime();
-        calendar.add(Calendar.MONTH, 3);
-        Date dueDateGoal4 = calendar.getTime();
-        Goal daily_goal1 = new Goal("SQUATS", 20, 1, Interval.DAY, dueDateGoal1);
-        Goal daily_goal2 = new Goal("FRUITS", 5, 1,Interval.DAY, dueDateGoal2);
-        Goal weekly_goal3 = new Goal("KMS", 4, 1,Interval.WEEK, dueDateGoal3);
-        Goal monthly_goal4 = new Goal("GIT PUSH", 4, 1,Interval.MONTH, dueDateGoal4);
-        this.addGoal(daily_goal1);
-        this.addGoal(daily_goal2);
-        this.addGoal(weekly_goal3);
-        this.addGoal(monthly_goal4);
-        // Folders
-        Folder f1 = new Folder("HEIG-VD");
-        Folder f2 = new Folder("Home stuff");
-        // TaskLists
-        this.addTaskList(TaskList.defaultList);
-        TaskList tl1 = new TaskList("SIO");
-        TaskList tl2 = new TaskList("GEN");
-        TaskList tl3 = new TaskList("RES");
-        TaskList tl4 = new TaskList("Chores");
-        TaskList tl5 = new TaskList("Groceries");
-        f1.addList(tl1);
-        f1.addList(tl2);
-        f1.addList(tl3);
-        f2.addList(tl4);
-        f2.addList(tl5);
-        // Tasks
-        TaskList.defaultList.addTask(new Task("Task1", "This is a really useful task.", true));
-        TaskList.defaultList.addTask(new Task("Task2", "Rendre labo 1 :\n> Fiche technique\n> Rapport (10 pages)\n> Code source (C++)"));
-        TaskList.defaultList.addTask(new Task("Task3", "..."));
-        TaskList.defaultList.addTask(new Task("Task4", "..."));
-        tl1.addTask(new Task("Send report X", "Must DO!!!", dueDateGoal1));
-        tl1.addTask(new Task("Task test1", "this is a test", dueDateGoal1));
-        tl2.addTask(new Task("Task test2", "this is a test", dueDateGoal2));
-        tl2.addTask(new Task("Task test3", "this is a test", dueDateGoal2));
-        tl2.addTask(new Task("Task test4", "this is a test", dueDateGoal2));
-        tl2.addTask(new Task("Task test5", "this is a test", dueDateGoal2));
-        tl2.addTask(new Task("Task test6", "this is a test", dueDateGoal2));
-        tl3.addTask(new Task("Task test7", "this is a test", dueDateGoal3));
-        tl3.addTask(new Task("Task test8", "this is a test", dueDateGoal3));
-        tl3.addTask(new Task("Task test9", "this is a test", dueDateGoal4));
-        tl4.addTask(new Task("Task test10", "this is a test", dueDateGoal4));
-        tl5.addTask(new Task("Task test11", "this is a test", dueDateGoal4));
-        tl5.addTask(new Task("Task test12", "this is a test", dueDateGoal4));
-
-        // Tags
-        this.setTags(new ArrayList<>(Arrays.asList("Urgent", "Normal")));
-
-        // Add the data to the user from the folders (folders, tasklists and tasks)
-        this.addAllFromFolder(f1);
-        this.addAllFromFolder(f2);*/
-
     }
 
     public String getUserName() {
@@ -117,10 +58,12 @@ public class User {
     }
 
     public void addTask(Task task) {
+        Log.d(TAG, "add a task: <" + task.getTitle() + "> for " + getUserName());
         tasks.add(task);
     }
 
     public void addTaskList(TaskList taskList) {
+        Log.d(TAG, "addFolder: Create : add tasklist <" + taskList.getName() + "> for " + getUserName());
         taskLists.add(taskList);
     }
 
@@ -129,6 +72,7 @@ public class User {
     }
 
     public void addFolder(Folder folder) {
+        Log.d(TAG, "addFolder: Create : add folder <" + folder.getName() + "> for " + getUserName());
         folders.add(folder);
     }
 

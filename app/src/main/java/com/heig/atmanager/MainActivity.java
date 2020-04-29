@@ -12,6 +12,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -106,8 +107,12 @@ public class MainActivity extends AppCompatActivity {
         updateDrawerItems();
 
         // Loading the data from the server into the user
-        jsonParser = new UserJsonParser();
+        jsonParser = new UserJsonParser(this);
         jsonParser.loadAllDataIntoUser(queue);
+
+        Log.d(TAG, "onCreate: For user : " + user.getUserName());
+        Log.d(TAG, "onCreate: data loaded : " + user.getTaskLists().size());
+        Log.d(TAG, "onCreate: data loaded : " + user.getFolders().size());
 
         // First fragment to load : Home
         loadFragment(new HomeFragment());

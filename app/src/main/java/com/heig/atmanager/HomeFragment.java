@@ -1,6 +1,7 @@
 package com.heig.atmanager;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.heig.atmanager.tasks.TaskFeedAdapter;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -27,6 +29,8 @@ import java.util.Calendar;
  */
 public class HomeFragment extends Fragment {
 
+    private static final String TAG = "HomeFragment";
+    
     public static final String FRAG_HOME_ID = "Home_Fragment";
 
     // Greeting message
@@ -39,6 +43,8 @@ public class HomeFragment extends Fragment {
     // Task feed
     private ArrayList<Task> tasks; // user data
     private RecyclerView tasksRecyclerView;
+    private RecyclerView.LayoutManager taskFeedManager;
+    private RecyclerView.Adapter taskFeedAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,6 +63,10 @@ public class HomeFragment extends Fragment {
         // Task feed
         tasksRecyclerView = (RecyclerView) v.findViewById(R.id.tasks_rv);
         Utils.setupTasksFeed(v, tasksRecyclerView, tasks);
+        /*taskFeedManager = new LinearLayoutManager(v.getContext());
+        taskFeedAdapter = new TaskFeedAdapter(tasks);
+        tasksRecyclerView.setLayoutManager(taskFeedManager);
+        tasksRecyclerView.setAdapter(taskFeedAdapter);*/
 
         // Goal feed
         goalsRecyclerView = (RecyclerView) v.findViewById(R.id.goals_rv);
@@ -114,5 +124,11 @@ public class HomeFragment extends Fragment {
     private String getSingleUserInfoGreeting(int value) {
         return "You " + (value < 5 ? "just " : "") + "have " +
                 value + " task" + (value > 1 ? "s" : "");
+    }
+
+    public void updateTaskFeed(ArrayList<Task> newTasksFeed) {
+        Log.d(TAG, "updateTaskFeed: Create updated tasks feed");
+        RecyclerView.Adapter newAdapter = new TaskFeedAdapter(newTasksFeed);
+        tasksRecyclerView.swapAdapter(newAdapter, false);
     }
 }
