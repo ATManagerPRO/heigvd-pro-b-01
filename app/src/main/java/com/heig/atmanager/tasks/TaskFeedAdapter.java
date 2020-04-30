@@ -38,6 +38,7 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         private LinearLayout expandedView;
         private ImageView favoriteIcon;
         private ToggleButton checkButton;
+        private Button shareBtn;
 
         public MyViewHolder(View v) {
             super(v);
@@ -48,6 +49,7 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
             expandedView = v.findViewById(R.id.task_expanded_view);
             favoriteIcon = v.findViewById(R.id.favorite_icon);
             checkButton  = v.findViewById(R.id.check_button);
+            shareBtn     = v.findViewById(R.id.share);
         }
     }
 
@@ -91,6 +93,13 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
                 holder.expandedView.setVisibility(View.GONE);
                 holder.retractBtn.setVisibility(View.GONE);
                 holder.expandBtn.setVisibility(View.VISIBLE);
+            }
+        });
+
+        holder.shareBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO CALL share
             }
         });
 
