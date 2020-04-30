@@ -310,5 +310,18 @@ public class User {
         return tasksForDay;
     }
 
+    public ArrayList<GoalTodo> getGoalTodoForDay(Date day){
+        ArrayList<GoalTodo> todos = new ArrayList<GoalTodo>();
+        for (Goal goal : goals){
+            for(GoalTodo goalTodo : goal.getGoalTodos()){
+             if(goalTodo.getDueDate().equals(day)){
+                 todos.add(goalTodo);
+                }
+            }
+        }
+
+        return todos;
+    }
+
 
 }

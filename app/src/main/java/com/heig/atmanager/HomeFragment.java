@@ -45,7 +45,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
-        goals = new ArrayList<>();
+        goals = ((MainActivity) getContext()).getUser().getGoalTodoForDay(Calendar.getInstance().getTime());
 
         tasks = ((MainActivity) getContext()).getUser().getTasksForDay(Calendar.getInstance().getTime());
         tasks.addAll((((MainActivity) getContext()).getUser().getTasksWithoutDate()));
