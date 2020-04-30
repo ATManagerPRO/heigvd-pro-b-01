@@ -33,6 +33,7 @@ public class Goal implements Serializable {
 
     private static final String TAG = "Goal";
 
+    private long id;
     private String unit;
     private int quantity;
     private int intervalNumber;
@@ -40,7 +41,8 @@ public class Goal implements Serializable {
     private Date dueDate;
     private ArrayList<GoalTodo> goalTodos;
 
-    public Goal(String unit, int quantity, int intervalNumber, Interval interval, Date dueDate) {
+    public Goal(long id, String unit, int quantity, int intervalNumber, Interval interval, Date dueDate) {
+        this.id       = id;
         this.unit     = unit;
         this.quantity = quantity;
         this.intervalNumber = intervalNumber;
@@ -48,7 +50,7 @@ public class Goal implements Serializable {
         this.dueDate  = dueDate;
 
         // Generate the todos automatically (once) for the user
-        goalTodos = generateTodos();
+        //goalTodos = generateTodos();
     }
 
     /**
@@ -63,7 +65,7 @@ public class Goal implements Serializable {
 
         // Adding new goalsTodo while it's equal or before the due date
         while(calendar.getTime().equals(dueDate) || calendar.getTime().before(dueDate)) {
-            goals.add(new GoalTodo(this, 0, calendar.getTime(), dueDate));
+            goals.add(new GoalTodo(id, 0, calendar.getTime(), dueDate));
             calendar.add(interval.getCalendarInterval(),1);
         }
 
@@ -152,6 +154,14 @@ public class Goal implements Serializable {
             percentage += goalTodo.getQuantityDone();
 
         return percentage / goalTodos.size();
+    }
+
+    public void addGoalTodo(GoalTodo goalTodo) {
+        goalTodos.add(goalTodo);
+    }
+
+    public long getId(){
+        return id;
     }
 
 }

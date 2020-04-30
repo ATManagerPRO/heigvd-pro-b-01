@@ -145,7 +145,6 @@ public class HomeFragment extends Fragment {
     }
 
     public void updateHomeFragment(ArrayList<Task> newTasksFeed) {
-        Log.d(TAG, "updateTaskFeed: Create updated tasks feed");
         RecyclerView.Adapter newAdapter = new TaskFeedAdapter(newTasksFeed);
         tasksRecyclerView.swapAdapter(newAdapter, false);
         feedProgress.setVisibility(View.GONE);

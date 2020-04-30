@@ -200,5 +200,19 @@ public class User {
         return tasksForDay;
     }
 
+    public Goal getGoal(long goal_id) {
+        for(Goal goal : goals) {
+            if(goal.getId() == goal_id)
+                return goal;
+        }
+
+        return null;
+    }
+
+    public boolean hasGoal(long goal_id) {
+        return getGoal(goal_id) != null;
+    }
+
+
 
 }

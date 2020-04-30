@@ -11,9 +11,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.heig.atmanager.HomeFragment;
+import com.heig.atmanager.Interval;
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
 import com.heig.atmanager.folders.Folder;
+import com.heig.atmanager.goals.Goal;
+import com.heig.atmanager.goals.GoalTodo;
 import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.tasks.Task;
 import com.heig.atmanager.tasks.TaskFeedAdapter;
@@ -41,8 +44,10 @@ public class UserJsonParser {
 
     // Http urls
     private static final String URL_FOLDERS_AND_TASKLISTS = "https://atmanager.gollgot.app/api/v1/users/1/todolists";
-    private static final String URL_TODAY_TASKS_GOALS     = "https://atmanager.gollgot.app/api/v1/todolists/1/todos";
+    private static final String URL_TODAY_TASKS           = "https://atmanager.gollgot.app/api/v1/users/1/todos/today";
+    private static final String URL_TODAY_GOALS_TODO      = "https://atmanager.gollgot.app/api/v1/users/1/goaltodos/today";
     private static final String URL_ALL_TASKS             = "https://atmanager.gollgot.app/api/v1/todolists/1/todos";
+    private static final String URL_ALL_GOALS             = "https://atmanager.gollgot.app/api/v1/users/1/goals";
 
     // Data keywords
     // - Folders
@@ -65,9 +70,20 @@ public class UserJsonParser {
     private static final String TASK_DUE_DATE      = "dueDate";
     private static final String TASK_DONE_DATE     = "dateTimeDone";
     private static final String TASK_REMINDER_DATE = "reminderDateTime";
-    private static final String TASK_DIRECTORY_ID  = "directory_id";
-
     // - Goals
+    private static final String GOAL_ID                = "goal_id";
+    private static final String GOAL_DUE_DATE          = "dueDate";
+    private static final String GOAL_TODO_CREATED_DATE = "created_at";
+    private static final String GOAL_TODO_UPDATED_DATE = "updated_at";
+    private static final String GOAL_LABEL             = "label";
+    private static final String GOAL_QUANTITY          = "quantity";
+    // - GoalTodo
+    private static final String GOAL_TODO_KEY           = "goalTodos";
+    private static final String GOAL_TODO_ID            = "id";
+    private static final String GOAL_TODO_QUANTITY_DONE = "quantityDone";
+    private static final String GOAL_TODO_DATETIME_DONE = "dateTimeDone";
+
+
 
     // User reference by context
     private Context mainContext;
@@ -83,13 +99,14 @@ public class UserJsonParser {
         loadFoldersAndTasklists(queue);
 
         // Home Fragment view (today's activities)
-        loadTodaysTasksAndGoals(queue);
+        loadTodaysTasks(queue);
+        //loadTodaysGoalsTodo(queue);
 
         // Calendar view
         loadAllTasks(queue);
 
         // Goals view
-        //loadAllGoals(queue);
+        loadAllGoals(queue);
     }
 
     /**
@@ -165,17 +182,17 @@ public class UserJsonParser {
     }
 
     /**
-     * Loads the tasks and goals of the user for today
+     * Loads the tasks of the user for today
      */
-    private void loadTodaysTasksAndGoals(RequestQueue queue) {
+    private void loadTodaysTasks(RequestQueue queue) {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
-                URL_TODAY_TASKS_GOALS, null, new Response.Listener<JSONObject>() {
+                URL_TODAY_TASKS, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
                     // Getting JSON Array node
                     JSONArray tasks = response.getJSONArray(TASK_KEY);
-                    // TODO : JSONArray goals = jsonObj.getJSONArray(GOAL_KEY);
+
                     // looping through all tasks
                     for (int i = 0; i < tasks.length(); i++) {
                         JSONObject c = tasks.getJSONObject(i);
@@ -202,11 +219,6 @@ public class UserJsonParser {
                         user.addTask(task);
                     }
 
-                    // TODO : looping through all goals
-                    //for (int i = 0; i < goals.length(); i++) {
-
-                    //}
-
                     // Update home fragment
                     ((HomeFragment) ((MainActivity) mainContext).getSupportFragmentManager()
                             .findFragmentByTag(HomeFragment.FRAG_HOME_ID))
@@ -229,6 +241,77 @@ public class UserJsonParser {
     }
 
     /**
+     * Loads the goals of the user for today
+     */
+    private void loadAllGoals(RequestQueue queue) {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+                URL_TODAY_GOALS_TODO, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    // Getting JSON Array node
+                    JSONArray goalsTodo = response.getJSONArray(GOAL_TODO_KEY);
+
+                    // looping through all tasks
+                    for (int i = 0; i < goalsTodo.length(); i++) {
+                        JSONObject c = goalsTodo.getJSONObject(i);
+
+                        // Goal data
+                        long goal_id       = c.getLong(GOAL_ID);
+                        String unit        = c.getString(GOAL_LABEL);
+                        int quantity       = c.getInt(GOAL_QUANTITY);
+                        //int intervalNumber = c.getInt();
+                        //String intervalStr = c.getString();
+                        String dueDateStr  = c.getString(GOAL_DUE_DATE);
+
+                        // GoalsTodo data
+                        int quantityDone   = c.getInt(GOAL_TODO_QUANTITY_DONE);
+                        String doneDateStr = c.getString(GOAL_TODO_DATETIME_DONE);
+
+                        // Date parser
+                        SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+                        Date dueDate         = dueDateStr.equals("null") ? null : sdf2.parse(dueDateStr);
+                        Date doneDate        = doneDateStr.equals("null") ? null : sdf.parse(doneDateStr);
+
+                        // Interval conversion
+                        //Interval interval = Interval.valueOf(intervalStr);
+                        Interval interval = Interval.DAY;
+
+                        // Create the goal if it doesn't exist
+                        if(!MainActivity.getUser().hasGoal(goal_id)) {
+                            Goal goal = new Goal(goal_id, unit, quantity, 2, interval, dueDate);
+                            MainActivity.getUser().addGoal(goal);
+                        }
+
+                        // Create and link the goalTodo to the goal
+                        GoalTodo goalTodo = new GoalTodo(goal_id, quantityDone, doneDate, dueDate);
+                        MainActivity.getUser().getGoal(goal_id).addGoalTodo(goalTodo);
+                    }
+
+                    // Update home fragment
+                    ((HomeFragment) ((MainActivity) mainContext).getSupportFragmentManager()
+                            .findFragmentByTag(HomeFragment.FRAG_HOME_ID))
+                            .updateHomeFragment(user.getTasks());
+
+                } catch (final JSONException e) {
+                    Log.e(TAG, "Json parsing error: " + e.getMessage());
+                } catch (ParseException e) {
+                    Log.e(TAG, "Parsing error : " + e);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        queue.add(request);
+    }
+
+
+    /**
      * Loads all the tasks of the user
      */
     private void loadAllTasks(RequestQueue queue) {
@@ -249,7 +332,7 @@ public class UserJsonParser {
                         String title           = c.getString(TASK_TITLE);
                         String description     = c.getString(TASK_DESCRIPTION);
                         boolean done           = c.isNull(TASK_DONE_DATE);
-                        boolean favorite       = c.getBoolean(TASK_FAVORITE);
+                        //boolean favorite       = c.getBoolean(TASK_FAVORITE);
                         String dueDateStr      = c.getString(TASK_DUE_DATE);
                         String doneDateStr     = c.getString(TASK_DONE_DATE);
                         String reminderDateStr = c.getString(TASK_REMINDER_DATE);

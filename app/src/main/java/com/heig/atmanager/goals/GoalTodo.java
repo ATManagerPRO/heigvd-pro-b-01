@@ -1,5 +1,6 @@
 package com.heig.atmanager.goals;
 
+import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.Utils;
 
 import java.time.LocalDate;
@@ -22,13 +23,13 @@ public class GoalTodo {
 
     private static final String TAG = "GoalTodo";
 
-    private Goal goal;
+    private long goal_id;
     private int quantityDone;
     private Date doneDate;
     private Date dueDate;
 
-    public GoalTodo(Goal goal, int quantityDone, Date doneDate, Date dueDate) {
-        this.goal = goal;
+    public GoalTodo(long goal_id, int quantityDone, Date doneDate, Date dueDate) {
+        this.goal_id = goal_id;
         this.quantityDone = quantityDone;
         this.doneDate = doneDate;
         this.dueDate = dueDate;
@@ -39,11 +40,11 @@ public class GoalTodo {
     }
 
     public int getPercentage() {
-        return (int) (((float) quantityDone / goal.getQuantity()) * 100);
+        return (int) (((float) quantityDone / MainActivity.getUser().getGoal(goal_id).getQuantity()) * 100);
     }
 
     public String getUnit() {
-        return goal.getUnit();
+        return MainActivity.getUser().getGoal(goal_id).getUnit();
     }
 
     public int getQuantityDone() {
@@ -51,7 +52,7 @@ public class GoalTodo {
     }
 
     public int getTotalQuantity() {
-        return goal.getQuantity();
+        return MainActivity.getUser().getGoal(goal_id).getQuantity();
     }
 
     /**
@@ -83,11 +84,8 @@ public class GoalTodo {
         return doneDate;
     }
 
-    public Date getDueDate() { return dueDate; }
-
-    /*public LocalDate getLocalDueDate() {
-        return LocalDate.of(calendarDueDate.get(Calendar.YEAR),
-                calendarDueDate.get(Calendar.MONTH), calendarDueDate.get(Calendar.DAY_OF_MONTH));
-    }*/
+    public Date getDueDate() {
+        return dueDate;
+    }
 
 }
