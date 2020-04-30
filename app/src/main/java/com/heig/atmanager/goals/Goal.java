@@ -48,9 +48,7 @@ public class Goal implements Serializable {
         this.intervalNumber = intervalNumber;
         this.interval = interval;
         this.dueDate  = dueDate;
-
-        // Generate the todos automatically (once) for the user
-        //goalTodos = generateTodos();
+        this.goalTodos = new ArrayList<>();
     }
 
     /**

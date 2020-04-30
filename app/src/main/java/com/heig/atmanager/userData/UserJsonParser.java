@@ -202,20 +202,19 @@ public class UserJsonParser {
                         String title           = c.getString(TASK_TITLE);
                         String description     = c.getString(TASK_DESCRIPTION);
                         boolean done           = c.isNull(TASK_DONE_DATE);
-                        //boolean favorite       = c.getBoolean(TASK_FAVORITE);
+                        boolean favorite       = c.getBoolean(TASK_FAVORITE);
                         String dueDateStr      = c.getString(TASK_DUE_DATE);
                         String doneDateStr     = c.getString(TASK_DONE_DATE);
                         String reminderDateStr = c.getString(TASK_REMINDER_DATE);
 
                         // Date parser
                         SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
-                        Date dueDate         = dueDateStr.equals("null") ? null : sdf2.parse(dueDateStr);
+                        Date dueDate         = dueDateStr.equals("null") ? null : sdf.parse(dueDateStr);
                         Date doneDate        = doneDateStr.equals("null") ? null : sdf.parse(doneDateStr);
                         Date reminderDate    = reminderDateStr.equals("null") ? null : sdf.parse(reminderDateStr);
 
                         // Creating the task and adding it to the current user
-                        Task task = new Task(id, title, description, done, false, dueDate, doneDate, reminderDate);
+                        Task task = new Task(id, title, description, done, favorite, dueDate, doneDate, reminderDate);
                         user.addTask(task);
                     }
 
