@@ -218,6 +218,26 @@ public class User {
                 calendar_d1.get(Calendar.DAY_OF_MONTH) == calendar_d2.get(Calendar.DAY_OF_MONTH);
     }
 
+    private boolean isBetweenDates(Date d, Date startDate, Date endDate) {
+        Calendar calendar_d = Calendar.getInstance();
+        Calendar calendar_startDate = Calendar.getInstance();
+        Calendar calendar_endDate = Calendar.getInstance();
+        calendar_d.setTime(d);
+        calendar_startDate.setTime(startDate);
+        calendar_endDate.setTime(endDate);
+        return calendar_d.getTime().before(calendar_endDate.getTime()) && calendar_d.getTime().after(calendar_startDate.getTime());
+    }
+
+    private  Date getDateXDaysAgo(int numberOfDaysAgo){
+        Calendar cal=Calendar.getInstance();
+        int currentDay=cal.get(Calendar.DAY_OF_YEAR);
+        //Set the date to 2 days ago
+        cal.set(Calendar.DAY_OF_YEAR, currentDay-numberOfDaysAgo);
+
+        return cal.getTime();
+
+    }
+
     public ArrayList<Task> getTasksForDay(Date day) {
         ArrayList<Task> tasksForDay = new ArrayList<>();
 
@@ -228,6 +248,42 @@ public class User {
         }
 
         return tasksForDay;
+    }
+
+    public ArrayList<Task> getTasksForLastWeek() {
+        ArrayList<Task> tasksForLastWeek = new ArrayList<>();
+
+        for (Task task : tasks) {
+            if (task.getDueDate() != null && isBetweenDates(task.getDueDate(), getDateXDaysAgo(7), Calendar.getInstance().getTime())) {
+                tasksForLastWeek.add(task);
+            }
+        }
+
+        return tasksForLastWeek;
+    }
+
+    public ArrayList<Task> getTasksForLastMonth() {
+        ArrayList<Task> tasksForLastMonth = new ArrayList<>();
+
+        for (Task task : tasks) {
+            if (task.getDueDate() != null && isBetweenDates(task.getDueDate(), getDateXDaysAgo(30), Calendar.getInstance().getTime())) {
+                tasksForLastMonth.add(task);
+            }
+        }
+
+        return tasksForLastMonth;
+    }
+
+    public ArrayList<Task> getTasksForLastYear() {
+        ArrayList<Task> tasksForLastYear = new ArrayList<>();
+
+        for (Task task : tasks) {
+            if (task.getDueDate() != null && isBetweenDates(task.getDueDate(), getDateXDaysAgo(365), Calendar.getInstance().getTime())) {
+                tasksForLastYear.add(task);
+            }
+        }
+
+        return tasksForLastYear;
     }
 
     public ArrayList<Task> getTasksWithoutDate() {

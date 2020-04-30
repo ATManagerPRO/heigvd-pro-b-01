@@ -225,6 +225,7 @@ public class AddTaskFragment extends Fragment {
                         ((TaskFeedAdapter)tasksRecyclerView.getAdapter()).setTasks(tasks);
                     }
                 }
+
                 getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
                 getActivity().findViewById(R.id.dock).setVisibility(View.VISIBLE);
                 getFragmentManager().popBackStack();
