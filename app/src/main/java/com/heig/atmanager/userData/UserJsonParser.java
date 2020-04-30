@@ -42,6 +42,7 @@ public class UserJsonParser {
     // Http urls
     private static final String URL_FOLDERS_AND_TASKLISTS = "https://atmanager.gollgot.app/api/v1/users/1/todolists";
     private static final String URL_TODAY_TASKS_GOALS     = "https://atmanager.gollgot.app/api/v1/todolists/1/todos";
+    private static final String URL_ALL_TASKS             = "https://atmanager.gollgot.app/api/v1/todolists/1/todos";
 
     // Data keywords
     // - Folders
@@ -78,14 +79,17 @@ public class UserJsonParser {
     }
 
     public void loadAllDataIntoUser(RequestQueue queue) {
-        // Side drawer data
+        // Side drawer view
         loadFoldersAndTasklists(queue);
 
-        // Home Fragment data (today's activities)
+        // Home Fragment view (today's activities)
         loadTodaysTasksAndGoals(queue);
 
-        // Calendar
+        // Calendar view
+        loadAllTasks(queue);
 
+        // Goals view
+        //loadAllGoals(queue);
     }
 
     /**
@@ -208,8 +212,59 @@ public class UserJsonParser {
                             .findFragmentByTag(HomeFragment.FRAG_HOME_ID))
                             .updateHomeFragment(user.getTasks());
 
-                    //RecyclerView tasksRecyclerView = (RecyclerView) ((MainActivity) mainContext).findViewById(R.id.tasks_rv);
-                    //((TaskFeedAdapter)tasksRecyclerView.getAdapter()).setTasks(user.getTasks());
+                } catch (final JSONException e) {
+                    Log.e(TAG, "Json parsing error: " + e.getMessage());
+                } catch (ParseException e) {
+                    Log.e(TAG, "Parsing error : " + e);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        queue.add(request);
+    }
+
+    /**
+     * Loads all the tasks of the user
+     */
+    private void loadAllTasks(RequestQueue queue) {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+                URL_ALL_TASKS, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    // Getting JSON Array node
+                    JSONArray tasks = response.getJSONArray(TASK_KEY);
+
+                    // looping through all tasks
+                    for (int i = 0; i < tasks.length(); i++) {
+                        JSONObject c = tasks.getJSONObject(i);
+
+                        // Task data
+                        long id                = c.getLong(TASK_ID);
+                        String title           = c.getString(TASK_TITLE);
+                        String description     = c.getString(TASK_DESCRIPTION);
+                        boolean done           = c.isNull(TASK_DONE_DATE);
+                        boolean favorite       = c.getBoolean(TASK_FAVORITE);
+                        String dueDateStr      = c.getString(TASK_DUE_DATE);
+                        String doneDateStr     = c.getString(TASK_DONE_DATE);
+                        String reminderDateStr = c.getString(TASK_REMINDER_DATE);
+
+                        // Date parser
+                        SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+                        Date dueDate         = dueDateStr.equals("null") ? null : sdf2.parse(dueDateStr);
+                        Date doneDate        = doneDateStr.equals("null") ? null : sdf.parse(doneDateStr);
+                        Date reminderDate    = reminderDateStr.equals("null") ? null : sdf.parse(reminderDateStr);
+
+                        // Creating the task and adding it to the current user
+                        Task task = new Task(id, title, description, done, false, dueDate, doneDate, reminderDate);
+                        user.addTask(task);
+                    }
 
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
