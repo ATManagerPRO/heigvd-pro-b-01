@@ -107,4 +107,9 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
     public int getItemCount() {
         return folders.size();
     }
+
+    public  void  setFolders(ArrayList<Folder> folders){
+        this.folders = folders;
+        notifyDataSetChanged();
+    }
 }
