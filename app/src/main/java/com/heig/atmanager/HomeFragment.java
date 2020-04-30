@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -51,17 +52,20 @@ public class HomeFragment extends Fragment {
     private RecyclerView.LayoutManager taskFeedManager;
     private RecyclerView.Adapter taskFeedAdapter;
 
+    private View view;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
+        view = v;
 
         feedProgress = v.findViewById(R.id.home_progress);
         refreshLayout = v.findViewById(R.id.swipe_refresh);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                updateHomeFragment(MainActivity.getUser().getTasks());
+                updateHomeFragment();
             }
         });
 
@@ -69,21 +73,17 @@ public class HomeFragment extends Fragment {
         tasks = new ArrayList<>();
         goals = new ArrayList<>();
 
-        //goals = new ArrayList<>();
-        //tasks = ((MainActivity) getContext()).getUser().getTasksForDay(Calendar.getInstance().getTime());
-        //tasks.addAll((((MainActivity) getContext()).getUser().getTasksWithoutDate()));
-
         // Greeting
         greetingText = (TextView) v.findViewById(R.id.greeting_text);
         greetingText.setText(getDayGreetings());
 
         // Task feed
         tasksRecyclerView = (RecyclerView) v.findViewById(R.id.tasks_rv);
-        Utils.setupTasksFeed(v, tasksRecyclerView, tasks);
+        //Utils.setupTasksFeed(v, tasksRecyclerView, tasks);
 
         // Goal feed
         goalsRecyclerView = (RecyclerView) v.findViewById(R.id.goals_rv);
-        Utils.setupGoalTodosFeedBubbled(v, goalsRecyclerView, goals);
+        //Utils.setupGoalTodosFeedBubbled(v, goalsRecyclerView, goals);
 
         return v;
     }
@@ -144,12 +144,11 @@ public class HomeFragment extends Fragment {
                 value + " task" + (value > 1 ? "s" : "");
     }
 
-    public void updateHomeFragment(ArrayList<Task> newTasksFeed) {
-        RecyclerView.Adapter newAdapter = new TaskFeedAdapter(newTasksFeed);
-        tasksRecyclerView.swapAdapter(newAdapter, false);
+    public void updateHomeFragment() {
         feedProgress.setVisibility(View.GONE);
         tasks = MainActivity.getUser().getTasks();
-        //goals = MainActivity.getUser().getGoals();
+        Utils.setupTasksFeed(view, tasksRecyclerView,  MainActivity.getUser().getTasks());
+        Utils.setupGoalTodosFeedBubbled(view, goalsRecyclerView,  MainActivity.getUser().getGoalTodosOfDay(Calendar.getInstance().getTime()));
         greetingText.setText(getGreetings());
         refreshLayout.setRefreshing(false);
     }

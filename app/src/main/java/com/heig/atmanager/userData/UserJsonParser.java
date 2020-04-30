@@ -100,13 +100,13 @@ public class UserJsonParser {
 
         // Home Fragment view (today's activities)
         loadTodaysTasks(queue);
-        //loadTodaysGoalsTodo(queue);
+        loadTodaysGoalsTodo(queue);
 
         // Calendar view
         loadAllTasks(queue);
 
         // Goals view
-        loadAllGoals(queue);
+        //loadAllGoals(queue);
     }
 
     /**
@@ -222,7 +222,7 @@ public class UserJsonParser {
                     // Update home fragment
                     ((HomeFragment) ((MainActivity) mainContext).getSupportFragmentManager()
                             .findFragmentByTag(HomeFragment.FRAG_HOME_ID))
-                            .updateHomeFragment(user.getTasks());
+                            .updateHomeFragment();
 
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
@@ -243,17 +243,19 @@ public class UserJsonParser {
     /**
      * Loads the goals of the user for today
      */
-    private void loadAllGoals(RequestQueue queue) {
+    private void loadTodaysGoalsTodo(RequestQueue queue) {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
                 URL_TODAY_GOALS_TODO, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
+                    Log.d(TAG, "onResponse: Create getting goalTodo");
                     // Getting JSON Array node
                     JSONArray goalsTodo = response.getJSONArray(GOAL_TODO_KEY);
 
                     // looping through all tasks
                     for (int i = 0; i < goalsTodo.length(); i++) {
+                        Log.d(TAG, "onResponse: getting a goaltodo : ");
                         JSONObject c = goalsTodo.getJSONObject(i);
 
                         // Goal data
@@ -265,7 +267,7 @@ public class UserJsonParser {
                         String dueDateStr  = c.getString(GOAL_DUE_DATE);
 
                         // GoalsTodo data
-                        int quantityDone   = c.getInt(GOAL_TODO_QUANTITY_DONE);
+                        int quantityDone   = c.isNull(GOAL_TODO_QUANTITY_DONE) ? 0 : c.getInt(GOAL_TODO_QUANTITY_DONE);
                         String doneDateStr = c.getString(GOAL_TODO_DATETIME_DONE);
 
                         // Date parser
@@ -277,6 +279,8 @@ public class UserJsonParser {
                         // Interval conversion
                         //Interval interval = Interval.valueOf(intervalStr);
                         Interval interval = Interval.DAY;
+
+                        Log.d(TAG, "onResponse: goal id : " + goal_id);
 
                         // Create the goal if it doesn't exist
                         if(!MainActivity.getUser().hasGoal(goal_id)) {
@@ -292,7 +296,7 @@ public class UserJsonParser {
                     // Update home fragment
                     ((HomeFragment) ((MainActivity) mainContext).getSupportFragmentManager()
                             .findFragmentByTag(HomeFragment.FRAG_HOME_ID))
-                            .updateHomeFragment(user.getTasks());
+                            .updateHomeFragment();
 
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());

@@ -68,6 +68,7 @@ public class User {
     }
 
     public void addGoal(Goal goal) {
+        Log.d(TAG, "addFolder: Create : add goal <" + goal.getUnit() + "> for " + getUserName());
         goals.add(goal);
     }
 
@@ -213,6 +214,18 @@ public class User {
         return getGoal(goal_id) != null;
     }
 
+    public ArrayList<GoalTodo> getGoalTodosOfDay(Date day) {
+        ArrayList<GoalTodo> goalTodos = new ArrayList<>();
+        for(Goal goal : goals) {
+            for(GoalTodo goalTodo : goal.getGoalTodos()) {
+                if(goalTodo.getDoneDate() == day) {
+                    goalTodos.add(goalTodo);
+                }
+            }
+        }
+
+        return goalTodos;
+    }
 
 
 }
