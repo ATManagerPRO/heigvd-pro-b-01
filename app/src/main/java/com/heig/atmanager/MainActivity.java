@@ -104,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         expandableListView = (ExpandableListView) findViewById(R.id.navList);
-        updateDrawerItems();
 
         // Loading the data from the server into the user
         jsonParser = new UserJsonParser(this);
@@ -223,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Updates the items of the drawer menu with the current user's data (tasklists then folders)
      */
-    private void updateDrawerItems() {
+    public void updateDrawerItems() {
         final ArrayList<TaskList> standaloneTaskLists = new ArrayList<>();
         for(TaskList taskList : user.getTaskLists())
             if(!taskList.isFolder())

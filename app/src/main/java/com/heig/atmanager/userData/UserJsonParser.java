@@ -83,6 +83,9 @@ public class UserJsonParser {
 
         // Home Fragment data (today's activities)
         loadTodaysTasksAndGoals(queue);
+
+        // Calendar
+
     }
 
     /**
@@ -139,7 +142,9 @@ public class UserJsonParser {
                         user.addFolder(folder);
                     }
 
-
+                    // Update the items
+                    ((MainActivity) mainContext).updateDrawerItems();
+                    
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
                 }
