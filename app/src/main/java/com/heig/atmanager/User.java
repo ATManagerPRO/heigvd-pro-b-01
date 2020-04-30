@@ -52,6 +52,7 @@ public class User {
         this.addGoal(daily_goal2);
         this.addGoal(weekly_goal3);
         this.addGoal(monthly_goal4);
+        this.addGoal(new Goal("GIT PUSH", 4, 1, Interval.DAY, dueDateGoal3));
         // Folders
         Folder f1 = new Folder("HEIG-VD");
         Folder f2 = new Folder("Home stuff");
@@ -314,7 +315,7 @@ public class User {
         ArrayList<GoalTodo> todos = new ArrayList<GoalTodo>();
         for (Goal goal : goals){
             for(GoalTodo goalTodo : goal.getGoalTodos()){
-             if(goalTodo.getDueDate().equals(day)){
+             if(isSameSimpleDate(goalTodo.getDoneDate(),day)){
                  todos.add(goalTodo);
                 }
             }
