@@ -111,4 +111,11 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
     public int getItemCount() {
         return tasks.size();
     }
+
+    public  void  setTasks(ArrayList<Task> tasks){
+        this.tasks = tasks;
+        notifyDataSetChanged();
+    }
+
+
 }

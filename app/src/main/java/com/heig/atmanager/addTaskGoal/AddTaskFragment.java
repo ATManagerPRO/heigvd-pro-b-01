@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.KeyEvent;
@@ -30,11 +31,13 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputLayout;
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
+import com.heig.atmanager.User;
 import com.heig.atmanager.UserViewModel;
 import com.heig.atmanager.Utils;
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.tasks.Task;
+import com.heig.atmanager.tasks.TaskFeedAdapter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -57,6 +60,9 @@ public class AddTaskFragment extends Fragment {
     private int mMinute;
 
 
+    private ArrayList<Task> tasks;
+    private RecyclerView tasksRecyclerView;
+
     private String selectedDirectory;
 
     private EditText titleEditText;
@@ -74,9 +80,12 @@ public class AddTaskFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        tasksRecyclerView = (RecyclerView) getActivity().findViewById(R.id.tasks_rv);
 
         // Override OnBacPressed to show hidden components
         final OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+
+
             @Override
             public void handleOnBackPressed() {
                 getFragmentManager().popBackStack();
@@ -123,6 +132,10 @@ public class AddTaskFragment extends Fragment {
                                 Utils.formatNumber(month + 1) + "." +
                                 Utils.formatNumber(year);
                         dueDateTextView.setText(dueDateString);
+                        mYear = year;
+                        mMonth = month;
+                        mDay
+                                 = dayOfMonth;
                     }
                 }, mYear, mMonth, mDay);
                 // Show the picker
@@ -193,14 +206,25 @@ public class AddTaskFragment extends Fragment {
                     titleLayout.setError(null);
                 }
 
-                Date selectedDate = new GregorianCalendar(mYear, mMonth, mDay, mHour, mMinute).getTime();
-
+                Date selectedDate;
+                if(mYear == 0) {
+                    selectedDate = null;
+                } else{
+                    selectedDate = new GregorianCalendar(mYear, mMonth, mDay, mHour, mMinute).getTime();
+                }
                 Task newTask = new Task(title, description, selectedDate);
 
                 // Add the task to a selected taskList
-                for(TaskList taskList : ((MainActivity) getContext()).getUser().getTaskLists())
-                    if(taskList.getName().equals(selectedDirectory))
-                        taskList.addTask(newTask);
+                for(TaskList taskList : ((MainActivity) getContext()).getUser().getTaskLists()) {
+                    if (taskList.toString().equals(selectedDirectory)) {
+                        newTask.setTasklist(taskList);
+                        ((MainActivity) getContext()).getUser().addTask(newTask);
+                        //update homeview
+                        tasks = (((MainActivity) getContext()).getUser().getTasksForDay(Calendar.getInstance().getTime()));
+                        tasks.addAll((((MainActivity) getContext()).getUser().getTasksWithoutDate()));
+                        ((TaskFeedAdapter)tasksRecyclerView.getAdapter()).setTasks(tasks);
+                    }
+                }
 
                 getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
                 getActivity().findViewById(R.id.dock).setVisibility(View.VISIBLE);

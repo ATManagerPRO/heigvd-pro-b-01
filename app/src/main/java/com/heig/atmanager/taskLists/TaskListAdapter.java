@@ -70,4 +70,9 @@ public class TaskListAdapter extends RecyclerView.Adapter<com.heig.atmanager.tas
     public int getItemCount() {
         return lists.size();
     }
+
+    public  void  setTasks(ArrayList<TaskList> taskLists){
+        this.lists = taskLists;
+        notifyDataSetChanged();
+    }
 }
