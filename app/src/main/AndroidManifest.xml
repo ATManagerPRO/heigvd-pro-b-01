@@ -17,7 +17,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity" >
+            <intent-filter>
+                <data
+                    android:host="heig.com"
+                    android:scheme="http"/>
+                <data
+                    android:host="heig.com"
+                    android:scheme="https"/>
+            </intent-filter>
+        </activity>
         <activity android:name=".ProfileActivity" />
         <activity android:name=".SignInActivity"/>
     </application>

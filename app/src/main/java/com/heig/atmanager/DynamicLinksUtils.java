@@ -10,9 +10,13 @@ import com.heig.atmanager.BuildConfig;
  **/
 public class DynamicLinksUtils {
 
+    /**
+     * Create a link to share task
+     * @return
+     */
     public static Uri generateContentLink() {
 
-
+        // the content to share
         String appCode = "id";
         final Uri deepLink = Uri.parse("http://heig.com/share?task");
 
