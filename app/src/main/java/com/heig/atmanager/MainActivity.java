@@ -1,23 +1,21 @@
 package com.heig.atmanager;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -74,6 +72,11 @@ public class MainActivity extends AppCompatActivity {
         userAccount         = GoogleSignIn.getLastSignedInAccount(this);
 
         user = new User(userAccount.getDisplayName(), userAccount.getIdToken());
+
+        // Handle incomming data
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        Uri data = intent.getData();
 
         fab = findViewById(R.id.fab);
         fabAddGoal = findViewById(R.id.fab_add_goal);

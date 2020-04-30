@@ -1,6 +1,5 @@
 package com.heig.atmanager.tasks;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -12,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.heig.atmanager.DynamicLinksUtils;
+import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
 
 import java.util.ArrayList;
@@ -22,14 +21,13 @@ import androidx.recyclerview.widget.RecyclerView;
 /**
  * Author : Stéphane Bottin
  * Date   : 11.03.2020
- *
+ * <p>
  * Task adapter for the task Recycler view
  */
 public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyViewHolder> {
     private static final String TAG = "TaskFeedAdapter";
-    
-    private ArrayList<Task> tasks;
 
+    private ArrayList<Task> tasks;
 
 
     // Provide a reference to the views for each data item
@@ -48,14 +46,14 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
 
         public MyViewHolder(View v) {
             super(v);
-            title        = v.findViewById(R.id.task_title);
-            description  = v.findViewById(R.id.task_description);
-            expandBtn    = v.findViewById(R.id.expand_button);
-            retractBtn   = v.findViewById(R.id.retract_button);
+            title = v.findViewById(R.id.task_title);
+            description = v.findViewById(R.id.task_description);
+            expandBtn = v.findViewById(R.id.expand_button);
+            retractBtn = v.findViewById(R.id.retract_button);
             expandedView = v.findViewById(R.id.task_expanded_view);
             favoriteIcon = v.findViewById(R.id.favorite_icon);
-            checkButton  = v.findViewById(R.id.check_button);
-            shareBtn     = v.findViewById(R.id.share);
+            checkButton = v.findViewById(R.id.check_button);
+            shareBtn = v.findViewById(R.id.share);
         }
     }
 
@@ -105,8 +103,8 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         holder.shareBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO CALL share
-                onShareClicked(view);
+                // TODO Replace with the real id
+                onShareClicked(1,view);
             }
         });
 
@@ -128,12 +126,19 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         return tasks.size();
     }
 
-    private void onShareClicked(View v){
-        Uri link = DynamicLinksUtils.generateContentLink();
+    private void onShareClicked(int id, View v) {
+
+        Uri.Builder builder = new Uri.Builder();
+
+        builder.scheme("https")
+                .authority("atmanager.com")
+                //Need to add the real id
+                .appendQueryParameter("taskId", String.valueOf(id));
+
 
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT, link.toString());
+        intent.putExtra(Intent.EXTRA_TEXT, builder.build().toString());
         v.getContext().startActivity(Intent.createChooser(intent, "Share Task"));
     }
 }
