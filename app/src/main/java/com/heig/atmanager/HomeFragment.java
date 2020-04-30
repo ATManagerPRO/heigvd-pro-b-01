@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.heig.atmanager.goals.Goal;
@@ -33,6 +34,8 @@ public class HomeFragment extends Fragment {
     
     public static final String FRAG_HOME_ID = "Home_Fragment";
 
+    private ProgressBar feedProgress;
+
     // Greeting message
     private TextView greetingText;
 
@@ -51,22 +54,22 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
+        feedProgress = v.findViewById(R.id.home_progress);
+
+        tasks = new ArrayList<>();
         goals = new ArrayList<>();
 
-        tasks = ((MainActivity) getContext()).getUser().getTasksForDay(Calendar.getInstance().getTime());
-        tasks.addAll((((MainActivity) getContext()).getUser().getTasksWithoutDate()));
+        //goals = new ArrayList<>();
+        //tasks = ((MainActivity) getContext()).getUser().getTasksForDay(Calendar.getInstance().getTime());
+        //tasks.addAll((((MainActivity) getContext()).getUser().getTasksWithoutDate()));
 
         // Greeting
         greetingText = (TextView) v.findViewById(R.id.greeting_text);
-        greetingText.setText(getGreetings());
+        greetingText.setText("");
 
         // Task feed
         tasksRecyclerView = (RecyclerView) v.findViewById(R.id.tasks_rv);
         Utils.setupTasksFeed(v, tasksRecyclerView, tasks);
-        /*taskFeedManager = new LinearLayoutManager(v.getContext());
-        taskFeedAdapter = new TaskFeedAdapter(tasks);
-        tasksRecyclerView.setLayoutManager(taskFeedManager);
-        tasksRecyclerView.setAdapter(taskFeedAdapter);*/
 
         // Goal feed
         goalsRecyclerView = (RecyclerView) v.findViewById(R.id.goals_rv);
@@ -126,9 +129,12 @@ public class HomeFragment extends Fragment {
                 value + " task" + (value > 1 ? "s" : "");
     }
 
-    public void updateTaskFeed(ArrayList<Task> newTasksFeed) {
+    public void updateHomeFragment(ArrayList<Task> newTasksFeed) {
+        greetingText.setText(getGreetings());
         Log.d(TAG, "updateTaskFeed: Create updated tasks feed");
         RecyclerView.Adapter newAdapter = new TaskFeedAdapter(newTasksFeed);
         tasksRecyclerView.swapAdapter(newAdapter, false);
+        feedProgress.setVisibility(View.GONE);
+
     }
 }

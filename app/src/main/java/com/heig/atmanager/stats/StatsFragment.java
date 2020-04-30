@@ -42,6 +42,8 @@ import java.util.Objects;
  */
 public class StatsFragment  extends Fragment {
 
+    public static final String FRAG_STATS_ID = "Stats_Fragment";
+
     private Spinner menu;
     private static final String[] items = new String[]{"Today","This Week","This Month","This Year"};
 

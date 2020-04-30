@@ -17,10 +17,13 @@
         android:layout_height="match_parent"
         android:padding="10dp"
         android:text="Folder title"
-        android:textSize="18sp"
         android:textColor="@color/black"
         android:fontFamily="@font/arialbd"
         android:gravity="center_vertical"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeMaxTextSize="18sp"
+        android:autoSizeStepGranularity="1sp"
         />
 
 </LinearLayout>

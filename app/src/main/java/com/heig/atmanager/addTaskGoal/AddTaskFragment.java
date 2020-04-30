@@ -45,6 +45,8 @@ import java.util.GregorianCalendar;
 
 public class AddTaskFragment extends Fragment {
 
+    public static final String FRAG_ADD_TASK_ID = "Add_Task_Fragment";
+
     private static final String TAG = "AddTaskFragment";
 
     private String title;

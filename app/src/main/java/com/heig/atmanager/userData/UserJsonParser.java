@@ -144,7 +144,7 @@ public class UserJsonParser {
 
                     // Update the items
                     ((MainActivity) mainContext).updateDrawerItems();
-                    
+
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
                 }
@@ -204,6 +204,10 @@ public class UserJsonParser {
                     //}
 
                     // Update home fragment
+                    ((HomeFragment) ((MainActivity) mainContext).getSupportFragmentManager()
+                            .findFragmentByTag(HomeFragment.FRAG_HOME_ID))
+                            .updateHomeFragment(user.getTasks());
+
                     //RecyclerView tasksRecyclerView = (RecyclerView) ((MainActivity) mainContext).findViewById(R.id.tasks_rv);
                     //((TaskFeedAdapter)tasksRecyclerView.getAdapter()).setTasks(user.getTasks());
 
