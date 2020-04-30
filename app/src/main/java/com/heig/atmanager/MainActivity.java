@@ -20,6 +20,7 @@ import android.widget.ExpandableListView;
 
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -53,10 +54,9 @@ public class MainActivity extends AppCompatActivity {
     private ExpandableListView expandableListView;
     private ExpandableListAdapter adapter;
 
-    // For back button
     public static String previousFragment = null;
-
     private GoogleSignInClient mGoogleSignInClient;
+    private GoogleSignInAccount userAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,10 +71,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        userAccount         = GoogleSignIn.getLastSignedInAccount(this);
 
-
-        // To get this variable from the fragments ((MainActivity)getActivity()).dummyUser
-        user = new User("Joe", "GoogleToken");
+        user = new User(userAccount.getDisplayName(), userAccount.getIdToken());
 
         fab = findViewById(R.id.fab);
         fabAddGoal = findViewById(R.id.fab_add_goal);
