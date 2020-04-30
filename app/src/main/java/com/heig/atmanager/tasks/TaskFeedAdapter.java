@@ -1,5 +1,8 @@
 package com.heig.atmanager.tasks;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.heig.atmanager.DynamicLinksUtils;
 import com.heig.atmanager.R;
 
 import java.util.ArrayList;
@@ -25,6 +29,8 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
     private static final String TAG = "TaskFeedAdapter";
     
     private ArrayList<Task> tasks;
+
+
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -100,6 +106,7 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
             @Override
             public void onClick(View view) {
                 // TODO CALL share
+                onShareClicked(view);
             }
         });
 
@@ -119,5 +126,14 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
     @Override
     public int getItemCount() {
         return tasks.size();
+    }
+
+    private void onShareClicked(View v){
+        Uri link = DynamicLinksUtils.generateContentLink();
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, link.toString());
+        v.getContext().startActivity(Intent.createChooser(intent, "Share Task"));
     }
 }
