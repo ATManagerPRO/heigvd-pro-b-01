@@ -27,6 +27,7 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -81,7 +82,7 @@ public class UserJsonParser {
     private static final String GOAL_TODO_KEY           = "goalTodos";
     private static final String GOAL_TODO_ID            = "id";
     private static final String GOAL_TODO_QUANTITY_DONE = "quantityDone";
-    private static final String GOAL_TODO_DATETIME_DONE = "dateTimeDone";
+    private static final String GOAL_TODO_DONE_DATE     = "dateTimeDone";
 
 
 
@@ -103,7 +104,7 @@ public class UserJsonParser {
         loadTodaysGoalsTodo(queue);
 
         // Calendar view
-        loadAllTasks(queue);
+        //loadAllTasks(queue);
 
         // Goals view
         //loadAllGoals(queue);
@@ -202,7 +203,7 @@ public class UserJsonParser {
                         String title           = c.getString(TASK_TITLE);
                         String description     = c.getString(TASK_DESCRIPTION);
                         boolean done           = c.isNull(TASK_DONE_DATE);
-                        boolean favorite       = c.getBoolean(TASK_FAVORITE);
+                        boolean favorite       = c.getInt(TASK_FAVORITE) != 0;
                         String dueDateStr      = c.getString(TASK_DUE_DATE);
                         String doneDateStr     = c.getString(TASK_DONE_DATE);
                         String reminderDateStr = c.getString(TASK_REMINDER_DATE);
@@ -263,17 +264,20 @@ public class UserJsonParser {
                         int quantity       = c.getInt(GOAL_QUANTITY);
                         //int intervalNumber = c.getInt();
                         //String intervalStr = c.getString();
-                        String dueDateStr  = c.getString(GOAL_DUE_DATE);
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.add(Calendar.MONTH, -1);
+                        String createDateStr = c.getString(GOAL_TODO_CREATED_DATE);
+                        String dueDateStr    = c.getString(GOAL_DUE_DATE);
 
                         // GoalsTodo data
                         int quantityDone   = c.isNull(GOAL_TODO_QUANTITY_DONE) ? 0 : c.getInt(GOAL_TODO_QUANTITY_DONE);
-                        String doneDateStr = c.getString(GOAL_TODO_DATETIME_DONE);
+                        String doneDateStr = c.getString(GOAL_TODO_DONE_DATE);
 
                         // Date parser
                         SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
-                        Date dueDate         = dueDateStr.equals("null") ? null : sdf2.parse(dueDateStr);
-                        Date doneDate        = doneDateStr.equals("null") ? null : sdf.parse(doneDateStr);
+                        Date dueDate          = Calendar.getInstance().getTime(); //dueDateStr.equals("null")    ? null : sdf.parse(dueDateStr);
+                        Date doneDate         = doneDateStr.equals("null")   ? null : sdf.parse(doneDateStr);
+                        Date createDate       = calendar.getTime(); //createDateStr.equals("null") ? null : sdf.parse(createDateStr);
 
                         // Interval conversion
                         //Interval interval = Interval.valueOf(intervalStr);
@@ -283,14 +287,17 @@ public class UserJsonParser {
 
                         // Create the goal if it doesn't exist
                         if(!MainActivity.getUser().hasGoal(goal_id)) {
-                            Goal goal = new Goal(goal_id, unit, quantity, 2, interval, dueDate);
+                            Goal goal = new Goal(goal_id, unit, quantity, 1, interval, dueDate, createDate);
                             MainActivity.getUser().addGoal(goal);
                         }
 
                         // Create and link the goalTodo to the goal
-                        GoalTodo goalTodo = new GoalTodo(goal_id, quantityDone, doneDate, dueDate);
+                        GoalTodo goalTodo = new GoalTodo(goal_id, quantityDone, Calendar.getInstance().getTime(), dueDate);
                         MainActivity.getUser().getGoal(goal_id).addGoalTodo(goalTodo);
                     }
+
+                    // Generate the left over goalTodo
+                    MainActivity.getUser().generateLeftOverGoalTodo();
 
                     // Update home fragment
                     ((HomeFragment) ((MainActivity) mainContext).getSupportFragmentManager()

@@ -3,6 +3,7 @@ package com.heig.atmanager.userData;
 import android.util.Log;
 
 import com.heig.atmanager.Interval;
+import com.heig.atmanager.Utils;
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.taskLists.TaskList;
@@ -218,13 +219,22 @@ public class User {
         ArrayList<GoalTodo> goalTodos = new ArrayList<>();
         for(Goal goal : goals) {
             for(GoalTodo goalTodo : goal.getGoalTodos()) {
-                if(goalTodo.getDoneDate() == day) {
+                if(isSameSimpleDate(goalTodo.getDoneDate(), day)) {
                     goalTodos.add(goalTodo);
                 }
             }
         }
 
+        Log.d(TAG, "getGoalTodosOfDay: goal for today : " + goalTodos.size() + "(out of " + goals.size() + ")");
         return goalTodos;
+    }
+
+    public void generateLeftOverGoalTodo() {
+        for(Goal goal : goals) {
+            for(int i = 0; i < goal.getTotalGoalTodo(); ++i) {
+
+            }
+        }
     }
 
 

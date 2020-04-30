@@ -1,5 +1,7 @@
 package com.heig.atmanager.goals;
 
+import android.util.Log;
+
 import com.heig.atmanager.Interval;
 import com.heig.atmanager.Utils;
 
@@ -39,15 +41,17 @@ public class Goal implements Serializable {
     private int intervalNumber;
     private Interval interval;
     private Date dueDate;
+    private Date createDate;
     private ArrayList<GoalTodo> goalTodos;
 
-    public Goal(long id, String unit, int quantity, int intervalNumber, Interval interval, Date dueDate) {
+    public Goal(long id, String unit, int quantity, int intervalNumber, Interval interval, Date dueDate, Date createDate) {
         this.id       = id;
         this.unit     = unit;
         this.quantity = quantity;
         this.intervalNumber = intervalNumber;
         this.interval = interval;
         this.dueDate  = dueDate;
+        this.createDate = createDate;
         this.goalTodos = new ArrayList<>();
     }
 
@@ -160,6 +164,20 @@ public class Goal implements Serializable {
 
     public long getId(){
         return id;
+    }
+
+    public long getTotalGoalTodo() {
+        if(dueDate == null)
+            return -1;
+
+        // difference in milliseconds
+        long diff = dueDate.getTime() - createDate.getTime();
+
+        if(diff < 0)
+            return -1;
+
+        // Works only for daily (WIP for others)
+        return (diff / (1000*60*60*24));
     }
 
 }
