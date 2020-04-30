@@ -86,7 +86,7 @@ public class HomeFragment extends Fragment {
         Calendar calendar = Calendar.getInstance();
         String greeting = "";
         String user_info = "";
-        String user = "User123";
+        String user = MainActivity.getUser().getUserName();
 
         // Hour (0 - 23)
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -130,11 +130,12 @@ public class HomeFragment extends Fragment {
     }
 
     public void updateHomeFragment(ArrayList<Task> newTasksFeed) {
-        greetingText.setText(getGreetings());
         Log.d(TAG, "updateTaskFeed: Create updated tasks feed");
         RecyclerView.Adapter newAdapter = new TaskFeedAdapter(newTasksFeed);
         tasksRecyclerView.swapAdapter(newAdapter, false);
         feedProgress.setVisibility(View.GONE);
-
+        tasks = MainActivity.getUser().getTasks();
+        //goals = MainActivity.getUser().getGoals();
+        greetingText.setText(getGreetings());
     }
 }
