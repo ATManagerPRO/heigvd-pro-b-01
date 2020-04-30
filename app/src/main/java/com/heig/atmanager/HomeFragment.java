@@ -31,7 +31,7 @@ import java.util.Calendar;
 public class HomeFragment extends Fragment {
 
     private static final String TAG = "HomeFragment";
-    
+
     public static final String FRAG_HOME_ID = "Home_Fragment";
 
     private ProgressBar feedProgress;
