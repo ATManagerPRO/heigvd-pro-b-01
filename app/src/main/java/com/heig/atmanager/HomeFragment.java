@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,6 +36,7 @@ public class HomeFragment extends Fragment {
     public static final String FRAG_HOME_ID = "Home_Fragment";
 
     private ProgressBar feedProgress;
+    private SwipeRefreshLayout refreshLayout;
 
     // Greeting message
     private TextView greetingText;
@@ -55,6 +57,14 @@ public class HomeFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
         feedProgress = v.findViewById(R.id.home_progress);
+        refreshLayout = v.findViewById(R.id.swipe_refresh);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                updateHomeFragment(MainActivity.getUser().getTasks());
+            }
+        });
+
 
         tasks = new ArrayList<>();
         goals = new ArrayList<>();
@@ -65,7 +75,7 @@ public class HomeFragment extends Fragment {
 
         // Greeting
         greetingText = (TextView) v.findViewById(R.id.greeting_text);
-        greetingText.setText("");
+        greetingText.setText(getDayGreetings());
 
         // Task feed
         tasksRecyclerView = (RecyclerView) v.findViewById(R.id.tasks_rv);
@@ -78,14 +88,9 @@ public class HomeFragment extends Fragment {
         return v;
     }
 
-    /**
-     * Get the welcoming sentence (dynamic with user's data)
-     * @return the proper greetings
-     */
-    private String getGreetings() {
+    private String getDayGreetings() {
         Calendar calendar = Calendar.getInstance();
         String greeting = "";
-        String user_info = "";
         String user = MainActivity.getUser().getUserName();
 
         // Hour (0 - 23)
@@ -102,6 +107,18 @@ public class HomeFragment extends Fragment {
             greeting = "Good evening ";
         }
 
+        greeting += user;
+
+        return greeting;
+    }
+
+    /**
+     * Get the welcoming sentence (dynamic with user's data)
+     * @return the proper greetings
+     */
+    private String getGreetings() {
+        String user_info = "";
+
         // Select user info sentence (total tasks/goals for the day)
         if(tasks.size() == 0 && goals.size() == 0) {
             user_info = "relax! You have nothing to do today.";
@@ -114,9 +131,7 @@ public class HomeFragment extends Fragment {
                     + goals.size() + " goal" + (goals.size() > 1 ? "s" : "") + " for today.";
         }
 
-        greeting += user + ",\n" + user_info;
-
-        return greeting;
+        return getDayGreetings() + ",\n" + user_info;
     }
 
     /**
@@ -137,5 +152,6 @@ public class HomeFragment extends Fragment {
         tasks = MainActivity.getUser().getTasks();
         //goals = MainActivity.getUser().getGoals();
         greetingText.setText(getGreetings());
+        refreshLayout.setRefreshing(false);
     }
 }
