@@ -17,6 +17,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent">
         <TextView
+            android:id="@+id/task_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="07:00"
@@ -24,6 +25,7 @@
             android:textStyle="bold"
             android:textColor="@color/grey"/>
         <TextView
+            android:id="@+id/task_time_meridiem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="AM"
@@ -58,6 +60,7 @@
             android:textSize="18sp"/>
 
         <TextView
+            android:id="@+id/task_tags"
             android:textAlignment="textEnd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
