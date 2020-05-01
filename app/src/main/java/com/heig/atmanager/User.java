@@ -325,4 +325,8 @@ public class User {
     }
 
 
+    public void addTag(String tagName){
+        tags.add(tagName);
+    }
+
 }
