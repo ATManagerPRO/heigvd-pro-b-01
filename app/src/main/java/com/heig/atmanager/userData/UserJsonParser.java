@@ -64,6 +64,7 @@ public class UserJsonParser {
     // - Tasks
     private static final String TASK_KEY           = "todos";
     private static final String TASK_ID            = "id";
+    private static final String TASK_TASKLIST_ID   = "todo_list_id";
     private static final String TASK_TITLE         = "title";
     private static final String TASK_DESCRIPTION   = "details";
     private static final String TASK_DONE          = "done";
@@ -104,7 +105,7 @@ public class UserJsonParser {
         loadTodaysGoalsTodo(queue);
 
         // Calendar view
-        //loadAllTasks(queue);
+        loadAllTasks(queue);
 
         // Goals view
         //loadAllGoals(queue);
@@ -200,6 +201,7 @@ public class UserJsonParser {
 
                         // Task data
                         long id                = c.getLong(TASK_ID);
+                        long taskListId        = c.getLong(TASK_TASKLIST_ID);
                         String title           = c.getString(TASK_TITLE);
                         String description     = c.getString(TASK_DESCRIPTION);
                         boolean done           = c.isNull(TASK_DONE_DATE);
@@ -217,6 +219,12 @@ public class UserJsonParser {
                         // Creating the task and adding it to the current user
                         Task task = new Task(id, title, description, done, favorite, dueDate, doneDate, reminderDate);
                         user.addTask(task);
+
+                        if(user.hasTaskList(taskListId)) {
+                            user.getTaskList(taskListId).addTask(task);
+                        } else {
+                            TaskList.defaultList.addTask(task);
+                        }
                     }
 
                     // Update home fragment
@@ -270,6 +278,7 @@ public class UserJsonParser {
                         String dueDateStr    = c.getString(GOAL_DUE_DATE);
 
                         // GoalsTodo data
+                        long goalTodoId    = c.getLong(GOAL_TODO_ID);
                         int quantityDone   = c.isNull(GOAL_TODO_QUANTITY_DONE) ? 0 : c.getInt(GOAL_TODO_QUANTITY_DONE);
                         String doneDateStr = c.getString(GOAL_TODO_DONE_DATE);
 
@@ -292,12 +301,9 @@ public class UserJsonParser {
                         }
 
                         // Create and link the goalTodo to the goal
-                        GoalTodo goalTodo = new GoalTodo(goal_id, quantityDone, Calendar.getInstance().getTime(), dueDate);
+                        GoalTodo goalTodo = new GoalTodo(goalTodoId, goal_id, quantityDone, Calendar.getInstance().getTime(), dueDate);
                         MainActivity.getUser().getGoal(goal_id).addGoalTodo(goalTodo);
                     }
-
-                    // Generate the left over goalTodo
-                    MainActivity.getUser().generateLeftOverGoalTodo();
 
                     // Update home fragment
                     ((HomeFragment) ((MainActivity) mainContext).getSupportFragmentManager()
@@ -339,6 +345,7 @@ public class UserJsonParser {
 
                         // Task data
                         long id                = c.getLong(TASK_ID);
+                        long taskListId        = c.getLong(TASK_TASKLIST_ID);
                         String title           = c.getString(TASK_TITLE);
                         String description     = c.getString(TASK_DESCRIPTION);
                         boolean done           = c.isNull(TASK_DONE_DATE);
@@ -357,6 +364,12 @@ public class UserJsonParser {
                         // Creating the task and adding it to the current user
                         Task task = new Task(id, title, description, done, false, dueDate, doneDate, reminderDate);
                         user.addTask(task);
+
+                        if(user.hasTaskList(taskListId)) {
+                            user.getTaskList(taskListId).addTask(task);
+                        } else {
+                            TaskList.defaultList.addTask(task);
+                        }
                     }
 
                 } catch (final JSONException e) {

@@ -26,6 +26,7 @@ public class TaskList extends DrawerObject implements Serializable {
     public TaskList(long id, String name) {
         super(name);
         this.id = id;
+        this.tasks = new ArrayList<>();
     }
 
     public TaskList(long id, String name, long folder_id) {

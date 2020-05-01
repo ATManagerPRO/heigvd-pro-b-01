@@ -211,8 +211,21 @@ public class User {
         return null;
     }
 
+    public TaskList getTaskList(long tasklist_id) {
+        for(TaskList taskList : taskLists) {
+            if(taskList.getId() == tasklist_id)
+                return taskList;
+        }
+
+        return null;
+    }
+
     public boolean hasGoal(long goal_id) {
         return getGoal(goal_id) != null;
+    }
+
+    public boolean hasTaskList(long tasklist_id) {
+        return getTaskList(tasklist_id) != null;
     }
 
     public ArrayList<GoalTodo> getGoalTodosOfDay(Date day) {
@@ -225,17 +238,7 @@ public class User {
             }
         }
 
-        Log.d(TAG, "getGoalTodosOfDay: goal for today : " + goalTodos.size() + "(out of " + goals.size() + ")");
         return goalTodos;
     }
-
-    public void generateLeftOverGoalTodo() {
-        for(Goal goal : goals) {
-            for(int i = 0; i < goal.getTotalGoalTodo(); ++i) {
-
-            }
-        }
-    }
-
 
 }

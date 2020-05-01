@@ -67,7 +67,7 @@ public class Goal implements Serializable {
 
         // Adding new goalsTodo while it's equal or before the due date
         while(calendar.getTime().equals(dueDate) || calendar.getTime().before(dueDate)) {
-            goals.add(new GoalTodo(id, 0, calendar.getTime(), dueDate));
+            goals.add(new GoalTodo(-1, id, 0, calendar.getTime(), dueDate));
             calendar.add(interval.getCalendarInterval(),1);
         }
 
@@ -166,6 +166,7 @@ public class Goal implements Serializable {
         return id;
     }
 
+    // TEMP : If we don't need to generate the left over goalTodo then we won't need this
     public long getTotalGoalTodo() {
         if(dueDate == null)
             return -1;

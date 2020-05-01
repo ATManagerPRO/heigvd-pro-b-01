@@ -23,12 +23,14 @@ public class GoalTodo {
 
     private static final String TAG = "GoalTodo";
 
+    private long goalTodoId;
     private long goal_id;
     private int quantityDone;
     private Date doneDate;
     private Date dueDate;
 
-    public GoalTodo(long goal_id, int quantityDone, Date doneDate, Date dueDate) {
+    public GoalTodo(long goalTodoId, long goal_id, int quantityDone, Date doneDate, Date dueDate) {
+        this.goalTodoId = goalTodoId;
         this.goal_id = goal_id;
         this.quantityDone = quantityDone;
         this.doneDate = doneDate;
