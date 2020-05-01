@@ -2,6 +2,7 @@ package com.heig.atmanager.tasks;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -104,7 +105,8 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
             @Override
             public void onClick(View view) {
                 // TODO Replace with the real id
-                onShareClicked(1,view);
+
+                onShareClicked(1, ((MainActivity)view.getContext()).user.getUserName(), view);
             }
         });
 
@@ -126,16 +128,18 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         return tasks.size();
     }
 
-    private void onShareClicked(int id, View v) {
+    private void onShareClicked(int id, String userName, View v) {
 
         Uri.Builder builder = new Uri.Builder();
 
         builder.scheme("https")
                 .authority("atmanager.com")
                 //Need to add the real id
-                .appendQueryParameter("taskId", String.valueOf(id));
+                .appendQueryParameter("taskId", String.valueOf(id))
+                .appendQueryParameter("userName", userName);
 
 
+        Log.d(TAG, "onShareClicked : " + builder.build().toString());
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TEXT, builder.build().toString());
