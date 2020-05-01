@@ -202,29 +202,7 @@ public class AddGoalFragment extends Fragment {
                 ((MainActivity) getActivity()).getUser().addGoal(new Goal(-1, unit, quantity, intervalNumber, interval, selectedDate, Calendar.getInstance().getTime()));
 
                 goals = ((MainActivity) getContext()).getUser().getGoals();
-
-                // Displaying the generating GoalTodo from the goals by intervals
-                ArrayList<Goal> todayGoals = new ArrayList<>();
-                ArrayList<Goal> weekGoals  = new ArrayList<>();
-                ArrayList<Goal> monthGoals = new ArrayList<>();
-                for(Goal goal : goals) {
-                    switch(goal.getInterval()) {
-                        case DAY:
-                            todayGoals.add(goal);
-                            break;
-                        case WEEK:
-                            weekGoals.add(goal);
-                            break;
-                        case MONTH:
-                            monthGoals.add(goal);
-                            break;
-                    }
-                }
-                // Goals feeds setup
-
-                ((GoalLineFeedAdapter) goalsTodayRecyclerView.getAdapter()).setGoals(todayGoals);
-                ((GoalLineFeedAdapter) goalsWeekRecyclerView.getAdapter()).setGoals(weekGoals);
-                ((GoalLineFeedAdapter) goalsMonthRecyclerView.getAdapter()).setGoals(monthGoals);
+                
 
                 getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
                 getActivity().findViewById(R.id.dock).setVisibility(View.VISIBLE);
