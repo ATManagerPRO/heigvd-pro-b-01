@@ -22,6 +22,7 @@ import android.widget.ExpandableListView;
 
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -31,6 +32,7 @@ import com.heig.atmanager.addTaskGoal.AddGoalFragment;
 import com.heig.atmanager.addTaskGoal.AddTaskFragment;
 import com.heig.atmanager.calendar.CalendarFragment;
 import com.heig.atmanager.goals.GoalsFragment;
+import com.heig.atmanager.goals.GoalsTodoFragment;
 import com.heig.atmanager.stats.StatsFragment;
 import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.taskLists.TaskListFragment;
@@ -54,8 +56,9 @@ public class MainActivity extends AppCompatActivity {
     private ExpandableListView expandableListView;
     private ExpandableListAdapter adapter;
 
-
+    public static String previousFragment = null;
     private GoogleSignInClient mGoogleSignInClient;
+    private GoogleSignInAccount userAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,10 +73,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        userAccount         = GoogleSignIn.getLastSignedInAccount(this);
 
-
-        // To get this variable from the fragments ((MainActivity)getActivity()).dummyUser
-        user = new User("Joe", "GoogleToken");
+        user = new User(userAccount.getDisplayName(), userAccount.getIdToken());
 
         fab = findViewById(R.id.fab);
         fabAddGoal = findViewById(R.id.fab_add_goal);
@@ -267,5 +269,64 @@ public class MainActivity extends AppCompatActivity {
         mGoogleSignInClient.signOut();
         Intent intent = new Intent(MainActivity.this,SignInActivity.class);
         startActivity(intent);
+    }
+
+    /**
+     * Enables the back button instead of the drawer menu
+     *
+     * @param enable : back button status
+     */
+    public void enableBackButton(boolean enable) {
+
+        if(enable) {
+            // Disable slide-to-open drawer navigation
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            // Hide drawer icon
+            drawerToggle.setDrawerIndicatorEnabled(false);
+            // Show back arrow icon
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        } else {
+            // Enable slide-to-open drawer navigation
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+
+            // Create and sync drawer toggle
+            drawerToggle = new ActionBarDrawerToggle (this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
+            drawerLayout.addDrawerListener(drawerToggle);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            drawerToggle.syncState();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        displayPreviousFragment(previousFragment);
+    }
+
+    public void displayPreviousFragment(String previousFragment)
+    {
+        //creating fragment object
+        Fragment fragment = null;
+
+        //initializing the fragment object which is selected
+        switch (previousFragment)
+        {
+            case HomeFragment.FRAG_HOME_ID :
+                fragment = new HomeFragment();
+                break;
+            case GoalsFragment.FRAG_GOALS_ID :
+                fragment = new GoalsFragment();
+                break;
+            case GoalsTodoFragment.FRAG_GOALS_TODO_ID :
+                fragment = new GoalsTodoFragment();
+                break;
+            case CalendarFragment.FRAG_CALENDAR_ID :
+                fragment = new CalendarFragment();
+                break;
+        }
+
+        //replacing the fragment
+        if (fragment != null) {
+            loadFragment(fragment);
+        }
     }
 }

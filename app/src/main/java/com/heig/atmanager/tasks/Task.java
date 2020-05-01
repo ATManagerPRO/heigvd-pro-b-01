@@ -33,7 +33,7 @@ public class Task {
     }
 
     public Task(String title, String description, Date dueDate, TaskList taskList) {
-        this(title, description, false, false, dueDate, null, null, TaskList.defaultList);
+        this(title, description, false, false, dueDate, null, null, taskList);
     }
 
     public Task(String title, String description, boolean done, boolean favorite, Date dueDate, Date doneDate, Date reminderDate, TaskList tasklist) {
@@ -81,5 +81,13 @@ public class Task {
 
     public boolean isDone() {
         return done;
+    }
+
+    public void setTasklist(TaskList tasklist){
+        this.tasklist = tasklist;
+    }
+
+    public TaskList getTasklist() {
+        return tasklist;
     }
 }

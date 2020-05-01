@@ -20,24 +20,14 @@ public class TaskList extends DrawerObject implements Serializable {
     public static TaskList defaultList = new TaskList("My Tasks");
 
     private Folder parent;
-    private ArrayList<Task> tasks;
 
     public TaskList(String name){
         super(name);
-        tasks = new ArrayList<>();
     }
 
     public TaskList(String name, Folder parent) {
         this(name);
         this.parent = parent;
-    }
-
-    public void addTask(Task task) {
-        tasks.add(task);
-    }
-
-    public ArrayList<Task> getTasks() {
-        return tasks;
     }
 
     public void setParent(Folder folder) {

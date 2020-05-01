@@ -3,6 +3,7 @@ package com.heig.atmanager.goals;
 import com.heig.atmanager.Interval;
 import com.heig.atmanager.Utils;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -22,10 +23,16 @@ import java.util.Date;
  * The app will then generate the goals (cf GoalTodo) for the user to interact with.
  *
  */
-public class Goal {
+public class Goal implements Serializable {
+
+    // Bundle keys for goalTodo header
+    public static final String TITLE_KEY       = "goal_title";
+    public static final String INTERVAL_KEY    = "goal_interval";
+    public static final String DATE_KEY        = "goal_date";
+    public static final String SERIAL_GOAL_KEY = "goal_serial";
 
     private static final String TAG = "Goal";
-    
+
     private String unit;
     private int quantity;
     private int intervalNumber;
@@ -53,11 +60,9 @@ public class Goal {
         ArrayList<GoalTodo> goals = new ArrayList<>();
 
         Calendar calendar = getCalendarInstance();
-        Calendar calendarDueDate = Calendar.getInstance();
-        calendarDueDate.setTime(dueDate);
 
         // Adding new goalsTodo while it's equal or before the due date
-        while(calendar.equals(calendarDueDate) || calendar.before(calendarDueDate)) {
+        while(calendar.getTime().equals(dueDate) || calendar.getTime().before(dueDate)) {
             goals.add(new GoalTodo(this, 0, calendar.getTime(), dueDate));
             calendar.add(interval.getCalendarInterval(),1);
         }
@@ -136,6 +141,17 @@ public class Goal {
         return goalTodos;
     }
 
+    public Date getDueDate() {
+        return dueDate;
+    }
 
+    public double getOverallPercentage() {
+        double percentage = 0;
+
+        for(GoalTodo goalTodo : goalTodos)
+            percentage += goalTodo.getQuantityDone();
+
+        return percentage / goalTodos.size();
+    }
 
 }
