@@ -100,6 +100,9 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         holder.timeHourText.setText(hours + minutes);
         holder.timeMeridiemText.setText(meridiem);
 
+        // Tags
+        // TODO : not added when creating a Task
+
         // Expand / retract details
         holder.expandBtn.setOnClickListener(new View.OnClickListener() {
             @Override
