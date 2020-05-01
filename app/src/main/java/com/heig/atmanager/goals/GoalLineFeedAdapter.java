@@ -113,4 +113,9 @@ public class GoalLineFeedAdapter extends RecyclerView.Adapter<GoalLineFeedAdapte
     public int getItemCount() {
         return goals.size();
     }
+
+    public void setGoals(ArrayList<Goal> goals){
+        this.goals = goals;
+        notifyDataSetChanged();
+    }
 }

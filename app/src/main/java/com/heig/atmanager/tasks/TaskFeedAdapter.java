@@ -145,4 +145,11 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         intent.putExtra(Intent.EXTRA_TEXT, builder.build().toString());
         v.getContext().startActivity(Intent.createChooser(intent, "Share Task"));
     }
+
+    public  void  setTasks(ArrayList<Task> tasks){
+        this.tasks = tasks;
+        notifyDataSetChanged();
+    }
+
+
 }

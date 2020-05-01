@@ -6,14 +6,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
 import com.heig.atmanager.Utils;
 import com.heig.atmanager.goals.Goal;
+import com.heig.atmanager.tasks.Task;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Author : Stephane
@@ -25,6 +30,7 @@ public class TaskListFragment extends Fragment {
 
     private TextView title;
     private RecyclerView tasksRv;
+    private ArrayList<Task> tasks;
 
     @Nullable
     @Override
@@ -32,7 +38,7 @@ public class TaskListFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_tasks, container, false);
 
         // XML
-        title   = (TextView) v.findViewById(R.id.tasklist_title);
+        title = (TextView) v.findViewById(R.id.tasklist_title);
         tasksRv = (RecyclerView) v.findViewById(R.id.tasks_rv);
 
         // Opened tasklist
@@ -40,7 +46,16 @@ public class TaskListFragment extends Fragment {
 
         // Setup the data into the XML (new thread ?)
         title.setText(taskList.getName());
-        Utils.setupTasksFeed(v, tasksRv, taskList.getTasks());
+
+        tasks = new ArrayList<Task>();
+
+        for (Task task : (((MainActivity) getContext()).getUser().getTasks())) {
+            if (task.getTasklist().equals(taskList)) {
+                tasks.add(task);
+            }
+        }
+
+        Utils.setupTasksFeed(v, tasksRv, tasks);
 
         return v;
     }

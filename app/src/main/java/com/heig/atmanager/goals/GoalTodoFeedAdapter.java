@@ -185,4 +185,9 @@ public class GoalTodoFeedAdapter extends RecyclerView.Adapter<GoalTodoFeedAdapte
     public int getItemCount() {
         return goals.size();
     }
+
+    public void setGoals(ArrayList<GoalTodo> goals){
+        this.goals = goals;
+        notifyDataSetChanged();
+    }
 }
