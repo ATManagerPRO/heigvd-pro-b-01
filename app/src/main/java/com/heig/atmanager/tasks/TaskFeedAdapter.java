@@ -11,6 +11,7 @@ import android.widget.ToggleButton;
 
 import com.heig.atmanager.R;
 import com.heig.atmanager.Utils;
+import com.heig.atmanager.taskLists.TaskList;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -85,7 +86,12 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         // - replace the contents of the view with that element
         holder.title.setText(tasks.get(position).getTitle());
         holder.description.setText(tasks.get(position).getDescription());
-        holder.taskListText.setText(tasks.get(position).getTasklist().getName());
+        // Tasklist
+        if(tasks.get(position).getTasklist() != null) {
+            holder.taskListText.setText(tasks.get(position).getTasklist().getName());
+        } else {
+            holder.taskListText.setText(TaskList.defaultList.getName());
+        }
         // Time
         String hours    = "";
         String minutes  = "";
