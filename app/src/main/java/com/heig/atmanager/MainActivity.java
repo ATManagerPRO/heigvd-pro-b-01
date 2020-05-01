@@ -3,6 +3,7 @@ package com.heig.atmanager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,6 +37,7 @@ import com.heig.atmanager.taskLists.TaskListFragment;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity" ;
     public static User user;
 
     private BottomNavigationView dock;
@@ -69,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        userAccount         = GoogleSignIn.getLastSignedInAccount(this);
+        userAccount = GoogleSignIn.getLastSignedInAccount(this);
 
         user = new User(userAccount.getDisplayName(), userAccount.getIdToken());
 
@@ -77,7 +79,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String action = intent.getAction();
         Uri data = intent.getData();
-
+        if (action != null && action.equals(Intent.ACTION_VIEW)) {
+            openDeepLink(data);
+        }
         fab = findViewById(R.id.fab);
         fabAddGoal = findViewById(R.id.fab_add_goal);
         fabAddTask = findViewById(R.id.fab_add_task);
@@ -202,8 +206,8 @@ public class MainActivity extends AppCompatActivity {
      */
     private void updateDrawerItems() {
         final ArrayList<TaskList> standaloneTaskLists = new ArrayList<>();
-        for(TaskList taskList : user.getTaskLists())
-            if(taskList.isStandalone())
+        for (TaskList taskList : user.getTaskLists())
+            if (taskList.isStandalone())
                 standaloneTaskLists.add(taskList);
 
         adapter = new DrawerListAdapter(this, standaloneTaskLists, user.getFolders());
@@ -251,12 +255,13 @@ public class MainActivity extends AppCompatActivity {
     public static User getUser() {
         return user;
     }
+
     /**
      * Sign out google account
      */
-    private void signOut(){
+    private void signOut() {
         mGoogleSignInClient.signOut();
-        Intent intent = new Intent(MainActivity.this,SignInActivity.class);
+        Intent intent = new Intent(MainActivity.this, SignInActivity.class);
         startActivity(intent);
     }
 
@@ -267,7 +272,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void enableBackButton(boolean enable) {
 
-        if(enable) {
+        if (enable) {
             // Disable slide-to-open drawer navigation
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             // Hide drawer icon
@@ -279,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
 
             // Create and sync drawer toggle
-            drawerToggle = new ActionBarDrawerToggle (this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
+            drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
             drawerLayout.addDrawerListener(drawerToggle);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             drawerToggle.syncState();
@@ -291,24 +296,22 @@ public class MainActivity extends AppCompatActivity {
         displayPreviousFragment(previousFragment);
     }
 
-    public void displayPreviousFragment(String previousFragment)
-    {
+    public void displayPreviousFragment(String previousFragment) {
         //creating fragment object
         Fragment fragment = null;
 
         //initializing the fragment object which is selected
-        switch (previousFragment)
-        {
-            case HomeFragment.FRAG_HOME_ID :
+        switch (previousFragment) {
+            case HomeFragment.FRAG_HOME_ID:
                 fragment = new HomeFragment();
                 break;
-            case GoalsFragment.FRAG_GOALS_ID :
+            case GoalsFragment.FRAG_GOALS_ID:
                 fragment = new GoalsFragment();
                 break;
-            case GoalsTodoFragment.FRAG_GOALS_TODO_ID :
+            case GoalsTodoFragment.FRAG_GOALS_TODO_ID:
                 fragment = new GoalsTodoFragment();
                 break;
-            case CalendarFragment.FRAG_CALENDAR_ID :
+            case CalendarFragment.FRAG_CALENDAR_ID:
                 fragment = new CalendarFragment();
                 break;
         }
@@ -317,5 +320,14 @@ public class MainActivity extends AppCompatActivity {
         if (fragment != null) {
             loadFragment(fragment);
         }
+    }
+
+    void openDeepLink(Uri data) {
+
+        int taskId = Integer.parseInt(data.getQueryParameter("taskId"));
+        String userName = data.getQueryParameter("userName");
+        InviteDialog inviteDialog = InviteDialog.newInsance(userName, taskId);
+        inviteDialog.show(getSupportFragmentManager(), "invited");
+        // add this task as mine
     }
 }
