@@ -86,6 +86,7 @@ public class User {
         addTask(new Task("Task test10", "this is a test", dueDateGoal4, tl4));
         addTask(new Task("Task test11", "this is a test", dueDateGoal4, tl5));
         addTask(new Task("Task test12", "this is a test", dueDateGoal4, tl5));
+        addTask(new Task("Task test13", "this is a test", Calendar.getInstance().getTime(), tl2));
         // Tags
         this.setTags(new ArrayList<>(Arrays.asList("Urgent", "Normal")));
 

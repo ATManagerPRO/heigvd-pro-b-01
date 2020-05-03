@@ -88,30 +88,13 @@ public class StatsFragment  extends Fragment {
             }
         });
 
-        //Charts
+        //init user and stuff
         user = MainActivity.getUser();
 
         //TODO : get this by values.colors, not working for some reason
         bgColor = "#F1F1F1";
 
-        pieChartTasksView = v.findViewById(R.id.pie_chart_tasks);
-        APIlib.getInstance().setActiveAnyChartView(pieChartTasksView);
-        pieChartTasks = AnyChart.pie();
-        pieChartTasksView.setBackgroundColor(bgColor);
-        pieChartTasksView.setChart(pieChartTasks);
-
-        lineChartTasksView = v.findViewById(R.id.line_chart_tasks);
-        APIlib.getInstance().setActiveAnyChartView(lineChartTasksView);
-        lineChartTasks = AnyChart.line();
-        lineChartTasksView.setProgressBar(v.findViewById(R.id.progress_bar));
-        lineChartTasksView.setBackgroundColor(bgColor);
-        lineChartTasksView.setChart(lineChartTasks);
-
-        pieChartGoalsView = v.findViewById(R.id.pie_chart_goals);
-        APIlib.getInstance().setActiveAnyChartView(pieChartGoalsView);
-        pieChartGoals = AnyChart.pie();
-        pieChartGoalsView.setBackgroundColor(bgColor);
-        pieChartGoalsView.setChart(pieChartGoals);
+        initCharts(v);
 
         return v;
     }
@@ -120,7 +103,7 @@ public class StatsFragment  extends Fragment {
 
         String lineChartLegend = "";
 
-        //TODO : Select goals based on Interval
+        //keep interval tasks
         switch(interval){
             case DAY:
                 tasks = user.getTasksForDay(new Date());
@@ -139,16 +122,19 @@ public class StatsFragment  extends Fragment {
                 lineChartLegend = "Months";
                 break;
         }
-        goals = user.getGoals();
 
-        if(tasks != null) { //TODO : Something with no tasks
-            makePieChartTasks(interval);
-            makeLineChartTasks(interval,lineChartLegend);
+
+        //keep interval goals
+        goals = new ArrayList<>();
+        for(Goal g : user.getGoals()){
+            if(g.getInterval() == interval)
+                goals.add(g);
         }
 
-        if(goals != null) { //TODO : Something with no goals
-            makePieChartGoals(interval);
-        }
+        //make charts
+        makePieChartTasks(interval);
+        makeLineChartTasks(interval,lineChartLegend);
+        makePieChartGoals(interval);
     }
 
     private void makePieChartTasks(Interval interval){
@@ -169,10 +155,7 @@ public class StatsFragment  extends Fragment {
         data.add(new ValueDataEntry("Done", tasksDone));
         data.add(new ValueDataEntry("Todo", tasksToDo));
 
-        pieChartTasks.palette(new String[]{"#3F58FF","#FF2E2E"}); //colors
         pieChartTasks.data(data); //data
-        pieChartTasks.title(Task.class.getSimpleName()+ "s"); //title
-        pieChartTasks.background().fill(bgColor);
     }
 
     private void makeLineChartTasks(Interval interval,String lineChartLegend){
@@ -239,10 +222,38 @@ public class StatsFragment  extends Fragment {
         data.add(new ValueDataEntry("Done", goalsDone));
         data.add(new ValueDataEntry("Todo", goalsToDo));
 
-        pieChartGoals.palette(new String[]{"#80EB5A","#FF9745"}); //colors
         pieChartGoals.data(data); //data
+    }
+
+    private void initCharts(View v){
+
+        //PieChartTasks
+        pieChartTasksView = v.findViewById(R.id.pie_chart_tasks);
+        APIlib.getInstance().setActiveAnyChartView(pieChartTasksView);
+        pieChartTasks = AnyChart.pie();
+        pieChartTasksView.setBackgroundColor(bgColor);
+        pieChartTasksView.setChart(pieChartTasks);
+        pieChartTasks.palette(new String[]{"#3F58FF","#FF2E2E"}); //colors
+        pieChartTasks.title(Task.class.getSimpleName()+ "s"); //title
+        pieChartTasks.background().fill(bgColor); //bgcolor
+
+        //LineChartTasks
+        lineChartTasksView = v.findViewById(R.id.line_chart_tasks);
+        APIlib.getInstance().setActiveAnyChartView(lineChartTasksView);
+        lineChartTasks = AnyChart.line();
+        lineChartTasksView.setProgressBar(v.findViewById(R.id.progress_bar));
+        lineChartTasksView.setBackgroundColor(bgColor);
+        lineChartTasksView.setChart(lineChartTasks);
+
+        //PieChartGoals
+        pieChartGoalsView = v.findViewById(R.id.pie_chart_goals);
+        APIlib.getInstance().setActiveAnyChartView(pieChartGoalsView);
+        pieChartGoals = AnyChart.pie();
+        pieChartGoalsView.setBackgroundColor(bgColor);
+        pieChartGoalsView.setChart(pieChartGoals);
+        pieChartGoals.palette(new String[]{"#80EB5A","#FF9745"}); //Colors
         pieChartGoals.title(Goal.class.getSimpleName()+ "s"); //title
-        pieChartGoals.background().fill(bgColor);
+        pieChartGoals.background().fill(bgColor); //bgColor
     }
 
 
