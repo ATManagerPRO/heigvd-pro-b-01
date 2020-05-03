@@ -337,7 +337,8 @@ public class User {
 
         for(Goal g : goals){
             for(GoalTodo gt : g.getGoalTodos()){
-                if(Arrays.equals(Utils.getDayWeekMonthYear(gt.getDoneDate()), Utils.getDayWeekMonthYear(currentDate)))
+                if(Arrays.equals(Utils.getDayWeekMonthYear(gt.getDoneDate()), Utils.getDayWeekMonthYear(currentDate))
+                        && g.getInterval() == Interval.DAY)
                     result.add(gt);
             }
         }
@@ -353,7 +354,8 @@ public class User {
 
         for(Goal g : goals){
             for(GoalTodo gt : g.getGoalTodos()){
-                if(Arrays.equals(Utils.getWeekMonthYear(gt.getDoneDate()), Utils.getWeekMonthYear(currentDate)))
+                if(Arrays.equals(Utils.getWeekMonthYear(gt.getDoneDate()), Utils.getWeekMonthYear(currentDate))
+                        && g.getInterval() == Interval.WEEK)
                     result.add(gt);
             }
         }
@@ -369,7 +371,8 @@ public class User {
 
         for(Goal g : goals){
             for(GoalTodo gt : g.getGoalTodos()){
-                if(Arrays.equals(Utils.getMonthYear(gt.getDoneDate()), Utils.getMonthYear(currentDate)))
+                if(Arrays.equals(Utils.getMonthYear(gt.getDoneDate()), Utils.getMonthYear(currentDate))
+                    && g.getInterval() == Interval.MONTH)
                     result.add(gt);
             }
         }
@@ -385,7 +388,7 @@ public class User {
 
         for(Goal g : goals){
             for(GoalTodo gt : g.getGoalTodos()){
-                if(Utils.getYear(currentDate) == Utils.getYear(gt.getDoneDate()))
+                if(Utils.getYear(currentDate) == Utils.getYear(gt.getDoneDate()) && g.getInterval() == Interval.YEAR)
                     result.add(gt);
             }
         }
