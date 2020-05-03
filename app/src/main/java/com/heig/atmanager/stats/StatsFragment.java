@@ -1,5 +1,6 @@
 package com.heig.atmanager.stats;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,9 +45,6 @@ import java.util.Objects;
  */
 public class StatsFragment  extends Fragment {
 
-    private Spinner menu;
-    private static final String[] items = new String[]{"Today","This Week","This Month","This Year"};
-
     private AnyChartView pieChartTasksView;
     private AnyChartView lineChartTasksView;
     private AnyChartView pieChartGoalsView;
@@ -61,14 +59,22 @@ public class StatsFragment  extends Fragment {
     private ArrayList<Task> tasks;
     private ArrayList<Goal> goals;
 
+
+    @SuppressLint("ResourceType")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_stats, container, false);
 
+        String[] items = new String[]{getResources().getString(R.string.goals_today),
+                getResources().getString(R.string.goals_week),
+                getResources().getString(R.string.goals_month),
+                getResources().getString(R.string.goals_year)};
+
         //DropDown menu
-        menu = v.findViewById(R.id.menuXML);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(Objects.requireNonNull(this.getActivity()), android.R.layout.simple_spinner_dropdown_item, items);
+        Spinner menu = v.findViewById(R.id.menuXML);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(Objects.requireNonNull(this.getActivity()),
+                                                    android.R.layout.simple_spinner_dropdown_item, items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         menu.setAdapter(adapter);
         menu.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
@@ -88,12 +94,9 @@ public class StatsFragment  extends Fragment {
             }
         });
 
-        //init user and stuff
+        //init user and charts
         user = MainActivity.getUser();
-
-        //TODO : get this by values.colors, not working for some reason
-        bgColor = "#F1F1F1";
-
+        bgColor = "#" + getResources().getString(R.color.colorPrimary).substring(3);
         initCharts(v);
 
         return v;
@@ -123,9 +126,9 @@ public class StatsFragment  extends Fragment {
                 break;
         }
 
-
-        //keep interval goals
         goals = new ArrayList<>();
+
+        //TODO
         for(Goal g : user.getGoals()){
             if(g.getInterval() == interval)
                 goals.add(g);
@@ -151,11 +154,14 @@ public class StatsFragment  extends Fragment {
                 ++tasksToDo;
         }
 
-        //since all tasks are not done, im adding 1 just to see colors TODO: remove 1
-        data.add(new ValueDataEntry("Done", tasksDone));
-        data.add(new ValueDataEntry("Todo", tasksToDo));
+        if(tasksDone != 0 || tasksToDo != 0) {
+            data.add(new ValueDataEntry("Done", tasksDone));
+            data.add(new ValueDataEntry("Todo", tasksToDo));
+            pieChartTasks.data(data);
+        } else {
+            pieChartTasks.data((com.anychart.data.View) null);
+        }
 
-        pieChartTasks.data(data); //data
     }
 
     private void makeLineChartTasks(Interval interval,String lineChartLegend){
@@ -211,18 +217,22 @@ public class StatsFragment  extends Fragment {
         APIlib.getInstance().setActiveAnyChartView(pieChartGoalsView);
 
         List<DataEntry> data = new ArrayList<>();
-        int goalsDone = 0, goalsToDo = 0;
+        float goalsDone = 0, goalsToDo = 0;
 
         for(Goal g : goals){
             double p = g.getOverallPercentage();
-            goalsDone += p * 100;
-            goalsToDo += (1-p) * 100;
+            goalsDone += p;
+            goalsToDo += 100-p;
         }
 
-        data.add(new ValueDataEntry("Done", goalsDone));
-        data.add(new ValueDataEntry("Todo", goalsToDo));
+        if(goalsDone != 0 || goalsToDo != 0){
+            data.add(new ValueDataEntry("Done", goalsDone));
+            data.add(new ValueDataEntry("Todo", goalsToDo));
+            pieChartGoals.data(data);
+        } else {
+            pieChartGoals.data((com.anychart.data.View) null);
+        }
 
-        pieChartGoals.data(data); //data
     }
 
     private void initCharts(View v){
@@ -254,6 +264,8 @@ public class StatsFragment  extends Fragment {
         pieChartGoals.palette(new String[]{"#80EB5A","#FF9745"}); //Colors
         pieChartGoals.title(Goal.class.getSimpleName()+ "s"); //title
         pieChartGoals.background().fill(bgColor); //bgColor
+        pieChartGoals.noData().label().enabled(true);
+        pieChartGoals.noData().label().text("Could not retrieve any goals!");
     }
 
 

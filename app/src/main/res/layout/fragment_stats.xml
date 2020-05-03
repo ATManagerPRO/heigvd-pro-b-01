@@ -23,6 +23,10 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <androidx.legacy.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
             <com.anychart.AnyChartView
                 android:id="@+id/pie_chart_tasks"
                 android:layout_width="match_parent"
