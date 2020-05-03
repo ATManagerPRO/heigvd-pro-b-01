@@ -20,21 +20,16 @@ import com.anychart.chart.common.dataentry.DataEntry;
 import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.anychart.charts.Cartesian;
 import com.anychart.charts.Pie;
-import com.anychart.core.cartesian.series.Line;
-import com.anychart.data.Mapping;
-import com.anychart.data.Set;
-import com.anychart.enums.Anchor;
-import com.anychart.enums.MarkerType;
-import com.anychart.enums.TooltipPositionMode;
-import com.anychart.graphics.vector.Stroke;
 import com.heig.atmanager.Interval;
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
 import com.heig.atmanager.User;
+import com.heig.atmanager.Utils;
 import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.tasks.Task;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -46,10 +41,10 @@ import java.util.Objects;
 public class StatsFragment  extends Fragment {
 
     private AnyChartView pieChartTasksView;
-    private AnyChartView lineChartTasksView;
+    private AnyChartView columnChartTasksView;
     private AnyChartView pieChartGoalsView;
 
-    private Cartesian lineChartTasks;
+    private Cartesian columnChartTasks;
     private Pie pieChartTasks;
     private Pie pieChartGoals;
 
@@ -102,6 +97,10 @@ public class StatsFragment  extends Fragment {
         return v;
     }
 
+    /**
+     * Rafraichi les graphes
+     * @param interval temps
+     */
     private void makeCharts(Interval interval){
 
         String lineChartLegend = "";
@@ -128,7 +127,7 @@ public class StatsFragment  extends Fragment {
 
         goals = new ArrayList<>();
 
-        //TODO
+        //TODO : select only this weeks/month/day GoalTodo
         for(Goal g : user.getGoals()){
             if(g.getInterval() == interval)
                 goals.add(g);
@@ -136,16 +135,22 @@ public class StatsFragment  extends Fragment {
 
         //make charts
         makePieChartTasks(interval);
-        makeLineChartTasks(interval,lineChartLegend);
+        makeColumnChartTasks(interval,lineChartLegend);
         makePieChartGoals(interval);
     }
 
+    /**
+     * Pie chart for tasks
+     * @param interval period
+     */
     private void makePieChartTasks(Interval interval){
 
         APIlib.getInstance().setActiveAnyChartView(pieChartTasksView);
 
         List<DataEntry> data = new ArrayList<>();
         int tasksDone = 0, tasksToDo = 0;
+
+        pieChartTasks.title("Last " + Utils.firstLetterCapped(interval.name()) + "´s " + Task.class.getSimpleName() + "s"); //title
 
         for(Task t : tasks){
             if(t.isDone())
@@ -164,60 +169,102 @@ public class StatsFragment  extends Fragment {
 
     }
 
-    private void makeLineChartTasks(Interval interval,String lineChartLegend){
+    /**
+     * Will setup column task graph according to period
+     * @param interval period
+     * @param lineChartLegend unité de temps selon l'interval choisi
+     */
+    private void makeColumnChartTasks(Interval interval, String lineChartLegend){
 
-        APIlib.getInstance().setActiveAnyChartView(lineChartTasksView);
+        APIlib.getInstance().setActiveAnyChartView(columnChartTasksView);
 
-        lineChartTasks.animation(true);
+        columnChartTasks.title("Tasks done the past " + Utils.firstLetterCapped(interval.name()));
+        columnChartTasks.xAxis(0).title(lineChartLegend + " ago");
 
-        lineChartTasks.padding(10d, 20d, 5d, 20d);
+        List<DataEntry> data = calculateValuesLineChart(interval);
 
-        lineChartTasks.crosshair().enabled(true);
-        lineChartTasks.crosshair()
-                .yLabel(true)
-                .yStroke((Stroke) null, null, null, (String) null, (String) null);
+        columnChartTasks.removeSeries(0);
+        columnChartTasks.column(data);
 
-        lineChartTasks.tooltip().positionMode(TooltipPositionMode.POINT);
-
-        lineChartTasks.title("Tasks done the past " + interval.name().toLowerCase());
-
-        //TODO : set title and stuff accordingly to interval
-        lineChartTasks.xAxis(0).title(lineChartLegend);
-        lineChartTasks.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
-
-        List<DataEntry> seriesData = new ArrayList<>();
-        seriesData.add(new ValueDataEntry(1,1));
-        seriesData.add(new ValueDataEntry(2,2));
-        seriesData.add(new ValueDataEntry(3,3));
-
-        Set set = Set.instantiate();
-        set.data(seriesData);
-        Mapping series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
-
-        Line series1 = lineChartTasks.line(series1Mapping);
-        series1.name("Brandy");
-        series1.hovered().markers().enabled(true);
-        series1.hovered().markers()
-                .type(MarkerType.CIRCLE)
-                .size(4d);
-        series1.tooltip()
-                .position("right")
-                .anchor(Anchor.LEFT_CENTER)
-                .offsetX(5d)
-                .offsetY(5d);
-
-        lineChartTasks.legend().enabled(false);
-        lineChartTasks.legend().fontSize(13d);
-        lineChartTasks.legend().padding(0d, 0d, 10d, 0d);
-        lineChartTasks.background().fill(bgColor);
     }
 
+    /**
+     * Calculates data according to period for column chart
+     * @param interval period
+     * @return table of values x y
+     */
+    private List<DataEntry> calculateValuesLineChart(Interval interval) {
+        List<DataEntry> result = new ArrayList<>();
+
+        int[] values = new int[0];
+
+        switch(interval) {
+
+            case DAY:
+                values = new int[24];
+                getDoneTasks(values,Calendar.HOUR_OF_DAY);
+                break;
+
+            case WEEK:
+                values = new int[7];
+                getDoneTasks(values,Calendar.DAY_OF_WEEK);
+                break;
+
+            case MONTH:
+                values = new int[31];
+                getDoneTasks(values,Calendar.DAY_OF_MONTH);
+                break;
+
+            case YEAR:
+                values = new int[12];
+                getDoneTasks(values,Calendar.MONTH);
+                break;
+        }
+
+
+        for(int i = 0; i < values.length; ++i){
+            result.add(new ValueDataEntry(i,values[i]));
+        }
+
+        return result;
+    }
+
+    /**
+     * Calculates what tasks where done and where
+     * @param values table of data
+     * @param calendarInterval Interval used by the calendar
+     */
+    private void getDoneTasks(int[] values, int calendarInterval){
+
+        Calendar current = Calendar.getInstance();
+        int currentPeriod = current.get(calendarInterval);
+
+        for (Task t : tasks) {
+            if (t.isDone()) {
+                //TODO : use t.getDoneDate when once it's corretly working
+                current.setTime(t.getDoneDate() == null ? new Date() : t.getDoneDate());
+                int taskPeriod = current.get(calendarInterval);
+                if (taskPeriod > currentPeriod)
+                    ++values[values.length + currentPeriod - taskPeriod];
+                else
+                    ++values[currentPeriod - taskPeriod];
+            }
+        }
+    }
+
+    /**
+     * Data change of Pie chart for goals. Called every time we choose a period
+     * @param interval period
+     */
     private void makePieChartGoals(Interval interval){
 
         APIlib.getInstance().setActiveAnyChartView(pieChartGoalsView);
 
         List<DataEntry> data = new ArrayList<>();
         float goalsDone = 0, goalsToDo = 0;
+        String title = interval.getAdverb().toLowerCase();
+
+        pieChartGoals.title(Utils.firstLetterCapped(title) + " " + Goal.class.getSimpleName() + "s");
 
         for(Goal g : goals){
             double p = g.getOverallPercentage();
@@ -235,6 +282,11 @@ public class StatsFragment  extends Fragment {
 
     }
 
+    /**
+     * Initiations of graphics views, including graphics themselves, for what is not changing
+     * according to period
+     * @param v View
+     */
     private void initCharts(View v){
 
         //PieChartTasks
@@ -244,16 +296,25 @@ public class StatsFragment  extends Fragment {
         pieChartTasksView.setBackgroundColor(bgColor);
         pieChartTasksView.setChart(pieChartTasks);
         pieChartTasks.palette(new String[]{"#3F58FF","#FF2E2E"}); //colors
-        pieChartTasks.title(Task.class.getSimpleName()+ "s"); //title
         pieChartTasks.background().fill(bgColor); //bgcolor
+        pieChartTasks.noData().label().enabled(true);
+        pieChartTasks.noData().label().text("Could not retrieve any tasks!");
+        pieChartTasks.animation(true);
 
         //LineChartTasks
-        lineChartTasksView = v.findViewById(R.id.line_chart_tasks);
-        APIlib.getInstance().setActiveAnyChartView(lineChartTasksView);
-        lineChartTasks = AnyChart.line();
-        lineChartTasksView.setProgressBar(v.findViewById(R.id.progress_bar));
-        lineChartTasksView.setBackgroundColor(bgColor);
-        lineChartTasksView.setChart(lineChartTasks);
+        columnChartTasksView = v.findViewById(R.id.line_chart_tasks);
+        APIlib.getInstance().setActiveAnyChartView(columnChartTasksView);
+        columnChartTasks = AnyChart.column();
+        columnChartTasksView.setProgressBar(v.findViewById(R.id.progress_bar));
+        columnChartTasksView.setBackgroundColor(bgColor);
+        columnChartTasksView.setChart(columnChartTasks);
+        columnChartTasks.noData().label().enabled(true);
+        columnChartTasks.noData().label().text("Could not retrieve any tasks!");
+        columnChartTasks.background().fill(bgColor);
+        columnChartTasks.animation(true);
+        columnChartTasks.yScale().minimum(0);
+        columnChartTasks.yScale().ticks().allowFractional(false);
+        columnChartTasks.xScale().inverted(true);
 
         //PieChartGoals
         pieChartGoalsView = v.findViewById(R.id.pie_chart_goals);
@@ -262,10 +323,10 @@ public class StatsFragment  extends Fragment {
         pieChartGoalsView.setBackgroundColor(bgColor);
         pieChartGoalsView.setChart(pieChartGoals);
         pieChartGoals.palette(new String[]{"#80EB5A","#FF9745"}); //Colors
-        pieChartGoals.title(Goal.class.getSimpleName()+ "s"); //title
         pieChartGoals.background().fill(bgColor); //bgColor
         pieChartGoals.noData().label().enabled(true);
         pieChartGoals.noData().label().text("Could not retrieve any goals!");
+        pieChartGoals.animation(true);
     }
 
 

@@ -1,12 +1,10 @@
 package com.heig.atmanager;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
+
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.folders.FolderAdapter;
@@ -22,13 +20,6 @@ import com.heig.atmanager.tasks.TaskFeedAdapter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Author : Stéphane Bottin
@@ -131,6 +122,15 @@ public class Utils {
 
     public static String formatNumber(int number) {
         return (number < 10 ? "0" : "") + number;
+    }
+
+    public static String firstLetterCapped(String s){
+        if(s == null)
+            return null;
+        else if(s.length() == 1)
+            return s.toUpperCase();
+        else
+            return s.substring(0,1).toUpperCase() + s.substring(1).toLowerCase();
     }
 
 

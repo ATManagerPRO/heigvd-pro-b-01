@@ -90,4 +90,8 @@ public class Task {
     public TaskList getTasklist() {
         return tasklist;
     }
+
+    public Date getDoneDate() {
+        return doneDate;
+    }
 }
