@@ -105,7 +105,6 @@ public class StatsFragment  extends Fragment {
     private void makeCharts(Interval interval){
 
         String lineChartLegend = "";
-        goals = new ArrayList<>();
 
         //keep interval tasks
         switch(interval){
@@ -116,14 +115,17 @@ public class StatsFragment  extends Fragment {
                 break;
             case WEEK:
                 tasks = user.getTasksForLastWeek();
+                goals = user.getWeeklyGoalTodo();
                 lineChartLegend = "Days";
                 break;
             case MONTH:
                 tasks = user.getTasksForLastMonth();
+                goals = user.getMonthlyGoalTodo();
                 lineChartLegend = "Days";
                 break;
             case YEAR:
                 tasks = user.getTasksForLastYear();
+                goals = user.getYearlyGoalTodo();
                 lineChartLegend = "Months";
                 break;
         }
@@ -145,7 +147,7 @@ public class StatsFragment  extends Fragment {
         List<DataEntry> data = new ArrayList<>();
         int tasksDone = 0, tasksToDo = 0;
 
-        pieChartTasks.title("Last " + Utils.firstLetterCapped(interval.name()) + "´s " + Task.class.getSimpleName() + "s"); //title
+        pieChartTasks.title("Past " + Utils.firstLetterCapped(interval.name()) + "´s " + Task.class.getSimpleName() + "s"); //title
 
         for(Task t : tasks){
             if(t.isDone())
@@ -175,6 +177,11 @@ public class StatsFragment  extends Fragment {
 
         columnChartTasks.title("Tasks done the past " + Utils.firstLetterCapped(interval.name()));
         columnChartTasks.xAxis(0).title(lineChartLegend + " ago");
+
+        if(interval == Interval.DAY)
+            columnChartTasks.xAxis(0).drawLastLabel(false);
+        else
+            columnChartTasks.xAxis(0).drawLastLabel(true);
 
         List<DataEntry> data = calculateValuesLineChart(interval);
 
@@ -289,7 +296,7 @@ public class StatsFragment  extends Fragment {
         pieChartTasks = AnyChart.pie();
         pieChartTasksView.setBackgroundColor(bgColor);
         pieChartTasksView.setChart(pieChartTasks);
-        pieChartTasks.palette(new String[]{"#3F58FF","#FF2E2E"}); //colors
+        pieChartTasks.palette(new String[]{"#de390b","#2c53c7"}); //colors
         pieChartTasks.background().fill(bgColor); //bgcolor
         pieChartTasks.noData().label().enabled(true);
         pieChartTasks.noData().label().text("Could not retrieve any tasks!");
@@ -306,9 +313,9 @@ public class StatsFragment  extends Fragment {
         columnChartTasks.noData().label().text("Could not retrieve any tasks!");
         columnChartTasks.background().fill(bgColor);
         columnChartTasks.animation(true);
-        columnChartTasks.yScale().minimum(0);
         columnChartTasks.yScale().ticks().allowFractional(false);
         columnChartTasks.xScale().inverted(true);
+        columnChartTasks.xAxis(0).labels().fontSize(13);
 
         //PieChartGoals
         pieChartGoalsView = v.findViewById(R.id.pie_chart_goals);

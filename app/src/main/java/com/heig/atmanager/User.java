@@ -335,11 +335,8 @@ public class User {
         Date currentDate = new Date();
         current.setTime(currentDate);
 
-
         for(Goal g : goals){
             for(GoalTodo gt : g.getGoalTodos()){
-                int[] date1 = Utils.getDayWeekMonthYear(gt.getDoneDate());
-                int[] date2 = Utils.getDayWeekMonthYear(currentDate);
                 if(Arrays.equals(Utils.getDayWeekMonthYear(gt.getDoneDate()), Utils.getDayWeekMonthYear(currentDate)))
                     result.add(gt);
             }
@@ -348,22 +345,50 @@ public class User {
         return result;
     }
 
-
     public ArrayList<GoalTodo> getWeeklyGoalTodo(){
         ArrayList<GoalTodo> result = new ArrayList<>();
+        Calendar current = Calendar.getInstance();
+        Date currentDate = new Date();
+        current.setTime(currentDate);
+
+        for(Goal g : goals){
+            for(GoalTodo gt : g.getGoalTodos()){
+                if(Arrays.equals(Utils.getWeekMonthYear(gt.getDoneDate()), Utils.getWeekMonthYear(currentDate)))
+                    result.add(gt);
+            }
+        }
 
         return result;
     }
 
-
     public ArrayList<GoalTodo> getMonthlyGoalTodo(){
         ArrayList<GoalTodo> result = new ArrayList<>();
+        Calendar current = Calendar.getInstance();
+        Date currentDate = new Date();
+        current.setTime(currentDate);
+
+        for(Goal g : goals){
+            for(GoalTodo gt : g.getGoalTodos()){
+                if(Arrays.equals(Utils.getMonthYear(gt.getDoneDate()), Utils.getMonthYear(currentDate)))
+                    result.add(gt);
+            }
+        }
 
         return result;
     }
 
     public ArrayList<GoalTodo> getYearlyGoalTodo(){
         ArrayList<GoalTodo> result = new ArrayList<>();
+        Calendar current = Calendar.getInstance();
+        Date currentDate = new Date();
+        current.setTime(currentDate);
+
+        for(Goal g : goals){
+            for(GoalTodo gt : g.getGoalTodos()){
+                if(Utils.getYear(currentDate) == Utils.getYear(gt.getDoneDate()))
+                    result.add(gt);
+            }
+        }
 
         return result;
     }

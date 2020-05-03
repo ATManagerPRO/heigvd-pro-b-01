@@ -116,9 +116,29 @@ public class Utils {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return new int[]{cal.get(Calendar.DAY_OF_MONTH),
-                         cal.get(Calendar.WEEK_OF_MONTH),
-                         cal.get(Calendar.MONTH),
-                         cal.get(Calendar.YEAR)};
+                cal.get(Calendar.WEEK_OF_MONTH),
+                cal.get(Calendar.MONTH),
+                cal.get(Calendar.YEAR)};
+    }
+
+    public static int[] getWeekMonthYear(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return new int[]{cal.get(Calendar.WEEK_OF_MONTH),
+                cal.get(Calendar.MONTH),
+                cal.get(Calendar.YEAR)};
+    }
+
+    public static int[] getMonthYear(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return new int[]{cal.get(Calendar.MONTH), cal.get(Calendar.YEAR)};
+    }
+
+    public static int getYear(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal.get(Calendar.YEAR);
     }
 
 
