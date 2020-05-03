@@ -30,16 +30,16 @@ import com.heig.atmanager.Interval;
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
 import com.heig.atmanager.User;
-import com.heig.atmanager.UserViewModel;
 import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.tasks.Task;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * Author : Stéphane Bottin, Mattei Simon
+ * Author : Mattei Simon
  * Date   : 09.04.2020
  */
 public class StatsFragment  extends Fragment {
@@ -57,7 +57,7 @@ public class StatsFragment  extends Fragment {
 
     private static String bgColor;
 
-    //private User user;
+    private User user;
     private ArrayList<Task> tasks;
     private ArrayList<Goal> goals;
 
@@ -75,10 +75,10 @@ public class StatsFragment  extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 switch(position){
-                    /*case 0 : makeCharts(Interval.DAY); break;
+                    case 0 : makeCharts(Interval.DAY); break;
                     case 1 : makeCharts(Interval.WEEK); break;
                     case 2 : makeCharts(Interval.MONTH); break;
-                    case 3 : makeCharts(Interval.YEAR); break;*/
+                    case 3 : makeCharts(Interval.YEAR); break;
                 }
             }
 
@@ -89,7 +89,7 @@ public class StatsFragment  extends Fragment {
         });
 
         //Charts
-        //user = ((MainActivity) getContext()).getUser();
+        user = MainActivity.getUser();
 
         //TODO : get this by values.colors, not working for some reason
         bgColor = "#F1F1F1";
@@ -116,21 +116,40 @@ public class StatsFragment  extends Fragment {
         return v;
     }
 
-    /*private void makeCharts(Interval interval){
+    private void makeCharts(Interval interval){
 
-        //TODO : Select goals/Tasks based on Interval
-        tasks = user.getTaskLists().getValue().get(0).getTasks();
-        goals = user.getGoals().getValue();
+        String lineChartLegend = "";
+
+        //TODO : Select goals based on Interval
+        switch(interval){
+            case DAY:
+                tasks = user.getTasksForDay(new Date());
+                lineChartLegend = "Hours";
+                break;
+            case WEEK:
+                tasks = user.getTasksForLastWeek();
+                lineChartLegend = "Days";
+                break;
+            case MONTH:
+                tasks = user.getTasksForLastMonth();
+                lineChartLegend = "Days";
+                break;
+            case YEAR:
+                tasks = user.getTasksForLastYear();
+                lineChartLegend = "Months";
+                break;
+        }
+        goals = user.getGoals();
 
         if(tasks != null) { //TODO : Something with no tasks
             makePieChartTasks(interval);
-            makeLineChartTasks(interval);
+            makeLineChartTasks(interval,lineChartLegend);
         }
 
         if(goals != null) { //TODO : Something with no goals
             makePieChartGoals(interval);
         }
-    }*/
+    }
 
     private void makePieChartTasks(Interval interval){
 
@@ -156,7 +175,7 @@ public class StatsFragment  extends Fragment {
         pieChartTasks.background().fill(bgColor);
     }
 
-    private void makeLineChartTasks(Interval interval){
+    private void makeLineChartTasks(Interval interval,String lineChartLegend){
 
         APIlib.getInstance().setActiveAnyChartView(lineChartTasksView);
 
@@ -174,7 +193,7 @@ public class StatsFragment  extends Fragment {
         lineChartTasks.title("Tasks done the past " + interval.name().toLowerCase());
 
         //TODO : set title and stuff accordingly to interval
-        lineChartTasks.xAxis(0).title("Hours");
+        lineChartTasks.xAxis(0).title(lineChartLegend);
         lineChartTasks.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
 
         List<DataEntry> seriesData = new ArrayList<>();
@@ -209,18 +228,16 @@ public class StatsFragment  extends Fragment {
         APIlib.getInstance().setActiveAnyChartView(pieChartGoalsView);
 
         List<DataEntry> data = new ArrayList<>();
-        int tasksDone = 0, tasksToDo = 0;
+        int goalsDone = 0, goalsToDo = 0;
 
-        //TODO : use goals
-        for(Task t : tasks){
-            if(t.isDone())
-                ++tasksDone;
-            else
-                ++tasksToDo;
+        for(Goal g : goals){
+            double p = g.getOverallPercentage();
+            goalsDone += p * 100;
+            goalsToDo += (1-p) * 100;
         }
 
-        data.add(new ValueDataEntry("Done", tasksDone));
-        data.add(new ValueDataEntry("Todo", tasksToDo));
+        data.add(new ValueDataEntry("Done", goalsDone));
+        data.add(new ValueDataEntry("Todo", goalsToDo));
 
         pieChartGoals.palette(new String[]{"#80EB5A","#FF9745"}); //colors
         pieChartGoals.data(data); //data
