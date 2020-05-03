@@ -26,6 +26,7 @@ import com.heig.atmanager.R;
 import com.heig.atmanager.User;
 import com.heig.atmanager.Utils;
 import com.heig.atmanager.goals.Goal;
+import com.heig.atmanager.goals.GoalTodo;
 import com.heig.atmanager.tasks.Task;
 
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ public class StatsFragment  extends Fragment {
 
     private User user;
     private ArrayList<Task> tasks;
-    private ArrayList<Goal> goals;
+    private ArrayList<GoalTodo> goals;
 
 
     @SuppressLint("ResourceType")
@@ -104,11 +105,13 @@ public class StatsFragment  extends Fragment {
     private void makeCharts(Interval interval){
 
         String lineChartLegend = "";
+        goals = new ArrayList<>();
 
         //keep interval tasks
         switch(interval){
             case DAY:
                 tasks = user.getTasksForDay(new Date());
+                goals = user.getDailyGoalTodo();
                 lineChartLegend = "Hours";
                 break;
             case WEEK:
@@ -123,14 +126,6 @@ public class StatsFragment  extends Fragment {
                 tasks = user.getTasksForLastYear();
                 lineChartLegend = "Months";
                 break;
-        }
-
-        goals = new ArrayList<>();
-
-        //TODO : select only this weeks/month/day GoalTodo
-        for(Goal g : user.getGoals()){
-            if(g.getInterval() == interval)
-                goals.add(g);
         }
 
         //make charts
@@ -262,12 +257,11 @@ public class StatsFragment  extends Fragment {
 
         List<DataEntry> data = new ArrayList<>();
         float goalsDone = 0, goalsToDo = 0;
-        String title = interval.getAdverb().toLowerCase();
 
-        pieChartGoals.title(Utils.firstLetterCapped(title) + " " + Goal.class.getSimpleName() + "s");
+        pieChartGoals.title(Utils.firstLetterCapped(interval.getAdverb()) + " " + Goal.class.getSimpleName() + "s");
 
-        for(Goal g : goals){
-            double p = g.getOverallPercentage();
+        for(GoalTodo gt : goals){
+            float p = gt.getPercentage();
             goalsDone += p;
             goalsToDo += 100-p;
         }

@@ -2,8 +2,8 @@ package com.heig.atmanager;
 
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.goals.Goal;
-import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.goals.GoalTodo;
+import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.tasks.Task;
 
 import java.util.ArrayList;
@@ -46,10 +46,14 @@ public class User {
         Date dueDateGoal4 = calendar.getTime();
         Goal daily_goal1 = new Goal("SQUATS", 20, 1, Interval.DAY, dueDateGoal1);
         Goal daily_goal2 = new Goal("FRUITS", 5, 1, Interval.DAY, dueDateGoal2);
+        Goal daily_goal3 = new Goal("LEGUMES", 5, 1, Interval.DAY, new Date());
+        Goal daily_goal4 = new Goal("MEDITATION", 1, 1, Interval.DAY, new Date());
         Goal weekly_goal3 = new Goal("KMS", 4, 1, Interval.WEEK, dueDateGoal3);
         Goal monthly_goal4 = new Goal("GIT PUSH", 4, 1, Interval.MONTH, dueDateGoal4);
         this.addGoal(daily_goal1);
         this.addGoal(daily_goal2);
+        this.addGoal(daily_goal3);
+        this.addGoal(daily_goal4);
         this.addGoal(weekly_goal3);
         this.addGoal(monthly_goal4);
         this.addGoal(new Goal("GIT PUSH", 4, 1, Interval.DAY, dueDateGoal3));
@@ -323,6 +327,45 @@ public class User {
         }
 
         return todos;
+    }
+
+    public ArrayList<GoalTodo> getDailyGoalTodo(){
+        ArrayList<GoalTodo> result = new ArrayList<>();
+        Calendar current = Calendar.getInstance();
+        Date currentDate = new Date();
+        current.setTime(currentDate);
+
+
+        for(Goal g : goals){
+            for(GoalTodo gt : g.getGoalTodos()){
+                int[] date1 = Utils.getDayWeekMonthYear(gt.getDoneDate());
+                int[] date2 = Utils.getDayWeekMonthYear(currentDate);
+                if(Arrays.equals(Utils.getDayWeekMonthYear(gt.getDoneDate()), Utils.getDayWeekMonthYear(currentDate)))
+                    result.add(gt);
+            }
+        }
+
+        return result;
+    }
+
+
+    public ArrayList<GoalTodo> getWeeklyGoalTodo(){
+        ArrayList<GoalTodo> result = new ArrayList<>();
+
+        return result;
+    }
+
+
+    public ArrayList<GoalTodo> getMonthlyGoalTodo(){
+        ArrayList<GoalTodo> result = new ArrayList<>();
+
+        return result;
+    }
+
+    public ArrayList<GoalTodo> getYearlyGoalTodo(){
+        ArrayList<GoalTodo> result = new ArrayList<>();
+
+        return result;
     }
 
 
