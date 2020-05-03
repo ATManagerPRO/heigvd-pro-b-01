@@ -6,10 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.goals.GoalTodo;
 import com.heig.atmanager.tasks.Task;
+import com.heig.atmanager.tasks.TaskFeedAdapter;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -22,6 +26,9 @@ import java.util.Calendar;
  * Fragment for the Home view (User's Tasks and Goals of the day)
  */
 public class HomeFragment extends Fragment {
+
+    public static final String FRAG_HOME_ID = "Home_Fragment";
+
     // Greeting message
     private TextView greetingText;
 
@@ -38,8 +45,10 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
-        tasks = new ArrayList<>();
-        goals = new ArrayList<>();
+        goals = ((MainActivity) getContext()).getUser().getGoalTodoForDay(Calendar.getInstance().getTime());
+
+        tasks = ((MainActivity) getContext()).getUser().getTasksForDay(Calendar.getInstance().getTime());
+        tasks.addAll((((MainActivity) getContext()).getUser().getTasksWithoutDate()));
 
         // Greeting
         greetingText = (TextView) v.findViewById(R.id.greeting_text);
@@ -51,7 +60,7 @@ public class HomeFragment extends Fragment {
 
         // Goal feed
         goalsRecyclerView = (RecyclerView) v.findViewById(R.id.goals_rv);
-        Utils.setupGoalsFeed(v, goalsRecyclerView, goals);
+        Utils.setupGoalTodosFeedBubbled(v, goalsRecyclerView, goals);
 
         return v;
     }
@@ -64,7 +73,7 @@ public class HomeFragment extends Fragment {
         Calendar calendar = Calendar.getInstance();
         String greeting = "";
         String user_info = "";
-        String user = "User123";
+        String user = ((MainActivity) getContext()).getUser().getUserName();
 
         // Hour (0 - 23)
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
