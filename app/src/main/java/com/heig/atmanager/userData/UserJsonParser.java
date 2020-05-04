@@ -43,12 +43,15 @@ public class UserJsonParser {
 
     private static final String TAG = "UserJsonParser";
 
+    // User identification
+    private static final int USER_ID = 4;
+
     // Http urls
-    private static final String URL_FOLDERS_AND_TASKLISTS = "https://atmanager.gollgot.app/api/v1/users/1/todolists";
-    private static final String URL_TODAY_TASKS           = "https://atmanager.gollgot.app/api/v1/users/1/todos/today";
-    private static final String URL_TODAY_GOALS_TODO      = "https://atmanager.gollgot.app/api/v1/users/1/goaltodos/today";
+    private static final String URL_FOLDERS_AND_TASKLISTS = "https://atmanager.gollgot.app/api/v1/users/"+USER_ID+"/todolists";
+    private static final String URL_TODAY_TASKS           = "https://atmanager.gollgot.app/api/v1/users/"+USER_ID+"/todos/today";
+    private static final String URL_TODAY_GOALS_TODO      = "https://atmanager.gollgot.app/api/v1/users/"+USER_ID+"/goaltodos/today";
     private static final String URL_ALL_TASKS             = "https://atmanager.gollgot.app/api/v1/todolists/1/todos";
-    private static final String URL_ALL_GOALS             = "https://atmanager.gollgot.app/api/v1/users/1/goals";
+    private static final String URL_ALL_GOALS             = "https://atmanager.gollgot.app/api/v1/users/"+USER_ID+"/goals";
 
     // Data keywords
     // - Folders
@@ -73,8 +76,11 @@ public class UserJsonParser {
     private static final String TASK_DONE_DATE     = "dateTimeDone";
     private static final String TASK_REMINDER_DATE = "reminderDateTime";
     // - Goals
-    private static final String GOAL_ID                = "goal_id";
-    private static final String GOAL_DUE_DATE          = "dueDate";
+    private static final String GOAL_KEY               = "goals";
+    private static final String GOAL_ID                = "id";
+    private static final String GOAL_DUE_DATE          = "endDate";
+    private static final String GOAL_INTERVAL          = "interval_id";
+    private static final String GOAL_INTERVAL_NUMBER   = "intervalValue";
     private static final String GOAL_TODO_CREATED_DATE = "created_at";
     private static final String GOAL_TODO_UPDATED_DATE = "updated_at";
     private static final String GOAL_LABEL             = "label";
@@ -84,8 +90,7 @@ public class UserJsonParser {
     private static final String GOAL_TODO_ID            = "id";
     private static final String GOAL_TODO_QUANTITY_DONE = "quantityDone";
     private static final String GOAL_TODO_DONE_DATE     = "dateTimeDone";
-
-
+    private static final String GOAL_TODO_DUE_DATE      = "dueDate";
 
     // User reference by context
     private Context mainContext;
@@ -108,7 +113,7 @@ public class UserJsonParser {
         loadAllTasks(queue);
 
         // Goals view
-        //loadAllGoals(queue);
+        loadAllGoals(queue);
     }
 
     /**
@@ -141,7 +146,6 @@ public class UserJsonParser {
                     // looping through all folders
                     for (int i = 0; i < folders.length(); i++) {
                         JSONObject c = folders.getJSONObject(i);
-
                         // Folder data
                         String id    = c.getString(FOLDERS_ID);
                         String title = c.getString(FOLDERS_TITLE);
@@ -149,8 +153,7 @@ public class UserJsonParser {
 
                         JSONArray folder_tasklists_json = c.getJSONArray(FOLDERS_TASKLISTS);
                         for (int j = 0; j < folder_tasklists_json.length(); j++) {
-                            JSONObject tasklist = folder_tasklists_json.getJSONObject(i);
-
+                            JSONObject tasklist = folder_tasklists_json.getJSONObject(j);
                             // Tasklist data
                             String folder_tasklist_id    = tasklist.getString(TASKLISTS_ID);
                             String folder_tasklist_title = tasklist.getString(TASKLISTS_TITLE);
@@ -257,25 +260,21 @@ public class UserJsonParser {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    Log.d(TAG, "onResponse: Create getting goalTodo");
                     // Getting JSON Array node
                     JSONArray goalsTodo = response.getJSONArray(GOAL_TODO_KEY);
 
                     // looping through all tasks
                     for (int i = 0; i < goalsTodo.length(); i++) {
-                        Log.d(TAG, "onResponse: getting a goaltodo : ");
                         JSONObject c = goalsTodo.getJSONObject(i);
 
                         // Goal data
-                        long goal_id       = c.getLong(GOAL_ID);
-                        String unit        = c.getString(GOAL_LABEL);
-                        int quantity       = c.getInt(GOAL_QUANTITY);
-                        //int intervalNumber = c.getInt();
-                        //String intervalStr = c.getString();
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.add(Calendar.MONTH, -1);
+                        long goal_id         = c.getLong(GOAL_ID);
+                        String unit          = c.getString(GOAL_LABEL);
+                        int quantity         = c.getInt(GOAL_QUANTITY);
+                        int intervalNumber   = c.getInt(GOAL_INTERVAL_NUMBER);
+                        String intervalStr   = c.getString(GOAL_INTERVAL);
                         String createDateStr = c.getString(GOAL_TODO_CREATED_DATE);
-                        String dueDateStr    = c.getString(GOAL_DUE_DATE);
+                        String dueDateStr    = c.getString(GOAL_TODO_DUE_DATE);
 
                         // GoalsTodo data
                         long goalTodoId    = c.getLong(GOAL_TODO_ID);
@@ -284,24 +283,24 @@ public class UserJsonParser {
 
                         // Date parser
                         SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                        Date dueDate          = Calendar.getInstance().getTime(); //dueDateStr.equals("null")    ? null : sdf.parse(dueDateStr);
+                        Date dueDate          = dueDateStr.equals("null")    ? null : sdf.parse(dueDateStr);
                         Date doneDate         = doneDateStr.equals("null")   ? null : sdf.parse(doneDateStr);
-                        Date createDate       = calendar.getTime(); //createDateStr.equals("null") ? null : sdf.parse(createDateStr);
+                        Date createDate       = createDateStr.equals("null") ? null : sdf.parse(createDateStr);
 
                         // Interval conversion
-                        //Interval interval = Interval.valueOf(intervalStr);
-                        Interval interval = Interval.DAY;
+                        Interval interval = Interval.valueOf(intervalStr);
 
+                        Log.d(TAG, "onResponse: INTERVAL : " + interval.getNoun());
                         Log.d(TAG, "onResponse: goal id : " + goal_id);
 
                         // Create the goal if it doesn't exist
                         if(!MainActivity.getUser().hasGoal(goal_id)) {
-                            Goal goal = new Goal(goal_id, unit, quantity, 1, interval, dueDate, createDate);
+                            Goal goal = new Goal(goal_id, unit, quantity, intervalNumber, interval, dueDate, createDate);
                             MainActivity.getUser().addGoal(goal);
                         }
 
                         // Create and link the goalTodo to the goal
-                        GoalTodo goalTodo = new GoalTodo(goalTodoId, goal_id, quantityDone, Calendar.getInstance().getTime(), dueDate);
+                        GoalTodo goalTodo = new GoalTodo(goalTodoId, goal_id, quantityDone, doneDate, dueDate);
                         MainActivity.getUser().getGoal(goal_id).addGoalTodo(goalTodo);
                     }
 
@@ -386,5 +385,71 @@ public class UserJsonParser {
         });
 
         queue.add(request);
+    }
+
+
+    /**
+     * Loads all the goals
+     */
+    private void loadAllGoals(RequestQueue queue) {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+                URL_ALL_GOALS
+                , null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    parseAndLoadGoals(response);
+                } catch (final JSONException e) {
+                    Log.e(TAG, "Json parsing error: " + e.getMessage());
+                } catch (ParseException e) {
+                    Log.e(TAG, "Parsing error : " + e);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        queue.add(request);
+    }
+
+    private void parseAndLoadGoals(JSONObject response) throws JSONException, ParseException {
+        // Getting JSON Array node
+        JSONArray goals = response.getJSONArray(GOAL_KEY);
+
+        // looping through all tasks
+        for (int i = 0; i < goals.length(); i++) {
+            JSONObject c = goals.getJSONObject(i);
+
+            // Goal data
+            long goal_id         = c.getLong(GOAL_ID);
+            String unit          = c.getString(GOAL_LABEL);
+            int quantity         = c.getInt(GOAL_QUANTITY);
+            int intervalNumber   = c.getInt(GOAL_INTERVAL_NUMBER);
+            String intervalStr   = c.getString(GOAL_INTERVAL);
+            String createDateStr = c.getString(GOAL_TODO_CREATED_DATE);
+            String dueDateStr    = c.getString(GOAL_DUE_DATE);
+
+            // Date parser
+            SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date dueDate          = dueDateStr.equals("null")    ? null : sdf.parse(dueDateStr);
+            Date createDate       = createDateStr.equals("null") ? null : sdf.parse(createDateStr);
+
+            // Interval conversion
+            Interval interval = Interval.valueOf(intervalStr);
+
+            Log.d(TAG, "onResponse: goal id : " + goal_id);
+
+            // Create the goal if it doesn't exist
+            Goal goal = new Goal(goal_id, unit, quantity, intervalNumber, interval, dueDate, createDate);
+            MainActivity.getUser().addGoal(goal);
+        }
+
+        // Update home fragment
+        ((HomeFragment) ((MainActivity) mainContext).getSupportFragmentManager()
+                .findFragmentByTag(HomeFragment.FRAG_HOME_ID))
+                .updateHomeFragment();
     }
 }

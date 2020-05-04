@@ -229,6 +229,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void updateDrawerItems() {
         final ArrayList<TaskList> standaloneTaskLists = new ArrayList<>();
+
         for(TaskList taskList : user.getTaskLists())
             if(!taskList.isFolder())
                 standaloneTaskLists.add(taskList);
