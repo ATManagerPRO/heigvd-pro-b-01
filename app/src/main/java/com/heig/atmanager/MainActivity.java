@@ -249,6 +249,7 @@ public class MainActivity extends AppCompatActivity {
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
+                Log.d(TAG, "onChildClick: ");
                 drawerLayout.closeDrawer(GravityCompat.START);
 
                 loadTaskListFragment(

@@ -43,7 +43,6 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         private LinearLayout expandedView;
         private ImageView favoriteIcon;
         private ToggleButton checkButton;
-        private Button shareBtn;
 
         public MyViewHolder(View v) {
             super(v);
@@ -54,7 +53,6 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
             expandedView = v.findViewById(R.id.task_expanded_view);
             favoriteIcon = v.findViewById(R.id.favorite_icon);
             checkButton = v.findViewById(R.id.check_button);
-            shareBtn = v.findViewById(R.id.share);
         }
     }
 
@@ -101,15 +99,6 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
             }
         });
 
-        holder.shareBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // TODO Replace with the real id
-
-                onShareClicked(1, ((MainActivity)view.getContext()).user.getUserName(), view);
-            }
-        });
-
         // Favorite
         holder.favoriteIcon.setVisibility(tasks.get(position).isFavorite() ? View.VISIBLE : View.GONE);
 
@@ -128,25 +117,7 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         return tasks.size();
     }
 
-    private void onShareClicked(int id, String userName, View v) {
-
-        Uri.Builder builder = new Uri.Builder();
-
-        builder.scheme("https")
-                .authority("atmanager.com")
-                //Need to add the real id
-                .appendQueryParameter("taskId", String.valueOf(id))
-                .appendQueryParameter("userName", userName);
-
-
-        Log.d(TAG, "onShareClicked : " + builder.build().toString());
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT, builder.build().toString());
-        v.getContext().startActivity(Intent.createChooser(intent, "Share Task"));
-    }
-
-    public  void  setTasks(ArrayList<Task> tasks){
+    public void setTasks(ArrayList<Task> tasks) {
         this.tasks = tasks;
         notifyDataSetChanged();
     }

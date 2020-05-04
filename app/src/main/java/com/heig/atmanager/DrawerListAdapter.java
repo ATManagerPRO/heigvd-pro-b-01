@@ -1,10 +1,14 @@
 package com.heig.atmanager;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.heig.atmanager.folders.Folder;
@@ -13,6 +17,8 @@ import com.heig.atmanager.tasks.Task;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 /**
  * Author : Stéphane Bottin
@@ -81,7 +87,6 @@ public class DrawerListAdapter extends BaseExpandableListAdapter {
 
         TextView title = (TextView) view.findViewById(R.id.drawer_object_title);
         title.setText(name);
-
         return view;
     }
 
@@ -95,11 +100,49 @@ public class DrawerListAdapter extends BaseExpandableListAdapter {
         TextView title = (TextView) view.findViewById(R.id.drawer_object_title);
         title.setText(taskListName);
 
+        Button shareBtn = view.findViewById(R.id.share);
+
+        // Set false to separate the click on the button and the list
+        shareBtn.setFocusable(false);
+        shareBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO Replace with the real id
+
+                onShareClicked(1, ((MainActivity) view.getContext()).user.getUserName(), view);
+            }
+        });
+
+
         return view;
     }
 
     @Override
     public boolean isChildSelectable(int i, int i1) {
         return true;
+    }
+
+    /**
+     * Action done when we click on share
+     * @param id Task id
+     * @param userName sender user name
+     * @param v on which view
+     */
+    private void onShareClicked(int id, String userName, View v) {
+
+        Uri.Builder builder = new Uri.Builder();
+
+        builder.scheme("https")
+                .authority("atmanager.com")
+                //Need to add the real id
+                .appendQueryParameter("taskId", String.valueOf(id))
+                .appendQueryParameter("userName", userName);
+
+
+        Log.d(TAG, "onShareClicked : " + builder.build().toString());
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, builder.build().toString());
+        v.getContext().startActivity(Intent.createChooser(intent, "Share Task"));
     }
 }
