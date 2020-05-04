@@ -9,11 +9,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.heig.atmanager.R;
 
 import java.util.ArrayList;
-
-import androidx.recyclerview.widget.RecyclerView;
+import java.util.Date;
 
 /**
  * Author : Stéphane Bottin
@@ -101,7 +102,13 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         holder.checkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tasks.get(position).setDone(holder.checkButton.isChecked());
+                if(holder.checkButton.isChecked()) {
+                    tasks.get(position).setDoneDate(new Date());
+                    tasks.get(position).setDone(true);
+                } else {
+                    tasks.get(position).setDoneDate(null);
+                    tasks.get(position).setDone(false);
+                }
             }
         });
     }

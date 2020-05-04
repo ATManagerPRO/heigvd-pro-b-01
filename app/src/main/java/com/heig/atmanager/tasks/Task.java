@@ -90,4 +90,8 @@ public class Task {
     public TaskList getTasklist() {
         return tasklist;
     }
+
+    public void setDoneDate(Date doneDate) {
+        this.doneDate = doneDate;
+    }
 }
