@@ -33,6 +33,10 @@ public class User {
         this.tasks = new ArrayList<>();
         this.folders = new ArrayList<>();
 
+        // Default Folder
+        Folder invitedFolder = new Folder("Invited");
+        folders.add(invitedFolder);
+
         // Goals
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_MONTH, 5);
