@@ -360,8 +360,8 @@ public class MainActivity extends AppCompatActivity implements ShareTaskListDiag
     }
 
     // Share invite Dialog
-    public void showShareTaskDialog(){
-        DialogFragment dialog = new ShareTaskListDiag();
+    public void showShareTaskDialog(int taskListId){
+        DialogFragment dialog = new ShareTaskListDiag(taskListId);
         dialog.show(getSupportFragmentManager(), "ShareTaskListDialog");
     }
 

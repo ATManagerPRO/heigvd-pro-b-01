@@ -19,6 +19,10 @@ public class ShareTaskListDiag extends DialogFragment {
 
     private int taskListId;
 
+    public ShareTaskListDiag(int taskListId) {
+        this.taskListId = taskListId;
+    }
+
     /**
      * Interface for the callback
      */
@@ -70,13 +74,5 @@ public class ShareTaskListDiag extends DialogFragment {
         });
 
         return alertBuilder.create();
-    }
-
-    /**
-     * Add the task list id
-     * @param id
-     */
-    public void addTaskListId(int id){
-        taskListId = id;
     }
 }
