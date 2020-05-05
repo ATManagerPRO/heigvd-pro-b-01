@@ -18,6 +18,7 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,6 +38,10 @@ public class CalendarFragment extends Fragment {
 
     public static final String FRAG_CALENDAR_ID = "Calendar_Fragment";
     private static final String TAG = "CalendarFragment";
+
+    // To know which month the user is looking at for the decorators
+    public static int currentMonth = -1;
+    public static int currentYear  = -1;
 
     // Calendar
     private MaterialCalendarView calendarView;
@@ -75,7 +80,7 @@ public class CalendarFragment extends Fragment {
             }
         });
 
-        // Notification decorator for todos and goals
+        // Notification decorator for tasks and goals
         calendarView.addDecorator(new TasksAndGoalsCalendarDecorator(v.getContext(),
                 v.getResources().getColor(R.color.day_background_notification, null)));
 
@@ -92,8 +97,7 @@ public class CalendarFragment extends Fragment {
                 dateCalendar.set(Calendar.DAY_OF_MONTH, date.getDay());
                 dateCalendar.set(Calendar.MONTH, date.getMonth() - 1);
                 dateCalendar.set(Calendar.YEAR, date.getYear());
-                tasks = ((MainActivity) getContext()).getUser().getTasksForDay(dateCalendar.getTime());
-                Log.d(TAG, "onDateSelected: tasks total for " + date + " : " + tasks.size());
+                tasks = MainActivity.getUser().getTasksForDay(dateCalendar.getTime());
                 Utils.setupTasksFeed(getView(), tasksRecyclerView, tasks);
             }
         });
