@@ -1,6 +1,8 @@
 package com.heig.atmanager;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
@@ -23,7 +25,7 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 /**
  * Author : Stéphane Bottin
  * Date   : 12.04.2020
- *
+ * <p>
  * Adapter to display the tasklists and (collapsing) folders in the drawer menu
  */
 public class DrawerListAdapter extends BaseExpandableListAdapter {
@@ -79,7 +81,7 @@ public class DrawerListAdapter extends BaseExpandableListAdapter {
 
         String name = ((DrawerObject) getGroup(i)).getName();
 
-        if(view == null)
+        if (view == null)
             view = LayoutInflater.from(context).inflate(
                     ((DrawerObject) getGroup(i)).isFolder() ?
                             R.layout.drawer_list_group : R.layout.drawer_list_item
@@ -94,7 +96,7 @@ public class DrawerListAdapter extends BaseExpandableListAdapter {
     public View getChildView(int i, int i1, boolean b, View view, ViewGroup viewGroup) {
         String taskListName = ((TaskList) getChild(i, i1)).getName();
 
-        if(view == null)
+        if (view == null)
             view = LayoutInflater.from(context).inflate(R.layout.drawer_list_item, null);
 
         TextView title = (TextView) view.findViewById(R.id.drawer_object_title);
@@ -124,19 +126,28 @@ public class DrawerListAdapter extends BaseExpandableListAdapter {
 
     /**
      * Action done when we click on share
-     * @param id Task id
+     *
+     * @param id       Task id
      * @param userName sender user name
-     * @param v on which view
+     * @param v        on which view
      */
     private void onShareClicked(int id, String userName, View v) {
-
-        Uri.Builder builder = new Uri.Builder();
+        final Uri.Builder builder = new Uri.Builder();
 
         builder.scheme("https")
                 .authority("atmanager.com")
                 //Need to add the real id
                 .appendQueryParameter("taskId", String.valueOf(id))
                 .appendQueryParameter("userName", userName);
+
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(v.getContext());
+        alertBuilder.setTitle("Share a task").setMultiChoiceItems(R.array.share_option, null, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                if (isChecked)
+                    builder.appendQueryParameter("isEditable", true);
+            }
+        }).setPositiveButton(R.string.)
 
 
         Log.d(TAG, "onShareClicked : " + builder.build().toString());

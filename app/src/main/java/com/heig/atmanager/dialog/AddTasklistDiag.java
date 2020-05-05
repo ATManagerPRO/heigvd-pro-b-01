@@ -1,4 +1,4 @@
-package com.heig.atmanager;
+package com.heig.atmanager.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -14,6 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.heig.atmanager.FolderSpinnerAdapter;
+import com.heig.atmanager.MainActivity;
+import com.heig.atmanager.R;
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.taskLists.TaskList;
 
@@ -40,13 +43,13 @@ public class AddTasklistDiag extends DialogFragment {
         folderSpinner.setAdapter(spinnerAdapter);
 
 
-        builder.setView(view).setPositiveButton("Add", new DialogInterface.OnClickListener() {
+        builder.setView(view).setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 final EditText taskListName = view.findViewById(R.id.newTaskListName);
                 ((MainActivity) AddTasklistDiag.this.getActivity()).user.addTaskList(new TaskList(taskListName.getText().toString(), (Folder) folderSpinner.getSelectedItem()));
             }
-        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 AddTasklistDiag.this.getDialog().cancel();

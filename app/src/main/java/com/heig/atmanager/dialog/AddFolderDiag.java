@@ -1,4 +1,4 @@
-package com.heig.atmanager;
+package com.heig.atmanager.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.heig.atmanager.MainActivity;
+import com.heig.atmanager.R;
 import com.heig.atmanager.folders.Folder;
 
 /**
@@ -31,13 +33,13 @@ public class AddFolderDiag extends DialogFragment {
 
         final LayoutInflater inflater = requireActivity().getLayoutInflater();
         final View view = inflater.inflate(R.layout.fragment_add_folder_diag, null);
-        builder.setView(view).setPositiveButton("Add", new DialogInterface.OnClickListener() {
+        builder.setView(view).setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 final EditText folderName = view.findViewById(R.id.newFolderName);
                 ((MainActivity) AddFolderDiag.this.getActivity()).user.addFolder(new Folder(folderName.getText().toString()));
             }
-        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 AddFolderDiag.this.getDialog().cancel();

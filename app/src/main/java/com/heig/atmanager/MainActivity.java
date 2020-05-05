@@ -19,13 +19,6 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ExpandableListAdapter;
-import android.widget.ExpandableListView;
-
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -37,6 +30,9 @@ import com.google.android.material.navigation.NavigationView;
 import com.heig.atmanager.addTaskGoal.AddGoalFragment;
 import com.heig.atmanager.addTaskGoal.AddTaskFragment;
 import com.heig.atmanager.calendar.CalendarFragment;
+import com.heig.atmanager.dialog.AddFolderDiag;
+import com.heig.atmanager.dialog.AddTagsDiag;
+import com.heig.atmanager.dialog.AddTasklistDiag;
 import com.heig.atmanager.goals.GoalsFragment;
 import com.heig.atmanager.goals.GoalsTodoFragment;
 import com.heig.atmanager.stats.StatsFragment;
