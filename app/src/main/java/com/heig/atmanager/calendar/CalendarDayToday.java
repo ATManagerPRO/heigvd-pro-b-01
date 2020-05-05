@@ -32,6 +32,7 @@ public class CalendarDayToday  implements LineBackgroundSpan {
             @NonNull CharSequence charSequence,
             int start, int end, int lineNum
     ) {
+        int oldColor = paint.getColor();
         paint.setColor(color);
 
         // Draw outline
@@ -42,7 +43,7 @@ public class CalendarDayToday  implements LineBackgroundSpan {
                 CORNER_RADIUS, paint);
 
         // Set color to white for the text that will be drawn next
-        paint.setColor(Color.BLACK);
+        paint.setColor(oldColor);
         paint.setStyle(Paint.Style.FILL);
     }
 }

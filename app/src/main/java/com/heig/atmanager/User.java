@@ -163,52 +163,6 @@ public class User {
         return totalTasks;
     }
 
-    public int getTotalGoalsForDay(Date day) {
-        int totalGoal = 0;
-
-        for (Goal goal : goals)
-            for (GoalTodo goalTodo : goal.getGoalTodos())
-                if (goalTodo.getDoneDate() != null && isSameSimpleDate(goalTodo.getDoneDate(), day))
-                    totalGoal++;
-
-        return totalGoal;
-    }
-
-    public int getTotalActivityForDay(Date day) {
-        return getTotalTasksForDay(day) + getTotalGoalsForDay(day);
-    }
-
-    public int getMaxActivityPerDay() {
-        Map.Entry<Date, Integer> maxEntry = null;
-        Map<Date, Integer> hm = new HashMap<>();
-
-        // Count tasks recurrences for each date
-        for (Task task : tasks) {
-            Date date = task.getDueDate();
-            Integer j = hm.get(date);
-            hm.put(date, (j == null) ? 1 : j + 1);
-        }
-
-        // Count goals recurrences for each date
-        for (Goal goal : goals) {
-            for (GoalTodo goalTodo : goal.getGoalTodos()) {
-                Date date = goalTodo.getDueDate();
-                Integer j = hm.get(date);
-                hm.put(date, (j == null) ? 1 : j + 1);
-            }
-        }
-
-        // Find max
-        for (Map.Entry<Date, Integer> entry : hm.entrySet()) {
-            if (maxEntry == null || entry.getValue()
-                    .compareTo(maxEntry.getValue()) > 0) {
-                maxEntry = entry;
-            }
-        }
-
-        return maxEntry == null ? 0 : maxEntry.getValue();
-    }
-
     private boolean isSameSimpleDate(Date d1, Date d2) {
         Calendar calendar_d1 = Calendar.getInstance();
         Calendar calendar_d2 = Calendar.getInstance();
