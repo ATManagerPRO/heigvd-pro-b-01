@@ -12,9 +12,16 @@ import androidx.fragment.app.DialogFragment;
 
 import com.heig.atmanager.R;
 
+/**
+ * Share list Dialog
+ */
 public class ShareTaskListDiag extends DialogFragment {
 
     private int taskListId;
+
+    /**
+     * Interface for the callback
+     */
     public interface ShareDialogListener{
         public void onDialogPositiveClick(DialogFragment dialog, int taskListId, boolean isEditable);
         public void onDialogNegativeClick(DialogFragment dialog);
@@ -39,7 +46,9 @@ public class ShareTaskListDiag extends DialogFragment {
 
         final boolean[] isEditable = {false};
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
-        alertBuilder.setTitle(R.string.share_taskList).setMultiChoiceItems(R.array.share_option, null, new DialogInterface.OnMultiChoiceClickListener() {
+        alertBuilder.setTitle(R.string.share_taskList)
+                // Add a multichoice, if the list is editable for the receiver
+                .setMultiChoiceItems(R.array.share_option, null, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                 if (isChecked)
@@ -63,6 +72,10 @@ public class ShareTaskListDiag extends DialogFragment {
         return alertBuilder.create();
     }
 
+    /**
+     * Add the task list id
+     * @param id
+     */
     public void addTaskListId(int id){
         taskListId = id;
     }

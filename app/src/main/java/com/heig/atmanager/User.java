@@ -333,4 +333,9 @@ public class User {
         tags.add(tagName);
     }
 
+    public void addASharedList(TaskList shareList){
+        //The invinted folder is the first on the list
+        folders.get(0).addList(shareList);
+    }
+
 }

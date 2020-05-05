@@ -341,14 +341,20 @@ public class MainActivity extends AppCompatActivity implements ShareTaskListDiag
         }
     }
 
+    /**
+     * Handle a the receive link
+     * @param data
+     */
     void openDeepLink(Uri data) {
-
-        int taskId = Integer.parseInt(data.getQueryParameter("taskListId"));
+        // Get link infomation
+        int taskListId = Integer.parseInt(data.getQueryParameter("taskListId"));
         String userName = data.getQueryParameter("userName");
         boolean isEditable = data.getBooleanQueryParameter("isEditable", false);
 
         Log.d(TAG, "openDeepLink: isEditable " + isEditable);
-        InviteDialog inviteDialog = InviteDialog.newInsance(userName, taskId);
+
+        // Show to the user infomation
+        InviteDialog inviteDialog = InviteDialog.newInsance(userName, taskListId, isEditable);
         inviteDialog.show(getSupportFragmentManager(), "invited");
         // add this task as mine
     }
@@ -364,6 +370,7 @@ public class MainActivity extends AppCompatActivity implements ShareTaskListDiag
 
         final Uri.Builder builder = new Uri.Builder();
 
+        // Create the URI to send
         builder.scheme("https")
                 .authority("atmanager.com")
                 //Need to add the real id
@@ -372,6 +379,8 @@ public class MainActivity extends AppCompatActivity implements ShareTaskListDiag
                 .appendQueryParameter("isEditable", isEditable ? "1" : "0");
 
         Log.d(TAG, "onShareClicked : " + builder.build().toString());
+
+        // Attache to the intent
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TEXT, builder.build().toString());

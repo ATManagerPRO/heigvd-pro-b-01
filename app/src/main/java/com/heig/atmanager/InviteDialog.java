@@ -15,12 +15,13 @@ import androidx.fragment.app.DialogFragment;
  **/
 public class InviteDialog extends DialogFragment {
 
-    public static InviteDialog newInsance(String userName, int taskId){
+    public static InviteDialog newInsance(String userName, int taskListId, boolean isEditable){
         InviteDialog inviteDialog = new InviteDialog();
 
         Bundle args = new Bundle();
         args.putString("userName", userName);
-        args.putInt("taskId", taskId);
+        args.putInt("taskListId", taskListId);
+        args.putBoolean("isEditable", isEditable);
 
         inviteDialog.setArguments(args);
 
@@ -39,7 +40,8 @@ public class InviteDialog extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 // Todo add task
-                //((MainActivity)getActivity()).user.addTask();
+                //TaskList sharedList = fetch list with taskList id
+                //((MainActivity)getActivity()).user.addASharedList(sharedList);
             }
         })
         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
