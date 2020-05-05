@@ -157,6 +157,9 @@ public class User {
     }
 
     private boolean isSameSimpleDate(Date d1, Date d2) {
+        if(d1 == null || d2 == null)
+            return false;
+
         Calendar calendar_d1 = Calendar.getInstance();
         Calendar calendar_d2 = Calendar.getInstance();
         calendar_d1.setTime(d1);

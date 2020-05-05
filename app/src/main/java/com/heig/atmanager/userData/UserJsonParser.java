@@ -51,7 +51,6 @@ public class UserJsonParser {
     private static final String URL_TODAY_TASKS           = "https://atmanager.gollgot.app/api/v1/users/"+USER_ID+"/todos/today";
     private static final String URL_TODAY_GOALS_TODO      = "https://atmanager.gollgot.app/api/v1/users/"+USER_ID+"/goaltodos/today";
     private static final String URL_ALL_TASKS             = "https://atmanager.gollgot.app/api/v1/users/"+USER_ID+"/todos";
-    private static final String URL_ALL_GOALS             = "https://atmanager.gollgot.app/api/v1/users/"+USER_ID+"/goals";
     private static final String URL_ALL_GOAL_TODOS        = "https://atmanager.gollgot.app/api/v1/users/"+USER_ID+"/goaltodos";
 
     // Response codes
@@ -371,34 +370,36 @@ public class UserJsonParser {
             JSONObject c = goalsTodo.getJSONObject(i);
 
             // Goal data
-            long goal_id         = c.getLong(GOAL_ID);
-            String unit          = c.getString(GOAL_LABEL);
-            int quantity         = c.getInt(GOAL_QUANTITY);
-            int intervalNumber   = c.getInt(GOAL_INTERVAL_NUMBER);
-            long intervalId      = c.getLong(GOAL_INTERVAL);
-            String createDateStr = c.getString(GOAL_TODO_CREATED_DATE);
-            String dueDateStr    = c.getString(GOAL_TODO_DUE_DATE);
+            long goal_id          = c.getLong(GOAL_ID);
+            String unit           = c.getString(GOAL_LABEL);
+            int quantity          = c.getInt(GOAL_QUANTITY);
+            int intervalNumber    = c.getInt(GOAL_INTERVAL_NUMBER);
+            long intervalId       = c.getLong(GOAL_INTERVAL);
+            String createDateStr  = c.getString(GOAL_TODO_CREATED_DATE);
+            String dueDateGoalStr = c.getString(GOAL_DUE_DATE);
 
             // GoalsTodo data
             long goalTodoId    = c.getLong(GOAL_TODO_ID);
             int quantityDone   = c.isNull(GOAL_TODO_QUANTITY_DONE) ? 0 : c.getInt(GOAL_TODO_QUANTITY_DONE);
             String doneDateStr = c.getString(GOAL_TODO_DONE_DATE);
+            String dueDateStr  = c.getString(GOAL_TODO_DUE_DATE);
 
             // Date parser
             SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date dueDate          = dueDateStr.equals("null")    ? null : sdf.parse(dueDateStr);
+            Date dueDateGoal      = dueDateStr.equals("null")    ? null : sdf.parse(dueDateStr);
             Date doneDate         = doneDateStr.equals("null")   ? null : sdf.parse(doneDateStr);
             Date createDate       = createDateStr.equals("null") ? null : sdf.parse(createDateStr);
 
             // Create the goal if it doesn't exist
-            if(!MainActivity.getUser().hasGoal(goal_id)) {
-                Goal goal = new Goal(goal_id, unit, quantity, intervalNumber, getIntervalFromId(intervalId), dueDate, createDate);
-                MainActivity.getUser().addGoal(goal);
+            if(!user.hasGoal(goal_id)) {
+                Goal goal = new Goal(goal_id, unit, quantity, intervalNumber, getIntervalFromId(intervalId), dueDateGoal, createDate);
+                user.addGoal(goal);
             }
 
             // Create and link the goalTodo to the goal
             GoalTodo goalTodo = new GoalTodo(goalTodoId, goal_id, quantityDone, doneDate, dueDate);
-            MainActivity.getUser().getGoal(goal_id).addGoalTodo(goalTodo);
+            user.getGoal(goal_id).addGoalTodo(goalTodo);
         }
     }
 
