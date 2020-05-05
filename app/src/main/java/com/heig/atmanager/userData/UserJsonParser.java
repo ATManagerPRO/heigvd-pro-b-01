@@ -77,7 +77,6 @@ public class UserJsonParser {
     private static final String TASK_TASKLIST_ID   = "todo_list_id";
     private static final String TASK_TITLE         = "title";
     private static final String TASK_DESCRIPTION   = "details";
-    private static final String TASK_DONE          = "done";
     private static final String TASK_FAVORITE      = "favorite";
     private static final String TASK_DUE_DATE      = "dueDate";
     private static final String TASK_DONE_DATE     = "dateTimeDone";
@@ -337,7 +336,7 @@ public class UserJsonParser {
             String title           = c.getString(TASK_TITLE);
             String description     = c.getString(TASK_DESCRIPTION);
             boolean done           = c.isNull(TASK_DONE_DATE);
-            //boolean favorite       = c.getBoolean(TASK_FAVORITE);
+            boolean favorite       = c.getInt(TASK_FAVORITE) != 0;
             String dueDateStr      = c.getString(TASK_DUE_DATE);
             String doneDateStr     = c.getString(TASK_DONE_DATE);
             String reminderDateStr = c.getString(TASK_REMINDER_DATE);
@@ -350,12 +349,12 @@ public class UserJsonParser {
             Date reminderDate    = reminderDateStr.equals("null") ? null : sdf.parse(reminderDateStr);
 
             // Creating the task and adding it to the current user
-            Task task = new Task(id, title, description, done, false, dueDate, doneDate, reminderDate);
+            Task task = new Task(id, title, description, done, favorite, dueDate, doneDate, reminderDate);
             user.addTask(task);
 
             if(user.hasTaskList(taskListId)) {
                 user.getTaskList(taskListId).addTask(task);
-            } /*else {
+            }/* else {
                 TaskList.defaultList.addTask(task);
             }*/
         }
@@ -415,67 +414,6 @@ public class UserJsonParser {
             return false;
         }
     }
-
-    /**
-     * Loads all the goals
-     */
-    /*private void loadAllGoals(RequestQueue queue) {
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
-                URL_ALL_GOALS
-                , null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    parseAndLoadGoals(response);
-                } catch (final JSONException e) {
-                    Log.e(TAG, "Json parsing error: " + e.getMessage());
-                } catch (ParseException e) {
-                    Log.e(TAG, "Parsing error : " + e);
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });
-
-        queue.add(request);
-    }*/
-
-    /*private void parseAndLoadGoals(JSONObject response) throws JSONException, ParseException {
-        // Getting JSON Array node
-        JSONArray goals = response.getJSONArray(GOAL_KEY);
-
-        // looping through all tasks
-        for (int i = 0; i < goals.length(); i++) {
-            JSONObject c = goals.getJSONObject(i);
-
-            // Goal data
-            long goal_id         = c.getLong(GOAL_ID);
-            String unit          = c.getString(GOAL_LABEL);
-            int quantity         = c.getInt(GOAL_QUANTITY);
-            int intervalNumber   = c.getInt(GOAL_INTERVAL_NUMBER);
-            long intervalId     = c.getLong(GOAL_INTERVAL);
-            String createDateStr = c.getString(GOAL_TODO_CREATED_DATE);
-            String dueDateStr    = c.getString(GOAL_DUE_DATE);
-
-            // Date parser
-            SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date dueDate          = dueDateStr.equals("null")    ? null : sdf.parse(dueDateStr);
-            Date createDate       = createDateStr.equals("null") ? null : sdf.parse(createDateStr);
-
-            Log.d(TAG, "onResponse: goal id : " + goal_id);
-
-            Goal goal = new Goal(goal_id, unit, quantity, intervalNumber, getIntervalFromId(intervalId), dueDate, createDate);
-            MainActivity.getUser().addGoal(goal);
-        }
-
-        // Update home fragment
-        ((HomeFragment) ((MainActivity) mainContext).getSupportFragmentManager()
-                .findFragmentByTag(HomeFragment.FRAG_HOME_ID))
-                .updateHomeFragment();
-    }*/
 
     private Interval getIntervalFromId(long interval_id) {
         // TODO : Can probably do better than a switch
