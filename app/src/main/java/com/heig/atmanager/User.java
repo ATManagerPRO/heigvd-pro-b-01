@@ -69,7 +69,7 @@ public class User {
         f2.addList(tl4);
         f2.addList(tl5);
         // Tasks
-        addTask(new Task("Task1", "This is a really useful task.", null, tl1));
+        addTask(new Task("Task1 with a very long title", "This is a really useful task.", null, tl1));
         addTask(new Task("Task2", "Rendre labo 1 :\n> Fiche technique\n> Rapport (10 pages)\n> Code source (C++)"));
         addTask(new Task("Task3", "..."));
         addTask(new Task("Task4", "..."));
