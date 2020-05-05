@@ -1,11 +1,7 @@
 package com.heig.atmanager;
 
-import android.app.AlertDialog;
+import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +9,11 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.heig.atmanager.dialog.ShareTaskListDiag;
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.taskLists.TaskList;
-import com.heig.atmanager.tasks.Task;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-
-import static androidx.constraintlayout.widget.Constraints.TAG;
 
 /**
  * Author : Stéphane Bottin
@@ -32,13 +25,15 @@ public class DrawerListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
     private ArrayList<DrawerObject> objects;
+    private Activity activity;
 
     public DrawerListAdapter(Context context, ArrayList<TaskList> taskLists,
-                             ArrayList<Folder> folders) {
+                             ArrayList<Folder> folders, Activity activity) {
         this.context = context;
         this.objects = new ArrayList<>();
         this.objects.addAll(taskLists);
         this.objects.addAll(folders);
+        this.activity = activity;
     }
 
     @Override
@@ -111,7 +106,12 @@ public class DrawerListAdapter extends BaseExpandableListAdapter {
             public void onClick(View view) {
                 // TODO Replace with the real id
 
-                onShareClicked(1, ((MainActivity) view.getContext()).user.getUserName(), view);
+
+                ShareTaskListDiag diag = new ShareTaskListDiag();
+                // Get task id
+                diag.addTaskListId(1);
+                ((MainActivity)activity).showShareTaskDialog();
+
             }
         });
 
@@ -124,36 +124,5 @@ public class DrawerListAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
-    /**
-     * Action done when we click on share
-     *
-     * @param id       Task id
-     * @param userName sender user name
-     * @param v        on which view
-     */
-    private void onShareClicked(int id, String userName, View v) {
-        final Uri.Builder builder = new Uri.Builder();
 
-        builder.scheme("https")
-                .authority("atmanager.com")
-                //Need to add the real id
-                .appendQueryParameter("taskId", String.valueOf(id))
-                .appendQueryParameter("userName", userName);
-
-        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(v.getContext());
-        alertBuilder.setTitle("Share a task").setMultiChoiceItems(R.array.share_option, null, new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                if (isChecked)
-                    builder.appendQueryParameter("isEditable", true);
-            }
-        }).setPositiveButton(R.string.)
-
-
-        Log.d(TAG, "onShareClicked : " + builder.build().toString());
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT, builder.build().toString());
-        v.getContext().startActivity(Intent.createChooser(intent, "Share Task"));
-    }
 }

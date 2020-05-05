@@ -33,6 +33,7 @@ import com.heig.atmanager.calendar.CalendarFragment;
 import com.heig.atmanager.dialog.AddFolderDiag;
 import com.heig.atmanager.dialog.AddTagsDiag;
 import com.heig.atmanager.dialog.AddTasklistDiag;
+import com.heig.atmanager.dialog.ShareTaskListDiag;
 import com.heig.atmanager.goals.GoalsFragment;
 import com.heig.atmanager.goals.GoalsTodoFragment;
 import com.heig.atmanager.stats.StatsFragment;
@@ -41,7 +42,7 @@ import com.heig.atmanager.taskLists.TaskListFragment;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ShareTaskListDiag.ShareDialogListener {
     private static final String TAG = "MainActivity" ;
     public static User user;
 
@@ -227,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
             if (taskList.isStandalone())
                 standaloneTaskLists.add(taskList);
 
-        adapter = new DrawerListAdapter(this, standaloneTaskLists, user.getFolders());
+        adapter = new DrawerListAdapter(this, standaloneTaskLists, user.getFolders(),this );
         expandableListView.setAdapter(adapter);
 
         expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -342,10 +343,41 @@ public class MainActivity extends AppCompatActivity {
 
     void openDeepLink(Uri data) {
 
-        int taskId = Integer.parseInt(data.getQueryParameter("taskId"));
+        int taskId = Integer.parseInt(data.getQueryParameter("taskListId"));
         String userName = data.getQueryParameter("userName");
+        boolean isEditable = data.getBooleanQueryParameter("isEditable", false);
         InviteDialog inviteDialog = InviteDialog.newInsance(userName, taskId);
         inviteDialog.show(getSupportFragmentManager(), "invited");
         // add this task as mine
+    }
+
+    // Share invite Dialog
+    public void showShareTaskDialog(){
+        DialogFragment dialog = new ShareTaskListDiag();
+        dialog.show(getSupportFragmentManager(), "ShareTaskListDialog");
+    }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog, int taskListId, boolean isEditable) {
+
+        final Uri.Builder builder = new Uri.Builder();
+
+        builder.scheme("https")
+                .authority("atmanager.com")
+                //Need to add the real id
+                .appendQueryParameter("taskListId", String.valueOf(taskListId))
+                .appendQueryParameter("userName", user.getUserName())
+                .appendQueryParameter("isEditable", isEditable ? "1" : "0");
+
+        Log.d(TAG, "onShareClicked : " + builder.build().toString());
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, builder.build().toString());
+        startActivity(Intent.createChooser(intent, "Share TaskList"));
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        dialog.getDialog().cancel();
     }
 }
