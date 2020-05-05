@@ -243,5 +243,9 @@ public class User {
 
         return goalTodos;
     }
+    
+    public void addTag(String tagName){
+        tags.add(tagName);
+    }
 
 }

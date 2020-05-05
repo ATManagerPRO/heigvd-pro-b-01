@@ -23,15 +23,19 @@ public class TaskList extends DrawerObject implements Serializable {
     private long folder_id;
     private ArrayList<Task> tasks;
 
+    public TaskList(String name, long folder_id) {
+        this(-1, name, folder_id);
+    }
+
     public TaskList(long id, String name) {
-        super(name);
-        this.id = id;
-        this.tasks = new ArrayList<>();
+        this(id, name, -1);
     }
 
     public TaskList(long id, String name, long folder_id) {
-        this(id, name);
+        super(name);
+        this.id = id;
         this.folder_id = folder_id;
+        this.tasks = new ArrayList<>();
     }
 
     public void addTask(Task task) {

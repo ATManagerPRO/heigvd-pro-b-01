@@ -64,6 +64,9 @@ public class Folder extends DrawerObject {
         return taskLists;
     }
 
+    public long getId() {
+        return id;
+    }
 
     @Override
     public boolean isFolder() {
