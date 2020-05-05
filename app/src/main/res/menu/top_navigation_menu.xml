@@ -8,8 +8,19 @@
 
     <item
         android:id="@+id/sign_out"
-        android:title="@string/sign_out"
-        />
+        android:title="@string/sign_out" />
+
+    <item
+        android:id="@+id/add_tag"
+        android:title="@string/add_new_tag" />
+
+    <item
+        android:id="@+id/add_folder"
+        android:title="@string/add_new_folder" />
+
+    <item
+        android:id="@+id/add_tasklist"
+        android:title="@string/add_new_tasklist" />
 
 
 </menu>

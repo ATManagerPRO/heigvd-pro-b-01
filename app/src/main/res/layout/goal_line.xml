@@ -54,7 +54,7 @@
 
         </FrameLayout>
 
-        <!-- Task info (title and list) -->
+        <!-- Goal info (title and list) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -71,6 +71,10 @@
                 android:textColor="@color/black"
                 android:fontFamily="@font/arial"
                 android:textStyle="bold"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeMaxTextSize="20sp"
+                android:autoSizeStepGranularity="1sp"
                 />
             <TextView
                 android:id="@+id/goal_date"

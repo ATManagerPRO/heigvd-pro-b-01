@@ -107,11 +107,15 @@
                 android:id="@+id/task_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Task1"
+                android:text="Task title"
                 android:textSize="20sp"
                 android:textColor="@color/black"
                 android:fontFamily="@font/arial"
                 android:textStyle="bold"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeMaxTextSize="20sp"
+                android:autoSizeStepGranularity="1sp"
                 />
             <TextView
                 android:id="@+id/task_list"
