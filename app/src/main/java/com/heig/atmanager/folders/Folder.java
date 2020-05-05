@@ -16,6 +16,10 @@ public class Folder extends DrawerObject {
     private long id;
     private ArrayList<TaskList> taskLists;
 
+    public Folder(String name){
+        this(-1, name, new ArrayList<TaskList>());
+    }
+
     public Folder(long id, String name, ArrayList<TaskList> taskLists){
         super(name);
         this.id = id;
