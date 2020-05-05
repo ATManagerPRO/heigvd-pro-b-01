@@ -84,6 +84,12 @@ public class DrawerListAdapter extends BaseExpandableListAdapter {
 
         TextView title = (TextView) view.findViewById(R.id.drawer_object_title);
         title.setText(name);
+        Button shareBtn = view.findViewById(R.id.share);
+
+        if(!((DrawerObject) getGroup(i)).isFolder()){
+            shareBtn.setVisibility(View.GONE);
+        }
+
         return view;
     }
 
@@ -99,6 +105,7 @@ public class DrawerListAdapter extends BaseExpandableListAdapter {
 
         Button shareBtn = view.findViewById(R.id.share);
 
+
         // Set false to separate the click on the button and the list
         shareBtn.setFocusable(false);
         shareBtn.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +117,7 @@ public class DrawerListAdapter extends BaseExpandableListAdapter {
                 ShareTaskListDiag diag = new ShareTaskListDiag();
                 // Get task id
                 diag.addTaskListId(1);
-                ((MainActivity)activity).showShareTaskDialog();
+                ((MainActivity) activity).showShareTaskDialog();
 
             }
         });
