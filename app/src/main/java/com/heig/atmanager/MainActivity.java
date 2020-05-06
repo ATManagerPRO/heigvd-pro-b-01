@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private GoogleSignInAccount userAccount;
 
+    public static GoogleCalendarHandler googleCalendarHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +78,9 @@ public class MainActivity extends AppCompatActivity {
         userAccount         = GoogleSignIn.getLastSignedInAccount(this);
 
         user = new User(userAccount.getDisplayName(), userAccount.getIdToken(), userAccount.getEmail());
+
+        googleCalendarHandler = new GoogleCalendarHandler(this);
+
 
         fab = findViewById(R.id.fab);
         fabAddGoal = findViewById(R.id.fab_add_goal);
