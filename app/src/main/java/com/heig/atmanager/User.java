@@ -331,4 +331,7 @@ public class User {
         tags.add(tagName);
     }
 
+    public String getMail() {
+        return mail;
+    }
 }
