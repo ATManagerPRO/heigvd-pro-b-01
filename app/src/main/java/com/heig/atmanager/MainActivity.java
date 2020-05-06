@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         userAccount         = GoogleSignIn.getLastSignedInAccount(this);
 
-        user = new User(userAccount.getDisplayName(), userAccount.getIdToken());
+        user = new User(userAccount.getDisplayName(), userAccount.getIdToken(), userAccount.getEmail());
 
         fab = findViewById(R.id.fab);
         fabAddGoal = findViewById(R.id.fab_add_goal);

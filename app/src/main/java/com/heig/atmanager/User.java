@@ -24,14 +24,16 @@ public class User {
     private ArrayList<Task> tasks;
     private ArrayList<String> tags;
     private ArrayList<Folder> folders;
+    private String mail;
 
-    public User(String userName, String googleToken) {
+    public User(String userName, String googleToken, String mail) {
         this.userName = userName;
         this.googleToken = googleToken;
         this.goals = new ArrayList<>();
         this.taskLists = new ArrayList<>();
         this.tasks = new ArrayList<>();
         this.folders = new ArrayList<>();
+        this.mail =mail;
 
         // Goals
         Calendar calendar = Calendar.getInstance();
