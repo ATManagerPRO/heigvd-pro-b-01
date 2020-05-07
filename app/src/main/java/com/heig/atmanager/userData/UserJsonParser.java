@@ -84,7 +84,7 @@ public class UserJsonParser {
     // - Goals
     private static final String GOAL_KEY               = "goals";
     private static final String GOAL_ID                = "goal_id";
-    private static final String GOAL_DUE_DATE          = "endDate";
+    private static final String GOAL_DUE_DATE          = "endDate_goal";
     private static final String GOAL_INTERVAL          = "interval_id";
     private static final String GOAL_INTERVAL_NUMBER   = "intervalValue";
     private static final String GOAL_TODO_CREATED_DATE = "created_at";
@@ -343,10 +343,9 @@ public class UserJsonParser {
 
             // Date parser
             SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
-            Date dueDate         = dueDateStr.equals("null") ? null : sdf2.parse(dueDateStr);
-            Date doneDate        = doneDateStr.equals("null") ? null : sdf.parse(doneDateStr);
-            Date reminderDate    = reminderDateStr.equals("null") ? null : sdf.parse(reminderDateStr);
+            Date dueDate          = dueDateStr.equals("null")      ? null : sdf.parse(dueDateStr);
+            Date doneDate         = doneDateStr.equals("null")     ? null : sdf.parse(doneDateStr);
+            Date reminderDate     = reminderDateStr.equals("null") ? null : sdf.parse(reminderDateStr);
 
             // Creating the task and adding it to the current user
             Task task = new Task(id, title, description, done, favorite, dueDate, doneDate, reminderDate);
@@ -385,15 +384,18 @@ public class UserJsonParser {
 
             // Date parser
             SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat sdf2  = new SimpleDateFormat("yyyy-MM-dd");
             Date dueDate          = dueDateStr.equals("null")    ? null : sdf.parse(dueDateStr);
-            Date dueDateGoal      = dueDateStr.equals("null")    ? null : sdf.parse(dueDateStr);
+            Date dueDateGoal      = dueDateStr.equals("null")    ? null : sdf2.parse(dueDateGoalStr);
             Date doneDate         = doneDateStr.equals("null")   ? null : sdf.parse(doneDateStr);
             Date createDate       = createDateStr.equals("null") ? null : sdf.parse(createDateStr);
 
             // Create the goal if it doesn't exist
             if(!user.hasGoal(goal_id)) {
-                Goal goal = new Goal(goal_id, unit, quantity, intervalNumber, getIntervalFromId(intervalId), dueDateGoal, createDate);
-                user.addGoal(goal);
+                user.addGoal(
+                        new Goal(goal_id, unit, quantity, intervalNumber,
+                                getIntervalFromId(intervalId), dueDateGoal, createDate)
+                );
             }
 
             // Create and link the goalTodo to the goal

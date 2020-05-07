@@ -49,8 +49,6 @@ public class HomeFragment extends Fragment {
     // Task feed
     private ArrayList<Task> tasks; // user data
     private RecyclerView tasksRecyclerView;
-    private RecyclerView.LayoutManager taskFeedManager;
-    private RecyclerView.Adapter taskFeedAdapter;
 
     private View view;
 
@@ -69,7 +67,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
+        // Data init
         tasks = new ArrayList<>();
         goals = new ArrayList<>();
 
@@ -79,11 +77,9 @@ public class HomeFragment extends Fragment {
 
         // Task feed
         tasksRecyclerView = (RecyclerView) v.findViewById(R.id.tasks_rv);
-        //Utils.setupTasksFeed(v, tasksRecyclerView, tasks);
 
         // Goal feed
         goalsRecyclerView = (RecyclerView) v.findViewById(R.id.goals_rv);
-        //Utils.setupGoalTodosFeedBubbled(v, goalsRecyclerView, goals);
 
         return v;
     }
@@ -146,9 +142,10 @@ public class HomeFragment extends Fragment {
 
     public void updateHomeFragment() {
         feedProgress.setVisibility(View.GONE);
-        tasks = MainActivity.getUser().getTasks();
-        Utils.setupTasksFeed(view, tasksRecyclerView,  MainActivity.getUser().getTasks());
-        Utils.setupGoalTodosFeedBubbled(view, goalsRecyclerView,  MainActivity.getUser().getGoalTodosOfDay(Calendar.getInstance().getTime()));
+        tasks = MainActivity.getUser().getTasksForDay(Calendar.getInstance().getTime());
+        goals = MainActivity.getUser().getGoalTodosOfDay(Calendar.getInstance().getTime());
+        Utils.setupTasksFeed(view, tasksRecyclerView, tasks);
+        Utils.setupGoalTodosFeedBubbled(view, goalsRecyclerView, goals);
         greetingText.setText(getGreetings());
         refreshLayout.setRefreshing(false);
     }

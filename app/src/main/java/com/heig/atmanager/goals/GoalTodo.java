@@ -30,11 +30,11 @@ public class GoalTodo {
     private Date dueDate;
 
     public GoalTodo(long goalTodoId, long goal_id, int quantityDone, Date doneDate, Date dueDate) {
-        this.goalTodoId = goalTodoId;
-        this.goal_id = goal_id;
+        this.goalTodoId   = goalTodoId;
+        this.goal_id      = goal_id;
         this.quantityDone = quantityDone;
-        this.doneDate = doneDate;
-        this.dueDate = dueDate;
+        this.doneDate     = doneDate;
+        this.dueDate      = dueDate;
     }
 
     public void addQuantity(int quantity) {
