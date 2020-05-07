@@ -13,12 +13,13 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -36,10 +37,13 @@ import com.heig.atmanager.goals.GoalsTodoFragment;
 import com.heig.atmanager.stats.StatsFragment;
 import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.taskLists.TaskListFragment;
+import com.heig.atmanager.tasks.TaskFeedAdapter;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
+
     public static User user;
 
     private BottomNavigationView dock;
@@ -54,11 +58,14 @@ public class MainActivity extends AppCompatActivity {
     // Navigation view (drawer)
     private NavigationView navView;
     private ExpandableListView expandableListView;
-    private ExpandableListAdapter adapter;
+    private ExpandableListAdapter drawerAdapter;
 
     public static String previousFragment = null;
     private GoogleSignInClient mGoogleSignInClient;
     private GoogleSignInAccount userAccount;
+
+    // Current adapter for search feature
+    private RecyclerView.Adapter contentAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         updateDrawerItems();
 
         // First fragment to load : Home
-        loadFragment(new HomeFragment());
+        displayPreviousFragment(HomeFragment.FRAG_HOME_ID);
     }
 
     // Menu icons are inflated just as they were with actionbar
@@ -187,11 +194,26 @@ public class MainActivity extends AppCompatActivity {
                     DialogFragment addTasklistDiag = new AddTasklistDiag();
                     addTasklistDiag.show(getSupportFragmentManager(), "addTasklist");
                     return true;
+                case R.id.search:
+                    SearchView searchView = (SearchView) item.getActionView();
+                    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                        @Override
+                        public boolean onQueryTextSubmit(String s) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onQueryTextChange(String s) {
+                            if(contentAdapter != null)
+                                ((TaskFeedAdapter) contentAdapter).getFilter().filter(s);
+                            return false;
+                        }
+                    });
+                    return true;
                 default:
                     return super.onOptionsItemSelected(item);
             }
         }
-
     }
 
     private void loadFragment(Fragment fragment) {
@@ -217,8 +239,8 @@ public class MainActivity extends AppCompatActivity {
             if(taskList.isStandalone())
                 standaloneTaskLists.add(taskList);
 
-        adapter = new DrawerListAdapter(this, standaloneTaskLists, user.getFolders());
-        expandableListView.setAdapter(adapter);
+        drawerAdapter = new DrawerListAdapter(this, standaloneTaskLists, user.getFolders());
+        expandableListView.setAdapter(drawerAdapter);
 
         expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
@@ -328,5 +350,9 @@ public class MainActivity extends AppCompatActivity {
         if (fragment != null) {
             loadFragment(fragment);
         }
+    }
+
+    public void setContentAdapter(RecyclerView.Adapter adapter) {
+        this.contentAdapter = adapter;
     }
 }

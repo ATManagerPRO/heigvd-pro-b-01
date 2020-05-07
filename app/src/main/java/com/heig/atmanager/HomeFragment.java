@@ -6,14 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.goals.GoalTodo;
 import com.heig.atmanager.tasks.Task;
 import com.heig.atmanager.tasks.TaskFeedAdapter;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -39,6 +37,7 @@ public class HomeFragment extends Fragment {
     // Task feed
     private ArrayList<Task> tasks; // user data
     private RecyclerView tasksRecyclerView;
+    private RecyclerView.Adapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,7 +55,13 @@ public class HomeFragment extends Fragment {
 
         // Task feed
         tasksRecyclerView = (RecyclerView) v.findViewById(R.id.tasks_rv);
-        Utils.setupTasksFeed(v, tasksRecyclerView, tasks);
+        tasksRecyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(v.getContext());
+        tasksRecyclerView.setLayoutManager(manager);
+        adapter = new TaskFeedAdapter(tasks);
+        tasksRecyclerView.setAdapter(adapter);
+        // Set adapter for searches
+        ((MainActivity) getContext()).setContentAdapter(adapter);
 
         // Goal feed
         goalsRecyclerView = (RecyclerView) v.findViewById(R.id.goals_rv);
