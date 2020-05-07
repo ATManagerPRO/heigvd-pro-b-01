@@ -44,7 +44,7 @@ public class User {
         Date dueDateGoal3 = calendar.getTime();
         calendar.add(Calendar.MONTH, 3);
         Date dueDateGoal4 = calendar.getTime();
-        Goal daily_goal1 = new Goal("SQUATS", 20, 1, Interval.DAY, dueDateGoal1);
+        Goal daily_goal1 = new Goal("SQUATS For a very looong time", 20, 1, Interval.DAY, dueDateGoal1);
         Goal daily_goal2 = new Goal("FRUITS", 5, 1, Interval.DAY, dueDateGoal2);
         Goal weekly_goal3 = new Goal("KMS", 4, 1, Interval.WEEK, dueDateGoal3);
         Goal monthly_goal4 = new Goal("GIT PUSH", 4, 1, Interval.MONTH, dueDateGoal4);
@@ -69,7 +69,7 @@ public class User {
         f2.addList(tl4);
         f2.addList(tl5);
         // Tasks
-        addTask(new Task("Task1", "This is a really useful task.", null, tl1));
+        addTask(new Task("Task1 with a very long title", "This is a really useful task.", null, tl1));
         addTask(new Task("Task2", "Rendre labo 1 :\n> Fiche technique\n> Rapport (10 pages)\n> Code source (C++)"));
         addTask(new Task("Task3", "..."));
         addTask(new Task("Task4", "..."));
