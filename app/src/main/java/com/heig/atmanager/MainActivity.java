@@ -40,6 +40,9 @@ import com.heig.atmanager.taskLists.TaskListFragment;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "MainActivity";
+    
     public static User user;
 
     private BottomNavigationView dock;
@@ -56,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private ExpandableListView expandableListView;
     private ExpandableListAdapter adapter;
 
-    public static String previousFragment = null;
+    public static String previousFragment = "";
     private GoogleSignInClient mGoogleSignInClient;
     private GoogleSignInAccount userAccount;
 
@@ -168,9 +171,9 @@ public class MainActivity extends AppCompatActivity {
 
         // TODO a way to made it cleaner
         // Drawer button
-        if (drawerToggle.onOptionsItemSelected(item))
+        if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
-        else {
+        } else {
             switch (item.getItemId()) {
                 case R.id.sign_out:
                     signOut();
@@ -186,6 +189,9 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.add_tasklist:
                     DialogFragment addTasklistDiag = new AddTasklistDiag();
                     addTasklistDiag.show(getSupportFragmentManager(), "addTasklist");
+                    return true;
+                case android.R.id.home:
+                    onBackPressed();
                     return true;
                 default:
                     return super.onOptionsItemSelected(item);
@@ -299,16 +305,19 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        displayPreviousFragment(previousFragment);
+        enableBackButton(false);
+        displayFragment(previousFragment);
+        previousFragment = "";
     }
 
-    public void displayPreviousFragment(String previousFragment)
+    public void displayFragment(String fragmentToDisplay)
     {
+        Log.d(TAG, "displayPreviousFragment: displaying new fragment " + fragmentToDisplay);
         //creating fragment object
         Fragment fragment = null;
 
         //initializing the fragment object which is selected
-        switch (previousFragment)
+        switch (fragmentToDisplay)
         {
             case HomeFragment.FRAG_HOME_ID :
                 fragment = new HomeFragment();
