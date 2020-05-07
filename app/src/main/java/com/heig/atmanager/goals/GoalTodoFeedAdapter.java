@@ -10,6 +10,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -50,14 +51,16 @@ public class GoalTodoFeedAdapter extends RecyclerView.Adapter<GoalTodoFeedAdapte
         private ToggleButton addBtn;
         private EditText addNumValue;
         private LinearLayout background;
+        private ImageView progressBackground;
 
         public MyViewHolder(View v) {
             super(v);
 
             // Line design specifics
-            title        = (TextView) v.findViewById(R.id.goal_title);
-            doneDate     = (TextView) v.findViewById(R.id.goal_date);
-            percentage   = (TextView) v.findViewById(R.id.goal_percentage);
+            title              = (TextView) v.findViewById(R.id.goal_title);
+            doneDate           = (TextView) v.findViewById(R.id.goal_date);
+            percentage         = (TextView) v.findViewById(R.id.goal_percentage);
+            progressBackground = (ImageView) v.findViewById(R.id.progress_background);
 
             // Bubbled design specifics
             unit         = (TextView) v.findViewById(R.id.unit_text);
@@ -96,9 +99,9 @@ public class GoalTodoFeedAdapter extends RecyclerView.Adapter<GoalTodoFeedAdapte
     @Override
     public void onBindViewHolder(final GoalTodoFeedAdapter.MyViewHolder holder, final int position) {
 
-        String unit    = goals.get(position).getUnit();
-        String doneQt  = Utils.formatNumber(goals.get(position).getQuantityDone());
-        String totalQt = Utils.formatNumber(goals.get(position).getTotalQuantity());
+        final String unit    = goals.get(position).getUnit();
+        final String doneQt  = Utils.formatNumber(goals.get(position).getQuantityDone());
+        final String totalQt = Utils.formatNumber(goals.get(position).getTotalQuantity());
 
         if(bubbled) {
             holder.unit.setText(unit);
@@ -112,6 +115,11 @@ public class GoalTodoFeedAdapter extends RecyclerView.Adapter<GoalTodoFeedAdapte
         }
 
         holder.progress.setProgress(goals.get(position).getPercentage());
+        if(goals.get(position).getPercentage() >= 100) {
+            holder.progressBackground.setBackground(
+                    ContextCompat.getDrawable(holder.itemView.getContext(),
+                            R.drawable.goal_timer_background_completed));
+        }
 
         // Add a quantity to a GoalTodo
         holder.addBtn.setOnClickListener(new View.OnClickListener() {
@@ -144,7 +152,7 @@ public class GoalTodoFeedAdapter extends RecyclerView.Adapter<GoalTodoFeedAdapte
         // Set the quantity value to add in a GoalTodo
         holder.addNumValue.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                if (actionId == EditorInfo.IME_ACTION_NEXT || actionId == EditorInfo.IME_ACTION_DONE) {
                     // TODO : hide keyboard on enter
 
                     holder.addBtn.setVisibility(View.VISIBLE);
@@ -160,18 +168,35 @@ public class GoalTodoFeedAdapter extends RecyclerView.Adapter<GoalTodoFeedAdapte
 
                     // Goal completed
                     if(goals.get(position).getQuantityDone() >= goals.get(position).getTotalQuantity()) {
-                        holder.background.setBackground(ContextCompat.getDrawable(v.getContext(), R.drawable.goal_background_completed));
-                        holder.currentValue.setTextColor(ContextCompat.getColor(v.getContext(), R.color.white));
-                        holder.totalValue.setTextColor(ContextCompat.getColor(v.getContext(), R.color.white_50));
-                        holder.unit.setTextColor(ContextCompat.getColor(v.getContext(), R.color.white_50));
-                        holder.timerValue.setBackground(ContextCompat.getDrawable(v.getContext(), R.drawable.goal_timer_background_completed));
-                        holder.timerValue.setTextColor(ContextCompat.getColor(v.getContext(), R.color.white));
-                        holder.timerValue.setText(R.string.goal_completed);
+                        if(bubbled) {
+                            holder.background.setBackground(ContextCompat.getDrawable(v.getContext(), R.drawable.goal_background_completed));
+                            holder.currentValue.setTextColor(ContextCompat.getColor(v.getContext(), R.color.white));
+                            holder.totalValue.setTextColor(ContextCompat.getColor(v.getContext(), R.color.white_50));
+                            holder.unit.setTextColor(ContextCompat.getColor(v.getContext(), R.color.white_50));
+                            holder.timerValue.setBackground(ContextCompat.getDrawable(v.getContext(), R.drawable.goal_timer_background_completed));
+                            holder.timerValue.setTextColor(ContextCompat.getColor(v.getContext(), R.color.white));
+                            holder.timerValue.setText(R.string.goal_completed);
+                        } else {
+                            holder.progressBackground.setBackground(
+                                        ContextCompat.getDrawable(holder.itemView.getContext(),
+                                                R.drawable.goal_timer_background_completed));
+                            holder.percentage.setTextSize(12);
+                            holder.percentage.setTextColor(ContextCompat.getColor(v.getContext(), R.color.white));
+                        }
+                        holder.progress.setVisibility(View.GONE);
                         holder.addBtn.setVisibility(View.GONE);
                     }
 
-                    // Update text quantity value
-                    holder.currentValue.setText(Utils.formatNumber(goals.get(position).getQuantityDone()));
+                    // Update values
+                    if(bubbled) {
+                        holder.currentValue.setText(Utils.formatNumber(goals.get(position).getQuantityDone()));
+                    } else {
+                        holder.title.setText(Utils.formatNumber(goals.get(position).getQuantityDone())
+                                + "/" + totalQt + " " + unit);
+                        holder.percentage.setText(goals.get(position).getPercentage() + "%");
+                    }
+                    holder.progress.setProgress(goals.get(position).getPercentage());
+
                     return true;
                 }
                 return false;
