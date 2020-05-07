@@ -100,4 +100,8 @@ public class Task {
         tags.add(tag);
         MainActivity.getUser().addTag(tag);
     }
+
+    public ArrayList<String> getTags() {
+        return tags;
+    }
 }

@@ -1,5 +1,6 @@
 package com.heig.atmanager.tasks;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -107,7 +108,10 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         holder.timeMeridiemText.setText(meridiem);
 
         // Tags
-        // TODO : not added when creating a Task
+        String tagsString = "";
+        for(String tag : tasks.get(position).getTags())
+            tagsString += "#" + tag + " ";
+        holder.taskTags.setText(tagsString);
 
         // Expand / retract details
         holder.expandBtn.setOnClickListener(new View.OnClickListener() {
