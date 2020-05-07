@@ -19,6 +19,7 @@ public class User {
 
     private String userName;
     private String googleToken;
+    private String backEndToken;
     private ArrayList<Goal> goals;
     private ArrayList<TaskList> taskLists;
     private ArrayList<Task> tasks;
@@ -329,4 +330,11 @@ public class User {
         tags.add(tagName);
     }
 
+    public String getBackEndToken() {
+        return backEndToken;
+    }
+
+    public void setBackEndToken(String backEndToken) {
+        this.backEndToken = backEndToken;
+    }
 }

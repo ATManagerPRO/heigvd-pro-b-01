@@ -6,12 +6,24 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Author : Simon Mattei
@@ -99,7 +111,42 @@ public class SignInActivity extends Activity implements View.OnClickListener {
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            final GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+
+
+//post request to the server
+            String URL = "https://atmanager.gollgot.app/api/v1/auth";
+            JSONObject jsonBody = new JSONObject();
+
+            JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        if(response.getInt("status code") == 200 || response.getInt("status code") == 201){
+                            String test = response.getJSONObject("resource").getString("tokenAPI");
+                            MainActivity.getUser().setBackEndToken(test);
+                        }
+                        if(response.getInt("status code") == 400 || response.getInt("status code") == 500){
+                            //MainActivity.signOut();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                }
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    final Map<String, String> headers = new HashMap<>();
+                    headers.put("Authorization", "Bearer " + account.getIdToken());//put your token here
+                    return headers;
+                }
+            };
+            Volley.newRequestQueue(this).add(jsonObject);
+
 
             // Signed in successfully, show authenticated UI.
             updateUI(account);
