@@ -27,9 +27,10 @@
             android:layout_height="60dp">
 
             <ImageView
+                android:id="@+id/progress_background"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:background="@drawable/task_checkbox"
+                android:background="@drawable/task_checkbox_unchecked"
                 android:layout_gravity="center"/>
 
             <TextView
