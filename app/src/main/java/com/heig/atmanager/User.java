@@ -1,5 +1,7 @@
 package com.heig.atmanager;
 
+import android.util.Log;
+
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.taskLists.TaskList;
@@ -326,7 +328,9 @@ public class User {
 
 
     public void addTag(String tagName){
-        tags.add(tagName);
+        Log.d(TAG, "addTag: onCreateView adding " + tagName + "to user");
+        if(!tags.contains(tagName))
+            tags.add(tagName);
     }
 
 }
