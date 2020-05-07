@@ -42,7 +42,7 @@ public class GoalTodo {
     }
 
     public int getPercentage() {
-        int percentage = (int) (((float) quantityDone / goal.getQuantity()) * 100);
+        int percentage = (int) (((float) quantityDone / MainActivity.getUser().getGoal(goal_id).getQuantity()) * 100);
         return Math.min(percentage, 100);
     }
 
