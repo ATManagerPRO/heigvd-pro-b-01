@@ -1,6 +1,7 @@
 package com.heig.atmanager;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -15,7 +16,6 @@ import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -38,8 +38,9 @@ public class GoogleCalendarHandler {
     private static final int PROJECTION_ACCOUNT_NAME_INDEX = 1;
     private static final int PROJECTION_DISPLAY_NAME_INDEX = 2;
     private static final int PROJECTION_OWNER_ACCOUNT_INDEX = 3;
-    private static final int MY_CAL_WRITE_REQ = 50;
-    private static final int MY_CAL_READ_REQ = 51;
+    public static final int MY_CAL_WRITE_REQ = 50;
+    public static final int MY_CAL_READ_REQ = 51;
+    public static final int CALENDAR_INIT = 40;
 
     private Activity mActivity;
     private long calendarId;
@@ -47,42 +48,13 @@ public class GoogleCalendarHandler {
     public GoogleCalendarHandler(Activity activity) {
         mActivity = activity;
 
-        checkWritePermission(activity);
+        calendarId = checkIfCalendarExist();
 
-        createCalendar(activity);
-
-       // calendarId = getCalendarID(activity);
-    }
-
-    private int getCalendarID(Activity activity) {
-        Cursor cur = null;
-        ContentResolver cr = activity.getContentResolver();
-        Uri uri = Calendars.CONTENT_URI;
-        String selection =  "((" + Calendars.ACCOUNT_NAME + " = ?) AND ("
-                + Calendars.ACCOUNT_TYPE + " = ?) AND ("
-                + Calendars.OWNER_ACCOUNT + " = ?))";
-        String[] selectionArgs = new String[]{MainActivity.user.getMail(), BuildConfig.APPLICATION_ID,
-                MainActivity.user.getMail()};
-
-        checkWritePermission(activity);
-        checkReadPermission(activity);
-        cur = cr.query(uri, EVENT_PROJECTION, selection, selectionArgs, null);
-        Log.d(TAG, "getCalendarID: " + cur.getInt(cur
-        .getColumnIndex(Calendars._ID)));
-        return  cur.getInt(PROJECTION_ID_INDEX);
-    }
-
-    private void checkWritePermission(Activity activity) {
-        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_CALENDAR}, MY_CAL_WRITE_REQ);
+        if (calendarId == -1) {
+            createCalendar(activity);
         }
     }
 
-    private void checkReadPermission(Activity activity) {
-        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_CALENDAR}, MY_CAL_READ_REQ);
-        }
-    }
 
     private void createCalendar(Activity activity) {
         ContentValues values = new ContentValues();
@@ -93,6 +65,8 @@ public class GoogleCalendarHandler {
         values.put(Calendars.CALENDAR_COLOR, R.color.colorAccent);
         values.put(Calendars.CALENDAR_ACCESS_LEVEL, Calendars.CAL_ACCESS_OWNER);
         values.put(Calendars.OWNER_ACCOUNT, MainActivity.user.getMail());
+        values.put(Calendars.SYNC_EVENTS, true);
+        values.put(Calendars.VISIBLE, true);
 
         Uri uri = Calendars.CONTENT_URI;
 
@@ -104,7 +78,29 @@ public class GoogleCalendarHandler {
                 .build();
 
         uri = activity.getContentResolver().insert(uri, values);
-        calendarId =  ContentUris.parseId(uri);
+        calendarId = ContentUris.parseId(uri);
+
+    }
+    public long checkIfCalendarExist() {
+        Cursor cur = null;
+        ContentResolver cr = mActivity.getContentResolver();
+
+        Uri uri = CalendarContract.Calendars.CONTENT_URI;
+        String selection = "((" + CalendarContract.Calendars.ACCOUNT_NAME + " = ?) AND ("
+                + CalendarContract.Calendars.ACCOUNT_TYPE + " = ?) AND ("
+                + CalendarContract.Calendars.OWNER_ACCOUNT + " = ?))";
+        String[] selectionArgs = new String[]{MainActivity.getUser().getMail(), BuildConfig.APPLICATION_ID,
+                MainActivity.getUser().getMail()};
+        if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.READ_CALENDAR}, CALENDAR_INIT);
+        }
+        cur = cr.query(uri, EVENT_PROJECTION, selection, selectionArgs, null);
+        if(cur != null && cur.moveToFirst()){
+            return cur.getLong(PROJECTION_ID_INDEX);
+        }else{
+            return -1;
+        }
+        //return (cur != null && cur.getCount() > 0) ? cur.getLong(PROJECTION_ID_INDEX) : -1;
     }
 
     public void addTask(String title, Date date) {
@@ -112,15 +108,15 @@ public class GoogleCalendarHandler {
         ContentValues values = new ContentValues();
 
         values.put(Events.TITLE, title);
+
         values.put(Events.DTSTART, date.getTime());
         values.put(Events.DTEND, date.getTime());
         values.put(Events.CALENDAR_ID, calendarId);
-        values.put(Events.EVENT_TIMEZONE, String.valueOf(TimeZone.getDefault()));
-
-        checkWritePermission(mActivity);
-
-        Uri uri = cr.insert(Events.CONTENT_URI, values);
+        values.put(Events.EVENT_TIMEZONE, TimeZone.getDefault().getDisplayName());
+        if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.WRITE_CALENDAR}, MY_CAL_WRITE_REQ);
+        } else {
+            Uri uri = cr.insert(Events.CONTENT_URI, values);
+        }
     }
-
-
 }

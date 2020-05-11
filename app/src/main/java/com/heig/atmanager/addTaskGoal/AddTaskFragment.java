@@ -36,6 +36,7 @@ import android.widget.Toast;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputLayout;
+import com.heig.atmanager.GoogleCalendarHandler;
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
 import com.heig.atmanager.User;
@@ -209,8 +210,6 @@ public class AddTaskFragment extends Fragment {
                 selectedDirectory = folderSpinner.getSelectedItem().toString();
 
 
-
-
                 if (title.isEmpty()) {
                     titleLayout.setError(getString(R.string.input_missing));
                     return;
@@ -225,7 +224,8 @@ public class AddTaskFragment extends Fragment {
                     selectedDate = new GregorianCalendar(mYear, mMonth, mDay, mHour, mMinute).getTime();
 
                     MainActivity.googleCalendarHandler.addTask(title, selectedDate);
-                    }
+
+                }
                 Task newTask = new Task(title, description, selectedDate);
 
                 // Add the task to a selected taskList
@@ -251,7 +251,6 @@ public class AddTaskFragment extends Fragment {
 
         return mView;
     }
-
 
 
     /**
