@@ -1,9 +1,11 @@
 package com.heig.atmanager;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.heig.atmanager.goals.Goal;
@@ -14,8 +16,11 @@ import com.heig.atmanager.tasks.TaskFeedAdapter;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -27,7 +32,12 @@ import java.util.Calendar;
  */
 public class HomeFragment extends Fragment {
 
+    private static final String TAG = "HomeFragment";
+
     public static final String FRAG_HOME_ID = "Home_Fragment";
+
+    private ProgressBar feedProgress;
+    private SwipeRefreshLayout refreshLayout;
 
     // Greeting message
     private TextView greetingText;
@@ -40,40 +50,44 @@ public class HomeFragment extends Fragment {
     private ArrayList<Task> tasks; // user data
     private RecyclerView tasksRecyclerView;
 
+    private View view;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
+        view = v;
 
-        goals = ((MainActivity) getContext()).getUser().getGoalTodoForDay(Calendar.getInstance().getTime());
+        feedProgress = v.findViewById(R.id.home_progress);
+        refreshLayout = v.findViewById(R.id.swipe_refresh);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                updateHomeFragment();
+            }
+        });
 
-        tasks = ((MainActivity) getContext()).getUser().getTasksForDay(Calendar.getInstance().getTime());
-        tasks.addAll((((MainActivity) getContext()).getUser().getTasksWithoutDate()));
+        // Data init
+        tasks = new ArrayList<>();
+        goals = new ArrayList<>();
 
         // Greeting
         greetingText = (TextView) v.findViewById(R.id.greeting_text);
-        greetingText.setText(getGreetings());
+        greetingText.setText(getDayGreetings());
 
         // Task feed
         tasksRecyclerView = (RecyclerView) v.findViewById(R.id.tasks_rv);
-        Utils.setupTasksFeed(v, tasksRecyclerView, tasks);
 
         // Goal feed
         goalsRecyclerView = (RecyclerView) v.findViewById(R.id.goals_rv);
-        Utils.setupGoalTodosFeedBubbled(v, goalsRecyclerView, goals);
 
         return v;
     }
 
-    /**
-     * Get the welcoming sentence (dynamic with user's data)
-     * @return the proper greetings
-     */
-    private String getGreetings() {
+    private String getDayGreetings() {
         Calendar calendar = Calendar.getInstance();
         String greeting = "";
-        String user_info = "";
-        String user = ((MainActivity) getContext()).getUser().getUserName();
+        String user = MainActivity.getUser().getUserName();
 
         // Hour (0 - 23)
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -89,6 +103,18 @@ public class HomeFragment extends Fragment {
             greeting = "Good evening ";
         }
 
+        greeting += user;
+
+        return greeting;
+    }
+
+    /**
+     * Get the welcoming sentence (dynamic with user's data)
+     * @return the proper greetings
+     */
+    private String getGreetings() {
+        String user_info = "";
+
         // Select user info sentence (total tasks/goals for the day)
         if(tasks.size() == 0 && goals.size() == 0) {
             user_info = "relax! You have nothing to do today.";
@@ -101,9 +127,7 @@ public class HomeFragment extends Fragment {
                     + goals.size() + " goal" + (goals.size() > 1 ? "s" : "") + " for today.";
         }
 
-        greeting += user + ",\n" + user_info;
-
-        return greeting;
+        return getDayGreetings() + ",\n" + user_info;
     }
 
     /**
@@ -114,5 +138,15 @@ public class HomeFragment extends Fragment {
     private String getSingleUserInfoGreeting(int value) {
         return "You " + (value < 5 ? "just " : "") + "have " +
                 value + " task" + (value > 1 ? "s" : "");
+    }
+
+    public void updateHomeFragment() {
+        feedProgress.setVisibility(View.GONE);
+        tasks = MainActivity.getUser().getTasksForDay(Calendar.getInstance().getTime());
+        goals = MainActivity.getUser().getGoalTodosOfDay(Calendar.getInstance().getTime());
+        Utils.setupTasksFeed(view, tasksRecyclerView, tasks);
+        Utils.setupGoalTodosFeedBubbled(view, goalsRecyclerView, goals);
+        greetingText.setText(getGreetings());
+        refreshLayout.setRefreshing(false);
     }
 }

@@ -31,8 +31,6 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputLayout;
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
-import com.heig.atmanager.User;
-import com.heig.atmanager.UserViewModel;
 import com.heig.atmanager.Utils;
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.taskLists.TaskList;
@@ -46,6 +44,8 @@ import java.util.GregorianCalendar;
 
 
 public class AddTaskFragment extends Fragment {
+
+    public static final String FRAG_ADD_TASK_ID = "Add_Task_Fragment";
 
     private static final String TAG = "AddTaskFragment";
 
@@ -134,8 +134,7 @@ public class AddTaskFragment extends Fragment {
                         dueDateTextView.setText(dueDateString);
                         mYear = year;
                         mMonth = month;
-                        mDay
-                                 = dayOfMonth;
+                        mDay   = dayOfMonth;
                     }
                 }, mYear, mMonth, mDay);
                 // Show the picker
