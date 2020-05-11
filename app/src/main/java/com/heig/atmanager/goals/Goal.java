@@ -1,5 +1,7 @@
 package com.heig.atmanager.goals;
 
+import android.util.Log;
+
 import com.heig.atmanager.Interval;
 import com.heig.atmanager.Utils;
 
@@ -32,22 +34,24 @@ public class Goal implements Serializable {
 
     private static final String TAG = "Goal";
 
+    private long id;
     private String unit;
     private int quantity;
     private int intervalNumber;
     private Interval interval;
     private Date dueDate;
+    private Date createDate;
     private ArrayList<GoalTodo> goalTodos;
 
-    public Goal(String unit, int quantity, int intervalNumber, Interval interval, Date dueDate) {
+    public Goal(long id, String unit, int quantity, int intervalNumber, Interval interval, Date dueDate, Date createDate) {
+        this.id       = id;
         this.unit     = unit;
         this.quantity = quantity;
         this.intervalNumber = intervalNumber;
         this.interval = interval;
         this.dueDate  = dueDate;
-
-        // Generate the todos automatically (once) for the user
-        goalTodos = generateTodos();
+        this.createDate = createDate;
+        this.goalTodos = new ArrayList<>();
     }
 
     /**
@@ -62,7 +66,7 @@ public class Goal implements Serializable {
 
         // Adding new goalsTodo while it's equal or before the due date
         while(calendar.getTime().equals(dueDate) || calendar.getTime().before(dueDate)) {
-            goals.add(new GoalTodo(this, 0, calendar.getTime(), dueDate));
+            goals.add(new GoalTodo(-1, id, 0, calendar.getTime(), dueDate));
             calendar.add(interval.getCalendarInterval(),1);
         }
 
@@ -151,6 +155,29 @@ public class Goal implements Serializable {
             percentage += goalTodo.getQuantityDone();
 
         return percentage / goalTodos.size();
+    }
+
+    public void addGoalTodo(GoalTodo goalTodo) {
+        goalTodos.add(goalTodo);
+    }
+
+    public long getId(){
+        return id;
+    }
+
+    // TEMP : If we don't need to generate the left over goalTodo then we won't need this
+    public long getTotalGoalTodo() {
+        if(dueDate == null)
+            return -1;
+
+        // difference in milliseconds
+        long diff = dueDate.getTime() - createDate.getTime();
+
+        if(diff < 0)
+            return -1;
+
+        // Works only for daily (WIP for others)
+        return (diff / (1000*60*60*24));
     }
 
 }
