@@ -325,21 +325,20 @@ public class User {
         for(Goal g : goals){
             for(GoalTodo gt : g.getGoalTodos()){
                 switch(interval) {
-                    case YEAR: {
+                    case YEAR:
                         if (Utils.getYear(currentDate) == Utils.getYear(gt.getDoneDate()) && g.getInterval() == Interval.YEAR)
                             result.add(gt);
                         break;
-                    }
                     case MONTH:
-                    if(Arrays.equals(Utils.getMonthYear(gt.getDoneDate()), Utils.getMonthYear(currentDate))
-                            && g.getInterval() == Interval.MONTH)
-                        result.add(gt);
-                    break;
+                        if(Arrays.equals(Utils.getMonthYear(gt.getDoneDate()), Utils.getMonthYear(currentDate))
+                                && g.getInterval() == Interval.MONTH)
+                            result.add(gt);
+                        break;
                     case WEEK:
-                    if(Arrays.equals(Utils.getWeekMonthYear(gt.getDoneDate()), Utils.getWeekMonthYear(currentDate))
-                            && g.getInterval() == Interval.WEEK)
-                        result.add(gt);
-                    break;
+                        if(Arrays.equals(Utils.getWeekMonthYear(gt.getDoneDate()), Utils.getWeekMonthYear(currentDate))
+                                && g.getInterval() == Interval.WEEK)
+                            result.add(gt);
+                        break;
                     case DAY:
                         if(Arrays.equals(Utils.getDayWeekMonthYear(gt.getDoneDate()), Utils.getDayWeekMonthYear(currentDate))
                                 && g.getInterval() == Interval.DAY)
