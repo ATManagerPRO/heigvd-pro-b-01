@@ -21,12 +21,13 @@ import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.anychart.charts.Cartesian;
 import com.anychart.charts.Pie;
 import com.heig.atmanager.Interval;
+import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
 import com.heig.atmanager.Utils;
 import com.heig.atmanager.goals.Goal;
-import com.heig.atmanager.userData.User;
 import com.heig.atmanager.goals.GoalTodo;
 import com.heig.atmanager.tasks.Task;
+import com.heig.atmanager.userData.User;
 
 import java.util.ArrayList;
 import java.util.Calendar;
