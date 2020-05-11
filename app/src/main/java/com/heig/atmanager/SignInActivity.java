@@ -125,6 +125,8 @@ public class SignInActivity extends Activity implements View.OnClickListener {
                         if(response.getInt("status code") == 200 || response.getInt("status code") == 201){
                             String test = response.getJSONObject("resource").getString("tokenAPI");
                             MainActivity.getUser().setBackEndToken(test);
+                            int id = response.getJSONObject("resource").getInt("userId");
+                            MainActivity.getUser().setUserId(id);
                         }
                         if(response.getInt("status code") == 400 || response.getInt("status code") == 500){
                             //MainActivity.signOut();

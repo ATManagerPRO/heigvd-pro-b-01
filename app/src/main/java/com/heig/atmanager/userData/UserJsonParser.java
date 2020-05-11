@@ -110,12 +110,12 @@ public class UserJsonParser {
         this.user        = MainActivity.getUser();
 
         // Update urls with user's id
-        String base_url = "https://atmanager.gollgot.app/api/v1/users/" ;
+        String base_url = "https://atmanager.gollgot.app/api/v1/users/" + MainActivity.getUser().getUserId() ;
         URL_FOLDERS_AND_TASKLISTS = base_url + "/todolists";
         URL_TODAY_TASKS           = base_url + "/todos/today";
-        URL_TODAY_GOALS_TODO      = "https://atmanager.gollgot.app/api/v1/users/"+USER_ID+"/goaltodos/today";
-        URL_ALL_TASKS             = "https://atmanager.gollgot.app/api/v1/users/"+USER_ID+"/todos";
-        URL_ALL_GOAL_TODOS        = "https://atmanager.gollgot.app/api/v1/users/"+USER_ID+"/goaltodos";
+        URL_TODAY_GOALS_TODO      = base_url + "/goaltodos/today";
+        URL_ALL_TASKS             = base_url + "/todos";
+        URL_ALL_GOAL_TODOS        = base_url + "/goaltodos";
     }
 
     public void loadAllDataIntoUser(RequestQueue queue) {

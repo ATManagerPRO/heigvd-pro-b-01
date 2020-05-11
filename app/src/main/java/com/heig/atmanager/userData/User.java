@@ -21,6 +21,7 @@ public class User {
 
     private static final String TAG = "User";
 
+    private long userId;
     private String userName;
     private String googleToken;
     private String backEndToken;
@@ -260,5 +261,13 @@ public class User {
 
     public void setBackEndToken(String backEndToken) {
         this.backEndToken = backEndToken;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 }
