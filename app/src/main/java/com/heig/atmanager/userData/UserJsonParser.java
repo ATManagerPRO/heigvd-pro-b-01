@@ -108,6 +108,7 @@ public class UserJsonParser {
     public UserJsonParser(Context mainContext) {
         this.mainContext = mainContext;
         this.user        = MainActivity.getUser();
+        Log.d(TAG, "updateUI: testingSignIn creating UserJsonParson");
 
         // Update urls with user's id
         String base_url = "https://atmanager.gollgot.app/api/v1/users/" + MainActivity.getUser().getUserId() ;
@@ -116,9 +117,12 @@ public class UserJsonParser {
         URL_TODAY_GOALS_TODO      = base_url + "/goaltodos/today";
         URL_ALL_TASKS             = base_url + "/todos";
         URL_ALL_GOAL_TODOS        = base_url + "/goaltodos";
+
+        Log.d(TAG, "updateUI: loading for : testingSignIn " + MainActivity.getUser().getUserId());
     }
 
     public void loadAllDataIntoUser(RequestQueue queue) {
+
         // Side drawer view
         Log.d(TAG, "loadAllDataIntoUser: loading folders and tasklists...");
         loadFoldersAndTasklists(queue);

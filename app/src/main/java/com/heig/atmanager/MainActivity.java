@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
 
     public static User user;
 
-
     private BottomNavigationView dock;
 
     private FloatingActionButton fab;
@@ -110,9 +109,13 @@ public class MainActivity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         userAccount         = GoogleSignIn.getLastSignedInAccount(this);
 
+        // Creating the user with basic data
+        Intent i = getIntent();
         user = new User(userAccount.getDisplayName(), userAccount.getIdToken());
+        user.setBackEndToken(i.getExtras().getString("userToken"));
+        user.setUserId(i.getExtras().getLong("userId"));
 
-
+        Log.d(TAG, "onCreate: user updated with : " + user.getUserId() + " / " + user.getBackEndToken());
 
         fab = findViewById(R.id.fab);
         fabAddGoal = findViewById(R.id.fab_add_goal);
@@ -127,12 +130,9 @@ public class MainActivity extends AppCompatActivity {
         expandableListView = (ExpandableListView) findViewById(R.id.navList);
 
         // Loading the data from the server into the user
+        Log.d(TAG, "updateUI: testingSignIn loading user data...");
         jsonParser = new UserJsonParser(this);
         jsonParser.loadAllDataIntoUser(queue);
-
-        Log.d(TAG, "onCreate: For user : " + user.getUserName());
-        Log.d(TAG, "onCreate: data loaded : " + user.getTaskLists().size());
-        Log.d(TAG, "onCreate: data loaded : " + user.getFolders().size());
 
         // First fragment to load : Home
         displayPreviousFragment(HomeFragment.FRAG_HOME_ID);
