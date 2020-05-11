@@ -73,6 +73,8 @@ public class AddTaskFragment extends Fragment {
 
     private TextInputLayout titleLayout;
 
+    ArrayList<String> tags;
+
     public AddTaskFragment() {
         // Required empty public constructor
     }
@@ -159,14 +161,14 @@ public class AddTaskFragment extends Fragment {
             }
         });
 
+        for(String s : MainActivity.getUser().getTags())
+            Log.d(TAG, "onCreateView: Tag : " + s);
 
         // Tags
-        //final ArrayAdapter<String> chipsAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, currentUser.getTags().getValue());
-        ArrayList<String> test = new ArrayList<>();
-        test.add("tag1");
-        test.add("tag2");
+        tags = new ArrayList<>();
+        // Enable the user to choose between his/her tags
         final ArrayAdapter<String> chipsAdapter = new ArrayAdapter<>(getActivity(),
-                R.layout.support_simple_spinner_dropdown_item, test);
+                R.layout.support_simple_spinner_dropdown_item, MainActivity.getUser().getTags());
         // App detect the input to suggest the tag
         final AutoCompleteTextView autoCompleteTextView = mView.findViewById(R.id.frag_add_task_autocomplete_textview);
         autoCompleteTextView.setAdapter(chipsAdapter);
@@ -174,6 +176,7 @@ public class AddTaskFragment extends Fragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    Log.d(TAG, "onEditorAction: onCreateView adding tag");
                     ChipGroup chipGroup = mView.findViewById(R.id.frag_add_task_chipgroup);
                     addChipToGroup(autoCompleteTextView.getText().toString().trim(), chipGroup);
                     autoCompleteTextView.setText(null);
@@ -212,6 +215,11 @@ public class AddTaskFragment extends Fragment {
                     selectedDate = new GregorianCalendar(mYear, mMonth, mDay, mHour, mMinute).getTime();
                 }
                 Task newTask = new Task(title, description, selectedDate);
+
+                // Add the tags
+                for(String tag : tags) {
+                    newTask.addTag(tag);
+                }
 
                 // Add the task to a selected taskList
                 for(TaskList taskList : ((MainActivity) getContext()).getUser().getTaskLists()) {
@@ -252,10 +260,12 @@ public class AddTaskFragment extends Fragment {
         chip.setClickable(true);
         chip.setCheckable(false);
         chipGroup.addView(chip);
+        tags.add(tag);
         chip.setOnCloseIconClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 chipGroup.removeView(chip);
+                tags.remove(chip.getText().toString());
             }
         });
     }

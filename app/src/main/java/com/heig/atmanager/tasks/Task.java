@@ -1,7 +1,9 @@
 package com.heig.atmanager.tasks;
 
+import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.taskLists.TaskList;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -23,6 +25,7 @@ public class Task {
     private Date doneDate;
     private Date reminderDate;
     private TaskList tasklist;
+    private ArrayList<String> tags;
 
     public Task(String title, String description) {
         this(UNDEFINED_ID, title, description, false, false, null, null, null);
@@ -50,6 +53,8 @@ public class Task {
         this.dueDate      = dueDate;
         this.doneDate     = doneDate;
         this.reminderDate = reminderDate;
+        this.tasklist     = tasklist;
+        this.tags         = new ArrayList<>();
     }
 
     public String getTitle() {
@@ -95,5 +100,15 @@ public class Task {
 
     public TaskList getTasklist() {
         return tasklist;
+    }
+
+    public void addTag(String tag) {
+        // Add the tag to the task and the user
+        tags.add(tag);
+        MainActivity.getUser().addTag(tag);
+    }
+
+    public ArrayList<String> getTags() {
+        return tags;
     }
 }
