@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         jsonParser.loadAllDataIntoUser(queue);
 
         // First fragment to load : Home
-        displayPreviousFragment(HomeFragment.FRAG_HOME_ID);
+        displayFragment(HomeFragment.FRAG_HOME_ID);
     }
 
     // Menu icons are inflated just as they were with actionbar

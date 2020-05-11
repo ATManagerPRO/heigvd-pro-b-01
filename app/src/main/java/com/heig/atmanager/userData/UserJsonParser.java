@@ -188,9 +188,9 @@ public class UserJsonParser {
                         parseAndLoadTasks(response.getJSONObject(RESPONSE_RESOURCE));
 
                         // Update home fragment
-                        ((HomeFragment) ((MainActivity) mainContext).getSupportFragmentManager()
+                        /*((HomeFragment) ((MainActivity) mainContext).getSupportFragmentManager()
                                 .findFragmentByTag(HomeFragment.FRAG_HOME_ID))
-                                .updateHomeFragment();
+                                .updateHomeFragment();*/
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
@@ -228,9 +228,9 @@ public class UserJsonParser {
                         parseAndLoadGoalTodos(response.getJSONObject(RESPONSE_RESOURCE));
 
                         // Update home fragment
-                        ((HomeFragment) ((MainActivity) mainContext).getSupportFragmentManager()
+                        /*((HomeFragment) ((MainActivity) mainContext).getSupportFragmentManager()
                                 .findFragmentByTag(HomeFragment.FRAG_HOME_ID))
-                                .updateHomeFragment();
+                                .updateHomeFragment();*/
 
                     }
                 } catch (final JSONException e) {
