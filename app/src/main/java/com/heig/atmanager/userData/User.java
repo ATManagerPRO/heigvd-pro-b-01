@@ -24,19 +24,22 @@ public class User {
     private String userName;
     private String googleToken;
     private String backEndToken;
+    private String email;
     private ArrayList<Goal> goals;
     private ArrayList<TaskList> taskLists;
     private ArrayList<Task> tasks;
     private ArrayList<String> tags;
     private ArrayList<Folder> folders;
 
-    public User(String userName, String googleToken) {
+    public User(String userName, String googleToken, String email) {
         this.userName = userName;
         this.googleToken = googleToken;
+        this.email = email;
         this.goals       = new ArrayList<>();
         this.taskLists   = new ArrayList<>();
         this.tasks       = new ArrayList<>();
         this.folders     = new ArrayList<>();
+        this.tags = new ArrayList<>();
     }
 
     public String getUserName() {
@@ -255,5 +258,9 @@ public class User {
 
     public void setBackEndToken(String backEndToken) {
         this.backEndToken = backEndToken;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }

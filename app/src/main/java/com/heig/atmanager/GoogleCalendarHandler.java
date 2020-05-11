@@ -58,13 +58,13 @@ public class GoogleCalendarHandler {
 
     private void createCalendar(Activity activity) {
         ContentValues values = new ContentValues();
-        values.put(Calendars.ACCOUNT_NAME, MainActivity.user.getMail());
+        values.put(Calendars.ACCOUNT_NAME, MainActivity.user.getEmail());
         values.put(Calendars.ACCOUNT_TYPE, BuildConfig.APPLICATION_ID);
         values.put(Calendars.NAME, activity.getString(R.string.app_name));
         values.put(Calendars.CALENDAR_DISPLAY_NAME, activity.getString(R.string.app_name));
         values.put(Calendars.CALENDAR_COLOR, R.color.colorAccent);
         values.put(Calendars.CALENDAR_ACCESS_LEVEL, Calendars.CAL_ACCESS_OWNER);
-        values.put(Calendars.OWNER_ACCOUNT, MainActivity.user.getMail());
+        values.put(Calendars.OWNER_ACCOUNT, MainActivity.user.getEmail());
         values.put(Calendars.SYNC_EVENTS, true);
         values.put(Calendars.VISIBLE, true);
 
@@ -73,7 +73,7 @@ public class GoogleCalendarHandler {
         uri = uri.buildUpon()
                 // Sync with server
                 .appendQueryParameter(CalendarContract.CALLER_IS_SYNCADAPTER, "true")
-                .appendQueryParameter(Calendars.ACCOUNT_NAME, MainActivity.user.getMail())
+                .appendQueryParameter(Calendars.ACCOUNT_NAME, MainActivity.user.getEmail())
                 .appendQueryParameter(Calendars.ACCOUNT_TYPE, BuildConfig.APPLICATION_ID)
                 .build();
 
@@ -89,8 +89,8 @@ public class GoogleCalendarHandler {
         String selection = "((" + CalendarContract.Calendars.ACCOUNT_NAME + " = ?) AND ("
                 + CalendarContract.Calendars.ACCOUNT_TYPE + " = ?) AND ("
                 + CalendarContract.Calendars.OWNER_ACCOUNT + " = ?))";
-        String[] selectionArgs = new String[]{MainActivity.getUser().getMail(), BuildConfig.APPLICATION_ID,
-                MainActivity.getUser().getMail()};
+        String[] selectionArgs = new String[]{MainActivity.getUser().getEmail(), BuildConfig.APPLICATION_ID,
+                MainActivity.getUser().getEmail()};
         if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.READ_CALENDAR}, CALENDAR_INIT);
         }
