@@ -110,7 +110,7 @@ public class GoalTodoFeedAdapter extends RecyclerView.Adapter<GoalTodoFeedAdapte
             holder.timerValue.setText(goals.get(position).getTimerValue());
         } else {
             holder.title.setText(doneQt + "/" + totalQt + " " + unit);
-            holder.doneDate.setText(Utils.dateToString(goals.get(position).getDoneDate()));
+            holder.doneDate.setText(Utils.dateToString(goals.get(position).getDueDate()));
             holder.percentage.setText(goals.get(position).getPercentage() + "%");
         }
 

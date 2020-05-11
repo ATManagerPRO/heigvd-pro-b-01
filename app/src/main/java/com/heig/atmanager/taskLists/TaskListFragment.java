@@ -1,6 +1,7 @@
 package com.heig.atmanager.taskLists;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,8 @@ import java.util.Calendar;
  */
 public class TaskListFragment extends Fragment {
 
+    private static final String TAG = "TaskListFragment";
+    
     private TextView title;
     private RecyclerView tasksRv;
     private RecyclerView.Adapter tasksAdapter;
@@ -47,16 +50,24 @@ public class TaskListFragment extends Fragment {
         // Opened tasklist
         TaskList taskList = ((TaskList) getArguments().getSerializable(TaskList.SERIAL_TASK_LIST_KEY));
 
+        Log.d(TAG, "onCreateView: tasklist opened : " + taskList.getName() + ", " + taskList.getTasks().size());
+
         // Setup the data into the XML (new thread ?)
         title.setText(taskList.getName());
 
-        tasks = new ArrayList<Task>();
+        tasks = taskList.getTasks();
 
-        for (Task task : (((MainActivity) getContext()).getUser().getTasks())) {
+        /*for(TaskList taskListUser : MainActivity.getUser().getTaskLists()) {
+            if(taskListUser.getId() == taskList.getId()) {
+                tasks.addAll(taskListUser)
+            }
+        }
+
+        for (Task task : MainActivity.getUser().getTasks()) {
             if (task.getTasklist().equals(taskList)) {
                 tasks.add(task);
             }
-        }
+        }*/
 
         // Setup feed and link it to the main for searches
         tasksRv.setHasFixedSize(true);

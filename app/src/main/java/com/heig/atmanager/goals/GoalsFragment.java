@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import com.heig.atmanager.Interval;
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
-import com.heig.atmanager.UserViewModel;
 import com.heig.atmanager.Utils;
 
 import java.util.ArrayList;

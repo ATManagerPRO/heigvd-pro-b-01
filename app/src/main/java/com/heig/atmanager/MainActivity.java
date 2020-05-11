@@ -26,6 +26,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -38,13 +44,17 @@ import com.heig.atmanager.stats.StatsFragment;
 import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.taskLists.TaskListFragment;
 import com.heig.atmanager.tasks.TaskFeedAdapter;
+import com.heig.atmanager.userData.User;
+import com.heig.atmanager.userData.UserJsonParser;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     public static User user;
+
 
     private BottomNavigationView dock;
 
@@ -67,10 +77,16 @@ public class MainActivity extends AppCompatActivity {
     // Current adapter for search feature
     private RecyclerView.Adapter contentAdapter;
 
+    // JSON Parser
+    private UserJsonParser jsonParser;
+    private RequestQueue queue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        queue = Volley.newRequestQueue(this);
 
         GoogleSignInOptions gso =
                 new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -95,7 +111,14 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         expandableListView = (ExpandableListView) findViewById(R.id.navList);
-        updateDrawerItems();
+
+        // Loading the data from the server into the user
+        jsonParser = new UserJsonParser(this);
+        jsonParser.loadAllDataIntoUser(queue);
+
+        Log.d(TAG, "onCreate: For user : " + user.getUserName());
+        Log.d(TAG, "onCreate: data loaded : " + user.getTaskLists().size());
+        Log.d(TAG, "onCreate: data loaded : " + user.getFolders().size());
 
         // First fragment to load : Home
         displayPreviousFragment(HomeFragment.FRAG_HOME_ID);
@@ -113,29 +136,34 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment selectedFragment = null;
+                String selectedTag        = "";
                 switch (item.getItemId()) {
                     case R.id.home:
                         selectedFragment = new HomeFragment();
+                        selectedTag      = HomeFragment.FRAG_HOME_ID;
                         break;
                     case R.id.calendar:
                         selectedFragment = new CalendarFragment();
+                        selectedTag      = CalendarFragment.FRAG_CALENDAR_ID;
                         break;
                     case R.id.goals:
                         selectedFragment = new GoalsFragment();
+                        selectedTag      = GoalsFragment.FRAG_GOALS_ID;
                         break;
                     case R.id.stats:
                         selectedFragment = new StatsFragment();
+                        selectedTag      = StatsFragment.FRAG_STATS_ID;
                         break;
                     default:
                         return false;
                 }
-                loadFragment(selectedFragment);
+                loadFragment(selectedFragment, selectedTag);
                 return true;
             }
         });
 
         // Load fragment
-        loadFragment(new HomeFragment());
+        loadFragment(new HomeFragment(), HomeFragment.FRAG_HOME_ID);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.fab_container).setVisibility(View.GONE);
                 findViewById(R.id.dock).setVisibility(View.GONE);
                 fab.setExpanded(false);
-                loadFragment(new AddTaskFragment());
+                loadFragment(new AddTaskFragment(), AddTaskFragment.FRAG_ADD_TASK_ID);
             }
         });
 
@@ -162,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.fab_container).setVisibility(View.GONE);
                 findViewById(R.id.dock).setVisibility(View.GONE);
                 fab.setExpanded(false);
-                loadFragment(new AddGoalFragment());
+                loadFragment(new AddGoalFragment(), AddGoalFragment.FRAG_ADD_GOAL_ID);
             }
         });
 
@@ -216,27 +244,28 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void loadFragment(Fragment fragment) {
+    private void loadFragment(Fragment fragment, String tag) {
 
         // Create new fragment and transaction
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         // Replace whatever is in the fragment_container view with this fragment,
         // and add the transaction to the back stack
-        transaction.replace(R.id.fragment_container, fragment);
+        transaction.replace(R.id.fragment_container, fragment, tag);
         transaction.addToBackStack(null);
 
         // Commit the transaction
-        transaction.commit();
+        transaction.commitAllowingStateLoss();
     }
 
     /**
      * Updates the items of the drawer menu with the current user's data (tasklists then folders)
      */
-    private void updateDrawerItems() {
+    public void updateDrawerItems() {
         final ArrayList<TaskList> standaloneTaskLists = new ArrayList<>();
+
         for(TaskList taskList : user.getTaskLists())
-            if(taskList.isStandalone())
+            if(!taskList.isFolder())
                 standaloneTaskLists.add(taskList);
 
         drawerAdapter = new DrawerListAdapter(this, standaloneTaskLists, user.getFolders());
@@ -328,6 +357,7 @@ public class MainActivity extends AppCompatActivity {
     {
         //creating fragment object
         Fragment fragment = null;
+        String tag = "";
 
         //initializing the fragment object which is selected
         switch (previousFragment)
@@ -348,7 +378,7 @@ public class MainActivity extends AppCompatActivity {
 
         //replacing the fragment
         if (fragment != null) {
-            loadFragment(fragment);
+            loadFragment(fragment, previousFragment);
         }
     }
 

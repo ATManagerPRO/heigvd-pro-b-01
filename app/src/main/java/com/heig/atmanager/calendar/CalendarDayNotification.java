@@ -2,9 +2,11 @@ package com.heig.atmanager.calendar;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.text.style.LineBackgroundSpan;
+import android.util.Log;
 
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
@@ -17,7 +19,7 @@ import androidx.core.content.ContextCompat;
  * Author : Stéphane Bottin
  * Date   : 22.03.2020
  *
- * Calendar Day Notification graphics (dot)
+ * Calendar Day Notification graphics
  */
 public class CalendarDayNotification implements LineBackgroundSpan {
 
@@ -27,19 +29,12 @@ public class CalendarDayNotification implements LineBackgroundSpan {
     private static final int PADDING       = 10;
     private static final int CORNER_RADIUS = 20;
 
-    private static final int ALPHA_MIN     = 50;
-    private static final int ALPHA_MAX     = 255;
-
-    private int maxTasks;
     private int color;
     private Context context;
 
     public CalendarDayNotification(Context context, int color) {
         this.color   = color;
         this.context = context;
-
-        // TODO : Should be computed once outside...
-        //this.maxTasks = ((MainActivity) context).dummyUser.getMaxActivityPerDay();
     }
 
     @Override
@@ -52,26 +47,12 @@ public class CalendarDayNotification implements LineBackgroundSpan {
         int oldColor = paint.getColor();
         paint.setColor(color);
 
-        // Setting the proper shade of color depending on the user's activity (total tasks/goals)
-        // rem : charSequence = day of the month
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(charSequence.toString()));
-        //paint.setAlpha(getDensityAlpha(((MainActivity) context).dummyUser.getTotalTasksForDay(calendar.getTime())));
-
         canvas.drawRoundRect(left + PADDING, top - HEIGHT + PADDING,
                 right - PADDING, bottom + HEIGHT - PADDING, CORNER_RADIUS,
                 CORNER_RADIUS, paint);
 
         // Bold and old color font for days
-        paint.setColor(oldColor);
+        paint.setColor(Color.WHITE);
         paint.setTypeface(Typeface.DEFAULT_BOLD);
-    }
-
-    /**
-     * Get the density of activity depending on the total of tasks and goals
-     * @return an alpha value from the alphaDensity array
-     */
-    private int getDensityAlpha(int totalTasks) {
-        return Math.max(ALPHA_MAX * totalTasks / maxTasks, ALPHA_MIN);
     }
 }
