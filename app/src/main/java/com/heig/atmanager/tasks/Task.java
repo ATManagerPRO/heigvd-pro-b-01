@@ -13,6 +13,10 @@ import java.util.Date;
  * Task object
  */
 public class Task {
+
+    private static final long UNDEFINED_ID = -1;
+
+    private long id;
     private String title;
     private String description;
     private boolean done;
@@ -24,22 +28,24 @@ public class Task {
     private ArrayList<String> tags;
 
     public Task(String title, String description) {
-        this(title, description, false, false, null, null, null, TaskList.defaultList);
+        this(UNDEFINED_ID, title, description, false, false, null, null, null);
     }
 
     public Task(String title, String description, Date dueDate) {
-        this(title, description, false, false, dueDate, null, null, TaskList.defaultList);
+        this(UNDEFINED_ID, title, description, false, false, dueDate, null, null);
     }
 
     public Task(String title, String description, boolean favorite) {
-        this(title, description, false, favorite, null, null, null, TaskList.defaultList);
+        this(UNDEFINED_ID, title, description, false, favorite, null, null, null);
     }
 
     public Task(String title, String description, Date dueDate, TaskList taskList) {
-        this(title, description, false, false, dueDate, null, null, taskList);
+        this(UNDEFINED_ID, title, description, false, false, dueDate, null, null);
     }
 
-    public Task(String title, String description, boolean done, boolean favorite, Date dueDate, Date doneDate, Date reminderDate, TaskList tasklist) {
+    public Task(long id, String title, String description, boolean done, boolean favorite,
+                Date dueDate, Date doneDate, Date reminderDate) {
+        this.id           = id;
         this.title        = title;
         this.description  = description;
         this.done         = done;
@@ -78,6 +84,7 @@ public class Task {
     public void setDone(boolean status) {
         this.done = status;
     }
+
 
     public boolean isFavorite() {
         return favorite;
