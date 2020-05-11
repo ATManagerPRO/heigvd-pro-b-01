@@ -243,6 +243,109 @@ public class User {
 
         return goalTodos;
     }
+
+    public ArrayList<Task> getTasksForLastWeek() {
+        ArrayList<Task> tasksForLastWeek = new ArrayList<>();
+
+        for (Task task : tasks) {
+            if (task.getDueDate() != null && isBetweenDates(task.getDueDate(), getDateXDaysAgo(7), Calendar.getInstance().getTime())) {
+                tasksForLastWeek.add(task);
+            }
+        }
+
+        return tasksForLastWeek;
+    }
+
+    public ArrayList<Task> getTasksForLastMonth() {
+        ArrayList<Task> tasksForLastMonth = new ArrayList<>();
+
+        for (Task task : tasks) {
+            if (task.getDueDate() != null && isBetweenDates(task.getDueDate(), getDateXDaysAgo(30), Calendar.getInstance().getTime())) {
+                tasksForLastMonth.add(task);
+            }
+        }
+
+        return tasksForLastMonth;
+    }
+
+    public ArrayList<Task> getTasksForLastYear() {
+        ArrayList<Task> tasksForLastYear = new ArrayList<>();
+
+        for (Task task : tasks) {
+            if (task.getDueDate() != null && isBetweenDates(task.getDueDate(), getDateXDaysAgo(365), Calendar.getInstance().getTime())) {
+                tasksForLastYear.add(task);
+            }
+        }
+
+        return tasksForLastYear;
+    }
+
+    public ArrayList<GoalTodo> getDailyGoalTodo(){
+        ArrayList<GoalTodo> result = new ArrayList<>();
+        Calendar current = Calendar.getInstance();
+        Date currentDate = new Date();
+        current.setTime(currentDate);
+
+        for(Goal g : goals){
+            for(GoalTodo gt : g.getGoalTodos()){
+                if(Arrays.equals(Utils.getDayWeekMonthYear(gt.getDoneDate()), Utils.getDayWeekMonthYear(currentDate))
+                        && g.getInterval() == Interval.DAY)
+                    result.add(gt);
+            }
+        }
+
+        return result;
+    }
+
+    public ArrayList<GoalTodo> getWeeklyGoalTodo(){
+        ArrayList<GoalTodo> result = new ArrayList<>();
+        Calendar current = Calendar.getInstance();
+        Date currentDate = new Date();
+        current.setTime(currentDate);
+
+        for(Goal g : goals){
+            for(GoalTodo gt : g.getGoalTodos()){
+                if(Arrays.equals(Utils.getWeekMonthYear(gt.getDoneDate()), Utils.getWeekMonthYear(currentDate))
+                        && g.getInterval() == Interval.WEEK)
+                    result.add(gt);
+            }
+        }
+
+        return result;
+    }
+
+    public ArrayList<GoalTodo> getMonthlyGoalTodo(){
+        ArrayList<GoalTodo> result = new ArrayList<>();
+        Calendar current = Calendar.getInstance();
+        Date currentDate = new Date();
+        current.setTime(currentDate);
+
+        for(Goal g : goals){
+            for(GoalTodo gt : g.getGoalTodos()){
+                if(Arrays.equals(Utils.getMonthYear(gt.getDoneDate()), Utils.getMonthYear(currentDate))
+                        && g.getInterval() == Interval.MONTH)
+                    result.add(gt);
+            }
+        }
+
+        return result;
+    }
+
+    public ArrayList<GoalTodo> getYearlyGoalTodo(){
+        ArrayList<GoalTodo> result = new ArrayList<>();
+        Calendar current = Calendar.getInstance();
+        Date currentDate = new Date();
+        current.setTime(currentDate);
+
+        for(Goal g : goals){
+            for(GoalTodo gt : g.getGoalTodos()){
+                if(Utils.getYear(currentDate) == Utils.getYear(gt.getDoneDate()) && g.getInterval() == Interval.YEAR)
+                    result.add(gt);
+            }
+        }
+
+        return result;
+    }
     
     public void addTag(String tagName){
         tags.add(tagName);
