@@ -27,10 +27,7 @@ import com.anychart.enums.MarkerType;
 import com.anychart.enums.TooltipPositionMode;
 import com.anychart.graphics.vector.Stroke;
 import com.heig.atmanager.Interval;
-import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
-import com.heig.atmanager.User;
-import com.heig.atmanager.UserViewModel;
 import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.tasks.Task;
 
@@ -44,6 +41,8 @@ import java.util.Objects;
  * TODO : GRAPH DON'T REFRESH PRORERLY
  */
 public class StatsFragment  extends Fragment {
+
+    public static final String FRAG_STATS_ID = "Stats_Fragment";
 
     private Spinner menu;
     private static final String[] items = new String[]{"Today","This Week","This Month","This Year"};

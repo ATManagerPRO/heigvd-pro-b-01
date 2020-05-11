@@ -39,8 +39,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.heig.atmanager.GoogleCalendarHandler;
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
-import com.heig.atmanager.User;
-import com.heig.atmanager.UserViewModel;
 import com.heig.atmanager.Utils;
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.taskLists.TaskList;
@@ -56,6 +54,8 @@ import android.provider.CalendarContract.Events;
 
 
 public class AddTaskFragment extends Fragment {
+
+    public static final String FRAG_ADD_TASK_ID = "Add_Task_Fragment";
 
     private static final String TAG = "AddTaskFragment";
 
@@ -82,6 +82,8 @@ public class AddTaskFragment extends Fragment {
     private TextView dueTimeTextView;
 
     private TextInputLayout titleLayout;
+
+    ArrayList<String> tags;
 
     public AddTaskFragment() {
         // Required empty public constructor
@@ -144,8 +146,7 @@ public class AddTaskFragment extends Fragment {
                         dueDateTextView.setText(dueDateString);
                         mYear = year;
                         mMonth = month;
-                        mDay
-                                = dayOfMonth;
+                        mDay   = dayOfMonth;
                     }
                 }, mYear, mMonth, mDay);
                 // Show the picker
@@ -170,14 +171,14 @@ public class AddTaskFragment extends Fragment {
             }
         });
 
+        for(String s : MainActivity.getUser().getTags())
+            Log.d(TAG, "onCreateView: Tag : " + s);
 
         // Tags
-        //final ArrayAdapter<String> chipsAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, currentUser.getTags().getValue());
-        ArrayList<String> test = new ArrayList<>();
-        test.add("tag1");
-        test.add("tag2");
+        tags = new ArrayList<>();
+        // Enable the user to choose between his/her tags
         final ArrayAdapter<String> chipsAdapter = new ArrayAdapter<>(getActivity(),
-                R.layout.support_simple_spinner_dropdown_item, test);
+                R.layout.support_simple_spinner_dropdown_item, MainActivity.getUser().getTags());
         // App detect the input to suggest the tag
         final AutoCompleteTextView autoCompleteTextView = mView.findViewById(R.id.frag_add_task_autocomplete_textview);
         autoCompleteTextView.setAdapter(chipsAdapter);
@@ -185,6 +186,7 @@ public class AddTaskFragment extends Fragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    Log.d(TAG, "onEditorAction: onCreateView adding tag");
                     ChipGroup chipGroup = mView.findViewById(R.id.frag_add_task_chipgroup);
                     addChipToGroup(autoCompleteTextView.getText().toString().trim(), chipGroup);
                     autoCompleteTextView.setText(null);
@@ -228,6 +230,11 @@ public class AddTaskFragment extends Fragment {
                 }
                 Task newTask = new Task(title, description, selectedDate);
 
+                // Add the tags
+                for(String tag : tags) {
+                    newTask.addTag(tag);
+                }
+
                 // Add the task to a selected taskList
                 for (TaskList taskList : ((MainActivity) getContext()).getUser().getTaskLists()) {
                     if (taskList.toString().equals(selectedDirectory)) {
@@ -268,10 +275,12 @@ public class AddTaskFragment extends Fragment {
         chip.setClickable(true);
         chip.setCheckable(false);
         chipGroup.addView(chip);
+        tags.add(tag);
         chip.setOnCloseIconClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 chipGroup.removeView(chip);
+                tags.remove(chip.getText().toString());
             }
         });
     }

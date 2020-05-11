@@ -1,7 +1,9 @@
 package com.heig.atmanager.tasks;
 
+import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.taskLists.TaskList;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -11,6 +13,10 @@ import java.util.Date;
  * Task object
  */
 public class Task {
+
+    private static final long UNDEFINED_ID = -1;
+
+    private long id;
     private String title;
     private String description;
     private boolean done;
@@ -19,24 +25,27 @@ public class Task {
     private Date doneDate;
     private Date reminderDate;
     private TaskList tasklist;
+    private ArrayList<String> tags;
 
     public Task(String title, String description) {
-        this(title, description, false, false, null, null, null, TaskList.defaultList);
+        this(UNDEFINED_ID, title, description, false, false, null, null, null);
     }
 
     public Task(String title, String description, Date dueDate) {
-        this(title, description, false, false, dueDate, null, null, TaskList.defaultList);
+        this(UNDEFINED_ID, title, description, false, false, dueDate, null, null);
     }
 
     public Task(String title, String description, boolean favorite) {
-        this(title, description, false, favorite, null, null, null, TaskList.defaultList);
+        this(UNDEFINED_ID, title, description, false, favorite, null, null, null);
     }
 
     public Task(String title, String description, Date dueDate, TaskList taskList) {
-        this(title, description, false, false, dueDate, null, null, taskList);
+        this(UNDEFINED_ID, title, description, false, false, dueDate, null, null);
     }
 
-    public Task(String title, String description, boolean done, boolean favorite, Date dueDate, Date doneDate, Date reminderDate, TaskList tasklist) {
+    public Task(long id, String title, String description, boolean done, boolean favorite,
+                Date dueDate, Date doneDate, Date reminderDate) {
+        this.id           = id;
         this.title        = title;
         this.description  = description;
         this.done         = done;
@@ -45,6 +54,7 @@ public class Task {
         this.doneDate     = doneDate;
         this.reminderDate = reminderDate;
         this.tasklist     = tasklist;
+        this.tags         = new ArrayList<>();
     }
 
     public String getTitle() {
@@ -75,6 +85,7 @@ public class Task {
         this.done = status;
     }
 
+
     public boolean isFavorite() {
         return favorite;
     }
@@ -89,5 +100,15 @@ public class Task {
 
     public TaskList getTasklist() {
         return tasklist;
+    }
+
+    public void addTag(String tag) {
+        // Add the tag to the task and the user
+        tags.add(tag);
+        MainActivity.getUser().addTag(tag);
+    }
+
+    public ArrayList<String> getTags() {
+        return tags;
     }
 }

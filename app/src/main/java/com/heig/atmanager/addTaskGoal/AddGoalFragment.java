@@ -39,6 +39,8 @@ import java.util.GregorianCalendar;
 
 public class AddGoalFragment extends Fragment {
 
+    public static final String FRAG_ADD_GOAL_ID = "Add_Goal_Fragment";
+
     // GUI Input
     private TextInputEditText quantityTextInput;
     private TextInputEditText unitTextInput;
@@ -197,7 +199,7 @@ public class AddGoalFragment extends Fragment {
 
 
                 interval = Interval.valueOf(intervalSpinner.getSelectedItem().toString());
-                ((MainActivity) getActivity()).getUser().addGoal(new Goal(unit, quantity, intervalNumber, interval, selectedDate));
+                ((MainActivity) getActivity()).getUser().addGoal(new Goal(-1, unit, quantity, intervalNumber, interval, selectedDate, Calendar.getInstance().getTime()));
 
                 goals = ((MainActivity) getContext()).getUser().getGoals();
                 
