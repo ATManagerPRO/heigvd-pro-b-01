@@ -22,9 +22,9 @@ import com.anychart.charts.Cartesian;
 import com.anychart.charts.Pie;
 import com.heig.atmanager.Interval;
 import com.heig.atmanager.R;
-import com.heig.atmanager.User;
 import com.heig.atmanager.Utils;
 import com.heig.atmanager.goals.Goal;
+import com.heig.atmanager.userData.User;
 import com.heig.atmanager.goals.GoalTodo;
 import com.heig.atmanager.tasks.Task;
 
@@ -39,6 +39,8 @@ import java.util.Objects;
  * Date   : 09.04.2020
  */
 public class StatsFragment  extends Fragment {
+
+    public static final String FRAG_STATS_ID = "Goals_Fragment";
 
     private AnyChartView pieChartTasksView;
     private AnyChartView columnChartTasksView;
