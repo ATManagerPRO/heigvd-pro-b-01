@@ -7,10 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.heig.atmanager.HomeFragment;
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
 import com.heig.atmanager.Utils;
 import com.heig.atmanager.goals.Goal;
+import com.heig.atmanager.goals.GoalsFragment;
 import com.heig.atmanager.tasks.Task;
 
 import androidx.annotation.NonNull;
@@ -39,6 +41,10 @@ public class TaskListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tasks, container, false);
+
+        // Change top button as back button
+        MainActivity.previousFragment = HomeFragment.FRAG_HOME_ID;
+        ((MainActivity) getActivity()).enableBackButton(true);
 
         // XML
         title = (TextView) v.findViewById(R.id.tasklist_title);
