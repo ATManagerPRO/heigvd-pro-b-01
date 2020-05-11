@@ -63,6 +63,7 @@ public class HomeFragment extends Fragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                Log.d(TAG, "onRefresh: ");
                 updateHomeFragment();
             }
         });
@@ -82,6 +83,7 @@ public class HomeFragment extends Fragment {
         tasksRecyclerView.setLayoutManager(manager);
         adapter = new TaskFeedAdapter(tasks);
         tasksRecyclerView.setAdapter(adapter);
+
         // Set adapter for searches
         ((MainActivity) getContext()).setContentAdapter(adapter);
 
@@ -151,7 +153,13 @@ public class HomeFragment extends Fragment {
         feedProgress.setVisibility(View.GONE);
         tasks = MainActivity.getUser().getTasksForDay(Calendar.getInstance().getTime());
         goals = MainActivity.getUser().getGoalTodosOfDay(Calendar.getInstance().getTime());
-        Utils.setupTasksFeed(view, tasksRecyclerView, tasks);
+
+        Log.d(TAG, "updateHomeFragment: " + tasks.size());
+
+        TaskFeedAdapter newAdapter = new TaskFeedAdapter(tasks);
+        tasksRecyclerView.swapAdapter(newAdapter, false);
+
+        //Utils.setupTasksFeed(view, tasksRecyclerView, tasks);
         Utils.setupGoalTodosFeedBubbled(view, goalsRecyclerView, goals);
         greetingText.setText(getGreetings());
         refreshLayout.setRefreshing(false);

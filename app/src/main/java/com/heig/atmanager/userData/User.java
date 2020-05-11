@@ -23,6 +23,7 @@ public class User {
 
     private String userName;
     private String googleToken;
+    private String backEndToken;
     private ArrayList<Goal> goals;
     private ArrayList<TaskList> taskLists;
     private ArrayList<Task> tasks;
@@ -172,12 +173,17 @@ public class User {
     public ArrayList<Task> getTasksForDay(Date day) {
         ArrayList<Task> tasksForDay = new ArrayList<>();
 
+        Log.d(TAG, "getTasksForDay: HomeFragment " + tasksForDay.size());
+
         for (Task task : tasks) {
             if (task.getDueDate() != null && isSameSimpleDate(task.getDueDate(), day)) {
+                Log.d(TAG, "getTasksForDay: HomeFragment adding a task");
                 tasksForDay.add(task);
+                Log.d(TAG, "getTasksForDay: HomeFragment new size : " + tasksForDay.size());
             }
         }
 
+        Log.d(TAG, "getTasksForDay: HomeFragment : " + tasksForDay.size());
         return tasksForDay;
     }
 
@@ -248,4 +254,11 @@ public class User {
         tags.add(tagName);
     }
 
+    public String getBackEndToken() {
+        return backEndToken;
+    }
+
+    public void setBackEndToken(String backEndToken) {
+        this.backEndToken = backEndToken;
+    }
 }
