@@ -21,6 +21,12 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -45,8 +51,13 @@ import com.heig.atmanager.taskLists.TaskListFragment;
 import com.heig.atmanager.userData.User;
 import com.heig.atmanager.userData.UserJsonParser;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     public static User user;
@@ -93,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
         userAccount         = GoogleSignIn.getLastSignedInAccount(this);
 
         user = new User(userAccount.getDisplayName(), userAccount.getIdToken());
+
+
 
         fab = findViewById(R.id.fab);
         fabAddGoal = findViewById(R.id.fab_add_goal);
