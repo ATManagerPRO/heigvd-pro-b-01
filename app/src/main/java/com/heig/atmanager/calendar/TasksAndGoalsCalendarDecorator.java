@@ -22,11 +22,9 @@ public class TasksAndGoalsCalendarDecorator implements DayViewDecorator {
 
     private static final String TAG = "TasksAndGoalsCalendarDecorator";
     
-    private Context context;
     private int color;
 
-    public TasksAndGoalsCalendarDecorator(Context context, int color) {
-        this.context = context;
+    public TasksAndGoalsCalendarDecorator(int color) {
         this.color = color;
     }
 
@@ -38,7 +36,7 @@ public class TasksAndGoalsCalendarDecorator implements DayViewDecorator {
     @Override
     public void decorate(DayViewFacade view) {
         // Daily notifications
-        view.addSpan(new CalendarDayNotification(context, color));
+        view.addSpan(new CalendarDayNotification(color));
     }
 
     private Date convertCalendarDayToDate(CalendarDay day) {

@@ -20,6 +20,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.android.volley.AuthFailureError;
@@ -49,6 +51,7 @@ import com.heig.atmanager.goals.GoalsTodoFragment;
 import com.heig.atmanager.stats.StatsFragment;
 import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.taskLists.TaskListFragment;
+import com.heig.atmanager.tasks.TaskFeedAdapter;
 import com.heig.atmanager.userData.User;
 import com.heig.atmanager.userData.UserJsonParser;
 
@@ -61,9 +64,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-
     private static final String TAG = "MainActivity";
-    
+
     public static User user;
 
     private BottomNavigationView dock;
@@ -78,11 +80,14 @@ public class MainActivity extends AppCompatActivity {
     // Navigation view (drawer)
     private NavigationView navView;
     private ExpandableListView expandableListView;
-    private ExpandableListAdapter adapter;
+    private ExpandableListAdapter drawerAdapter;
 
     public static String previousFragment = "";
     private GoogleSignInClient mGoogleSignInClient;
     private GoogleSignInAccount userAccount;
+
+    // Current adapter for search feature
+    private RecyclerView.Adapter contentAdapter;
 
     // JSON Parser
     private UserJsonParser jsonParser;
@@ -107,10 +112,14 @@ public class MainActivity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         userAccount = GoogleSignIn.getLastSignedInAccount(this);
 
+        // Creating the user with basic data
+        Intent i = getIntent();
         user = new User(userAccount.getDisplayName(), userAccount.getIdToken(), userAccount.getEmail());
+        user.setBackEndToken(i.getExtras().getString("userToken"));
+        user.setUserId(i.getExtras().getLong("userId"));
 
+        Log.d(TAG, "onCreate: user updated with : " + user.getUserId() + " / " + user.getBackEndToken());
         googleCalendarHandler = new GoogleCalendarHandler(this);
-
 
         fab = findViewById(R.id.fab);
         fabAddGoal = findViewById(R.id.fab_add_goal);
@@ -125,15 +134,12 @@ public class MainActivity extends AppCompatActivity {
         expandableListView = (ExpandableListView) findViewById(R.id.navList);
 
         // Loading the data from the server into the user
+        Log.d(TAG, "updateUI: testingSignIn loading user data...");
         jsonParser = new UserJsonParser(this);
         jsonParser.loadAllDataIntoUser(queue);
 
-        Log.d(TAG, "onCreate: For user : " + user.getUserName());
-        Log.d(TAG, "onCreate: data loaded : " + user.getTaskLists().size());
-        Log.d(TAG, "onCreate: data loaded : " + user.getFolders().size());
-
         // First fragment to load : Home
-        loadFragment(new HomeFragment(), HomeFragment.FRAG_HOME_ID);
+        displayFragment(HomeFragment.FRAG_HOME_ID);
     }
 
     // Menu icons are inflated just as they were with actionbar
@@ -234,6 +240,22 @@ public class MainActivity extends AppCompatActivity {
                     DialogFragment addTasklistDiag = new AddTasklistDiag();
                     addTasklistDiag.show(getSupportFragmentManager(), "addTasklist");
                     return true;
+                case R.id.search:
+                    SearchView searchView = (SearchView) item.getActionView();
+                    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                        @Override
+                        public boolean onQueryTextSubmit(String s) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onQueryTextChange(String s) {
+                            if(contentAdapter != null)
+                                ((TaskFeedAdapter) contentAdapter).getFilter().filter(s);
+                            return false;
+                        }
+                    });
+                    return true;
                 case android.R.id.home:
                     onBackPressed();
                     return true;
@@ -241,7 +263,6 @@ public class MainActivity extends AppCompatActivity {
                     return super.onOptionsItemSelected(item);
             }
         }
-
     }
 
     private void loadFragment(Fragment fragment, String tag) {
@@ -268,8 +289,8 @@ public class MainActivity extends AppCompatActivity {
             if(!taskList.isFolder())
                 standaloneTaskLists.add(taskList);
 
-        adapter = new DrawerListAdapter(this, standaloneTaskLists, user.getFolders());
-        expandableListView.setAdapter(adapter);
+        drawerAdapter = new DrawerListAdapter(this, standaloneTaskLists, user.getFolders());
+        expandableListView.setAdapter(drawerAdapter);
 
         expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
@@ -384,6 +405,10 @@ public class MainActivity extends AppCompatActivity {
         if (fragment != null) {
             loadFragment(fragment, previousFragment);
         }
+    }
+
+    public void setContentAdapter(RecyclerView.Adapter adapter) {
+        this.contentAdapter = adapter;
     }
 
 

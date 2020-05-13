@@ -1,9 +1,5 @@
 package com.heig.atmanager.userData;
 
-import android.util.Log;
-
-import com.heig.atmanager.Interval;
-import com.heig.atmanager.Utils;
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.taskLists.TaskList;
@@ -11,16 +7,14 @@ import com.heig.atmanager.goals.GoalTodo;
 import com.heig.atmanager.tasks.Task;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class User {
 
     private static final String TAG = "User";
 
+    private long userId;
     private String userName;
     private String googleToken;
     private String backEndToken;
@@ -39,7 +33,7 @@ public class User {
         this.taskLists   = new ArrayList<>();
         this.tasks       = new ArrayList<>();
         this.folders     = new ArrayList<>();
-        this.tags = new ArrayList<>();
+        this.tags        = new ArrayList<>();
     }
 
     public String getUserName() {
@@ -63,22 +57,18 @@ public class User {
     }
 
     public void addTask(Task task) {
-        Log.d(TAG, "add a task: <" + task.getTitle() + "> for " + getUserName());
         tasks.add(task);
     }
 
     public void addTaskList(TaskList taskList) {
-        Log.d(TAG, "addFolder: Create : add tasklist <" + taskList.getName() + "> for " + getUserName());
         taskLists.add(taskList);
     }
 
     public void addGoal(Goal goal) {
-        Log.d(TAG, "addFolder: Create : add goal <" + goal.getUnit() + "> for " + getUserName());
         goals.add(goal);
     }
 
     public void addFolder(Folder folder) {
-        Log.d(TAG, "addFolder: Create : add folder <" + folder.getName() + "> for " + getUserName());
         folders.add(folder);
     }
 
@@ -86,20 +76,8 @@ public class User {
         return tags;
     }
 
-    public void setTags(ArrayList<String> tags) {
-        this.tags = tags;
-    }
-
     public ArrayList<Folder> getFolders() {
         return folders;
-    }
-
-    public void addAllFromFolder(Folder folder) {
-        folders.add(folder);
-
-        for (TaskList taskList : folder.getTaskLists()) {
-            addTaskList(taskList);
-        }
     }
 
     public int getTotalTasksForDay(Date day) {
@@ -112,52 +90,6 @@ public class User {
         }
 
         return totalTasks;
-    }
-
-    public int getTotalGoalsForDay(Date day) {
-        int totalGoal = 0;
-
-        for (Goal goal : goals)
-            for (GoalTodo goalTodo : goal.getGoalTodos())
-                if (goalTodo.getDoneDate() != null && isSameSimpleDate(goalTodo.getDoneDate(), day))
-                    totalGoal++;
-
-        return totalGoal;
-    }
-
-    public int getTotalActivityForDay(Date day) {
-        return getTotalTasksForDay(day) + getTotalGoalsForDay(day);
-    }
-
-    public int getMaxActivityPerDay() {
-        Map.Entry<Date, Integer> maxEntry = null;
-        Map<Date, Integer> hm = new HashMap<>();
-
-        // Count tasks recurrences for each date
-        for (Task task : tasks) {
-            Date date = task.getDueDate();
-            Integer j = hm.get(date);
-            hm.put(date, (j == null) ? 1 : j + 1);
-        }
-
-        // Count goals recurrences for each date
-        for (Goal goal : goals) {
-            for (GoalTodo goalTodo : goal.getGoalTodos()) {
-                Date date = goalTodo.getDueDate();
-                Integer j = hm.get(date);
-                hm.put(date, (j == null) ? 1 : j + 1);
-            }
-        }
-
-        // Find max
-        for (Map.Entry<Date, Integer> entry : hm.entrySet()) {
-            if (maxEntry == null || entry.getValue()
-                    .compareTo(maxEntry.getValue()) > 0) {
-                maxEntry = entry;
-            }
-        }
-
-        return maxEntry == null ? 0 : maxEntry.getValue();
     }
 
     private boolean isSameSimpleDate(Date d1, Date d2) {
@@ -258,6 +190,14 @@ public class User {
 
     public void setBackEndToken(String backEndToken) {
         this.backEndToken = backEndToken;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public String getEmail() {
