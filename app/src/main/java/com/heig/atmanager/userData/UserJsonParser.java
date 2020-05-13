@@ -5,6 +5,8 @@ import android.icu.text.CaseMap;
 import android.icu.text.SimpleDateFormat;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -30,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -47,11 +50,11 @@ public class UserJsonParser {
     private static final int USER_ID = 4;
 
     // Http urls
-    private static final String URL_FOLDERS_AND_TASKLISTS = "https://atmanager.gollgot.app/api/v1/users/"+USER_ID+"/todolists";
-    private static final String URL_TODAY_TASKS           = "https://atmanager.gollgot.app/api/v1/users/"+USER_ID+"/todos/today";
-    private static final String URL_TODAY_GOALS_TODO      = "https://atmanager.gollgot.app/api/v1/users/"+USER_ID+"/goaltodos/today";
-    private static final String URL_ALL_TASKS             = "https://atmanager.gollgot.app/api/v1/users/"+USER_ID+"/todos";
-    private static final String URL_ALL_GOAL_TODOS        = "https://atmanager.gollgot.app/api/v1/users/"+USER_ID+"/goaltodos";
+    private String URL_FOLDERS_AND_TASKLISTS;
+    private String URL_TODAY_TASKS;
+    private String URL_TODAY_GOALS_TODO;
+    private String URL_ALL_TASKS;
+    private String URL_ALL_GOAL_TODOS;
 
     // Response codes
     private static final String RESPONSE_CODE      = "status code";
@@ -104,21 +107,37 @@ public class UserJsonParser {
 
     public UserJsonParser(Context mainContext) {
         this.mainContext = mainContext;
-        this.user = MainActivity.getUser();
+        this.user        = MainActivity.getUser();
+        Log.d(TAG, "updateUI: testingSignIn creating UserJsonParson");
+
+        // Update urls with user's id
+        String base_url = "https://atmanager.gollgot.app/api/v1/users/" + MainActivity.getUser().getUserId() ;
+        URL_FOLDERS_AND_TASKLISTS = base_url + "/todolists";
+        URL_TODAY_TASKS           = base_url + "/todos/today";
+        URL_TODAY_GOALS_TODO      = base_url + "/goaltodos/today";
+        URL_ALL_TASKS             = base_url + "/todos";
+        URL_ALL_GOAL_TODOS        = base_url + "/goaltodos";
+
+        Log.d(TAG, "updateUI: loading for : testingSignIn " + MainActivity.getUser().getUserId());
     }
 
     public void loadAllDataIntoUser(RequestQueue queue) {
+
         // Side drawer view
+        Log.d(TAG, "loadAllDataIntoUser: loading folders and tasklists...");
         loadFoldersAndTasklists(queue);
 
         // Home Fragment view (today's activities)
+        Log.d(TAG, "loadAllDataIntoUser: loading today's activity...");
         loadTodaysTasks(queue);
         loadTodaysGoalsTodo(queue);
 
         // Calendar view
+        Log.d(TAG, "loadAllDataIntoUser: loading all tasks...");
         loadAllTasks(queue);
 
         // Goals view
+        Log.d(TAG, "loadAllDataIntoUser: loading all goaltodos...");
         loadAllGoalTodos(queue);
     }
 
@@ -144,7 +163,14 @@ public class UserJsonParser {
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
             }
-        });
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + MainActivity.getUser().getBackEndToken());//put your token here
+                return headers;
+            }
+        };
 
         queue.add(request);
     }
@@ -162,9 +188,9 @@ public class UserJsonParser {
                         parseAndLoadTasks(response.getJSONObject(RESPONSE_RESOURCE));
 
                         // Update home fragment
-                        ((HomeFragment) ((MainActivity) mainContext).getSupportFragmentManager()
+                        /*((HomeFragment) ((MainActivity) mainContext).getSupportFragmentManager()
                                 .findFragmentByTag(HomeFragment.FRAG_HOME_ID))
-                                .updateHomeFragment();
+                                .updateHomeFragment();*/
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
@@ -177,7 +203,14 @@ public class UserJsonParser {
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
             }
-        });
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + MainActivity.getUser().getBackEndToken());//put your token here
+                return headers;
+            }
+        };
 
         queue.add(request);
     }
@@ -195,9 +228,9 @@ public class UserJsonParser {
                         parseAndLoadGoalTodos(response.getJSONObject(RESPONSE_RESOURCE));
 
                         // Update home fragment
-                        ((HomeFragment) ((MainActivity) mainContext).getSupportFragmentManager()
+                        /*((HomeFragment) ((MainActivity) mainContext).getSupportFragmentManager()
                                 .findFragmentByTag(HomeFragment.FRAG_HOME_ID))
-                                .updateHomeFragment();
+                                .updateHomeFragment();*/
 
                     }
                 } catch (final JSONException e) {
@@ -211,7 +244,14 @@ public class UserJsonParser {
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
             }
-        });
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + MainActivity.getUser().getBackEndToken());//put your token here
+                return headers;
+            }
+        };
 
         queue.add(request);
     }
@@ -240,7 +280,14 @@ public class UserJsonParser {
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + MainActivity.getUser().getBackEndToken());//put your token here
+                return headers;
+            }
+        };
 
         queue.add(request);
     }
@@ -268,7 +315,14 @@ public class UserJsonParser {
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
             }
-        });
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + MainActivity.getUser().getBackEndToken());//put your token here
+                return headers;
+            }
+        };
 
         queue.add(request);
     }

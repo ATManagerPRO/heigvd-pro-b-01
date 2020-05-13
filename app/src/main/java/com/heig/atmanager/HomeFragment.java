@@ -8,14 +8,13 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.goals.GoalTodo;
 import com.heig.atmanager.tasks.Task;
 import com.heig.atmanager.tasks.TaskFeedAdapter;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -49,6 +48,7 @@ public class HomeFragment extends Fragment {
     // Task feed
     private ArrayList<Task> tasks; // user data
     private RecyclerView tasksRecyclerView;
+    private RecyclerView.Adapter adapter;
 
     private View view;
 
@@ -63,6 +63,7 @@ public class HomeFragment extends Fragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                Log.d(TAG, "onRefresh: ");
                 updateHomeFragment();
             }
         });
@@ -77,6 +78,14 @@ public class HomeFragment extends Fragment {
 
         // Task feed
         tasksRecyclerView = (RecyclerView) v.findViewById(R.id.tasks_rv);
+        tasksRecyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(v.getContext());
+        tasksRecyclerView.setLayoutManager(manager);
+        adapter = new TaskFeedAdapter(tasks);
+        tasksRecyclerView.setAdapter(adapter);
+
+        // Set adapter for searches
+        ((MainActivity) getContext()).setContentAdapter(adapter);
 
         // Goal feed
         goalsRecyclerView = (RecyclerView) v.findViewById(R.id.goals_rv);
@@ -144,7 +153,13 @@ public class HomeFragment extends Fragment {
         feedProgress.setVisibility(View.GONE);
         tasks = MainActivity.getUser().getTasksForDay(Calendar.getInstance().getTime());
         goals = MainActivity.getUser().getGoalTodosOfDay(Calendar.getInstance().getTime());
-        Utils.setupTasksFeed(view, tasksRecyclerView, tasks);
+
+        Log.d(TAG, "updateHomeFragment: " + tasks.size());
+
+        TaskFeedAdapter newAdapter = new TaskFeedAdapter(tasks);
+        tasksRecyclerView.swapAdapter(newAdapter, false);
+
+        //Utils.setupTasksFeed(view, tasksRecyclerView, tasks);
         Utils.setupGoalTodosFeedBubbled(view, goalsRecyclerView, goals);
         greetingText.setText(getGreetings());
         refreshLayout.setRefreshing(false);

@@ -14,10 +14,12 @@ import com.heig.atmanager.Utils;
 import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.goals.GoalsFragment;
 import com.heig.atmanager.tasks.Task;
+import com.heig.atmanager.tasks.TaskFeedAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -35,6 +37,7 @@ public class TaskListFragment extends Fragment {
     
     private TextView title;
     private RecyclerView tasksRv;
+    private RecyclerView.Adapter tasksAdapter;
     private ArrayList<Task> tasks;
 
     @Nullable
@@ -72,7 +75,14 @@ public class TaskListFragment extends Fragment {
             }
         }*/
 
-        Utils.setupTasksFeed(v, tasksRv, tasks);
+        // Setup feed and link it to the main for searches
+        tasksRv.setHasFixedSize(true);
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(v.getContext());
+        tasksRv.setLayoutManager(manager);
+        tasksAdapter = new TaskFeedAdapter(tasks);
+        tasksRv.setAdapter(tasksAdapter);
+        // Set adapter for searches
+        ((MainActivity) getContext()).setContentAdapter(tasksAdapter);
 
         return v;
     }
