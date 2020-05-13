@@ -23,6 +23,13 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".SignInActivity"/>
+        <receiver android:name=".NotificationReceiver"
+            android:enabled="true"
+            android:exported="false">
+        </receiver>
+        <service android:name=".NotificationIntentService"
+            android:exported="false">
+        </service>
     </application>
 
 </manifest>

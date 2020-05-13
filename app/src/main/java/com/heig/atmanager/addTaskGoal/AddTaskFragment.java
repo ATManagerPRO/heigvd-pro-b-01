@@ -1,7 +1,10 @@
 package com.heig.atmanager.addTaskGoal;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -30,6 +33,7 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputLayout;
 import com.heig.atmanager.MainActivity;
+import com.heig.atmanager.NotificationReceiver;
 import com.heig.atmanager.R;
 import com.heig.atmanager.Utils;
 import com.heig.atmanager.folders.Folder;
@@ -37,10 +41,12 @@ import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.tasks.Task;
 import com.heig.atmanager.tasks.TaskFeedAdapter;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.concurrent.TimeUnit;
 
 
 public class AddTaskFragment extends Fragment {
@@ -213,6 +219,11 @@ public class AddTaskFragment extends Fragment {
                     selectedDate = null;
                 } else{
                     selectedDate = new GregorianCalendar(mYear, mMonth, mDay, mHour, mMinute).getTime();
+                    Intent notifyIntent = new Intent(getContext(), NotificationReceiver.class);
+                    notifyIntent.putExtra("title", title);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(),  2, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
+                    alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, selectedDate.getTime()- TimeUnit.SECONDS.toMillis(30), pendingIntent);
                 }
                 Task newTask = new Task(title, description, selectedDate);
 
