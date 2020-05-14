@@ -75,6 +75,7 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
     public TaskFeedAdapter(ArrayList<Task> tasks) {
         this.tasks = tasks;
         this.tasksFull = new ArrayList<>(tasks);
+        orderTasks();
     }
 
     // Create new views (invoked by the layout manager)
@@ -215,4 +216,20 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
             notifyDataSetChanged();
         }
     };
+
+    private void orderTasks() {
+        ArrayList<Task> favorites = new ArrayList<>();
+        ArrayList<Task> others    = new ArrayList<>();
+
+        for(Task task : tasksFull) {
+            if(task.isFavorite()) {
+                favorites.add(task);
+            } else {
+                others.add(task);
+            }
+        }
+
+        tasksFull = favorites;
+        tasksFull.addAll(others);
+    }
 }
