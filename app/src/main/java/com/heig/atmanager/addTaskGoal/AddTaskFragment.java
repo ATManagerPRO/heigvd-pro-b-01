@@ -236,14 +236,16 @@ public class AddTaskFragment extends Fragment {
                 }
 
                 // Add the task to a selected taskList
-                for (TaskList taskList : ((MainActivity) getContext()).getUser().getTaskLists()) {
+                for(TaskList taskList : MainActivity.getUser().getTaskLists()) {
                     if (taskList.toString().equals(selectedDirectory)) {
+                        // Assigning the tasklist and adding the task in the tasklist
+                        // (which is already in the user)
                         newTask.setTasklist(taskList);
-                        ((MainActivity) getContext()).getUser().addTask(newTask);
+                        taskList.addTask(newTask);
                         //update homeview
-                        tasks = (((MainActivity) getContext()).getUser().getTasksForDay(Calendar.getInstance().getTime()));
-                        tasks.addAll((((MainActivity) getContext()).getUser().getTasksWithoutDate()));
-                        ((TaskFeedAdapter) tasksRecyclerView.getAdapter()).setTasks(tasks);
+                        tasks = MainActivity.getUser().getTasksForDay(Calendar.getInstance().getTime());
+                        tasks.addAll(MainActivity.getUser().getTasksWithoutDate());
+                        ((TaskFeedAdapter)tasksRecyclerView.getAdapter()).setTasks(tasks);
                     }
                 }
 

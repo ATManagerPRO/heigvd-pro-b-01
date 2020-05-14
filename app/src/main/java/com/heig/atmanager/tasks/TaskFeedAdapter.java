@@ -173,7 +173,14 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
             } else {
                 String filter = charSequence.toString().toLowerCase().trim();
                 for(Task task : tasksFull) {
-                    if(task.getTitle().toLowerCase().trim().contains(filter)) {
+                    // Tag match
+                    boolean tagMatch = false;
+                    for(String tag : task.getTags())
+                        if(tag.toLowerCase().trim().contains(filter))
+                            tagMatch = true;
+
+                    // Title match
+                    if(task.getTitle().toLowerCase().trim().contains(filter) || tagMatch) {
                         filteredTasks.add(task);
                     }
                 }
