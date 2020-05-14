@@ -39,10 +39,6 @@ public class Task {
         this(UNDEFINED_ID, title, description, false, favorite, null, null, null);
     }
 
-    public Task(String title, String description, Date dueDate, TaskList taskList) {
-        this(UNDEFINED_ID, title, description, false, false, dueDate, null, null);
-    }
-
     public Task(long id, String title, String description, boolean done, boolean favorite,
                 Date dueDate, Date doneDate, Date reminderDate) {
         this.id           = id;
@@ -53,7 +49,6 @@ public class Task {
         this.dueDate      = dueDate;
         this.doneDate     = doneDate;
         this.reminderDate = reminderDate;
-        this.tasklist     = tasklist;
         this.tags         = new ArrayList<>();
     }
 
