@@ -20,6 +20,7 @@
 
     <!-- Tasks -->
     <color name="favorite_bg">#FF0051</color>
+    <color name="remove_bg">#FF2828</color>
 
     <!-- Calendar -->
     <color name="outline_selection">#000000</color>
