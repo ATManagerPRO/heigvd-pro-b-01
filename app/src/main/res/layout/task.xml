@@ -76,11 +76,11 @@
                 android:textColor="@color/grey"
                 android:textSize="18sp"/>
 
-            <Button
+            <ImageButton
                 android:id="@+id/remove_button"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/task_remove_button"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/task_remove_button"
                 android:layout_marginEnd="10dp"/>
 
         </LinearLayout>

@@ -225,7 +225,7 @@ public class AddTaskFragment extends Fragment {
                 } else {
                     selectedDate = new GregorianCalendar(mYear, mMonth, mDay, mHour, mMinute).getTime();
 
-                    MainActivity.googleCalendarHandler.addTask(title, selectedDate);
+                    //MainActivity.googleCalendarHandler.addTask(title, selectedDate);
 
                 }
                 Task newTask = new Task(title, description, selectedDate);

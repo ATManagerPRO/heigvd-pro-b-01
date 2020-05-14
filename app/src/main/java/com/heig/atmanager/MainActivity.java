@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
     private UserJsonParser jsonParser;
     private RequestQueue queue;
 
-    public static GoogleCalendarHandler googleCalendarHandler;
+    //public static GoogleCalendarHandler googleCalendarHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         user.setUserId(i.getExtras().getLong("userId"));
 
         Log.d(TAG, "onCreate: user updated with : " + user.getUserId() + " / " + user.getBackEndToken());
-        googleCalendarHandler = new GoogleCalendarHandler(this);
+        //googleCalendarHandler = new GoogleCalendarHandler(this);
 
         fab = findViewById(R.id.fab);
         fabAddGoal = findViewById(R.id.fab_add_goal);
@@ -418,7 +418,7 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case GoogleCalendarHandler.CALENDAR_INIT:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    googleCalendarHandler = new GoogleCalendarHandler(this);
+                    //googleCalendarHandler = new GoogleCalendarHandler(this);
                 }
                 break;
         }
