@@ -1,16 +1,19 @@
 package com.heig.atmanager.addTaskGoal;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -52,6 +55,8 @@ import java.util.GregorianCalendar;
 
 import android.provider.CalendarContract.Events;
 
+import static com.heig.atmanager.GoogleCalendarHandler.MY_CAL_ADD_TASK;
+
 
 public class AddTaskFragment extends Fragment {
 
@@ -82,8 +87,9 @@ public class AddTaskFragment extends Fragment {
     private TextView dueTimeTextView;
 
     private TextInputLayout titleLayout;
+    private static Button validationButton;
 
-    ArrayList<String> tags;
+    private ArrayList<String> tags;
 
     public AddTaskFragment() {
         // Required empty public constructor
@@ -125,7 +131,7 @@ public class AddTaskFragment extends Fragment {
 
         titleLayout = mView.findViewById(R.id.frag_add_task_title_layout);
 
-        final Button validationButton = mView.findViewById(R.id.frag_validation_button);
+        validationButton = mView.findViewById(R.id.frag_validation_button);
 
         // Picker for date and time
         dueDateTextView.setOnClickListener(new View.OnClickListener() {
@@ -146,7 +152,7 @@ public class AddTaskFragment extends Fragment {
                         dueDateTextView.setText(dueDateString);
                         mYear = year;
                         mMonth = month;
-                        mDay   = dayOfMonth;
+                        mDay = dayOfMonth;
                     }
                 }, mYear, mMonth, mDay);
                 // Show the picker
@@ -171,7 +177,7 @@ public class AddTaskFragment extends Fragment {
             }
         });
 
-        for(String s : MainActivity.getUser().getTags())
+        for (String s : MainActivity.getUser().getTags())
             Log.d(TAG, "onCreateView: Tag : " + s);
 
         // Tags
@@ -225,13 +231,33 @@ public class AddTaskFragment extends Fragment {
                 } else {
                     selectedDate = new GregorianCalendar(mYear, mMonth, mDay, mHour, mMinute).getTime();
 
-                    MainActivity.googleCalendarHandler.addTask(title, selectedDate);
+                    if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_CALENDAR)) {
+                            AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                            alertDialog.setTitle("Calendar permission");
+                            alertDialog.setMessage("We need to have access at your Calendar if you want to see it in the native calendar");
+                            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            alertDialog.show();
+                        }else{
+                            ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.WRITE_CALENDAR}, MY_CAL_ADD_TASK);
+                        }
+
+                    } else {
+                        Log.d(TAG, "onClick: BLA");
+                        GoogleCalendarHandler.getInstance().addTask(title, selectedDate, getActivity());
+                    }
 
                 }
                 Task newTask = new Task(title, description, selectedDate);
 
                 // Add the tags
-                for(String tag : tags) {
+                for (String tag : tags) {
                     newTask.addTag(tag);
                 }
 
@@ -259,6 +285,10 @@ public class AddTaskFragment extends Fragment {
         return mView;
     }
 
+    public static void addTaskPressed() {
+        validationButton.setPressed(true);
+    }
+
 
     /**
      * Add a string as chip into the given chip group
@@ -284,5 +314,6 @@ public class AddTaskFragment extends Fragment {
             }
         });
     }
+
 
 }

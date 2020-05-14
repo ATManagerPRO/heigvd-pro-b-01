@@ -3,16 +3,17 @@ package com.heig.atmanager;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Calendars;
 import android.provider.CalendarContract.Events;
-import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 
@@ -38,25 +39,28 @@ public class GoogleCalendarHandler {
     private static final int PROJECTION_ACCOUNT_NAME_INDEX = 1;
     private static final int PROJECTION_DISPLAY_NAME_INDEX = 2;
     private static final int PROJECTION_OWNER_ACCOUNT_INDEX = 3;
-    public static final int MY_CAL_WRITE_REQ = 50;
+    public static final int MY_CAL_CREATE = 50;
     public static final int MY_CAL_READ_REQ = 51;
     public static final int CALENDAR_INIT = 40;
+    public static final int MY_CAL_CHECK = 52;
+    public static final int MY_CAL_ADD_TASK = 53;
 
-    private Activity mActivity;
+    //private Activity mActivity;
     private long calendarId;
 
-    public GoogleCalendarHandler(Activity activity) {
-        mActivity = activity;
+    private static class Instance {
+        static final GoogleCalendarHandler instance = new GoogleCalendarHandler();
+    }
 
-        calendarId = checkIfCalendarExist();
+    public GoogleCalendarHandler() {
+    }
 
-        if (calendarId == -1) {
-            createCalendar(activity);
-        }
+    public static GoogleCalendarHandler getInstance() {
+        return Instance.instance;
     }
 
 
-    private void createCalendar(Activity activity) {
+    public void createCalendar(Activity activity) {
         ContentValues values = new ContentValues();
         values.put(Calendars.ACCOUNT_NAME, MainActivity.user.getEmail());
         values.put(Calendars.ACCOUNT_TYPE, BuildConfig.APPLICATION_ID);
@@ -77,13 +81,17 @@ public class GoogleCalendarHandler {
                 .appendQueryParameter(Calendars.ACCOUNT_TYPE, BuildConfig.APPLICATION_ID)
                 .build();
 
+        // Need permission
+
         uri = activity.getContentResolver().insert(uri, values);
         calendarId = ContentUris.parseId(uri);
 
     }
-    public long checkIfCalendarExist() {
+
+    @SuppressLint("MissingPermission")
+    public long checkIfCalendarExist(Activity activity) {
         Cursor cur = null;
-        ContentResolver cr = mActivity.getContentResolver();
+        ContentResolver cr = activity.getContentResolver();
 
         Uri uri = CalendarContract.Calendars.CONTENT_URI;
         String selection = "((" + CalendarContract.Calendars.ACCOUNT_NAME + " = ?) AND ("
@@ -91,20 +99,28 @@ public class GoogleCalendarHandler {
                 + CalendarContract.Calendars.OWNER_ACCOUNT + " = ?))";
         String[] selectionArgs = new String[]{MainActivity.getUser().getEmail(), BuildConfig.APPLICATION_ID,
                 MainActivity.getUser().getEmail()};
-        if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.READ_CALENDAR}, CALENDAR_INIT);
-        }
+
+
+        // Need permission
+
         cur = cr.query(uri, EVENT_PROJECTION, selection, selectionArgs, null);
-        if(cur != null && cur.moveToFirst()){
+        if (cur != null && cur.moveToFirst()) {
             return cur.getLong(PROJECTION_ID_INDEX);
-        }else{
-            return -1;
         }
         //return (cur != null && cur.getCount() > 0) ? cur.getLong(PROJECTION_ID_INDEX) : -1;
+
+        return -1;
     }
 
-    public void addTask(String title, Date date) {
-        ContentResolver cr = mActivity.getContentResolver();
+    public void addTask(String title, Date date, Activity activity) {
+
+        calendarId = checkIfCalendarExist(activity);
+
+        if (calendarId == -1) {
+            createCalendar(activity);
+        }
+
+        ContentResolver cr = activity.getContentResolver();
         ContentValues values = new ContentValues();
 
         values.put(Events.TITLE, title);
@@ -113,10 +129,29 @@ public class GoogleCalendarHandler {
         values.put(Events.DTEND, date.getTime());
         values.put(Events.CALENDAR_ID, calendarId);
         values.put(Events.EVENT_TIMEZONE, TimeZone.getDefault().getDisplayName());
-        if (ActivityCompat.checkSelfPermission(mActivity, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.WRITE_CALENDAR}, MY_CAL_WRITE_REQ);
-        } else {
-            Uri uri = cr.insert(Events.CONTENT_URI, values);
-        }
+
+
+        // Need permission
+       /* if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.WRITE_CALENDAR)) {
+                AlertDialog alertDialog = new AlertDialog.Builder(activity).create();
+                alertDialog.setTitle("Calendar permission");
+                alertDialog.setMessage("We need to have access at your Calendar if you want to see it in the native calendar");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alertDialog.show();
+            } else {
+                ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_CALENDAR}, MY_CAL_ADD_TASK);
+            }
+
+        } else {*/
+            @SuppressLint("MissingPermission") Uri uri = cr.insert(Events.CONTENT_URI, values);
+       // }
+
     }
 }
