@@ -233,20 +233,8 @@ public class AddTaskFragment extends Fragment {
 
                     if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
 
-                        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_CALENDAR)) {
-                            AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
-                            alertDialog.setTitle("Calendar permission");
-                            alertDialog.setMessage("We need to have access at your Calendar if you want to see it in the native calendar");
-                            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                            alertDialog.show();
-                        }else{
-                            ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.WRITE_CALENDAR}, MY_CAL_ADD_TASK);
-                        }
+                        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_CALENDAR}, MY_CAL_ADD_TASK);
+
 
                     } else {
                         Log.d(TAG, "onClick: BLA");
