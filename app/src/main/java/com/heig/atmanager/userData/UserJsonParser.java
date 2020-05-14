@@ -407,9 +407,7 @@ public class UserJsonParser {
 
             if(user.hasTaskList(taskListId)) {
                 user.getTaskList(taskListId).addTask(task);
-            }/* else {
-                TaskList.defaultList.addTask(task);
-            }*/
+            }
         }
     }
 

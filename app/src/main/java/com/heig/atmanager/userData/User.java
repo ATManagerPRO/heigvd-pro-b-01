@@ -38,6 +38,7 @@ public class User {
         this.taskLists   = new ArrayList<>();
         this.tasks       = new ArrayList<>();
         this.folders     = new ArrayList<>();
+        this.tags        = new ArrayList<>();
     }
 
     public String getUserName() {

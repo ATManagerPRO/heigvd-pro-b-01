@@ -1,7 +1,7 @@
 package com.heig.atmanager.taskLists;
 
 import com.heig.atmanager.DrawerObject;
-import com.heig.atmanager.folders.Folder;
+import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.tasks.Task;
 
 import java.io.Serializable;
@@ -21,7 +21,6 @@ public class TaskList extends DrawerObject implements Serializable {
     private long id;
     private String name;
     private long folder_id;
-    private ArrayList<Task> tasks;
 
     public TaskList(String name, long folder_id) {
         this(-1, name, folder_id);
@@ -35,14 +34,19 @@ public class TaskList extends DrawerObject implements Serializable {
         super(name);
         this.id = id;
         this.folder_id = folder_id;
-        this.tasks = new ArrayList<>();
     }
 
     public void addTask(Task task) {
-        tasks.add(task);
+        task.setTasklist(this);
     }
 
     public ArrayList<Task> getTasks() {
+        ArrayList<Task> tasks = new ArrayList<>();
+
+        for(Task task : MainActivity.getUser().getTasks())
+            if(task.getTasklist().getId() == id)
+                tasks.add(task);
+
         return tasks;
     }
 
