@@ -190,13 +190,11 @@ public class User {
 
     public ArrayList<Task> getTasksWithoutDate() {
         ArrayList<Task> tasksForDay = new ArrayList<>();
-
         for (Task task : tasks) {
             if (task.getDueDate() == null) {
                 tasksForDay.add(task);
             }
         }
-
         return tasksForDay;
     }
 
@@ -228,6 +226,17 @@ public class User {
         }
 
         return null;
+    }
+
+    public ArrayList<TaskList> getAllTaskLists() {
+        ArrayList<TaskList> list = new ArrayList<TaskList>();
+        for(Folder folder:folders){
+            for(TaskList taskList : folder.getTaskLists()){
+                list.add(taskList);
+            }
+        }
+        list.addAll(taskLists);
+        return list;
     }
 
     public boolean hasGoal(long goal_id) {

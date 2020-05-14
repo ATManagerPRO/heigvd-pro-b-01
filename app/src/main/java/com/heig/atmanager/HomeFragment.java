@@ -152,6 +152,7 @@ public class HomeFragment extends Fragment {
     public void updateHomeFragment() {
         feedProgress.setVisibility(View.GONE);
         tasks = MainActivity.getUser().getTasksForDay(Calendar.getInstance().getTime());
+        tasks.addAll(MainActivity.getUser().getTasksWithoutDate());
         goals = MainActivity.getUser().getGoalTodosOfDay(Calendar.getInstance().getTime());
 
         Log.d(TAG, "updateHomeFragment: " + tasks.size());

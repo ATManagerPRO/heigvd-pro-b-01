@@ -1,6 +1,7 @@
 package com.heig.atmanager;
 
 import android.content.Context;
+import android.nfc.Tag;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -11,6 +12,7 @@ import com.android.volley.toolbox.Volley;
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.taskLists.TaskList;
+import com.heig.atmanager.tasks.Task;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -108,6 +110,82 @@ public class PostRequests {
             jsonBody.put("endDate", date);
 
 
+
+            JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                }
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    final Map<String, String> headers = new HashMap<>();
+                    headers.put("Authorization", "Bearer " + MainActivity.getUser().getBackEndToken());//put your token here
+                    return headers;
+                }
+            };
+            Volley.newRequestQueue(context).add(jsonObject);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static public void postTask(Task newTask, Context context) {
+        //post request to the server
+        try {
+            String URL = "https://atmanager.gollgot.app/api/v1/todos";
+            JSONObject jsonBody = new JSONObject();
+
+            android.icu.text.SimpleDateFormat sdf  = new android.icu.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            jsonBody.put("todo_list_id", newTask.getTasklist().getId());
+            jsonBody.put("title", newTask.getTitle());
+            jsonBody.put("details", newTask.getDescription());
+            if(newTask.getDueDate() != null) {
+                jsonBody.put("dueDate", sdf.format(newTask.getDueDate()));
+            }
+            if(newTask.getReminderDate() != null) {
+                jsonBody.put("reminderDate", sdf.format(newTask.getReminderDate()));
+            }
+           jsonBody.put("tags", newTask.getTags().toString());
+
+
+            JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                }
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    final Map<String, String> headers = new HashMap<>();
+                    headers.put("Authorization", "Bearer " + MainActivity.getUser().getBackEndToken());//put your token here
+                    return headers;
+                }
+            };
+            Volley.newRequestQueue(context).add(jsonObject);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static public void postTag(String newTag, Context context) {
+        //post request to the server
+        try {
+            String URL = "https://atmanager.gollgot.app/api/v1/tags";
+            JSONObject jsonBody = new JSONObject();
+
+            jsonBody.put("label", newTag);
 
             JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
                 @Override

@@ -111,4 +111,8 @@ public class Task {
     public ArrayList<String> getTags() {
         return tags;
     }
+
+    public Date getReminderDate() {
+        return reminderDate;
+    }
 }
