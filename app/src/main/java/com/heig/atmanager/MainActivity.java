@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,8 +20,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -42,16 +51,22 @@ import com.heig.atmanager.goals.GoalsTodoFragment;
 import com.heig.atmanager.stats.StatsFragment;
 import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.taskLists.TaskListFragment;
+import com.heig.atmanager.tasks.TaskFeedAdapter;
 import com.heig.atmanager.userData.User;
 import com.heig.atmanager.userData.UserJsonParser;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    public static User user;
-
     private static final String TAG = "MainActivity";
+
+    public static User user;
 
     private BottomNavigationView dock;
 
@@ -65,15 +80,20 @@ public class MainActivity extends AppCompatActivity {
     // Navigation view (drawer)
     private NavigationView navView;
     private ExpandableListView expandableListView;
-    private ExpandableListAdapter adapter;
+    private ExpandableListAdapter drawerAdapter;
 
-    public static String previousFragment = null;
+    public static String previousFragment = "";
     private GoogleSignInClient mGoogleSignInClient;
     private GoogleSignInAccount userAccount;
+
+    // Current adapter for search feature
+    private RecyclerView.Adapter contentAdapter;
 
     // JSON Parser
     private UserJsonParser jsonParser;
     private RequestQueue queue;
+
+    public static GoogleCalendarHandler googleCalendarHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,9 +110,16 @@ public class MainActivity extends AppCompatActivity {
 
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        userAccount         = GoogleSignIn.getLastSignedInAccount(this);
+        userAccount = GoogleSignIn.getLastSignedInAccount(this);
 
-        user = new User(userAccount.getDisplayName(), userAccount.getIdToken());
+        // Creating the user with basic data
+        Intent i = getIntent();
+        user = new User(userAccount.getDisplayName(), userAccount.getIdToken(), userAccount.getEmail());
+        user.setBackEndToken(i.getExtras().getString("userToken"));
+        user.setUserId(i.getExtras().getLong("userId"));
+
+        Log.d(TAG, "onCreate: user updated with : " + user.getUserId() + " / " + user.getBackEndToken());
+        googleCalendarHandler = new GoogleCalendarHandler(this);
 
         fab = findViewById(R.id.fab);
         fabAddGoal = findViewById(R.id.fab_add_goal);
@@ -107,15 +134,12 @@ public class MainActivity extends AppCompatActivity {
         expandableListView = (ExpandableListView) findViewById(R.id.navList);
 
         // Loading the data from the server into the user
+        Log.d(TAG, "updateUI: testingSignIn loading user data...");
         jsonParser = new UserJsonParser(this);
         jsonParser.loadAllDataIntoUser(queue);
 
-        Log.d(TAG, "onCreate: For user : " + user.getUserName());
-        Log.d(TAG, "onCreate: data loaded : " + user.getTaskLists().size());
-        Log.d(TAG, "onCreate: data loaded : " + user.getFolders().size());
-
         // First fragment to load : Home
-        loadFragment(new HomeFragment(), HomeFragment.FRAG_HOME_ID);
+        displayFragment(HomeFragment.FRAG_HOME_ID);
     }
 
     // Menu icons are inflated just as they were with actionbar
@@ -197,9 +221,9 @@ public class MainActivity extends AppCompatActivity {
 
         // TODO a way to made it cleaner
         // Drawer button
-        if (drawerToggle.onOptionsItemSelected(item))
+        if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
-        else {
+        } else {
             switch (item.getItemId()) {
                 case R.id.sign_out:
                     signOut();
@@ -216,11 +240,29 @@ public class MainActivity extends AppCompatActivity {
                     DialogFragment addTasklistDiag = new AddTasklistDiag();
                     addTasklistDiag.show(getSupportFragmentManager(), "addTasklist");
                     return true;
+                case R.id.search:
+                    SearchView searchView = (SearchView) item.getActionView();
+                    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                        @Override
+                        public boolean onQueryTextSubmit(String s) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onQueryTextChange(String s) {
+                            if(contentAdapter != null)
+                                ((TaskFeedAdapter) contentAdapter).getFilter().filter(s);
+                            return false;
+                        }
+                    });
+                    return true;
+                case android.R.id.home:
+                    onBackPressed();
+                    return true;
                 default:
                     return super.onOptionsItemSelected(item);
             }
         }
-
     }
 
     private void loadFragment(Fragment fragment, String tag) {
@@ -247,8 +289,8 @@ public class MainActivity extends AppCompatActivity {
             if(!taskList.isFolder())
                 standaloneTaskLists.add(taskList);
 
-        adapter = new DrawerListAdapter(this, standaloneTaskLists, user.getFolders());
-        expandableListView.setAdapter(adapter);
+        drawerAdapter = new DrawerListAdapter(this, standaloneTaskLists, user.getFolders());
+        expandableListView.setAdapter(drawerAdapter);
 
         expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
@@ -292,12 +334,13 @@ public class MainActivity extends AppCompatActivity {
     public static User getUser() {
         return user;
     }
+
     /**
      * Sign out google account
      */
-    private void signOut(){
+    private void signOut() {
         mGoogleSignInClient.signOut();
-        Intent intent = new Intent(MainActivity.this,SignInActivity.class);
+        Intent intent = new Intent(MainActivity.this, SignInActivity.class);
         startActivity(intent);
     }
 
@@ -308,7 +351,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void enableBackButton(boolean enable) {
 
-        if(enable) {
+        if (enable) {
             // Disable slide-to-open drawer navigation
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             // Hide drawer icon
@@ -320,7 +363,7 @@ public class MainActivity extends AppCompatActivity {
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
 
             // Create and sync drawer toggle
-            drawerToggle = new ActionBarDrawerToggle (this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
+            drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
             drawerLayout.addDrawerListener(drawerToggle);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             drawerToggle.syncState();
@@ -329,28 +372,31 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        displayPreviousFragment(previousFragment);
+        enableBackButton(false);
+        displayFragment(previousFragment);
+        previousFragment = "";
     }
 
-    public void displayPreviousFragment(String previousFragment)
+    public void displayFragment(String fragmentToDisplay)
     {
+        Log.d(TAG, "displayPreviousFragment: displaying new fragment " + fragmentToDisplay);
         //creating fragment object
         Fragment fragment = null;
         String tag = "";
 
         //initializing the fragment object which is selected
-        switch (previousFragment)
+        switch (fragmentToDisplay)
         {
             case HomeFragment.FRAG_HOME_ID :
                 fragment = new HomeFragment();
                 break;
-            case GoalsFragment.FRAG_GOALS_ID :
+            case GoalsFragment.FRAG_GOALS_ID:
                 fragment = new GoalsFragment();
                 break;
-            case GoalsTodoFragment.FRAG_GOALS_TODO_ID :
+            case GoalsTodoFragment.FRAG_GOALS_TODO_ID:
                 fragment = new GoalsTodoFragment();
                 break;
-            case CalendarFragment.FRAG_CALENDAR_ID :
+            case CalendarFragment.FRAG_CALENDAR_ID:
                 fragment = new CalendarFragment();
                 break;
         }
@@ -358,6 +404,23 @@ public class MainActivity extends AppCompatActivity {
         //replacing the fragment
         if (fragment != null) {
             loadFragment(fragment, previousFragment);
+        }
+    }
+
+    public void setContentAdapter(RecyclerView.Adapter adapter) {
+        this.contentAdapter = adapter;
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case GoogleCalendarHandler.CALENDAR_INIT:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    googleCalendarHandler = new GoogleCalendarHandler(this);
+                }
+                break;
         }
     }
 }

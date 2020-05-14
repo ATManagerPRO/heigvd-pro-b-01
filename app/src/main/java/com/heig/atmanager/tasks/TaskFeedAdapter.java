@@ -1,9 +1,12 @@
 package com.heig.atmanager.tasks;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,10 +27,11 @@ import androidx.recyclerview.widget.RecyclerView;
  *
  * Task adapter for the task Recycler view
  */
-public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyViewHolder> {
+public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyViewHolder> implements Filterable {
     private static final String TAG = "TaskFeedAdapter";
-    
+
     private ArrayList<Task> tasks;
+    private ArrayList<Task> tasksFull;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -65,6 +69,7 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
     // Provide a suitable constructor (depends on the kind of dataset)
     public TaskFeedAdapter(ArrayList<Task> tasks) {
         this.tasks = tasks;
+        this.tasksFull = new ArrayList<>(tasks);
     }
 
     // Create new views (invoked by the layout manager)
@@ -107,7 +112,10 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         holder.timeMeridiemText.setText(meridiem);
 
         // Tags
-        // TODO : not added when creating a Task
+        String tagsString = "";
+        for(String tag : tasks.get(position).getTags())
+            tagsString += "#" + tag + " ";
+        holder.taskTags.setText(tagsString);
 
         // Expand / retract details
         holder.expandBtn.setOnClickListener(new View.OnClickListener() {
@@ -151,5 +159,38 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         notifyDataSetChanged();
     }
 
+    @Override
+    public Filter getFilter() {
+        return taskFilter;
+    }
 
+    private Filter taskFilter = new Filter() {
+        @Override
+        protected Filter.FilterResults performFiltering(CharSequence charSequence) {
+            ArrayList<Task> filteredTasks = new ArrayList<>();
+            if(charSequence == null || charSequence.length() == 0) {
+                filteredTasks.addAll(tasksFull);
+            } else {
+                String filter = charSequence.toString().toLowerCase().trim();
+                for(Task task : tasksFull) {
+                    if(task.getTitle().toLowerCase().trim().contains(filter)) {
+                        filteredTasks.add(task);
+                    }
+                }
+
+            }
+
+            Filter.FilterResults results = new Filter.FilterResults();
+            results.values = filteredTasks;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, Filter.FilterResults
+        filterResults) {
+            tasks.clear();
+            tasks.addAll((ArrayList<Task>) filterResults.values);
+            notifyDataSetChanged();
+        }
+    };
 }
