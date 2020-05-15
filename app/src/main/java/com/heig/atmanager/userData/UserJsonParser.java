@@ -402,12 +402,9 @@ public class UserJsonParser {
             Date reminderDate     = reminderDateStr.equals("null") ? null : sdf.parse(reminderDateStr);
 
             // Creating the task and adding it to the current user
-            Task task = new Task(id, title, description, done, favorite, dueDate, doneDate, reminderDate);
+            Task task = new Task(id, title, description , done, favorite, dueDate, doneDate, reminderDate);
+            task.setTasklist(user.getTaskList(taskListId));
             user.addTask(task);
-
-            if(user.hasTaskList(taskListId)) {
-                user.getTaskList(taskListId).addTask(task);
-            }
         }
     }
 

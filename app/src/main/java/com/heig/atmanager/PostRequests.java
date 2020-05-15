@@ -149,9 +149,10 @@ public class PostRequests {
             if(newTask.getDueDate() != null) {
                 jsonBody.put("dueDate", sdf.format(newTask.getDueDate()));
             }
+            /*
             if(newTask.getReminderDate() != null) {
                 jsonBody.put("reminderDate", sdf.format(newTask.getReminderDate()));
-            }
+            }*/
            jsonBody.put("tags", newTask.getTags().toString());
 
 
