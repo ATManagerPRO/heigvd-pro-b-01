@@ -154,6 +154,13 @@ public class User {
                 return taskList;
         }
 
+        for(Folder folder : folders){
+            for(TaskList taskList : folder.getTaskLists()){
+                if(taskList.getId() == tasklist_id)
+                    return taskList;
+            }
+        }
+
         return null;
     }
 
