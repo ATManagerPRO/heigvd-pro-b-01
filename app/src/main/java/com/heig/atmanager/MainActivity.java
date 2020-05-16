@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -92,6 +93,8 @@ public class MainActivity extends AppCompatActivity {
     private UserJsonParser jsonParser;
     private RequestQueue queue;
 
+    //public static GoogleCalendarHandler googleCalendarHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,15 +110,16 @@ public class MainActivity extends AppCompatActivity {
 
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        userAccount         = GoogleSignIn.getLastSignedInAccount(this);
+        userAccount = GoogleSignIn.getLastSignedInAccount(this);
 
         // Creating the user with basic data
         Intent i = getIntent();
-        user = new User(userAccount.getDisplayName(), userAccount.getIdToken());
+        user = new User(userAccount.getDisplayName(), userAccount.getIdToken(), userAccount.getEmail());
         user.setBackEndToken(i.getExtras().getString("userToken"));
         user.setUserId(i.getExtras().getLong("userId"));
 
         Log.d(TAG, "onCreate: user updated with : " + user.getUserId() + " / " + user.getBackEndToken());
+        //googleCalendarHandler = new GoogleCalendarHandler(this);
 
         fab = findViewById(R.id.fab);
         fabAddGoal = findViewById(R.id.fab_add_goal);
@@ -330,12 +334,13 @@ public class MainActivity extends AppCompatActivity {
     public static User getUser() {
         return user;
     }
+
     /**
      * Sign out google account
      */
-    private void signOut(){
+    private void signOut() {
         mGoogleSignInClient.signOut();
-        Intent intent = new Intent(MainActivity.this,SignInActivity.class);
+        Intent intent = new Intent(MainActivity.this, SignInActivity.class);
         startActivity(intent);
     }
 
@@ -346,7 +351,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void enableBackButton(boolean enable) {
 
-        if(enable) {
+        if (enable) {
             // Disable slide-to-open drawer navigation
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             // Hide drawer icon
@@ -358,7 +363,7 @@ public class MainActivity extends AppCompatActivity {
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
 
             // Create and sync drawer toggle
-            drawerToggle = new ActionBarDrawerToggle (this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
+            drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
             drawerLayout.addDrawerListener(drawerToggle);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             drawerToggle.syncState();
@@ -385,13 +390,13 @@ public class MainActivity extends AppCompatActivity {
             case HomeFragment.FRAG_HOME_ID :
                 fragment = new HomeFragment();
                 break;
-            case GoalsFragment.FRAG_GOALS_ID :
+            case GoalsFragment.FRAG_GOALS_ID:
                 fragment = new GoalsFragment();
                 break;
-            case GoalsTodoFragment.FRAG_GOALS_TODO_ID :
+            case GoalsTodoFragment.FRAG_GOALS_TODO_ID:
                 fragment = new GoalsTodoFragment();
                 break;
-            case CalendarFragment.FRAG_CALENDAR_ID :
+            case CalendarFragment.FRAG_CALENDAR_ID:
                 fragment = new CalendarFragment();
                 break;
         }
@@ -404,5 +409,18 @@ public class MainActivity extends AppCompatActivity {
 
     public void setContentAdapter(RecyclerView.Adapter adapter) {
         this.contentAdapter = adapter;
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case GoogleCalendarHandler.CALENDAR_INIT:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    //googleCalendarHandler = new GoogleCalendarHandler(this);
+                }
+                break;
+        }
     }
 }

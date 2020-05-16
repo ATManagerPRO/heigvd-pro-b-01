@@ -7,11 +7,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.heig.atmanager.HomeFragment;
+import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
 import com.heig.atmanager.Utils;
 import com.heig.atmanager.taskLists.TaskList;
@@ -46,23 +49,25 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         private TextView taskTags;
         private Button expandBtn;
         private Button retractBtn;
+        private ImageButton removeBtn;
         private LinearLayout expandedView;
         private ImageView favoriteIcon;
         private ToggleButton checkButton;
 
         public MyViewHolder(View v) {
             super(v);
-            title        = v.findViewById(R.id.task_title);
-            description  = v.findViewById(R.id.task_description);
+            title            = v.findViewById(R.id.task_title);
+            description      = v.findViewById(R.id.task_description);
             timeHourText     = v.findViewById(R.id.task_time);
-            timeMeridiemText     = v.findViewById(R.id.task_time_meridiem);
-            taskListText = v.findViewById(R.id.task_list);
-            taskTags     = v.findViewById(R.id.task_tags);
-            expandBtn    = v.findViewById(R.id.expand_button);
-            retractBtn   = v.findViewById(R.id.retract_button);
-            expandedView = v.findViewById(R.id.task_expanded_view);
-            favoriteIcon = v.findViewById(R.id.favorite_icon);
-            checkButton  = v.findViewById(R.id.check_button);
+            timeMeridiemText = v.findViewById(R.id.task_time_meridiem);
+            taskListText     = v.findViewById(R.id.task_list);
+            taskTags         = v.findViewById(R.id.task_tags);
+            expandBtn        = v.findViewById(R.id.expand_button);
+            retractBtn       = v.findViewById(R.id.retract_button);
+            expandedView     = v.findViewById(R.id.task_expanded_view);
+            favoriteIcon     = v.findViewById(R.id.favorite_icon);
+            checkButton      = v.findViewById(R.id.check_button);
+            removeBtn        = v.findViewById(R.id.remove_button);
         }
     }
 
@@ -146,6 +151,16 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
                 tasks.get(position).setDone(holder.checkButton.isChecked());
             }
         });
+
+        // Remove
+        holder.removeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity.getUser().removeTask(tasks.get(position));
+                tasks.remove(tasks.get(position));
+                notifyItemRemoved(position); // notify the adapter about the removed item
+            }
+        });
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -173,7 +188,14 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
             } else {
                 String filter = charSequence.toString().toLowerCase().trim();
                 for(Task task : tasksFull) {
-                    if(task.getTitle().toLowerCase().trim().contains(filter)) {
+                    // Tag match
+                    boolean tagMatch = false;
+                    for(String tag : task.getTags())
+                        if(tag.toLowerCase().trim().contains(filter))
+                            tagMatch = true;
+
+                    // Title match
+                    if(task.getTitle().toLowerCase().trim().contains(filter) || tagMatch) {
                         filteredTasks.add(task);
                     }
                 }

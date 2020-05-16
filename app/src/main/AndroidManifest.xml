@@ -6,6 +6,10 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_atmanager_launcher"
@@ -20,7 +24,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity"
+            />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".SignInActivity"/>
         <receiver android:name=".NotificationReceiver"

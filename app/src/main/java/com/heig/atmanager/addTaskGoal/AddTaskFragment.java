@@ -1,17 +1,24 @@
 package com.heig.atmanager.addTaskGoal;
 
 import android.app.AlarmManager;
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -32,6 +39,7 @@ import android.widget.Toast;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputLayout;
+import com.heig.atmanager.GoogleCalendarHandler;
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.NotificationReceiver;
 import com.heig.atmanager.R;
@@ -47,6 +55,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
+
+import android.provider.CalendarContract.Events;
 
 
 public class AddTaskFragment extends Fragment {
@@ -207,6 +217,7 @@ public class AddTaskFragment extends Fragment {
                 description = descriptionEditText.getText().toString();
                 selectedDirectory = folderSpinner.getSelectedItem().toString();
 
+
                 if (title.isEmpty()) {
                     titleLayout.setError(getString(R.string.input_missing));
                     return;
@@ -215,9 +226,9 @@ public class AddTaskFragment extends Fragment {
                 }
 
                 Date selectedDate;
-                if(mYear == 0) {
+                if (mYear == 0) {
                     selectedDate = null;
-                } else{
+                } else {
                     selectedDate = new GregorianCalendar(mYear, mMonth, mDay, mHour, mMinute).getTime();
                     Intent notifyIntent = new Intent(getContext(), NotificationReceiver.class);
                     notifyIntent.putExtra("title", title);
@@ -233,19 +244,23 @@ public class AddTaskFragment extends Fragment {
                 }
 
                 // Add the task to a selected taskList
-                for(TaskList taskList : ((MainActivity) getContext()).getUser().getTaskLists()) {
+                for(TaskList taskList : MainActivity.getUser().getTaskLists()) {
                     if (taskList.toString().equals(selectedDirectory)) {
+                        // Assigning the tasklist and adding the task in the tasklist
+                        // (which is already in the user)
                         newTask.setTasklist(taskList);
-                        ((MainActivity) getContext()).getUser().addTask(newTask);
+                        taskList.addTask(newTask);
                         //update homeview
-                        tasks = (((MainActivity) getContext()).getUser().getTasksForDay(Calendar.getInstance().getTime()));
-                        tasks.addAll((((MainActivity) getContext()).getUser().getTasksWithoutDate()));
+                        tasks = MainActivity.getUser().getTasksForDay(Calendar.getInstance().getTime());
+                        tasks.addAll(MainActivity.getUser().getTasksWithoutDate());
                         ((TaskFeedAdapter)tasksRecyclerView.getAdapter()).setTasks(tasks);
                     }
                 }
 
+
                 getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
                 getActivity().findViewById(R.id.dock).setVisibility(View.VISIBLE);
+
                 getFragmentManager().popBackStack();
             }
         });
@@ -253,7 +268,6 @@ public class AddTaskFragment extends Fragment {
 
         return mView;
     }
-
 
 
     /**

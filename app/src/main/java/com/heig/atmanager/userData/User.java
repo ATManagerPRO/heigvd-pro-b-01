@@ -18,15 +18,17 @@ public class User {
     private String userName;
     private String googleToken;
     private String backEndToken;
+    private String email;
     private ArrayList<Goal> goals;
     private ArrayList<TaskList> taskLists;
     private ArrayList<Task> tasks;
     private ArrayList<String> tags;
     private ArrayList<Folder> folders;
 
-    public User(String userName, String googleToken) {
+    public User(String userName, String googleToken, String email) {
         this.userName = userName;
         this.googleToken = googleToken;
+        this.email = email;
         this.goals       = new ArrayList<>();
         this.taskLists   = new ArrayList<>();
         this.tasks       = new ArrayList<>();
@@ -196,5 +198,13 @@ public class User {
 
     public void setUserId(long userId) {
         this.userId = userId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void removeTask(Task task) {
+        tasks.remove(task);
     }
 }
