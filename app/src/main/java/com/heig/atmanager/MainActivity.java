@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements ShareTaskListDiag
         user.setBackEndToken(i.getExtras().getString("userToken"));
         user.setUserId(i.getExtras().getLong("userId"));
 
-        // Handle incomming data
+        // Handle incoming data
         Intent intent = getIntent();
         String action = intent.getAction();
         Uri data = intent.getData();
@@ -135,7 +135,6 @@ public class MainActivity extends AppCompatActivity implements ShareTaskListDiag
             openDeepLink(data);
         }
         Log.d(TAG, "onCreate: user updated with : " + user.getUserId() + " / " + user.getBackEndToken());
-        //googleCalendarHandler = new GoogleCalendarHandler(this);
 
         fab = findViewById(R.id.fab);
         fabAddGoal = findViewById(R.id.fab_add_goal);
@@ -433,6 +432,7 @@ public class MainActivity extends AppCompatActivity implements ShareTaskListDiag
         int taskListId = Integer.parseInt(data.getQueryParameter("taskListId"));
         String userName = data.getQueryParameter("userName");
         boolean isEditable = data.getBooleanQueryParameter("isEditable", false);
+        String senderMail = data.getQueryParameter("senderEmail");
 
         Log.d(TAG, "openDeepLink: isEditable " + isEditable);
 
