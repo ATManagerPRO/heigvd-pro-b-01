@@ -38,6 +38,7 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputLayout;
 import com.heig.atmanager.GoogleCalendarHandler;
 import com.heig.atmanager.MainActivity;
+import com.heig.atmanager.PostRequests;
 import com.heig.atmanager.R;
 import com.heig.atmanager.Utils;
 import com.heig.atmanager.folders.Folder;
@@ -171,9 +172,10 @@ public class AddTaskFragment extends Fragment {
             }
         });
 
-        for(String s : MainActivity.getUser().getTags())
-            Log.d(TAG, "onCreateView: Tag : " + s);
-
+        if(MainActivity.getUser().getTags() != null) {
+            for (String s : MainActivity.getUser().getTags())
+                Log.d(TAG, "onCreateView: Tag : " + s);
+        }
         // Tags
         tags = new ArrayList<>();
         // Enable the user to choose between his/her tags
@@ -199,7 +201,7 @@ public class AddTaskFragment extends Fragment {
         final Spinner folderSpinner = mView.findViewById(R.id.frag_directory_choice_tag_spinner);
         ArrayAdapter<TaskList> spinnerAdapter = new AddTaskSpinnerAdapter(getActivity(),
                 R.layout.support_simple_spinner_dropdown_item,
-                ((MainActivity) getContext()).getUser().getTaskLists());
+                ((MainActivity) getContext()).getUser().getAllTaskLists());
         spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         folderSpinner.setAdapter(spinnerAdapter);
 
@@ -241,7 +243,8 @@ public class AddTaskFragment extends Fragment {
                         // Assigning the tasklist and adding the task in the tasklist
                         // (which is already in the user)
                         newTask.setTasklist(taskList);
-                        taskList.addTask(newTask);
+                        PostRequests.postTask(newTask,getContext());
+                        ((MainActivity) getContext()).getUser().addTask(newTask);
                         //update homeview
                         tasks = MainActivity.getUser().getTasksForDay(Calendar.getInstance().getTime());
                         tasks.addAll(MainActivity.getUser().getTasksWithoutDate());

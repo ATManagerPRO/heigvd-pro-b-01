@@ -34,6 +34,7 @@ public class AddTagsDiag extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 final EditText tagName = view.findViewById(R.id.newTagName);
+                PostRequests.postTag(tagName.getText().toString(),getContext());
                 ((MainActivity) AddTagsDiag.this.getActivity()).user.addTag(tagName.getText().toString());
                             }
         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

@@ -50,36 +50,7 @@ public class AddFolderDiag extends DialogFragment {
                 final EditText folderName = view.findViewById(R.id.newFolderName);
                 Folder newFolder = new Folder(folderName.getText().toString());
 
-                //post request to the server
-                try {
-                    String URL = "https://atmanager.gollgot.app/api/v1/folders";
-                    JSONObject jsonBody = new JSONObject();
-
-
-                    jsonBody.put("label", newFolder.getName());
-
-                    JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                        }
-                    }) {
-                        @Override
-                        public Map<String, String> getHeaders() throws AuthFailureError {
-                            final Map<String, String> headers = new HashMap<>();
-                            headers.put("Authorization", "Bearer " + MainActivity.getUser().getBackEndToken());//put your token here
-                            return headers;
-                        }
-                    };
-                    Volley.newRequestQueue(getContext()).add(jsonObject);
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+               PostRequests.postFolder(newFolder,getContext());
 
                 ((MainActivity) AddFolderDiag.this.getActivity()).user.addFolder(new Folder(folderName.getText().toString()));
             }
