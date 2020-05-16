@@ -17,9 +17,9 @@ import com.heig.atmanager.R;
  */
 public class ShareTaskListDiag extends DialogFragment {
 
-    private int taskListId;
+    private long taskListId;
 
-    public ShareTaskListDiag(int taskListId) {
+    public ShareTaskListDiag(long taskListId) {
         this.taskListId = taskListId;
     }
 
@@ -27,7 +27,7 @@ public class ShareTaskListDiag extends DialogFragment {
      * Interface for the callback
      */
     public interface ShareDialogListener{
-        public void onDialogPositiveClick(DialogFragment dialog, int taskListId, boolean isEditable);
+        public void onDialogPositiveClick(DialogFragment dialog, long taskListId, boolean isEditabl);
         public void onDialogNegativeClick(DialogFragment dialog);
     }
 

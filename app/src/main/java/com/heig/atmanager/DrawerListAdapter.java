@@ -25,7 +25,6 @@ public class DrawerListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
     private ArrayList<DrawerObject> objects;
-    private Activity activity;
 
     public DrawerListAdapter(Context context, ArrayList<TaskList> taskLists,
                              ArrayList<Folder> folders) {
@@ -33,7 +32,6 @@ public class DrawerListAdapter extends BaseExpandableListAdapter {
         this.objects = new ArrayList<>();
         this.objects.addAll(taskLists);
         this.objects.addAll(folders);
-        this.activity = activity;
     }
 
     @Override
@@ -96,13 +94,14 @@ public class DrawerListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int i, int i1, boolean b, View view, ViewGroup viewGroup) {
-        String taskListName = ((TaskList) getChild(i, i1)).getName();
+
+        final TaskList taskList = ((TaskList) getChild(i, i1));
 
         if (view == null)
             view = LayoutInflater.from(context).inflate(R.layout.drawer_list_item, null);
 
         TextView title = (TextView) view.findViewById(R.id.drawer_object_title);
-        title.setText(taskListName);
+        title.setText(taskList.getName());
 
         Button shareBtn = view.findViewById(R.id.share);
 
@@ -116,7 +115,7 @@ public class DrawerListAdapter extends BaseExpandableListAdapter {
                 // TODO Replace with the real id
 
                 // callback to MainActivity to handle the dialog
-                ((MainActivity) activity).showShareTaskDialog(11);
+                ((MainActivity) context).showShareTaskDialog(taskList.getId());
 
             }
         });

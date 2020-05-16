@@ -443,13 +443,13 @@ public class MainActivity extends AppCompatActivity implements ShareTaskListDiag
     }
 
     // Share invite Dialog
-    public void showShareTaskDialog(int taskListId){
+    public void showShareTaskDialog(long taskListId){
         DialogFragment dialog = new ShareTaskListDiag(taskListId);
         dialog.show(getSupportFragmentManager(), "ShareTaskListDialog");
     }
 
     @Override
-    public void onDialogPositiveClick(DialogFragment dialog, int taskListId, boolean isEditable) {
+    public void onDialogPositiveClick(DialogFragment dialog, long taskListId, boolean isEditable) {
 
         final Uri.Builder builder = new Uri.Builder();
 
@@ -459,7 +459,8 @@ public class MainActivity extends AppCompatActivity implements ShareTaskListDiag
                 //Need to add the real id
                 .appendQueryParameter("taskListId", String.valueOf(taskListId))
                 .appendQueryParameter("userName", user.getUserName())
-                .appendQueryParameter("isEditable", isEditable ? "1" : "0");
+                .appendQueryParameter("isEditable", isEditable ? "1" : "0")
+                .appendQueryParameter("senderEmail", user.getEmail());
 
         Log.d(TAG, "onShareClicked : " + builder.build().toString());
 
