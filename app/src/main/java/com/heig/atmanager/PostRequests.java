@@ -19,6 +19,7 @@ import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -99,13 +100,13 @@ public class PostRequests {
         try {
             String URL = "https://atmanager.gollgot.app/api/v1/goals";
             JSONObject jsonBody = new JSONObject();
-
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
             jsonBody.put("intervalLabel", newGoal.getInterval().toString());
             jsonBody.put("label", newGoal.getUnit());
             jsonBody.put("quantity", newGoal.getQuantity());
             jsonBody.put("intervalValue", newGoal.getIntervalNumber());
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            jsonBody.put("beginDate", df.format(new GregorianCalendar().getTime()));
             String date = df.format(newGoal.getDueDate());
             jsonBody.put("endDate", date);
 
