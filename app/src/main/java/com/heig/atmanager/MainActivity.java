@@ -5,7 +5,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -51,10 +50,7 @@ import com.heig.atmanager.tasks.TaskFeedAdapter;
 import com.heig.atmanager.userData.User;
 import com.heig.atmanager.userData.UserJsonParser;
 
-import java.security.Permission;
 import java.util.ArrayList;
-
-import static com.heig.atmanager.GoogleCalendarHandler.MY_CAL_ADD_TASK;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -116,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
         user.setUserId(i.getExtras().getLong("userId"));
 
         Log.d(TAG, "onCreate: user updated with : " + user.getUserId() + " / " + user.getBackEndToken());
-        googleCalendarHandler = new GoogleCalendarHandler(this);
 
         fab = findViewById(R.id.fab);
         fabAddGoal = findViewById(R.id.fab_add_goal);
@@ -411,20 +406,21 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
-            case GoogleCalendarHandler.MY_CAL_CREATE:
+            case LocalCalendarHandler.MY_CAL_CREATE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    GoogleCalendarHandler.getInstance().createCalendar(this);
+                    LocalCalendarHandler.getInstance().createCalendar(this);
                 }
                 break;
-            case GoogleCalendarHandler.MY_CAL_CHECK:
+            case LocalCalendarHandler.MY_CAL_CHECK:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    GoogleCalendarHandler.getInstance().checkIfCalendarExist(this);
+                    LocalCalendarHandler.getInstance().checkIfCalendarExist(this);
                 }
                 break;
-            case GoogleCalendarHandler.MY_CAL_ADD_TASK:
+            case LocalCalendarHandler.MY_CAL_ADD_TASK:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    GoogleCalendarHandler.getInstance().addTask(this);
+                    LocalCalendarHandler.getInstance().addTask(this);
                 } else {
+                    // Explain why we need to have Calendar access
                     if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_CALENDAR)) {
                         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
                         alertDialog.setTitle("Calendar permission");
@@ -444,15 +440,4 @@ public class MainActivity extends AppCompatActivity {
     }
 
 }
-
-    /*public static boolean hasPermission(Context context, String... permissions){
-        if(permissions != null){
-            for (String permission : permissions){
-                if(ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED){
-                    return false;
-                }
-            }
-        }
-        return true;
-    }*/
 

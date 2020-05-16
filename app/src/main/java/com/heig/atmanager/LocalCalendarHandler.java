@@ -1,13 +1,10 @@
 package com.heig.atmanager;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -19,13 +16,12 @@ import androidx.core.app.ActivityCompat;
 
 import com.heig.atmanager.tasks.Task;
 
-import java.util.Date;
 import java.util.TimeZone;
 
 
-public class GoogleCalendarHandler {
+public class LocalCalendarHandler {
 
-    public static final String TAG = "GoogleCalendarHandler";
+    public static final String TAG = "LocalCalendarHandler";
 
     // Projection array. Creating indices for this array instead of doing
     // dynamic lookups improves performance.
@@ -42,8 +38,6 @@ public class GoogleCalendarHandler {
     private static final int PROJECTION_DISPLAY_NAME_INDEX = 2;
     private static final int PROJECTION_OWNER_ACCOUNT_INDEX = 3;
     public static final int MY_CAL_CREATE = 50;
-    public static final int MY_CAL_READ_REQ = 51;
-    public static final int CALENDAR_INIT = 40;
     public static final int MY_CAL_CHECK = 52;
     public static final int MY_CAL_ADD_TASK = 53;
 
@@ -53,17 +47,21 @@ public class GoogleCalendarHandler {
 
 
     private static class Instance {
-        static final GoogleCalendarHandler instance = new GoogleCalendarHandler();
+        static final LocalCalendarHandler instance = new LocalCalendarHandler();
     }
 
-    public GoogleCalendarHandler() {
+    public LocalCalendarHandler() {
     }
 
-    public static GoogleCalendarHandler getInstance() {
+    public static LocalCalendarHandler getInstance() {
         return Instance.instance;
     }
 
 
+    /**
+     * Create a new Calendar for our app
+     * @param activity
+     */
     public void createCalendar(Activity activity) {
         ContentValues values = new ContentValues();
         values.put(Calendars.ACCOUNT_NAME, MainActivity.user.getEmail());
@@ -79,7 +77,7 @@ public class GoogleCalendarHandler {
         Uri uri = Calendars.CONTENT_URI;
 
         uri = uri.buildUpon()
-                // Sync with server
+                // Sync with server, didn't work...
                 .appendQueryParameter(CalendarContract.CALLER_IS_SYNCADAPTER, "true")
                 .appendQueryParameter(Calendars.ACCOUNT_NAME, MainActivity.user.getEmail())
                 .appendQueryParameter(Calendars.ACCOUNT_TYPE, BuildConfig.APPLICATION_ID)
@@ -95,6 +93,11 @@ public class GoogleCalendarHandler {
 
     }
 
+    /**
+     * Read the user local db to find if our calendar already exist
+     * @param activity
+     * @return
+     */
     public long checkIfCalendarExist(Activity activity) {
         Cursor cur = null;
         ContentResolver cr = activity.getContentResolver();
@@ -106,9 +109,6 @@ public class GoogleCalendarHandler {
         String[] selectionArgs = new String[]{MainActivity.getUser().getEmail(), BuildConfig.APPLICATION_ID,
                 MainActivity.getUser().getEmail()};
 
-
-        // Need permission
-
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_CALENDAR}, MY_CAL_CHECK);
 
@@ -118,7 +118,6 @@ public class GoogleCalendarHandler {
                 return cur.getLong(PROJECTION_ID_INDEX);
             }
         }
-        //return (cur != null && cur.getCount() > 0) ? cur.getLong(PROJECTION_ID_INDEX) : -1;
 
         return -1;
     }
@@ -127,6 +126,10 @@ public class GoogleCalendarHandler {
         this.task = task;
     }
 
+    /**
+     * Add in the calendar
+     * @param activity
+     */
     public void addTask( Activity activity) {
 
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {

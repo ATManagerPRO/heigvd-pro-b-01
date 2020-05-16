@@ -1,31 +1,19 @@
 package com.heig.atmanager.addTaskGoal;
 
-import android.Manifest;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -34,16 +22,14 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputLayout;
-import com.heig.atmanager.GoogleCalendarHandler;
+import com.heig.atmanager.LocalCalendarHandler;
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
 import com.heig.atmanager.Utils;
-import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.tasks.Task;
 import com.heig.atmanager.tasks.TaskFeedAdapter;
@@ -52,10 +38,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
-import android.provider.CalendarContract.Events;
-
-import static com.heig.atmanager.GoogleCalendarHandler.MY_CAL_ADD_TASK;
 
 
 public class AddTaskFragment extends Fragment {
@@ -235,9 +217,9 @@ public class AddTaskFragment extends Fragment {
                     //GoogleCalendarHandler.getInstance().addTask(title, selectedDate, getActivity());
 
                     Task newTask = new Task(title, description, selectedDate);
-                    GoogleCalendarHandler.getInstance().setTask(newTask);
+                    LocalCalendarHandler.getInstance().setTask(newTask);
 
-                    GoogleCalendarHandler.getInstance().addTask(getActivity());
+                    LocalCalendarHandler.getInstance().addTask(getActivity());
 
                     // Add the tags
                     for (String tag : tags) {
