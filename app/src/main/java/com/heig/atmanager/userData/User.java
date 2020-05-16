@@ -203,4 +203,8 @@ public class User {
     public String getEmail() {
         return email;
     }
+
+    public void removeTask(Task task) {
+        tasks.remove(task);
+    }
 }

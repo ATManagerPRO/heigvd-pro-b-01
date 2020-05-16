@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         user.setUserId(i.getExtras().getLong("userId"));
 
         Log.d(TAG, "onCreate: user updated with : " + user.getUserId() + " / " + user.getBackEndToken());
-        // hasPermission(this, MainActivity.PERMISSIONS);
+        googleCalendarHandler = new GoogleCalendarHandler(this);
 
         fab = findViewById(R.id.fab);
         fabAddGoal = findViewById(R.id.fab_add_goal);
