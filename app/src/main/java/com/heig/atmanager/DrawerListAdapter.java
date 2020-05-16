@@ -28,7 +28,7 @@ public class DrawerListAdapter extends BaseExpandableListAdapter {
     private Activity activity;
 
     public DrawerListAdapter(Context context, ArrayList<TaskList> taskLists,
-                             ArrayList<Folder> folders, Activity activity) {
+                             ArrayList<Folder> folders) {
         this.context = context;
         this.objects = new ArrayList<>();
         this.objects.addAll(taskLists);

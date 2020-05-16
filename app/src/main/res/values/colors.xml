@@ -20,11 +20,12 @@
 
     <!-- Tasks -->
     <color name="favorite_bg">#FF0051</color>
+    <color name="remove_bg">#FF2828</color>
 
     <!-- Calendar -->
     <color name="outline_selection">#000000</color>
     <color name="outline_today">#FF1818</color>
-    <color name="day_background_notification">#63CFFF</color>
+    <color name="day_background_notification">#36B8FF</color>
 
 
 </resources>
