@@ -423,7 +423,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case GoogleCalendarHandler.MY_CAL_ADD_TASK:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    AddTaskFragment.addTaskPressed();
+                    GoogleCalendarHandler.getInstance().addTask(this);
                 } else {
                     if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_CALENDAR)) {
                         AlertDialog alertDialog = new AlertDialog.Builder(this).create();

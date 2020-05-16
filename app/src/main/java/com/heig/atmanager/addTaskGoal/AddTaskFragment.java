@@ -231,41 +231,37 @@ public class AddTaskFragment extends Fragment {
                 } else {
                     selectedDate = new GregorianCalendar(mYear, mMonth, mDay, mHour, mMinute).getTime();
 
-                    if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+                    Log.d(TAG, "onClick: BLA");
+                    //GoogleCalendarHandler.getInstance().addTask(title, selectedDate, getActivity());
 
-                        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_CALENDAR}, MY_CAL_ADD_TASK);
+                    Task newTask = new Task(title, description, selectedDate);
+                    GoogleCalendarHandler.getInstance().setTask(newTask);
 
+                    GoogleCalendarHandler.getInstance().addTask(getActivity());
 
-                    } else {
-                        Log.d(TAG, "onClick: BLA");
-                        GoogleCalendarHandler.getInstance().addTask(title, selectedDate, getActivity());
+                    // Add the tags
+                    for (String tag : tags) {
+                        newTask.addTag(tag);
                     }
 
-                }
-                Task newTask = new Task(title, description, selectedDate);
-
-                // Add the tags
-                for (String tag : tags) {
-                    newTask.addTag(tag);
-                }
-
-                // Add the task to a selected taskList
-                for (TaskList taskList : ((MainActivity) getContext()).getUser().getTaskLists()) {
-                    if (taskList.toString().equals(selectedDirectory)) {
-                        newTask.setTasklist(taskList);
-                        ((MainActivity) getContext()).getUser().addTask(newTask);
-                        //update homeview
-                        tasks = (((MainActivity) getContext()).getUser().getTasksForDay(Calendar.getInstance().getTime()));
-                        tasks.addAll((((MainActivity) getContext()).getUser().getTasksWithoutDate()));
-                        ((TaskFeedAdapter) tasksRecyclerView.getAdapter()).setTasks(tasks);
+                    // Add the task to a selected taskList
+                    for (TaskList taskList : ((MainActivity) getContext()).getUser().getTaskLists()) {
+                        if (taskList.toString().equals(selectedDirectory)) {
+                            newTask.setTasklist(taskList);
+                            ((MainActivity) getContext()).getUser().addTask(newTask);
+                            //update homeview
+                            tasks = (((MainActivity) getContext()).getUser().getTasksForDay(Calendar.getInstance().getTime()));
+                            tasks.addAll((((MainActivity) getContext()).getUser().getTasksWithoutDate()));
+                            ((TaskFeedAdapter) tasksRecyclerView.getAdapter()).setTasks(tasks);
+                        }
                     }
+
+
+                    getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
+                    getActivity().findViewById(R.id.dock).setVisibility(View.VISIBLE);
+
+                    getFragmentManager().popBackStack();
                 }
-
-
-                getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
-                getActivity().findViewById(R.id.dock).setVisibility(View.VISIBLE);
-
-                getFragmentManager().popBackStack();
             }
         });
 
@@ -274,7 +270,11 @@ public class AddTaskFragment extends Fragment {
     }
 
     public static void addTaskPressed() {
-        validationButton.setPressed(true);
+        validationButton.performClick();
+    }
+
+    private void  addInCalendar(){
+
     }
 
 

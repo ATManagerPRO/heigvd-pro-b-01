@@ -17,6 +17,8 @@ import android.provider.CalendarContract.Events;
 
 import androidx.core.app.ActivityCompat;
 
+import com.heig.atmanager.tasks.Task;
+
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -47,6 +49,8 @@ public class GoogleCalendarHandler {
 
     //private Activity mActivity;
     private long calendarId;
+    private Task task;
+
 
     private static class Instance {
         static final GoogleCalendarHandler instance = new GoogleCalendarHandler();
@@ -82,13 +86,15 @@ public class GoogleCalendarHandler {
                 .build();
 
         // Need permission
-
-        uri = activity.getContentResolver().insert(uri, values);
-        calendarId = ContentUris.parseId(uri);
+        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_CALENDAR}, MY_CAL_CHECK);
+        }else {
+            uri = activity.getContentResolver().insert(uri, values);
+            calendarId = ContentUris.parseId(uri);
+        }
 
     }
 
-    @SuppressLint("MissingPermission")
     public long checkIfCalendarExist(Activity activity) {
         Cursor cur = null;
         ContentResolver cr = activity.getContentResolver();
@@ -103,55 +109,46 @@ public class GoogleCalendarHandler {
 
         // Need permission
 
-        cur = cr.query(uri, EVENT_PROJECTION, selection, selectionArgs, null);
-        if (cur != null && cur.moveToFirst()) {
-            return cur.getLong(PROJECTION_ID_INDEX);
+        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_CALENDAR}, MY_CAL_CHECK);
+
+        }else {
+            cur = cr.query(uri, EVENT_PROJECTION, selection, selectionArgs, null);
+            if (cur != null && cur.moveToFirst()) {
+                return cur.getLong(PROJECTION_ID_INDEX);
+            }
         }
         //return (cur != null && cur.getCount() > 0) ? cur.getLong(PROJECTION_ID_INDEX) : -1;
 
         return -1;
     }
 
-    public void addTask(String title, Date date, Activity activity) {
+    public void setTask(Task task){
+        this.task = task;
+    }
 
-        calendarId = checkIfCalendarExist(activity);
+    public void addTask( Activity activity) {
 
-        if (calendarId == -1) {
-            createCalendar(activity);
-        }
+        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_CALENDAR}, MY_CAL_ADD_TASK);
 
-        ContentResolver cr = activity.getContentResolver();
-        ContentValues values = new ContentValues();
+        }else {
+            calendarId = checkIfCalendarExist(activity);
 
-        values.put(Events.TITLE, title);
-
-        values.put(Events.DTSTART, date.getTime());
-        values.put(Events.DTEND, date.getTime());
-        values.put(Events.CALENDAR_ID, calendarId);
-        values.put(Events.EVENT_TIMEZONE, TimeZone.getDefault().getDisplayName());
-
-
-        // Need permission
-       /* if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.WRITE_CALENDAR)) {
-                AlertDialog alertDialog = new AlertDialog.Builder(activity).create();
-                alertDialog.setTitle("Calendar permission");
-                alertDialog.setMessage("We need to have access at your Calendar if you want to see it in the native calendar");
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                alertDialog.show();
-            } else {
-                ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_CALENDAR}, MY_CAL_ADD_TASK);
+            if (calendarId == -1) {
+                createCalendar(activity);
             }
 
-        } else {*/
-            @SuppressLint("MissingPermission") Uri uri = cr.insert(Events.CONTENT_URI, values);
-       // }
+            ContentResolver cr = activity.getContentResolver();
+            ContentValues values = new ContentValues();
 
+            values.put(Events.TITLE, task.getTitle());
+
+            values.put(Events.DTSTART, task.getDueDate().getTime());
+            values.put(Events.DTEND, task.getDueDate().getTime());
+            values.put(Events.CALENDAR_ID, calendarId);
+            values.put(Events.EVENT_TIMEZONE, TimeZone.getDefault().getDisplayName());
+            Uri uri = cr.insert(Events.CONTENT_URI, values);
+        }
     }
 }
