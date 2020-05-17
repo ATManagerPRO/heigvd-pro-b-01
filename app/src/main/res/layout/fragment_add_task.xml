@@ -115,51 +115,90 @@
         </com.google.android.material.chip.ChipGroup>
     </HorizontalScrollView>
 
-    <LinearLayout
-        android:id="@+id/frag_add_task_due_date_layout"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="5">
+        android:id="@+id/dateTable">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/frag_add_task_due_date_text"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="3"
             android:padding="10dp"
             android:text="@string/due_date_title"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="@id/frag_add_task_notification_text"
+            app:layout_constraintEnd_toEndOf="@id/frag_add_task_notification_text"
+            />
 
         <TextView
             android:id="@+id/frag_add_task_due_date"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="1"
             android:padding="10dp"
             android:hint="@string/due_date"
             android:clickable="true"
             android:textSize="18sp"
+            android:layout_weight="1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/frag_add_task_due_date_text"
             />
 
         <TextView
             android:id="@+id/frag_add_task_due_time"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:padding="10dp"
-            android:layout_weight="1"
             android:hint="@string/due_time"
             android:clickable="true"
             android:textSize="18sp"
+            android:layout_weight="1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/frag_add_task_due_date"
             />
-    </LinearLayout>
+
+        <TextView
+            android:id="@+id/frag_add_task_notification_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:text="@string/notification_time_text"
+            android:textSize="18sp"
+            android:layout_weight="1"
+            app:layout_constraintTop_toBottomOf="@id/frag_add_task_due_date_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/frag_add_task_notification"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="10"
+            android:clickable="true"
+            android:hint="@string/notification_hint"
+            android:padding="10dp"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/frag_add_task_due_date_text"
+            app:layout_constraintTop_toBottomOf="@id/frag_add_task_due_date"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
 
     <LinearLayout
         android:id="@+id/directory_layout"
         app:layout_constraintBottom_toTopOf="@id/frag_validation_button"
-        app:layout_constraintTop_toBottomOf="@id/frag_add_task_due_date_layout"
+        app:layout_constraintTop_toBottomOf="@id/dateTable"
         android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -194,6 +233,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         style="@style/AppTheme.Button.Icon.Validation"
         android:layout_gravity="center"/>
+
+
 
 
 </LinearLayout>
