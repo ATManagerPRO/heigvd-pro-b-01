@@ -1,12 +1,15 @@
 package com.heig.atmanager.userData;
 
+import com.heig.atmanager.Interval;
+import com.heig.atmanager.Utils;
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.goals.Goal;
-import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.goals.GoalTodo;
+import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.tasks.Task;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 

@@ -102,6 +102,10 @@ public class Task {
         return tasklist;
     }
 
+    public void setDoneDate(Date doneDate) {
+        this.doneDate = doneDate;
+    }
+
     public void addTag(String tag) {
         // Add the tag to the task and the user
         tags.add(tag);
