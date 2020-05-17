@@ -1,4 +1,4 @@
-package com.heig.atmanager;
+package com.heig.atmanager.addContent;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -14,6 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.heig.atmanager.FolderSpinnerAdapter;
+import com.heig.atmanager.MainActivity;
+import com.heig.atmanager.userData.PostRequests;
+import com.heig.atmanager.R;
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.taskLists.TaskList;
 

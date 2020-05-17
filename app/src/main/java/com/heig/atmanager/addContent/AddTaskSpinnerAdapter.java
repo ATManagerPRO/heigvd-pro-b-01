@@ -1,4 +1,4 @@
-package com.heig.atmanager.addTaskGoal;
+package com.heig.atmanager.addContent;
 
 import android.content.Context;
 import android.view.View;

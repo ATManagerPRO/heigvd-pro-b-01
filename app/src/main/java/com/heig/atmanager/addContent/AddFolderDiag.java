@@ -1,4 +1,4 @@
-package com.heig.atmanager;
+package com.heig.atmanager.addContent;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -12,19 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
+import com.heig.atmanager.MainActivity;
+import com.heig.atmanager.userData.PostRequests;
+import com.heig.atmanager.R;
 import com.heig.atmanager.folders.Folder;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Author : Chau Ying Kot
