@@ -1,7 +1,9 @@
 package com.heig.atmanager.addTaskGoal;
 
 import android.app.DatePickerDialog;
+import android.app.Notification;
 import android.app.TimePickerDialog;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -26,7 +28,9 @@ import android.widget.TimePicker;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputLayout;
+import com.heig.atmanager.BuildConfig;
 import com.heig.atmanager.MainActivity;
+import com.heig.atmanager.NotificationUtils;
 import com.heig.atmanager.R;
 import com.heig.atmanager.Utils;
 import com.heig.atmanager.taskLists.TaskList;
@@ -69,7 +73,9 @@ public class AddTaskFragment extends Fragment {
 
     private TextInputLayout titleLayout;
 
-    ArrayList<String> tags;
+    private ArrayList<String> tags;
+
+    private NotificationUtils mNotificationUtils;
 
     public AddTaskFragment() {
         // Required empty public constructor
@@ -79,6 +85,8 @@ public class AddTaskFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tasksRecyclerView = (RecyclerView) getActivity().findViewById(R.id.tasks_rv);
+
+        mNotificationUtils = new NotificationUtils(getContext());
 
         // Override OnBacPressed to show hidden components
         final OnBackPressedCallback callback = new OnBackPressedCallback(true) {
@@ -210,7 +218,8 @@ public class AddTaskFragment extends Fragment {
                     selectedDate = null;
                 } else {
                     selectedDate = new GregorianCalendar(mYear, mMonth, mDay, mHour, mMinute).getTime();
-
+                    Notification.Builder nb = mNotificationUtils.getChannelNotification(getString(R.string.app_name), title);
+                    mNotificationUtils.getManager().notify(10, nb.build());
                 }
                 Task newTask = new Task(title, description, selectedDate);
 
