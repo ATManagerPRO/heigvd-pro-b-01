@@ -105,6 +105,26 @@ public class User {
                 calendar_d1.get(Calendar.DAY_OF_MONTH) == calendar_d2.get(Calendar.DAY_OF_MONTH);
     }
 
+    private boolean isBetweenDates(Date d, Date startDate, Date endDate) {
+        Calendar calendar_d = Calendar.getInstance();
+        Calendar calendar_startDate = Calendar.getInstance();
+        Calendar calendar_endDate = Calendar.getInstance();
+        calendar_d.setTime(d);
+        calendar_startDate.setTime(startDate);
+        calendar_endDate.setTime(endDate);
+        return calendar_d.getTime().before(calendar_endDate.getTime()) && calendar_d.getTime().after(calendar_startDate.getTime());
+    }
+
+    private  Date getDateXDaysAgo(int numberOfDaysAgo){
+        Calendar cal=Calendar.getInstance();
+        int currentDay=cal.get(Calendar.DAY_OF_YEAR);
+        //Set the date to 2 days ago
+        cal.set(Calendar.DAY_OF_YEAR, currentDay-numberOfDaysAgo);
+
+        return cal.getTime();
+
+    }
+
     public ArrayList<Task> getTasksForDay(Date day) {
         ArrayList<Task> tasksForDay = new ArrayList<>();
 
@@ -194,6 +214,94 @@ public class User {
         }
 
         return goalTodos;
+    }
+
+    public ArrayList<Task> getTasksForLastWeek() {
+        ArrayList<Task> tasksForLastWeek = new ArrayList<>();
+
+        for (Task task : tasks) {
+            if (task.getDueDate() != null && isBetweenDates(task.getDueDate(), getDateXDaysAgo(7), Calendar.getInstance().getTime())) {
+                tasksForLastWeek.add(task);
+            }
+        }
+
+        return tasksForLastWeek;
+    }
+
+    public ArrayList<Task> getTasksForLastMonth() {
+        ArrayList<Task> tasksForLastMonth = new ArrayList<>();
+
+        for (Task task : tasks) {
+            if (task.getDueDate() != null && isBetweenDates(task.getDueDate(), getDateXDaysAgo(30), Calendar.getInstance().getTime())) {
+                tasksForLastMonth.add(task);
+            }
+        }
+
+        return tasksForLastMonth;
+    }
+
+    public ArrayList<Task> getTasksForLastYear() {
+        ArrayList<Task> tasksForLastYear = new ArrayList<>();
+
+        for (Task task : tasks) {
+            if (task.getDueDate() != null && isBetweenDates(task.getDueDate(), getDateXDaysAgo(365), Calendar.getInstance().getTime())) {
+                tasksForLastYear.add(task);
+            }
+        }
+
+        return tasksForLastYear;
+    }
+
+    public ArrayList<GoalTodo> getDailyGoalTodo(){
+        return getXlyGoalTodo(Interval.DAY);
+    }
+
+    public ArrayList<GoalTodo> getWeeklyGoalTodo(){
+        return getXlyGoalTodo(Interval.WEEK);
+    }
+
+    public ArrayList<GoalTodo> getMonthlyGoalTodo(){
+        return getXlyGoalTodo(Interval.MONTH);
+    }
+
+    public ArrayList<GoalTodo> getYearlyGoalTodo(){
+        return getXlyGoalTodo(Interval.YEAR);
+    }
+
+    private ArrayList<GoalTodo> getXlyGoalTodo(Interval interval){
+        ArrayList<GoalTodo> result = new ArrayList<>();
+        Calendar current = Calendar.getInstance();
+        Date currentDate = new Date();
+        current.setTime(currentDate);
+
+        for(Goal g : goals){
+            for(GoalTodo gt : g.getGoalTodos()){
+                switch(interval) {
+                    case YEAR:
+                        if (Utils.getYear(currentDate) == Utils.getYear(gt.getDoneDate()) && g.getInterval() == Interval.YEAR)
+                            result.add(gt);
+                        break;
+                    case MONTH:
+                        if(Arrays.equals(Utils.getMonthYear(gt.getDoneDate()), Utils.getMonthYear(currentDate))
+                                && g.getInterval() == Interval.MONTH)
+                            result.add(gt);
+                        break;
+                    case WEEK:
+                        if(Arrays.equals(Utils.getWeekMonthYear(gt.getDoneDate()), Utils.getWeekMonthYear(currentDate))
+                                && g.getInterval() == Interval.WEEK)
+                            result.add(gt);
+                        break;
+                    case DAY:
+                        if(Arrays.equals(Utils.getDayWeekMonthYear(gt.getDoneDate()), Utils.getDayWeekMonthYear(currentDate))
+                                && g.getInterval() == Interval.DAY)
+                            result.add(gt);
+                        break;
+                    default: break;
+                }
+            }
+        }
+
+        return result;
     }
     
     public void addTag(String tagName){
