@@ -2,9 +2,7 @@ package com.heig.atmanager.userData;
 
 import android.app.DownloadManager;
 import android.content.Context;
-import android.icu.text.CaseMap;
 import android.icu.text.SimpleDateFormat;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
@@ -13,16 +11,13 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.heig.atmanager.HomeFragment;
 import com.heig.atmanager.Interval;
 import com.heig.atmanager.MainActivity;
-import com.heig.atmanager.R;
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.goals.GoalTodo;
 import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.tasks.Task;
-import com.heig.atmanager.tasks.TaskFeedAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,12 +25,9 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Author : Stéphane Bottin
@@ -195,12 +187,6 @@ public class UserJsonParser {
                 try {
                     if(isRequestValid(response)) {
                         parseAndLoadTasks(response.getJSONObject(RESPONSE_RESOURCE));
-
-
-                        // Update home fragment
-                        /*((HomeFragment) ((MainActivity) mainContext).getSupportFragmentManager()
-                                .findFragmentByTag(HomeFragment.FRAG_HOME_ID))
-                                .updateHomeFragment();*/
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
@@ -236,12 +222,6 @@ public class UserJsonParser {
                 try {
                     if(isRequestValid(response)) {
                         parseAndLoadGoalTodos(response.getJSONObject(RESPONSE_RESOURCE));
-
-                        // Update home fragment
-                        /*((HomeFragment) ((MainActivity) mainContext).getSupportFragmentManager()
-                                .findFragmentByTag(HomeFragment.FRAG_HOME_ID))
-                                .updateHomeFragment();*/
-
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
