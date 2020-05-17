@@ -1,19 +1,28 @@
 package com.heig.atmanager.tasks;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.heig.atmanager.HomeFragment;
+import com.heig.atmanager.MainActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.heig.atmanager.R;
+import com.heig.atmanager.Utils;
+import com.heig.atmanager.taskLists.TaskList;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -22,10 +31,11 @@ import java.util.Date;
  *
  * Task adapter for the task Recycler view
  */
-public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyViewHolder> {
+public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyViewHolder> implements Filterable {
     private static final String TAG = "TaskFeedAdapter";
-    
+
     private ArrayList<Task> tasks;
+    private ArrayList<Task> tasksFull;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -34,27 +44,38 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         // each data item is just a string in this case
         private TextView title;
         private TextView description;
+        private TextView timeHourText;
+        private TextView timeMeridiemText;
+        private TextView taskListText;
+        private TextView taskTags;
         private Button expandBtn;
         private Button retractBtn;
+        private ImageButton removeBtn;
         private LinearLayout expandedView;
         private ImageView favoriteIcon;
         private ToggleButton checkButton;
 
         public MyViewHolder(View v) {
             super(v);
-            title        = v.findViewById(R.id.task_title);
-            description  = v.findViewById(R.id.task_description);
-            expandBtn    = v.findViewById(R.id.expand_button);
-            retractBtn   = v.findViewById(R.id.retract_button);
-            expandedView = v.findViewById(R.id.task_expanded_view);
-            favoriteIcon = v.findViewById(R.id.favorite_icon);
-            checkButton  = v.findViewById(R.id.check_button);
+            title            = v.findViewById(R.id.task_title);
+            description      = v.findViewById(R.id.task_description);
+            timeHourText     = v.findViewById(R.id.task_time);
+            timeMeridiemText = v.findViewById(R.id.task_time_meridiem);
+            taskListText     = v.findViewById(R.id.task_list);
+            taskTags         = v.findViewById(R.id.task_tags);
+            expandBtn        = v.findViewById(R.id.expand_button);
+            retractBtn       = v.findViewById(R.id.retract_button);
+            expandedView     = v.findViewById(R.id.task_expanded_view);
+            favoriteIcon     = v.findViewById(R.id.favorite_icon);
+            checkButton      = v.findViewById(R.id.check_button);
+            removeBtn        = v.findViewById(R.id.remove_button);
         }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public TaskFeedAdapter(ArrayList<Task> tasks) {
         this.tasks = tasks;
+        this.tasksFull = new ArrayList<>(tasks);
     }
 
     // Create new views (invoked by the layout manager)
@@ -76,6 +97,32 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         // - replace the contents of the view with that element
         holder.title.setText(tasks.get(position).getTitle());
         holder.description.setText(tasks.get(position).getDescription());
+        // Tasklist
+        if(tasks.get(position).getTasklist() != null) {
+            holder.taskListText.setText(tasks.get(position).getTasklist().getName());
+        } else {
+            holder.taskListText.setText(TaskList.defaultList.getName());
+        }
+        // Time
+        String hours    = "";
+        String minutes  = "";
+        String meridiem = "";
+        if(tasks.get(position).getDueDate() != null) {
+            Calendar dueDateCalendar = Calendar.getInstance();
+            dueDateCalendar.setTime(tasks.get(position).getDueDate());
+            hours    = Utils.formatNumber(dueDateCalendar.get(Calendar.HOUR_OF_DAY) % 12) + ":";
+            minutes  = Utils.formatNumber(dueDateCalendar.get(Calendar.MINUTE));
+            meridiem = dueDateCalendar.get(Calendar.HOUR_OF_DAY) < 12 ? "AM" : "PM";
+        }
+        holder.timeHourText.setText(hours + minutes);
+        holder.timeMeridiemText.setText(meridiem);
+
+        // Tags
+        String tagsString = "";
+        for(String tag : tasks.get(position).getTags())
+            tagsString += "#" + tag + " ";
+        holder.taskTags.setText(tagsString);
+
         // Expand / retract details
         holder.expandBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,6 +158,16 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
                 }
             }
         });
+
+        // Remove
+        holder.removeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity.getUser().removeTask(tasks.get(position));
+                tasks.remove(tasks.get(position));
+                notifyItemRemoved(position); // notify the adapter about the removed item
+            }
+        });
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -124,5 +181,45 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         notifyDataSetChanged();
     }
 
+    @Override
+    public Filter getFilter() {
+        return taskFilter;
+    }
 
+    private Filter taskFilter = new Filter() {
+        @Override
+        protected Filter.FilterResults performFiltering(CharSequence charSequence) {
+            ArrayList<Task> filteredTasks = new ArrayList<>();
+            if(charSequence == null || charSequence.length() == 0) {
+                filteredTasks.addAll(tasksFull);
+            } else {
+                String filter = charSequence.toString().toLowerCase().trim();
+                for(Task task : tasksFull) {
+                    // Tag match
+                    boolean tagMatch = false;
+                    for(String tag : task.getTags())
+                        if(tag.toLowerCase().trim().contains(filter))
+                            tagMatch = true;
+
+                    // Title match
+                    if(task.getTitle().toLowerCase().trim().contains(filter) || tagMatch) {
+                        filteredTasks.add(task);
+                    }
+                }
+
+            }
+
+            Filter.FilterResults results = new Filter.FilterResults();
+            results.values = filteredTasks;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, Filter.FilterResults
+        filterResults) {
+            tasks.clear();
+            tasks.addAll((ArrayList<Task>) filterResults.values);
+            notifyDataSetChanged();
+        }
+    };
 }

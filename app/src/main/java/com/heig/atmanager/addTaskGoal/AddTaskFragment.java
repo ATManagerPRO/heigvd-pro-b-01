@@ -1,14 +1,21 @@
 package com.heig.atmanager.addTaskGoal;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -29,10 +36,10 @@ import android.widget.Toast;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputLayout;
+import com.heig.atmanager.GoogleCalendarHandler;
 import com.heig.atmanager.MainActivity;
+import com.heig.atmanager.PostRequests;
 import com.heig.atmanager.R;
-import com.heig.atmanager.User;
-import com.heig.atmanager.UserViewModel;
 import com.heig.atmanager.Utils;
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.taskLists.TaskList;
@@ -44,8 +51,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import android.provider.CalendarContract.Events;
+
 
 public class AddTaskFragment extends Fragment {
+
+    public static final String FRAG_ADD_TASK_ID = "Add_Task_Fragment";
 
     private static final String TAG = "AddTaskFragment";
 
@@ -72,6 +83,8 @@ public class AddTaskFragment extends Fragment {
     private TextView dueTimeTextView;
 
     private TextInputLayout titleLayout;
+
+    ArrayList<String> tags;
 
     public AddTaskFragment() {
         // Required empty public constructor
@@ -134,8 +147,7 @@ public class AddTaskFragment extends Fragment {
                         dueDateTextView.setText(dueDateString);
                         mYear = year;
                         mMonth = month;
-                        mDay
-                                 = dayOfMonth;
+                        mDay   = dayOfMonth;
                     }
                 }, mYear, mMonth, mDay);
                 // Show the picker
@@ -160,14 +172,15 @@ public class AddTaskFragment extends Fragment {
             }
         });
 
-
+        if(MainActivity.getUser().getTags() != null) {
+            for (String s : MainActivity.getUser().getTags())
+                Log.d(TAG, "onCreateView: Tag : " + s);
+        }
         // Tags
-        //final ArrayAdapter<String> chipsAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, currentUser.getTags().getValue());
-        ArrayList<String> test = new ArrayList<>();
-        test.add("tag1");
-        test.add("tag2");
+        tags = new ArrayList<>();
+        // Enable the user to choose between his/her tags
         final ArrayAdapter<String> chipsAdapter = new ArrayAdapter<>(getActivity(),
-                R.layout.support_simple_spinner_dropdown_item, test);
+                R.layout.support_simple_spinner_dropdown_item, MainActivity.getUser().getTags());
         // App detect the input to suggest the tag
         final AutoCompleteTextView autoCompleteTextView = mView.findViewById(R.id.frag_add_task_autocomplete_textview);
         autoCompleteTextView.setAdapter(chipsAdapter);
@@ -175,6 +188,7 @@ public class AddTaskFragment extends Fragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    Log.d(TAG, "onEditorAction: onCreateView adding tag");
                     ChipGroup chipGroup = mView.findViewById(R.id.frag_add_task_chipgroup);
                     addChipToGroup(autoCompleteTextView.getText().toString().trim(), chipGroup);
                     autoCompleteTextView.setText(null);
@@ -187,7 +201,7 @@ public class AddTaskFragment extends Fragment {
         final Spinner folderSpinner = mView.findViewById(R.id.frag_directory_choice_tag_spinner);
         ArrayAdapter<TaskList> spinnerAdapter = new AddTaskSpinnerAdapter(getActivity(),
                 R.layout.support_simple_spinner_dropdown_item,
-                ((MainActivity) getContext()).getUser().getTaskLists());
+                ((MainActivity) getContext()).getUser().getAllTaskLists());
         spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         folderSpinner.setAdapter(spinnerAdapter);
 
@@ -199,6 +213,7 @@ public class AddTaskFragment extends Fragment {
                 description = descriptionEditText.getText().toString();
                 selectedDirectory = folderSpinner.getSelectedItem().toString();
 
+
                 if (title.isEmpty()) {
                     titleLayout.setError(getString(R.string.input_missing));
                     return;
@@ -207,27 +222,40 @@ public class AddTaskFragment extends Fragment {
                 }
 
                 Date selectedDate;
-                if(mYear == 0) {
+                if (mYear == 0) {
                     selectedDate = null;
-                } else{
+                } else {
                     selectedDate = new GregorianCalendar(mYear, mMonth, mDay, mHour, mMinute).getTime();
+
+                    //MainActivity.googleCalendarHandler.addTask(title, selectedDate);
+
                 }
                 Task newTask = new Task(title, description, selectedDate);
 
+                // Add the tags
+                for(String tag : tags) {
+                    newTask.addTag(tag);
+                }
+
                 // Add the task to a selected taskList
-                for(TaskList taskList : ((MainActivity) getContext()).getUser().getTaskLists()) {
+                for(TaskList taskList : MainActivity.getUser().getTaskLists()) {
                     if (taskList.toString().equals(selectedDirectory)) {
+                        // Assigning the tasklist and adding the task in the tasklist
+                        // (which is already in the user)
                         newTask.setTasklist(taskList);
+                        PostRequests.postTask(newTask,getContext());
                         ((MainActivity) getContext()).getUser().addTask(newTask);
                         //update homeview
-                        tasks = (((MainActivity) getContext()).getUser().getTasksForDay(Calendar.getInstance().getTime()));
-                        tasks.addAll((((MainActivity) getContext()).getUser().getTasksWithoutDate()));
+                        tasks = MainActivity.getUser().getTasksForDay(Calendar.getInstance().getTime());
+                        tasks.addAll(MainActivity.getUser().getTasksWithoutDate());
                         ((TaskFeedAdapter)tasksRecyclerView.getAdapter()).setTasks(tasks);
                     }
                 }
 
+
                 getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
                 getActivity().findViewById(R.id.dock).setVisibility(View.VISIBLE);
+
                 getFragmentManager().popBackStack();
             }
         });
@@ -235,7 +263,6 @@ public class AddTaskFragment extends Fragment {
 
         return mView;
     }
-
 
 
     /**
@@ -253,10 +280,12 @@ public class AddTaskFragment extends Fragment {
         chip.setClickable(true);
         chip.setCheckable(false);
         chipGroup.addView(chip);
+        tags.add(tag);
         chip.setOnCloseIconClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 chipGroup.removeView(chip);
+                tags.remove(chip.getText().toString());
             }
         });
     }

@@ -1,16 +1,12 @@
 package com.heig.atmanager.calendar;
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ScrollView;
 
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.tasks.Task;
-import com.heig.atmanager.goals.GoalTodo;
 import com.heig.atmanager.R;
 import com.heig.atmanager.Utils;
 
@@ -75,8 +71,8 @@ public class CalendarFragment extends Fragment {
             }
         });
 
-        // Notification decorator for todos and goals
-        calendarView.addDecorator(new TasksAndGoalsCalendarDecorator(v.getContext(),
+        // Notification decorator for tasks and goals
+        calendarView.addDecorator(new TasksAndGoalsCalendarDecorator(
                 v.getResources().getColor(R.color.day_background_notification, null)));
 
         // Today's date decorator
@@ -92,8 +88,7 @@ public class CalendarFragment extends Fragment {
                 dateCalendar.set(Calendar.DAY_OF_MONTH, date.getDay());
                 dateCalendar.set(Calendar.MONTH, date.getMonth() - 1);
                 dateCalendar.set(Calendar.YEAR, date.getYear());
-                tasks = ((MainActivity) getContext()).getUser().getTasksForDay(dateCalendar.getTime());
-                Log.d(TAG, "onDateSelected: tasks total for " + date + " : " + tasks.size());
+                tasks = MainActivity.getUser().getTasksForDay(dateCalendar.getTime());
                 Utils.setupTasksFeed(getView(), tasksRecyclerView, tasks);
             }
         });

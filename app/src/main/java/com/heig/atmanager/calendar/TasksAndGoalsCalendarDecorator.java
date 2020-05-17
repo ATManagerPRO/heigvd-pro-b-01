@@ -1,6 +1,7 @@
 package com.heig.atmanager.calendar;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.heig.atmanager.MainActivity;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -19,23 +20,23 @@ import java.util.Date;
  */
 public class TasksAndGoalsCalendarDecorator implements DayViewDecorator {
 
-    private Context context;
+    private static final String TAG = "TasksAndGoalsCalendarDecorator";
+    
     private int color;
 
-    public TasksAndGoalsCalendarDecorator(Context context, int color) {
-        this.context = context;
+    public TasksAndGoalsCalendarDecorator(int color) {
         this.color = color;
     }
 
     @Override
     public boolean shouldDecorate(CalendarDay day) {
-        return ((MainActivity) context).getUser().getTotalTasksForDay(convertCalendarDayToDate(day)) != 0;
+        return MainActivity.getUser().getTotalTasksForDay(convertCalendarDayToDate(day)) != 0;
     }
 
     @Override
     public void decorate(DayViewFacade view) {
         // Daily notifications
-        view.addSpan(new CalendarDayNotification(context, color));
+        view.addSpan(new CalendarDayNotification(color));
     }
 
     private Date convertCalendarDayToDate(CalendarDay day) {

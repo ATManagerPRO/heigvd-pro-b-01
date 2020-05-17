@@ -12,7 +12,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.heig.atmanager.folders.Folder;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Author : Chau Ying Kot
@@ -34,7 +46,12 @@ public class AddFolderDiag extends DialogFragment {
         builder.setView(view).setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+
                 final EditText folderName = view.findViewById(R.id.newFolderName);
+                Folder newFolder = new Folder(folderName.getText().toString());
+
+               PostRequests.postFolder(newFolder,getContext());
+
                 ((MainActivity) AddFolderDiag.this.getActivity()).user.addFolder(new Folder(folderName.getText().toString()));
             }
         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
