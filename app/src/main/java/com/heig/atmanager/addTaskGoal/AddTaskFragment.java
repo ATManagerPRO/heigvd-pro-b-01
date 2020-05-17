@@ -1,31 +1,19 @@
 package com.heig.atmanager.addTaskGoal;
 
-import android.app.AlarmManager;
-import android.Manifest;
 import android.app.DatePickerDialog;
-import android.app.PendingIntent;
 import android.app.TimePickerDialog;
-import android.content.Context;
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -34,29 +22,21 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputLayout;
-import com.heig.atmanager.GoogleCalendarHandler;
 import com.heig.atmanager.MainActivity;
-import com.heig.atmanager.NotificationReceiver;
 import com.heig.atmanager.R;
 import com.heig.atmanager.Utils;
-import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.tasks.Task;
 import com.heig.atmanager.tasks.TaskFeedAdapter;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.concurrent.TimeUnit;
-
-import android.provider.CalendarContract.Events;
 
 
 public class AddTaskFragment extends Fragment {
@@ -230,11 +210,7 @@ public class AddTaskFragment extends Fragment {
                     selectedDate = null;
                 } else {
                     selectedDate = new GregorianCalendar(mYear, mMonth, mDay, mHour, mMinute).getTime();
-                    Intent notifyIntent = new Intent(getContext(), NotificationReceiver.class);
-                    notifyIntent.putExtra("title", title);
-                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(),  2, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                    AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
-                    alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, selectedDate.getTime()- TimeUnit.SECONDS.toMillis(30), pendingIntent);
+
                 }
                 Task newTask = new Task(title, description, selectedDate);
 
