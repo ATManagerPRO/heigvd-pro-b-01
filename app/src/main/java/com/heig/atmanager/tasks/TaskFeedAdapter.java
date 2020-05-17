@@ -1,6 +1,5 @@
 package com.heig.atmanager.tasks;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.heig.atmanager.HomeFragment;
 import com.heig.atmanager.MainActivity;
 import androidx.recyclerview.widget.RecyclerView;
 

@@ -1,7 +1,6 @@
 package com.heig.atmanager.userData;
 
 import android.content.Context;
-import android.nfc.Tag;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;

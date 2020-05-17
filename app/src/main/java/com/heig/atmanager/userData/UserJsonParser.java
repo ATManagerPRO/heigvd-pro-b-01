@@ -1,6 +1,5 @@
 package com.heig.atmanager.userData;
 
-import android.app.DownloadManager;
 import android.content.Context;
 import android.icu.text.SimpleDateFormat;
 import android.util.Log;

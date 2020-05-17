@@ -1,7 +1,5 @@
 package com.heig.atmanager.goals;
 
-import android.util.Log;
-
 import com.heig.atmanager.Interval;
 import com.heig.atmanager.Utils;
 

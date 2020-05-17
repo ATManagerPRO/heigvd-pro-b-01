@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.heig.atmanager.FolderSpinnerAdapter;
+import com.heig.atmanager.folders.FolderSpinnerAdapter;
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.userData.PostRequests;
 import com.heig.atmanager.R;
