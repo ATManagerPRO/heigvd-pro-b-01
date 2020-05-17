@@ -57,7 +57,7 @@ public class NotificationUtils extends ContextWrapper {
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, time, pendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, time, pendingIntent);
     }
 
     public NotificationManager getManager() {

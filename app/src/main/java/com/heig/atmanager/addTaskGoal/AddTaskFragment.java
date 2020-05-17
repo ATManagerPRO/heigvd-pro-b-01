@@ -141,7 +141,7 @@ public class AddTaskFragment extends Fragment {
                         dueDateTextView.setText(dueDateString);
                         mYear = year;
                         mMonth = month;
-                        mDay   = dayOfMonth;
+                        mDay = dayOfMonth;
                     }
                 }, mYear, mMonth, mDay);
                 // Show the picker
@@ -166,7 +166,7 @@ public class AddTaskFragment extends Fragment {
             }
         });
 
-        for(String s : MainActivity.getUser().getTags())
+        for (String s : MainActivity.getUser().getTags())
             Log.d(TAG, "onCreateView: Tag : " + s);
 
         // Tags
@@ -218,20 +218,21 @@ public class AddTaskFragment extends Fragment {
                 if (mYear == 0) {
                     selectedDate = null;
                 } else {
-                    selectedDate = new GregorianCalendar(mYear, mMonth, mDay, mHour, mMinute).getTime();
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.set(mYear, mMonth, mDay, mHour, mMinute);
+                    selectedDate = calendar.getTime();
                     Notification.Builder nb = mNotificationUtils.getChannelNotification(getString(R.string.app_name), title);
-                    mNotificationUtils.scheduleNotification(nb.build(), SystemClock.elapsedRealtime()+30000);
-
+                    mNotificationUtils.scheduleNotification(nb.build(),  calendar.getTimeInMillis());
                 }
                 Task newTask = new Task(title, description, selectedDate);
 
                 // Add the tags
-                for(String tag : tags) {
+                for (String tag : tags) {
                     newTask.addTag(tag);
                 }
 
                 // Add the task to a selected taskList
-                for(TaskList taskList : MainActivity.getUser().getTaskLists()) {
+                for (TaskList taskList : MainActivity.getUser().getTaskLists()) {
                     if (taskList.toString().equals(selectedDirectory)) {
                         // Assigning the tasklist and adding the task in the tasklist
                         // (which is already in the user)
@@ -240,7 +241,7 @@ public class AddTaskFragment extends Fragment {
                         //update homeview
                         tasks = MainActivity.getUser().getTasksForDay(Calendar.getInstance().getTime());
                         tasks.addAll(MainActivity.getUser().getTasksWithoutDate());
-                        ((TaskFeedAdapter)tasksRecyclerView.getAdapter()).setTasks(tasks);
+                        ((TaskFeedAdapter) tasksRecyclerView.getAdapter()).setTasks(tasks);
                     }
                 }
 
