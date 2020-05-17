@@ -31,8 +31,8 @@ public class Task {
         this(UNDEFINED_ID, title, description, false, false, null, null, null);
     }
 
-    public Task(String title, String description, Date dueDate) {
-        this(UNDEFINED_ID, title, description, false, false, dueDate, null, null);
+    public Task(String title, String description, Date dueDate, Date reminderDate) {
+        this(UNDEFINED_ID, title, description, false, false, dueDate, null, reminderDate);
     }
 
     public Task(String title, String description, boolean favorite) {
