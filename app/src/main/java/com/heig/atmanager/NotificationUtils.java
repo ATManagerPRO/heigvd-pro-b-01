@@ -1,21 +1,27 @@
 package com.heig.atmanager;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.SystemClock;
 
 public class NotificationUtils extends ContextWrapper {
 
     private NotificationManager mManager;
+    private Context mContext;
 
     public static final String CHANNEL_ID = BuildConfig.APPLICATION_ID;
     public static final String CHANNEL_NAME = "ATM CHANNEL";
 
     public NotificationUtils(Context base) {
         super(base);
+        mContext = base;
         createChannel();
     }
 
@@ -40,6 +46,18 @@ public class NotificationUtils extends ContextWrapper {
                 .setContentText(body)
                 .setSmallIcon(R.drawable.atm_logo)
                 .setAutoCancel(true);
+    }
+
+    public void scheduleNotification(Notification notification, long time) {
+        Intent notificationIntent = new Intent(mContext, NotificationPublisher.class);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, time, pendingIntent);
     }
 
     public NotificationManager getManager() {

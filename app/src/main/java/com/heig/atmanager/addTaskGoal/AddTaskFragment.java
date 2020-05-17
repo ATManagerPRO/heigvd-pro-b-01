@@ -10,6 +10,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -219,7 +220,8 @@ public class AddTaskFragment extends Fragment {
                 } else {
                     selectedDate = new GregorianCalendar(mYear, mMonth, mDay, mHour, mMinute).getTime();
                     Notification.Builder nb = mNotificationUtils.getChannelNotification(getString(R.string.app_name), title);
-                    mNotificationUtils.getManager().notify(10, nb.build());
+                    mNotificationUtils.scheduleNotification(nb.build(), SystemClock.elapsedRealtime()+30000);
+
                 }
                 Task newTask = new Task(title, description, selectedDate);
 

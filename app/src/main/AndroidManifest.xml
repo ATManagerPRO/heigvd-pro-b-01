@@ -28,6 +28,7 @@
             />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".SignInActivity"/>
+        <receiver android:name=".NotificationPublisher"/>
     </application>
 
 </manifest>
