@@ -1,5 +1,6 @@
 package com.heig.atmanager.userData;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.icu.text.CaseMap;
 import android.icu.text.SimpleDateFormat;
@@ -127,36 +128,38 @@ public class UserJsonParser {
         Log.d(TAG, "loadAllDataIntoUser: loading folders and tasklists...");
         loadFoldersAndTasklists(queue);
 
-        // Home Fragment view (today's activities)
-        Log.d(TAG, "loadAllDataIntoUser: loading today's activity...");
-        loadTodaysTasks(queue);
-        loadTodaysGoalsTodo(queue);
-
-        // Calendar view
-        Log.d(TAG, "loadAllDataIntoUser: loading all tasks...");
-        loadAllTasks(queue);
-
-        // Goals view
-        Log.d(TAG, "loadAllDataIntoUser: loading all goaltodos...");
-        loadAllGoalTodos(queue);
     }
 
     /**
      * Loads the folders and tasklists of the user
      */
-    private void loadFoldersAndTasklists(RequestQueue queue) {
+    private void loadFoldersAndTasklists(final RequestQueue queue) {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
                 URL_FOLDERS_AND_TASKLISTS, null, new Response.Listener<JSONObject>() {
+
             @Override
             public void onResponse(JSONObject response) {
                 try {
                     if(isRequestValid(response)) {
                         parseAndLoadTaskListsAndFolders(response.getJSONObject(RESPONSE_RESOURCE));
+
+                        // Home Fragment view (today's activities)
+                        Log.d(TAG, "loadAllDataIntoUser: loading today's activity...");
+                        loadTodaysTasks(queue);
+                        loadTodaysGoalsTodo(queue);
+
+                        // Calendar view
+                        Log.d(TAG, "loadAllDataIntoUser: loading all tasks...");
+                        loadAllTasks(queue);
+
+                        // Goals view
+                        Log.d(TAG, "loadAllDataIntoUser: loading all goaltodos...");
+                        loadAllGoalTodos(queue);
+
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
                 }
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -170,6 +173,12 @@ public class UserJsonParser {
                 headers.put("Authorization", "Bearer " + MainActivity.getUser().getBackEndToken());//put your token here
                 return headers;
             }
+
+            @Override
+            public Priority getPriority() {
+                return Priority.IMMEDIATE; //doesn't seem to do shit
+            }
+
         };
 
         queue.add(request);
@@ -186,6 +195,7 @@ public class UserJsonParser {
                 try {
                     if(isRequestValid(response)) {
                         parseAndLoadTasks(response.getJSONObject(RESPONSE_RESOURCE));
+
 
                         // Update home fragment
                         /*((HomeFragment) ((MainActivity) mainContext).getSupportFragmentManager()
@@ -402,14 +412,9 @@ public class UserJsonParser {
             Date reminderDate     = reminderDateStr.equals("null") ? null : sdf.parse(reminderDateStr);
 
             // Creating the task and adding it to the current user
-            Task task = new Task(id, title, description, done, favorite, dueDate, doneDate, reminderDate);
+            Task task = new Task(id, title, description , done, favorite, dueDate, doneDate, reminderDate);
+            task.setTasklist(user.getTaskList(taskListId));
             user.addTask(task);
-
-            if(user.hasTaskList(taskListId)) {
-                user.getTaskList(taskListId).addTask(task);
-            }/* else {
-                TaskList.defaultList.addTask(task);
-            }*/
         }
     }
 

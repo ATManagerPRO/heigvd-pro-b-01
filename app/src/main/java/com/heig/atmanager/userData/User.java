@@ -139,13 +139,11 @@ public class User {
 
     public ArrayList<Task> getTasksWithoutDate() {
         ArrayList<Task> tasksForDay = new ArrayList<>();
-
         for (Task task : tasks) {
             if (task.getDueDate() == null) {
                 tasksForDay.add(task);
             }
         }
-
         return tasksForDay;
     }
 
@@ -176,7 +174,25 @@ public class User {
                 return taskList;
         }
 
+        for(Folder folder : folders){
+            for(TaskList taskList : folder.getTaskLists()){
+                if(taskList.getId() == tasklist_id)
+                    return taskList;
+            }
+        }
+
         return null;
+    }
+
+    public ArrayList<TaskList> getAllTaskLists() {
+        ArrayList<TaskList> list = new ArrayList<TaskList>();
+        for(Folder folder:folders){
+            for(TaskList taskList : folder.getTaskLists()){
+                list.add(taskList);
+            }
+        }
+        list.addAll(taskLists);
+        return list;
     }
 
     public boolean hasGoal(long goal_id) {
@@ -310,5 +326,9 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    public void removeTask(Task task) {
+        tasks.remove(task);
     }
 }

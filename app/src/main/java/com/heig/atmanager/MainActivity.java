@@ -23,23 +23,12 @@ import android.widget.ExpandableListView;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.RecyclerView;
 
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -55,13 +44,8 @@ import com.heig.atmanager.tasks.TaskFeedAdapter;
 import com.heig.atmanager.userData.User;
 import com.heig.atmanager.userData.UserJsonParser;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
+
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -93,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     private UserJsonParser jsonParser;
     private RequestQueue queue;
 
-    public static GoogleCalendarHandler googleCalendarHandler;
+    //public static GoogleCalendarHandler googleCalendarHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         user.setUserId(i.getExtras().getLong("userId"));
 
         Log.d(TAG, "onCreate: user updated with : " + user.getUserId() + " / " + user.getBackEndToken());
-        googleCalendarHandler = new GoogleCalendarHandler(this);
+        //googleCalendarHandler = new GoogleCalendarHandler(this);
 
         fab = findViewById(R.id.fab);
         fabAddGoal = findViewById(R.id.fab_add_goal);
@@ -418,7 +402,7 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case GoogleCalendarHandler.CALENDAR_INIT:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    googleCalendarHandler = new GoogleCalendarHandler(this);
+                    //googleCalendarHandler = new GoogleCalendarHandler(this);
                 }
                 break;
         }
