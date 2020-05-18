@@ -426,8 +426,8 @@ public class MainActivity extends AppCompatActivity implements ShareTaskListDiag
 
         Log.d(TAG, "openDeepLink: isEditable " + isEditable);
 
-        // Show to the user infomation
-        InviteDialog inviteDialog = InviteDialog.newInsance(userName, taskListId, isEditable);
+        // Show to the user information
+        InviteDialog inviteDialog = InviteDialog.newInsance(userName, taskListId, isEditable, senderMail);
         inviteDialog.show(getSupportFragmentManager(), "invited");
         // add this task as mine
     }

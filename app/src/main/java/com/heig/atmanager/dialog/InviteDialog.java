@@ -9,19 +9,28 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.heig.atmanager.userData.PostRequests;
+
 /**
  * Author : Chau Ying Kot
  * Date   : 01.05.2020
  **/
 public class InviteDialog extends DialogFragment {
 
-    public static InviteDialog newInsance(String userName, int taskListId, boolean isEditable){
+    public final static String TASKLIST_ID_KEY = "taskListId";
+    public final static String USERNAME_KEY ="username";
+    public final static String IS_EDITABLE_KEY  = "isEditable";
+
+    public final static String SENDER_EMAIL_KEY = "senderEmail";
+
+    public static InviteDialog newInsance(String userName, int taskListId, boolean isEditable, String email){
         InviteDialog inviteDialog = new InviteDialog();
 
         Bundle args = new Bundle();
-        args.putString("userName", userName);
-        args.putInt("taskListId", taskListId);
-        args.putBoolean("isEditable", isEditable);
+        args.putString(USERNAME_KEY, userName);
+        args.putInt(TASKLIST_ID_KEY, taskListId);
+        args.putBoolean(IS_EDITABLE_KEY, isEditable);
+        args.putString(SENDER_EMAIL_KEY, email);
 
         inviteDialog.setArguments(args);
 
@@ -31,7 +40,7 @@ public class InviteDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        String userName = getArguments().getString("userName");
+        String userName = getArguments().getString(USERNAME_KEY);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
@@ -42,6 +51,7 @@ public class InviteDialog extends DialogFragment {
                 // Todo add task
                 //TaskList sharedList = fetch list with taskList id
                 //((MainActivity)getActivity()).user.addASharedList(sharedList);
+                PostRequests.postShared(getArguments().getInt(TASKLIST_ID_KEY), getArguments().getString(SENDER_EMAIL_KEY), getContext());
             }
         })
         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

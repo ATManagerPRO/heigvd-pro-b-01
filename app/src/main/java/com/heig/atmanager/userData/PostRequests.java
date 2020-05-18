@@ -1,5 +1,6 @@
 package com.heig.atmanager.userData;
 
+import android.app.DownloadManager;
 import android.content.Context;
 
 import com.android.volley.AuthFailureError;
@@ -187,6 +188,38 @@ public class PostRequests {
             JSONObject jsonBody = new JSONObject();
 
             jsonBody.put("label", newTag);
+
+            JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                }
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    final Map<String, String> headers = new HashMap<>();
+                    headers.put("Authorization", "Bearer " + MainActivity.getUser().getBackEndToken());//put your token here
+                    return headers;
+                }
+            };
+            Volley.newRequestQueue(context).add(jsonObject);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static public void postShared(int todoListId, String invitedEmail, Context context){
+        try{
+            String URL = "https://atmanager.gollgot.app/api/v1/todolists/" + todoListId + "/share";
+
+            JSONObject jsonBody = new JSONObject();
+
+            jsonBody.put("invitedEmail ", invitedEmail);
 
             JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
                 @Override

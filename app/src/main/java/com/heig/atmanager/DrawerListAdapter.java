@@ -106,13 +106,11 @@ public class DrawerListAdapter extends BaseExpandableListAdapter {
         Button shareBtn = view.findViewById(R.id.share);
 
 
-
         // Set false to separate the click on the button and the list
         shareBtn.setFocusable(false);
         shareBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO Replace with the real id
 
                 // callback to MainActivity to handle the dialog
                 ((MainActivity) context).showShareTaskDialog(taskList.getId());
