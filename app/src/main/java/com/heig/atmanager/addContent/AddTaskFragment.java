@@ -26,6 +26,7 @@ import android.widget.TimePicker;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputLayout;
+import com.heig.atmanager.LocalCalendarHandler;
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.userData.PostRequests;
 import com.heig.atmanager.R;
@@ -81,6 +82,7 @@ public class AddTaskFragment extends Fragment {
     private TextView reminderTimeTextView;
 
     private TextInputLayout titleLayout;
+    private static Button validationButton;
 
     private ArrayList<String> tags;
 
@@ -129,13 +131,13 @@ public class AddTaskFragment extends Fragment {
 
         titleLayout = mView.findViewById(R.id.frag_add_task_title_layout);
 
-        final Button validationButton = mView.findViewById(R.id.frag_validation_button);
+        validationButton = mView.findViewById(R.id.frag_validation_button);
 
         // date setup here
         setupDatePicker(dueDateTextView, dueTimeTextView, dueDateValues);
         setupDatePicker(reminderDateTextView, reminderTimeTextView, reminderDateValues);
 
-        if(MainActivity.getUser().getTags() != null) {
+        if (MainActivity.getUser().getTags() != null) {
             for (String s : MainActivity.getUser().getTags())
                 Log.d(TAG, "onCreateView: Tag : " + s);
         }
@@ -188,12 +190,19 @@ public class AddTaskFragment extends Fragment {
                         getSelectedDate(reminderDateValues));
 
                 // Add the tags
-                for(String tag : tags) {
+                for (String tag : tags) {
                     newTask.addTag(tag);
                 }
 
+                if(dueDateValues[YEAR] != 0){
+                    LocalCalendarHandler.getInstance().setTask(newTask);
+
+                    LocalCalendarHandler.getInstance().addTask(getActivity());
+                }
+
+
                 // Add the task to a selected taskList
-                for(TaskList taskList : MainActivity.getUser().getTaskLists()) {
+                for (TaskList taskList : MainActivity.getUser().getTaskLists()) {
                     if (taskList.toString().equals(selectedDirectory)) {
                         // Assigning the tasklist and adding the task in the tasklist
                         // (which is already in the user)
@@ -203,10 +212,9 @@ public class AddTaskFragment extends Fragment {
                         //update homeview
                         tasks = MainActivity.getUser().getTasksForDay(Calendar.getInstance().getTime());
                         tasks.addAll(MainActivity.getUser().getTasksWithoutDate());
-                        ((TaskFeedAdapter)tasksRecyclerView.getAdapter()).setTasks(tasks);
+                        ((TaskFeedAdapter) tasksRecyclerView.getAdapter()).setTasks(tasks);
                     }
                 }
-
 
                 getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
                 getActivity().findViewById(R.id.dock).setVisibility(View.VISIBLE);
@@ -217,6 +225,14 @@ public class AddTaskFragment extends Fragment {
 
 
         return mView;
+    }
+
+    public static void addTaskPressed() {
+        validationButton.performClick();
+    }
+
+    private void addInCalendar() {
+
     }
 
 

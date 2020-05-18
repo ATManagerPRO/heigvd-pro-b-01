@@ -3,11 +3,15 @@ package com.heig.atmanager;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.DialogFragment;
@@ -20,8 +24,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.RecyclerView;
+
 
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -80,7 +86,11 @@ public class MainActivity extends AppCompatActivity {
     private UserJsonParser jsonParser;
     private RequestQueue queue;
 
-    //public static GoogleCalendarHandler googleCalendarHandler;
+
+    public static String[] PERMISSIONS = {
+            Manifest.permission.READ_CALENDAR,
+            Manifest.permission.WRITE_CALENDAR
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
         user.setUserId(i.getExtras().getLong("userId"));
 
         Log.d(TAG, "onCreate: user updated with : " + user.getUserId() + " / " + user.getBackEndToken());
-        //googleCalendarHandler = new GoogleCalendarHandler(this);
 
         fab = findViewById(R.id.fab);
         fabAddGoal = findViewById(R.id.fab_add_goal);
@@ -141,23 +150,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment selectedFragment = null;
-                String selectedTag        = "";
+                String selectedTag = "";
                 switch (item.getItemId()) {
                     case R.id.home:
                         selectedFragment = new HomeFragment();
-                        selectedTag      = HomeFragment.FRAG_HOME_ID;
+                        selectedTag = HomeFragment.FRAG_HOME_ID;
                         break;
                     case R.id.calendar:
                         selectedFragment = new CalendarFragment();
-                        selectedTag      = CalendarFragment.FRAG_CALENDAR_ID;
+                        selectedTag = CalendarFragment.FRAG_CALENDAR_ID;
                         break;
                     case R.id.goals:
                         selectedFragment = new GoalsFragment();
-                        selectedTag      = GoalsFragment.FRAG_GOALS_ID;
+                        selectedTag = GoalsFragment.FRAG_GOALS_ID;
                         break;
                     case R.id.stats:
                         selectedFragment = new StatsFragment();
-                        selectedTag      = StatsFragment.FRAG_STATS_ID;
+                        selectedTag = StatsFragment.FRAG_STATS_ID;
                         break;
                     default:
                         return false;
@@ -237,7 +246,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public boolean onQueryTextChange(String s) {
-                            if(contentAdapter != null)
+                            if (contentAdapter != null)
                                 ((TaskFeedAdapter) contentAdapter).getFilter().filter(s);
                             return false;
                         }
@@ -272,8 +281,8 @@ public class MainActivity extends AppCompatActivity {
     public void updateDrawerItems() {
         final ArrayList<TaskList> standaloneTaskLists = new ArrayList<>();
 
-        for(TaskList taskList : user.getTaskLists())
-            if(!taskList.isFolder())
+        for (TaskList taskList : user.getTaskLists())
+            if (!taskList.isFolder())
                 standaloneTaskLists.add(taskList);
 
         drawerAdapter = new DrawerListAdapter(this, standaloneTaskLists, user.getFolders());
@@ -364,17 +373,15 @@ public class MainActivity extends AppCompatActivity {
         previousFragment = "";
     }
 
-    public void displayFragment(String fragmentToDisplay)
-    {
+    public void displayFragment(String fragmentToDisplay) {
         Log.d(TAG, "displayPreviousFragment: displaying new fragment " + fragmentToDisplay);
         //creating fragment object
         Fragment fragment = null;
         String tag = "";
 
         //initializing the fragment object which is selected
-        switch (fragmentToDisplay)
-        {
-            case HomeFragment.FRAG_HOME_ID :
+        switch (fragmentToDisplay) {
+            case HomeFragment.FRAG_HOME_ID:
                 fragment = new HomeFragment();
                 break;
             case GoalsFragment.FRAG_GOALS_ID:
@@ -400,14 +407,41 @@ public class MainActivity extends AppCompatActivity {
 
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
-            case GoogleCalendarHandler.CALENDAR_INIT:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    //googleCalendarHandler = new GoogleCalendarHandler(this);
+            case LocalCalendarHandler.MY_CAL_CREATE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    LocalCalendarHandler.getInstance().createCalendar(this);
+                }
+                break;
+            case LocalCalendarHandler.MY_CAL_CHECK:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    LocalCalendarHandler.getInstance().checkIfCalendarExist(this);
+                }
+                break;
+            case LocalCalendarHandler.MY_CAL_ADD_TASK:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    LocalCalendarHandler.getInstance().addTask(this);
+                } else {
+                    // Explain why we need to have Calendar access
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_CALENDAR)) {
+                        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                        alertDialog.setTitle("Calendar permission");
+                        alertDialog.setMessage("We need to have access at your Calendar if you want to see it in the native calendar");
+                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                requestPermissions(permissions, requestCode);
+                            }
+                        });
+                        alertDialog.show();
+                    }
                 }
                 break;
         }
     }
+
 }
+
