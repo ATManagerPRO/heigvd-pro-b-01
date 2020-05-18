@@ -25,6 +25,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity">
+        </activity>
+        <activity android:name=".SignInActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -39,8 +41,6 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".SignInActivity" />
     </application>
 
 </manifest>

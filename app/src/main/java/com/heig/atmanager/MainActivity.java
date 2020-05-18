@@ -53,9 +53,7 @@ import com.heig.atmanager.addContent.AddTagsDiag;
 import com.heig.atmanager.addContent.AddTaskFragment;
 import com.heig.atmanager.addContent.AddTasklistDiag;
 import com.heig.atmanager.calendar.CalendarFragment;
-import com.heig.atmanager.dialog.AddFolderDiag;
-import com.heig.atmanager.dialog.AddTagsDiag;
-import com.heig.atmanager.dialog.AddTasklistDiag;
+import com.heig.atmanager.dialog.InviteDialog;
 import com.heig.atmanager.dialog.ShareTaskListDiag;
 import com.heig.atmanager.goals.GoalsFragment;
 import com.heig.atmanager.goals.GoalsTodoFragment;
@@ -126,15 +124,10 @@ public class MainActivity extends AppCompatActivity implements ShareTaskListDiag
         user.setBackEndToken(i.getExtras().getString("userToken"));
         user.setUserId(i.getExtras().getLong("userId"));
 
-        // Handle incoming data
-        Intent intent = getIntent();
-        String action = intent.getAction();
-        Uri data = intent.getData();
-        if (action != null && action.equals(Intent.ACTION_VIEW)) {
-            openDeepLink(data);
+        // if the user is invited, show invitation info
+        if(i.getExtras().containsKey("invitation")){
+            openDeepLink(Uri.parse(i.getExtras().getString("invitation")));
         }
-        Log.d(TAG, "onCreate: user updated with : " + user.getUserId() + " / " + user.getBackEndToken());
-
         fab = findViewById(R.id.fab);
         fabAddGoal = findViewById(R.id.fab_add_goal);
         fabAddTask = findViewById(R.id.fab_add_task);

@@ -1,4 +1,4 @@
-package com.heig.atmanager;
+package com.heig.atmanager.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
