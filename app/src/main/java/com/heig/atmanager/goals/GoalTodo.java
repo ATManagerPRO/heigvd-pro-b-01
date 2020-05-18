@@ -3,7 +3,6 @@ package com.heig.atmanager.goals;
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.Utils;
 
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;

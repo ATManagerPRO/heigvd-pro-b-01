@@ -1,4 +1,4 @@
-package com.heig.atmanager.addTaskGoal;
+package com.heig.atmanager.addContent;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -18,14 +18,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.heig.atmanager.Utils;
+import com.heig.atmanager.userData.PostRequests;
 import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.Interval;
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
-import com.heig.atmanager.goals.GoalLineFeedAdapter;
-import com.heig.atmanager.goals.GoalTodo;
-import com.heig.atmanager.goals.GoalTodoFeedAdapter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -199,7 +196,9 @@ public class AddGoalFragment extends Fragment {
 
 
                 interval = Interval.valueOf(intervalSpinner.getSelectedItem().toString());
-                ((MainActivity) getActivity()).getUser().addGoal(new Goal(-1, unit, quantity, intervalNumber, interval, selectedDate, Calendar.getInstance().getTime()));
+                Goal newGoal = new Goal(-1, unit, quantity, intervalNumber, interval, selectedDate, Calendar.getInstance().getTime());
+                PostRequests.postGoal(newGoal,getContext());
+                ((MainActivity) getActivity()).getUser().addGoal(newGoal);
 
                 goals = ((MainActivity) getContext()).getUser().getGoals();
                 

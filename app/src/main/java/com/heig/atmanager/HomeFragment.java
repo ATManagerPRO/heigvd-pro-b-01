@@ -13,13 +13,10 @@ import com.heig.atmanager.tasks.Task;
 import com.heig.atmanager.tasks.TaskFeedAdapter;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -63,7 +60,6 @@ public class HomeFragment extends Fragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Log.d(TAG, "onRefresh: ");
                 updateHomeFragment();
             }
         });
@@ -152,14 +148,12 @@ public class HomeFragment extends Fragment {
     public void updateHomeFragment() {
         feedProgress.setVisibility(View.GONE);
         tasks = MainActivity.getUser().getTasksForDay(Calendar.getInstance().getTime());
+        tasks.addAll(MainActivity.getUser().getTasksWithoutDate());
         goals = MainActivity.getUser().getGoalTodosOfDay(Calendar.getInstance().getTime());
-
-        Log.d(TAG, "updateHomeFragment: " + tasks.size());
 
         TaskFeedAdapter newAdapter = new TaskFeedAdapter(tasks);
         tasksRecyclerView.swapAdapter(newAdapter, false);
 
-        //Utils.setupTasksFeed(view, tasksRecyclerView, tasks);
         Utils.setupGoalTodosFeedBubbled(view, goalsRecyclerView, goals);
         greetingText.setText(getGreetings());
         refreshLayout.setRefreshing(false);

@@ -15,16 +15,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.anychart.scales.Linear;
 import com.heig.atmanager.HomeFragment;
 import com.heig.atmanager.MainActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.heig.atmanager.R;
 import com.heig.atmanager.Utils;
 import com.heig.atmanager.taskLists.TaskList;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-
-import androidx.recyclerview.widget.RecyclerView;
+import java.util.Date;
 
 /**
  * Author : Stéphane Bottin
@@ -56,6 +58,7 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         private LinearLayout expandedView;
         private ImageView favoriteIcon;
         private ToggleButton checkButton;
+        private LinearLayout timeContainer;
 
         public MyViewHolder(View v) {
             super(v);
@@ -71,6 +74,7 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
             favoriteIcon     = v.findViewById(R.id.favorite_icon);
             checkButton      = v.findViewById(R.id.check_button);
             removeBtn        = v.findViewById(R.id.remove_button);
+            timeContainer    = v.findViewById(R.id.time_container);
         }
     }
 
@@ -78,6 +82,7 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
     public TaskFeedAdapter(ArrayList<Task> tasks) {
         this.tasks = tasks;
         this.tasksFull = new ArrayList<>(tasks);
+        orderTasks();
     }
 
     // Create new views (invoked by the layout manager)
@@ -105,19 +110,27 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         } else {
             holder.taskListText.setText(TaskList.defaultList.getName());
         }
-        // Time
-        String hours    = "";
-        String minutes  = "";
-        String meridiem = "";
+
+        ViewGroup.LayoutParams params = holder.timeContainer.getLayoutParams();
         if(tasks.get(position).getDueDate() != null) {
+            // Time
+            String hours, minutes, meridiem;
             Calendar dueDateCalendar = Calendar.getInstance();
             dueDateCalendar.setTime(tasks.get(position).getDueDate());
             hours    = Utils.formatNumber(dueDateCalendar.get(Calendar.HOUR_OF_DAY) % 12) + ":";
             minutes  = Utils.formatNumber(dueDateCalendar.get(Calendar.MINUTE));
             meridiem = dueDateCalendar.get(Calendar.HOUR_OF_DAY) < 12 ? "AM" : "PM";
+            holder.timeHourText.setVisibility(View.VISIBLE);
+            holder.timeMeridiemText.setVisibility(View.VISIBLE);
+            holder.timeHourText.setText(hours + minutes);
+            holder.timeMeridiemText.setText(meridiem);
+            params.width = 200;
+        } else {
+            holder.timeHourText.setVisibility(View.GONE);
+            holder.timeMeridiemText.setVisibility(View.GONE);
+            params.width = 40;
         }
-        holder.timeHourText.setText(hours + minutes);
-        holder.timeMeridiemText.setText(meridiem);
+        holder.timeContainer.setLayoutParams(params);
 
         // Tags
         String tagsString = "";
@@ -151,7 +164,13 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         holder.checkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tasks.get(position).setDone(holder.checkButton.isChecked());
+                if(holder.checkButton.isChecked()) {
+                    tasks.get(position).setDoneDate(new Date());
+                    tasks.get(position).setDone(true);
+                } else {
+                    tasks.get(position).setDoneDate(null);
+                    tasks.get(position).setDone(false);
+                }
             }
         });
 
@@ -218,4 +237,20 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
             notifyDataSetChanged();
         }
     };
+
+    private void orderTasks() {
+        ArrayList<Task> favorites = new ArrayList<>();
+        ArrayList<Task> others    = new ArrayList<>();
+
+        for(Task task : tasksFull) {
+            if(task.isFavorite()) {
+                favorites.add(task);
+            } else {
+                others.add(task);
+            }
+        }
+
+        tasksFull = favorites;
+        tasksFull.addAll(others);
+    }
 }

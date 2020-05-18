@@ -1,10 +1,10 @@
 package com.heig.atmanager;
 
 /**
- * Author : Stephane
+ * Author : Stéphane Bottin
  * Date   : 12.04.2020
- * <p>
- * This class better be good.
+ *
+ * Abstract object that can be displayed in the drawer menu
  */
 public abstract class DrawerObject {
     String name;

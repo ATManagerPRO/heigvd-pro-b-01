@@ -51,6 +51,7 @@
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="due_date_title">Due date</string>
+    <string name="reminder_date_title">Reminder date</string>
     <string name="due_date">DD.MM.YYYY</string>
     <string name="due_time">HH.MM</string>
     <string name="tags">Tags</string>
