@@ -50,10 +50,10 @@ public class AddTaskFragment extends Fragment {
     private static final String TAG = "AddTaskFragment";
 
     private static final int MINUTE = 0;
-    private static final int HOUR   = 1;
-    private static final int DAY    = 2;
-    private static final int MONTH  = 3;
-    private static final int YEAR   = 4;
+    private static final int HOUR = 1;
+    private static final int DAY = 2;
+    private static final int MONTH = 3;
+    private static final int YEAR = 4;
 
     private String title;
     private String description;
@@ -78,7 +78,7 @@ public class AddTaskFragment extends Fragment {
     private TextView reminderTextView;
 
     private TextInputLayout titleLayout;
-    private  Button validationButton;
+    private Button validationButton;
 
     private ArrayList<String> tags;
 
@@ -125,10 +125,10 @@ public class AddTaskFragment extends Fragment {
 
         dueDateTextView = mView.findViewById(R.id.frag_add_task_due_date);
         dueTimeTextView = mView.findViewById(R.id.frag_add_task_due_time);
-        dueDateValues   = new int[5];
+        dueDateValues = new int[5];
 
         reminderTextView = mView.findViewById(R.id.frag_add_task_notification);
-        reminderDateValues   = new int[5];
+        reminderDateValues = new int[5];
 
         titleLayout = mView.findViewById(R.id.frag_add_task_title_layout);
 
@@ -236,7 +236,7 @@ public class AddTaskFragment extends Fragment {
 
                 Task newTask = new Task(title, description);
 
-                if(dueDateValues[YEAR] != 0){
+                if (dueDateValues[YEAR] != 0) {
                     newTask.setDueDate(getSelectedDate(dueDateValues));
                     LocalCalendarHandler.getInstance().setTask(newTask);
                     LocalCalendarHandler.getInstance().addTask(getActivity());
@@ -262,8 +262,8 @@ public class AddTaskFragment extends Fragment {
                         // Assigning the tasklist and adding the task in the tasklist
                         // (which is already in the user)
                         newTask.setTasklist(taskList);
-                        PostRequests.postTask(newTask,getContext());
-                        ((MainActivity) getContext()).getUser().addTask(newTask);
+                        PostRequests.postTask(newTask, getContext());
+                        MainActivity.getUser().addTask(newTask);
                         //update homeview
                         tasks = MainActivity.getUser().getTasksForDay(Calendar.getInstance().getTime());
                         tasks.addAll(MainActivity.getUser().getTasksWithoutDate());
@@ -314,9 +314,9 @@ public class AddTaskFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                values[DAY]   = calendar.get(Calendar.DAY_OF_MONTH);
+                values[DAY] = calendar.get(Calendar.DAY_OF_MONTH);
                 values[MONTH] = calendar.get(Calendar.MONTH);
-                values[YEAR]  = calendar.get(Calendar.YEAR);
+                values[YEAR] = calendar.get(Calendar.YEAR);
 
                 Log.d(TAG, "onClick: " + values[DAY]);
                 Log.d(TAG, "onClick: " + values[MONTH]);
@@ -330,9 +330,9 @@ public class AddTaskFragment extends Fragment {
                                 Utils.formatNumber(month + 1) + "." +
                                 Utils.formatNumber(year);
                         date.setText(dueDateString);
-                        dueDateValues[DAY]   = dayOfMonth;
+                        dueDateValues[DAY] = dayOfMonth;
                         dueDateValues[MONTH] = month;
-                        dueDateValues[YEAR]  = year;
+                        dueDateValues[YEAR] = year;
                     }
                 }, values[YEAR], values[MONTH], values[DAY]);
 
@@ -345,7 +345,7 @@ public class AddTaskFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 values[MINUTE] = calendar.get(Calendar.MINUTE);
-                values[HOUR]   = calendar.get(Calendar.HOUR_OF_DAY);
+                values[HOUR] = calendar.get(Calendar.HOUR_OF_DAY);
 
                 TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
