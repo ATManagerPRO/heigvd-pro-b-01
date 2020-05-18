@@ -114,4 +114,8 @@ public class Task {
     public Date getDoneDate() {
         return doneDate;
     }
+
+    public long getId() {
+        return id;
+    }
 }
