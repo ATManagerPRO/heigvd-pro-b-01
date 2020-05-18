@@ -6,6 +6,7 @@ import com.heig.atmanager.tasks.Task;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  *  Author : Teo Ferrari
@@ -65,5 +66,18 @@ public class TaskList extends DrawerObject implements Serializable {
 
     public long getFolder_id() {
         return folder_id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TaskList taskList = (TaskList) o;
+        return id == taskList.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
