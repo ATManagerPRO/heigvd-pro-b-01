@@ -1,6 +1,5 @@
 package com.heig.atmanager.tasks;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -121,7 +120,7 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
             holder.timeMeridiemText.setVisibility(View.VISIBLE);
             holder.timeHourText.setText(hours + minutes);
             holder.timeMeridiemText.setText(meridiem);
-            params.width = 80;
+            params.width = 200;
         } else {
             holder.timeHourText.setVisibility(View.GONE);
             holder.timeMeridiemText.setVisibility(View.GONE);

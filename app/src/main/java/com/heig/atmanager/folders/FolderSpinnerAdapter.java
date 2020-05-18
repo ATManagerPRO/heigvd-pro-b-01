@@ -1,4 +1,4 @@
-package com.heig.atmanager;
+package com.heig.atmanager.folders;
 
 import android.widget.ArrayAdapter;
 
@@ -11,9 +11,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-
-import com.heig.atmanager.folders.Folder;
 
 import java.util.List;
 
