@@ -9,7 +9,6 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -28,6 +27,7 @@ import android.widget.TimePicker;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputLayout;
+import com.heig.atmanager.LocalCalendarHandler;
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.NotificationUtils;
 import com.heig.atmanager.PostRequests;
@@ -40,6 +40,7 @@ import com.heig.atmanager.tasks.TaskFeedAdapter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 
 public class AddTaskFragment extends Fragment {
@@ -49,27 +50,19 @@ public class AddTaskFragment extends Fragment {
     private static final String TAG = "AddTaskFragment";
 
     private static final int MINUTE = 0;
-    private static final int HOUR   = 1;
-    private static final int DAY    = 2;
-    private static final int MONTH  = 3;
-    private static final int YEAR   = 4;
+    private static final int HOUR = 1;
+    private static final int DAY = 2;
+    private static final int MONTH = 3;
+    private static final int YEAR = 4;
 
     private String title;
     private String description;
     private DatePickerDialog dueDatePicker;
     private DatePickerDialog notificationPicker;
     private final Calendar calendar = Calendar.getInstance();
-    private int mDayDueDate;
-    private int mMonthDueDate;
-    private int mYearDueDate;
-    private int mHourDueDate;
-    private int mMinuteDueDate;
 
-    private int mDayNotif;
-    private int mMonthNotif;
-    private int mYearNotif;
-    private int mHourNotif;
-    private int mMinuteNotif;
+    private int[] dueDateValues;
+    private int[] reminderDateValues;
 
     private ArrayList<Task> tasks;
     private RecyclerView tasksRecyclerView;
@@ -86,6 +79,7 @@ public class AddTaskFragment extends Fragment {
 
 
     private TextInputLayout titleLayout;
+    private Button validationButton;
 
     private ArrayList<String> tags;
 
@@ -130,57 +124,18 @@ public class AddTaskFragment extends Fragment {
 
         dueDateTextView = mView.findViewById(R.id.frag_add_task_due_date);
         dueTimeTextView = mView.findViewById(R.id.frag_add_task_due_time);
+        dueDateValues = new int[5];
 
         notificationTextView = mView.findViewById(R.id.frag_add_task_notification);
+        reminderDateValues = new int[5];
 
         titleLayout = mView.findViewById(R.id.frag_add_task_title_layout);
 
-        final Button validationButton = mView.findViewById(R.id.frag_validation_button);
+        validationButton = mView.findViewById(R.id.frag_validation_button);
 
 
-        // Picker for date and time
-        dueDateTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                mDayDueDate = calendar.get(Calendar.DAY_OF_MONTH);
-                mMonthDueDate = calendar.get(Calendar.MONTH);
-                mYearDueDate = calendar.get(Calendar.YEAR);
-
-                // Bind the picker value to ours variable
-                dueDatePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        String dueDateString = Utils.formatNumber(dayOfMonth) + "." +
-                                Utils.formatNumber(month + 1) + "." +
-                                Utils.formatNumber(year);
-                        dueDateTextView.setText(dueDateString);
-                        mYearDueDate = year;
-                        mMonthDueDate = month;
-                        mDayDueDate = dayOfMonth;
-                    }
-                }, mYearDueDate, mMonthDueDate, mDayDueDate);
-                // Show the picker
-                dueDatePicker.show();
-            }
-        });
-
-        dueTimeTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mHourDueDate = calendar.get(Calendar.HOUR_OF_DAY);
-                mMinuteDueDate = calendar.get(Calendar.MINUTE);
-
-                TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        dueTimeTextView.setText(
-                                Utils.formatNumber(hourOfDay) + ":" + Utils.formatNumber(minute));
-                    }
-                }, mHourDueDate, mMinuteDueDate, true);
-                timePickerDialog.show();
-            }
-        });
+        // date setup here
+        setupDatePicker(dueDateTextView, dueTimeTextView, dueDateValues);
 
         // Picker for notification
         notificationTextView.setOnClickListener(new View.OnClickListener() {
@@ -188,11 +143,12 @@ public class AddTaskFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                mDayNotif = calendar.get(Calendar.DAY_OF_MONTH);
-                mMonthNotif = calendar.get(Calendar.MONTH);
-                mYearNotif = calendar.get(Calendar.YEAR);
-                mHourNotif = calendar.get(Calendar.HOUR_OF_DAY);
-                mMinuteNotif = calendar.get(Calendar.MINUTE);
+                reminderDateValues[DAY] = calendar.get(Calendar.DAY_OF_MONTH);
+                reminderDateValues[MONTH] = calendar.get(Calendar.MONTH);
+                reminderDateValues[YEAR] = calendar.get(Calendar.YEAR);
+
+                reminderDateValues[HOUR] = calendar.get(Calendar.HOUR_OF_DAY);
+                reminderDateValues[MINUTE] = calendar.get(Calendar.MINUTE);
 
 
                 DatePickerDialog notificationPicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
@@ -206,21 +162,21 @@ public class AddTaskFragment extends Fragment {
                         TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                mHourNotif = hourOfDay;
-                                mMinuteNotif = minute;
-                                notificationTextView.setText(notifTime + " "  +Utils.formatNumber(hourOfDay) + ":" + Utils.formatNumber(minute));
+                                reminderDateValues[HOUR] = hourOfDay;
+                                reminderDateValues[MINUTE] = minute;
+                                notificationTextView.setText(notifTime + " " + Utils.formatNumber(hourOfDay) + ":" + Utils.formatNumber(minute));
 
                             }
-                        }, mHourNotif, mMinuteNotif, true);
+                        }, reminderDateValues[HOUR], reminderDateValues[MINUTE], true);
                         timePickerDialog.show();
 
 
-                        mYearNotif = year;
-                        mMonthNotif = month;
-                        mDayNotif = dayOfMonth;
+                        reminderDateValues[YEAR] = year;
+                        reminderDateValues[MONTH] = month;
+                        reminderDateValues[DAY] = dayOfMonth;
 
                     }
-                }, mYearNotif, mMonthNotif, mDayNotif);
+                }, reminderDateValues[YEAR], reminderDateValues[MONTH], reminderDateValues[DAY]);
 
                 // Show the picker
                 notificationPicker.show();
@@ -234,7 +190,7 @@ public class AddTaskFragment extends Fragment {
 
         // date setup here
 
-        if(MainActivity.getUser().getTags() != null) {
+        if (MainActivity.getUser().getTags() != null) {
             for (String s : MainActivity.getUser().getTags())
                 Log.d(TAG, "onCreateView: Tag : " + s);
         }
@@ -284,15 +240,11 @@ public class AddTaskFragment extends Fragment {
                 }
 
                 Task newTask = new Task(title, description);
-                if (mYearDueDate != 0) {
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.set(mYearDueDate, mMonthDueDate, mDayDueDate, mHourDueDate, mMinuteDueDate);
-                    newTask.setDueDate(calendar.getTime());
-                }
 
-                if (mYearNotif != 0) {
+
+                if (reminderDateValues[YEAR] != 0) {
                     Calendar calendar = Calendar.getInstance();
-                    calendar.set(mYearNotif, mMonthNotif, mDayNotif, mHourNotif, mMinuteNotif);
+                    calendar.set(reminderDateValues[YEAR], reminderDateValues[MONTH], reminderDateValues[DAY], reminderDateValues[HOUR], reminderDateValues[MINUTE]);
                     Notification.Builder nb = mNotificationUtils.getChannelNotification(getString(R.string.app_name), title);
                     mNotificationUtils.scheduleNotification(nb.build(), calendar.getTimeInMillis());
                     newTask.setReminderDate(calendar.getTime());
@@ -303,26 +255,31 @@ public class AddTaskFragment extends Fragment {
                     newTask.addTag(tag);
                 }
 
+                if (dueDateValues[YEAR] != 0) {
+                    LocalCalendarHandler.getInstance().setTask(newTask);
+
+                    LocalCalendarHandler.getInstance().addTask(getActivity());
+                }
+
+
                 // Add the task to a selected taskList
                 for (TaskList taskList : MainActivity.getUser().getTaskLists()) {
                     if (taskList.toString().equals(selectedDirectory)) {
                         // Assigning the tasklist and adding the task in the tasklist
                         // (which is already in the user)
                         newTask.setTasklist(taskList);
-                        PostRequests.postTask(newTask,getContext());
-                        ((MainActivity) getContext()).getUser().addTask(newTask);
+                        taskList.addTask(newTask);
                         //update homeview
                         tasks = MainActivity.getUser().getTasksForDay(Calendar.getInstance().getTime());
                         tasks.addAll(MainActivity.getUser().getTasksWithoutDate());
                         ((TaskFeedAdapter) tasksRecyclerView.getAdapter()).setTasks(tasks);
                     }
+
+                    getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
+                    getActivity().findViewById(R.id.dock).setVisibility(View.VISIBLE);
+
+                    getFragmentManager().popBackStack();
                 }
-
-
-                getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
-                getActivity().findViewById(R.id.dock).setVisibility(View.VISIBLE);
-
-                getFragmentManager().popBackStack();
             }
         });
 
@@ -354,6 +311,71 @@ public class AddTaskFragment extends Fragment {
                 tags.remove(chip.getText().toString());
             }
         });
+    }
+
+    private void setupDatePicker(final TextView date, final TextView time, final int[] values) {
+        // Picker for date and time
+        date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                values[DAY] = calendar.get(Calendar.DAY_OF_MONTH);
+                values[MONTH] = calendar.get(Calendar.MONTH);
+                values[YEAR] = calendar.get(Calendar.YEAR);
+
+                Log.d(TAG, "onClick: " + values[DAY]);
+                Log.d(TAG, "onClick: " + values[MONTH]);
+                Log.d(TAG, "onClick: " + values[YEAR]);
+
+                // Bind the picker value to ours variable
+                dueDatePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        String dueDateString = Utils.formatNumber(dayOfMonth) + "." +
+                                Utils.formatNumber(month + 1) + "." +
+                                Utils.formatNumber(year);
+                        date.setText(dueDateString);
+                        dueDateValues[DAY] = dayOfMonth;
+                        dueDateValues[MONTH] = month;
+                        dueDateValues[YEAR] = year;
+                    }
+                }, values[YEAR], values[MONTH], values[DAY]);
+
+                // Show the picker
+                dueDatePicker.show();
+            }
+        });
+
+        time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                values[MINUTE] = calendar.get(Calendar.MINUTE);
+                values[HOUR] = calendar.get(Calendar.HOUR_OF_DAY);
+
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        time.setText(Utils.formatNumber(hourOfDay) + ":" + Utils.formatNumber(minute));
+                    }
+                }, values[MINUTE], values[HOUR], true);
+                timePickerDialog.show();
+            }
+        });
+    }
+
+    private Date getSelectedDate(int[] values) {
+        Date selectedDate;
+
+        if (values[YEAR] == 0) {
+            selectedDate = null;
+        } else {
+            selectedDate = new GregorianCalendar(values[YEAR], values[MONTH],
+                    values[DAY], values[HOUR], values[MINUTE]).getTime();
+
+            //MainActivity.googleCalendarHandler.addTask(title, selectedDate);
+        }
+
+        return selectedDate;
     }
 
 }
