@@ -52,6 +52,7 @@ import com.heig.atmanager.userData.UserJsonParser;
 
 import java.util.ArrayList;
 
+
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
