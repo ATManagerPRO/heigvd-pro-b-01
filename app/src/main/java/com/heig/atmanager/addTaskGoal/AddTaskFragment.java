@@ -30,6 +30,7 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputLayout;
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.NotificationUtils;
+import com.heig.atmanager.PostRequests;
 import com.heig.atmanager.R;
 import com.heig.atmanager.Utils;
 import com.heig.atmanager.taskLists.TaskList;
@@ -46,6 +47,12 @@ public class AddTaskFragment extends Fragment {
     public static final String FRAG_ADD_TASK_ID = "Add_Task_Fragment";
 
     private static final String TAG = "AddTaskFragment";
+
+    private static final int MINUTE = 0;
+    private static final int HOUR   = 1;
+    private static final int DAY    = 2;
+    private static final int MONTH  = 3;
+    private static final int YEAR   = 4;
 
     private String title;
     private String description;
@@ -76,6 +83,7 @@ public class AddTaskFragment extends Fragment {
     private TextView dueTimeTextView;
 
     private TextView notificationTextView;
+
 
     private TextInputLayout titleLayout;
 
@@ -128,6 +136,7 @@ public class AddTaskFragment extends Fragment {
         titleLayout = mView.findViewById(R.id.frag_add_task_title_layout);
 
         final Button validationButton = mView.findViewById(R.id.frag_validation_button);
+
 
         // Picker for date and time
         dueDateTextView.setOnClickListener(new View.OnClickListener() {
@@ -223,6 +232,12 @@ public class AddTaskFragment extends Fragment {
         for (String s : MainActivity.getUser().getTags())
             Log.d(TAG, "onCreateView: Tag : " + s);
 
+        // date setup here
+
+        if(MainActivity.getUser().getTags() != null) {
+            for (String s : MainActivity.getUser().getTags())
+                Log.d(TAG, "onCreateView: Tag : " + s);
+        }
         // Tags
         tags = new ArrayList<>();
         // Enable the user to choose between his/her tags
@@ -248,7 +263,7 @@ public class AddTaskFragment extends Fragment {
         final Spinner folderSpinner = mView.findViewById(R.id.frag_directory_choice_tag_spinner);
         ArrayAdapter<TaskList> spinnerAdapter = new AddTaskSpinnerAdapter(getActivity(),
                 R.layout.support_simple_spinner_dropdown_item,
-                ((MainActivity) getContext()).getUser().getTaskLists());
+                ((MainActivity) getContext()).getUser().getAllTaskLists());
         spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         folderSpinner.setAdapter(spinnerAdapter);
 
@@ -268,15 +283,12 @@ public class AddTaskFragment extends Fragment {
                     titleLayout.setError(null);
                 }
 
-                Date selectedDate;
-                if (mYearDueDate == 0) {
-                    selectedDate = null;
-                } else {
+                Task newTask = new Task(title, description);
+                if (mYearDueDate != 0) {
                     Calendar calendar = Calendar.getInstance();
                     calendar.set(mYearDueDate, mMonthDueDate, mDayDueDate, mHourDueDate, mMinuteDueDate);
-                    selectedDate = calendar.getTime();
+                    newTask.setDueDate(calendar.getTime());
                 }
-                Task newTask = new Task(title, description, selectedDate);
 
                 if (mYearNotif != 0) {
                     Calendar calendar = Calendar.getInstance();
@@ -285,7 +297,6 @@ public class AddTaskFragment extends Fragment {
                     mNotificationUtils.scheduleNotification(nb.build(), calendar.getTimeInMillis());
                     newTask.setReminderDate(calendar.getTime());
                 }
-
 
                 // Add the tags
                 for (String tag : tags) {
@@ -298,7 +309,8 @@ public class AddTaskFragment extends Fragment {
                         // Assigning the tasklist and adding the task in the tasklist
                         // (which is already in the user)
                         newTask.setTasklist(taskList);
-                        taskList.addTask(newTask);
+                        PostRequests.postTask(newTask,getContext());
+                        ((MainActivity) getContext()).getUser().addTask(newTask);
                         //update homeview
                         tasks = MainActivity.getUser().getTasksForDay(Calendar.getInstance().getTime());
                         tasks.addAll(MainActivity.getUser().getTasksWithoutDate());

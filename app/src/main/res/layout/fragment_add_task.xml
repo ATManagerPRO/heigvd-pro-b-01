@@ -196,6 +196,47 @@
 
 
     <LinearLayout
+        android:id="@+id/frag_add_task_reminder_date_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="5">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="5"
+            android:padding="10dp"
+            android:text="@string/reminder_date_title"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/frag_add_task_reminder_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:hint="@string/due_date"
+            android:clickable="true"
+            android:textSize="18sp"
+            />
+
+        <TextView
+            android:id="@+id/frag_add_task_reminder_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:layout_weight="1"
+            android:hint="@string/due_time"
+            android:clickable="true"
+            android:textSize="18sp"
+            />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/directory_layout"
         app:layout_constraintBottom_toTopOf="@id/frag_validation_button"
         app:layout_constraintTop_toBottomOf="@id/dateTable"
