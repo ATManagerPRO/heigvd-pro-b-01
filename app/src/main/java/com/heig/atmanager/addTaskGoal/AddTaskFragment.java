@@ -269,10 +269,6 @@ public class AddTaskFragment extends Fragment {
                 values[MONTH] = calendar.get(Calendar.MONTH);
                 values[YEAR]  = calendar.get(Calendar.YEAR);
 
-                Log.d(TAG, "onClick: " + values[DAY]);
-                Log.d(TAG, "onClick: " + values[MONTH]);
-                Log.d(TAG, "onClick: " + values[YEAR]);
-
                 // Bind the picker value to ours variable
                 picker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
                     @Override
@@ -302,6 +298,8 @@ public class AddTaskFragment extends Fragment {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         time.setText(Utils.formatNumber(hourOfDay) + ":" + Utils.formatNumber(minute));
+                        dueDateValues[HOUR]   = hourOfDay;
+                        dueDateValues[MINUTE] = minute;
                     }
                 }, values[MINUTE], values[HOUR], true);
                 timePickerDialog.show();
@@ -318,6 +316,7 @@ public class AddTaskFragment extends Fragment {
             selectedDate = new GregorianCalendar(values[YEAR], values[MONTH],
                     values[DAY], values[HOUR], values[MINUTE]).getTime();
 
+            Log.d(TAG, "getSelectedDate: " + selectedDate.toString());
             //MainActivity.googleCalendarHandler.addTask(title, selectedDate);
         }
 

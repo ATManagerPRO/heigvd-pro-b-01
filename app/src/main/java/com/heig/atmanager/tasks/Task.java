@@ -12,7 +12,7 @@ import java.util.Date;
  *
  * Task object
  */
-public class Task {
+public class Task implements Comparable<Task> {
 
     private static final long UNDEFINED_ID = -1;
 
@@ -113,5 +113,10 @@ public class Task {
 
     public Date getDoneDate() {
         return doneDate;
+    }
+
+    @Override
+    public int compareTo(Task task) {
+        return getDueDate().compareTo(task.getDueDate());
     }
 }
