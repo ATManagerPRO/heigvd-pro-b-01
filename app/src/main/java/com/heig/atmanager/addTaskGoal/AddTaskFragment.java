@@ -9,6 +9,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -185,7 +186,7 @@ public class AddTaskFragment extends Fragment {
                 mMinuteNotif = calendar.get(Calendar.MINUTE);
 
 
-                DatePickerDialog dueDatePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog notificationPicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
 
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -196,17 +197,24 @@ public class AddTaskFragment extends Fragment {
                         TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-
+                                mHourNotif = hourOfDay;
+                                mMinuteNotif = minute;
                                 notificationTextView.setText(notifTime + " "  +Utils.formatNumber(hourOfDay) + ":" + Utils.formatNumber(minute));
 
                             }
                         }, mHourNotif, mMinuteNotif, true);
                         timePickerDialog.show();
 
+
+                        mYearNotif = year;
+                        mMonthNotif = month;
+                        mDayNotif = dayOfMonth;
+
                     }
                 }, mYearNotif, mMonthNotif, mDayNotif);
+
                 // Show the picker
-                dueDatePicker.show();
+                notificationPicker.show();
 
 
             }
@@ -267,7 +275,6 @@ public class AddTaskFragment extends Fragment {
                     Calendar calendar = Calendar.getInstance();
                     calendar.set(mYearDueDate, mMonthDueDate, mDayDueDate, mHourDueDate, mMinuteDueDate);
                     selectedDate = calendar.getTime();
-
                 }
                 Task newTask = new Task(title, description, selectedDate);
 
