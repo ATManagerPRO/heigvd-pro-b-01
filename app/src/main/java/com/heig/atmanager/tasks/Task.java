@@ -31,16 +31,12 @@ public class Task {
         this(UNDEFINED_ID, title, description, false, false, null, null, null);
     }
 
-    public Task(String title, String description, Date dueDate) {
-        this(UNDEFINED_ID, title, description, false, false, dueDate, null, null);
+    public Task(String title, String description, Date dueDate, Date reminderDate) {
+        this(UNDEFINED_ID, title, description, false, false, dueDate, null, reminderDate);
     }
 
     public Task(String title, String description, boolean favorite) {
         this(UNDEFINED_ID, title, description, false, favorite, null, null, null);
-    }
-
-    public Task(String title, String description, Date dueDate, TaskList taskList) {
-        this(UNDEFINED_ID, title, description, false, false, dueDate, null, null);
     }
 
     public Task(long id, String title, String description, boolean done, boolean favorite,
@@ -53,7 +49,6 @@ public class Task {
         this.dueDate      = dueDate;
         this.doneDate     = doneDate;
         this.reminderDate = reminderDate;
-        this.tasklist     = tasklist;
         this.tags         = new ArrayList<>();
     }
 
@@ -102,6 +97,10 @@ public class Task {
         return tasklist;
     }
 
+    public void setDoneDate(Date doneDate) {
+        this.doneDate = doneDate;
+    }
+
     public void addTag(String tag) {
         // Add the tag to the task and the user
         tags.add(tag);
@@ -110,5 +109,9 @@ public class Task {
 
     public ArrayList<String> getTags() {
         return tags;
+    }
+
+    public Date getDoneDate() {
+        return doneDate;
     }
 }

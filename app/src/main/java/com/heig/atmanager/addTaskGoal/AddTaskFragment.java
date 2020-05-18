@@ -28,6 +28,7 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputLayout;
 import com.heig.atmanager.LocalCalendarHandler;
 import com.heig.atmanager.MainActivity;
+import com.heig.atmanager.PostRequests;
 import com.heig.atmanager.R;
 import com.heig.atmanager.Utils;
 import com.heig.atmanager.taskLists.TaskList;
@@ -46,16 +47,25 @@ public class AddTaskFragment extends Fragment {
 
     private static final String TAG = "AddTaskFragment";
 
+    private static final int MINUTE = 0;
+    private static final int HOUR   = 1;
+    private static final int DAY    = 2;
+    private static final int MONTH  = 3;
+    private static final int YEAR   = 4;
+
     private String title;
     private String description;
     private DatePickerDialog picker;
     private final Calendar calendar = Calendar.getInstance();
-    private int mDay;
+
+    private int[] dueDateValues;
+    private int[] reminderDateValues;
+
+    /*private int mDay;
     private int mMonth;
     private int mYear;
     private int mHour;
-    private int mMinute;
-
+    private int mMinute;*/
 
     private ArrayList<Task> tasks;
     private RecyclerView tasksRecyclerView;
@@ -67,6 +77,9 @@ public class AddTaskFragment extends Fragment {
 
     private TextView dueDateTextView;
     private TextView dueTimeTextView;
+
+    private TextView reminderDateTextView;
+    private TextView reminderTimeTextView;
 
     private TextInputLayout titleLayout;
     private static Button validationButton;
@@ -110,16 +123,24 @@ public class AddTaskFragment extends Fragment {
 
         dueDateTextView = mView.findViewById(R.id.frag_add_task_due_date);
         dueTimeTextView = mView.findViewById(R.id.frag_add_task_due_time);
+        dueDateValues   = new int[5];
+
+        reminderDateTextView = mView.findViewById(R.id.frag_add_task_reminder_date);
+        reminderTimeTextView = mView.findViewById(R.id.frag_add_task_reminder_time);
+        reminderDateValues   = new int[5];
 
         titleLayout = mView.findViewById(R.id.frag_add_task_title_layout);
 
         validationButton = mView.findViewById(R.id.frag_validation_button);
 
-        // Picker for date and time
-        dueDateTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        // date setup here
+        setupDatePicker(dueDateTextView, dueTimeTextView, dueDateValues);
+        setupDatePicker(reminderDateTextView, reminderTimeTextView, reminderDateValues);
 
+        if(MainActivity.getUser().getTags() != null) {
+            for (String s : MainActivity.getUser().getTags())
+                Log.d(TAG, "onCreateView: Tag : " + s);
+        }
                 mDay = calendar.get(Calendar.DAY_OF_MONTH);
                 mMonth = calendar.get(Calendar.MONTH);
                 mYear = calendar.get(Calendar.YEAR);
@@ -187,7 +208,7 @@ public class AddTaskFragment extends Fragment {
         final Spinner folderSpinner = mView.findViewById(R.id.frag_directory_choice_tag_spinner);
         ArrayAdapter<TaskList> spinnerAdapter = new AddTaskSpinnerAdapter(getActivity(),
                 R.layout.support_simple_spinner_dropdown_item,
-                ((MainActivity) getContext()).getUser().getTaskLists());
+                ((MainActivity) getContext()).getUser().getAllTaskLists());
         spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         folderSpinner.setAdapter(spinnerAdapter);
 
@@ -207,11 +228,8 @@ public class AddTaskFragment extends Fragment {
                     titleLayout.setError(null);
                 }
 
-                Date selectedDate;
-                if (mYear == 0) {
-                    selectedDate = null;
-                } else {
-                    selectedDate = new GregorianCalendar(mYear, mMonth, mDay, mHour, mMinute).getTime();
+                Task newTask = new Task(title, description, getSelectedDate(dueDateValues),
+                        getSelectedDate(reminderDateValues));
 
                     Log.d(TAG, "onClick: BLA");
                     //GoogleCalendarHandler.getInstance().addTask(title, selectedDate, getActivity());
