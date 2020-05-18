@@ -67,7 +67,7 @@ public class AddTaskFragment extends Fragment {
     private ArrayList<Task> tasks;
     private RecyclerView tasksRecyclerView;
 
-    private String selectedDirectory;
+    private TaskList selectedDirectory;
 
     private EditText titleEditText;
     private EditText descriptionEditText;
@@ -224,7 +224,7 @@ public class AddTaskFragment extends Fragment {
             public void onClick(View view) {
                 title = titleEditText.getText().toString();
                 description = descriptionEditText.getText().toString();
-                selectedDirectory = folderSpinner.getSelectedItem().toString();
+                selectedDirectory = (TaskList) folderSpinner.getSelectedItem();
 
 
                 if (title.isEmpty()) {
@@ -257,8 +257,8 @@ public class AddTaskFragment extends Fragment {
                 }
 
                 // Add the task to a selected taskList
-                for (TaskList taskList : MainActivity.getUser().getTaskLists()) {
-                    if (taskList.toString().equals(selectedDirectory)) {
+                for (TaskList taskList : MainActivity.getUser().getAllTaskLists()) {
+                    if (taskList.equals(selectedDirectory)) {
                         // Assigning the tasklist and adding the task in the tasklist
                         // (which is already in the user)
                         newTask.setTasklist(taskList);
