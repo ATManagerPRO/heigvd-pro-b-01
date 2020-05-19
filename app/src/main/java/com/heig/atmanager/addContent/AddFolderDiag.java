@@ -43,7 +43,7 @@ public class AddFolderDiag extends DialogFragment {
 
                 PostRequests.postFolder(newFolder, getContext());
 
-                MainActivity.user.addFolder(new Folder(folderName.getText().toString()));
+                MainActivity.user.addFolder(newFolder);
             }
         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
