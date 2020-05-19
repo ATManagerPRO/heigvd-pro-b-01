@@ -190,6 +190,7 @@ public class AddTaskFragment extends Fragment {
                     newTask.addTag(tag);
                 }
 
+                // Add the task in the local calendar
                 if (dueDateValues[YEAR] != 0) {
                     LocalCalendarHandler.getInstance().setTask(newTask);
 
