@@ -56,11 +56,6 @@ public class AddGoalFragment extends Fragment {
 
     private ArrayList<Goal> goals;
 
-    private RecyclerView goalRecyclerView;
-    private RecyclerView goalsTodayRecyclerView;
-    private RecyclerView goalsWeekRecyclerView;
-    private RecyclerView goalsMonthRecyclerView;
-
     private final Calendar calendar = Calendar.getInstance();
 
     // Values
@@ -80,10 +75,7 @@ public class AddGoalFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        goalRecyclerView = (RecyclerView) getActivity().findViewById(R.id.goals_today_rv);
-        goalsTodayRecyclerView = (RecyclerView) getActivity().findViewById(R.id.goals_today_rv);
-        goalsWeekRecyclerView = (RecyclerView) getActivity().findViewById(R.id.goals_week_rv);
-        goalsMonthRecyclerView = (RecyclerView) getActivity().findViewById(R.id.goals_month_rv);
+
         // Override OnBacPressed to show hidden components
         final OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
