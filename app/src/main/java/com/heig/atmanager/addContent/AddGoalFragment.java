@@ -57,9 +57,9 @@ public class AddGoalFragment extends Fragment {
     private ArrayList<Goal> goals;
 
     private RecyclerView goalRecyclerView;
-    RecyclerView goalsTodayRecyclerView;
-    RecyclerView goalsWeekRecyclerView;
-    RecyclerView goalsMonthRecyclerView;
+    private RecyclerView goalsTodayRecyclerView;
+    private RecyclerView goalsWeekRecyclerView;
+    private RecyclerView goalsMonthRecyclerView;
 
     private final Calendar calendar = Calendar.getInstance();
 
