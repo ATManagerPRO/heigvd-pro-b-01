@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -53,8 +52,6 @@ public class AddGoalFragment extends Fragment {
     private TextInputLayout unitLayout;
     private TextInputLayout quantityLayout;
     private TextInputLayout intervalNumberLayout;
-
-    private ArrayList<Goal> goals;
 
     private final Calendar calendar = Calendar.getInstance();
 
@@ -190,10 +187,8 @@ public class AddGoalFragment extends Fragment {
                 interval = Interval.valueOf(intervalSpinner.getSelectedItem().toString());
                 Goal newGoal = new Goal(-1, unit, quantity, intervalNumber, interval, selectedDate, Calendar.getInstance().getTime());
                 PostRequests.postGoal(newGoal,getContext());
-                ((MainActivity) getActivity()).getUser().addGoal(newGoal);
+                MainActivity.getUser().addGoal(newGoal);
 
-                goals = ((MainActivity) getContext()).getUser().getGoals();
-                
 
                 getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
                 getActivity().findViewById(R.id.dock).setVisibility(View.VISIBLE);
