@@ -39,7 +39,7 @@ public class AddTasklistDiag extends DialogFragment {
         final Spinner folderSpinner = view.findViewById(R.id.dropdwon_folder);
 
         final ArrayAdapter<Folder> spinnerAdapter = new FolderSpinnerAdapter(getActivity(),
-                R.layout.support_simple_spinner_dropdown_item, ((MainActivity) getContext()).getUser().getFolders());
+                R.layout.support_simple_spinner_dropdown_item, MainActivity.getUser().getFolders());
         spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         folderSpinner.setAdapter(spinnerAdapter);
 
@@ -49,8 +49,8 @@ public class AddTasklistDiag extends DialogFragment {
             public void onClick(DialogInterface dialogInterface, int i) {
                 final EditText taskListName = view.findViewById(R.id.newTaskListName);
                 TaskList newTaskList = new TaskList(taskListName.getText().toString(), ((Folder) folderSpinner.getSelectedItem()).getId());
-                PostRequests.postTaskList(newTaskList,getContext());
-                ((MainActivity) AddTasklistDiag.this.getActivity()).user.addTaskList(newTaskList);
+                PostRequests.postTaskList(newTaskList, getContext());
+                MainActivity.getUser().addTaskList(newTaskList);
             }
         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
