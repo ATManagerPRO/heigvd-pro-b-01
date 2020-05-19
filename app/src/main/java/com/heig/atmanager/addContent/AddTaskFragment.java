@@ -61,12 +61,6 @@ public class AddTaskFragment extends Fragment {
     private int[] dueDateValues;
     private int[] reminderDateValues;
 
-    /*private int mDay;
-    private int mMonth;
-    private int mYear;
-    private int mHour;
-    private int mMinute;*/
-
     private ArrayList<Task> tasks;
     private RecyclerView tasksRecyclerView;
 
@@ -82,7 +76,7 @@ public class AddTaskFragment extends Fragment {
     private TextView reminderTimeTextView;
 
     private TextInputLayout titleLayout;
-    private static Button validationButton;
+    private Button validationButton;
 
     private ArrayList<String> tags;
 
@@ -97,7 +91,6 @@ public class AddTaskFragment extends Fragment {
 
         // Override OnBacPressed to show hidden components
         final OnBackPressedCallback callback = new OnBackPressedCallback(true) {
-
 
             @Override
             public void handleOnBackPressed() {
@@ -141,11 +134,14 @@ public class AddTaskFragment extends Fragment {
             for (String s : MainActivity.getUser().getTags())
                 Log.d(TAG, "onCreateView: Tag : " + s);
         }
+
         // Tags
         tags = new ArrayList<>();
+
         // Enable the user to choose between his/her tags
         final ArrayAdapter<String> chipsAdapter = new ArrayAdapter<>(getActivity(),
                 R.layout.support_simple_spinner_dropdown_item, MainActivity.getUser().getTags());
+
         // App detect the input to suggest the tag
         final AutoCompleteTextView autoCompleteTextView = mView.findViewById(R.id.frag_add_task_autocomplete_textview);
         autoCompleteTextView.setAdapter(chipsAdapter);
@@ -226,15 +222,6 @@ public class AddTaskFragment extends Fragment {
 
         return mView;
     }
-
-    public static void addTaskPressed() {
-        validationButton.performClick();
-    }
-
-    private void addInCalendar() {
-
-    }
-
 
     /**
      * Add a string as chip into the given chip group
