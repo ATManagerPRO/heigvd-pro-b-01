@@ -44,7 +44,7 @@ public class AddTasklistDiag extends DialogFragment {
         folderSpinner.setAdapter(spinnerAdapter);
 
 
-        builder.setView(view).setPositiveButton("Add", new DialogInterface.OnClickListener() {
+        builder.setView(view).setPositiveButton(getString(R.string.add), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 final EditText taskListName = view.findViewById(R.id.newTaskListName);
@@ -52,7 +52,7 @@ public class AddTasklistDiag extends DialogFragment {
                 PostRequests.postTaskList(newTaskList, getContext());
                 MainActivity.getUser().addTaskList(newTaskList);
             }
-        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 AddTasklistDiag.this.getDialog().cancel();
