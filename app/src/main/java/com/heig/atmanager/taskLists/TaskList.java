@@ -20,7 +20,6 @@ public class TaskList extends DrawerObject implements Serializable {
     public static TaskList defaultList = new TaskList(0, "My Tasks");
 
     private long id;
-    private String name;
     private long folder_id;
 
     public TaskList(String name, long folder_id) {
