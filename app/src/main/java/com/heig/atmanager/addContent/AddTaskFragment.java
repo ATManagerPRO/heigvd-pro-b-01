@@ -100,7 +100,6 @@ public class AddTaskFragment extends Fragment {
         // Override OnBacPressed to show hidden components
         final OnBackPressedCallback callback = new OnBackPressedCallback(true) {
 
-
             @Override
             public void handleOnBackPressed() {
                 getFragmentManager().popBackStack();
@@ -189,11 +188,14 @@ public class AddTaskFragment extends Fragment {
             for (String s : MainActivity.getUser().getTags())
                 Log.d(TAG, "onCreateView: Tag : " + s);
         }
+
         // Tags
         tags = new ArrayList<>();
+
         // Enable the user to choose between his/her tags
         final ArrayAdapter<String> chipsAdapter = new ArrayAdapter<>(getActivity(),
                 R.layout.support_simple_spinner_dropdown_item, MainActivity.getUser().getTags());
+
         // App detect the input to suggest the tag
         final AutoCompleteTextView autoCompleteTextView = mView.findViewById(R.id.frag_add_task_autocomplete_textview);
         autoCompleteTextView.setAdapter(chipsAdapter);
@@ -214,7 +216,7 @@ public class AddTaskFragment extends Fragment {
         final Spinner folderSpinner = mView.findViewById(R.id.frag_directory_choice_tag_spinner);
         ArrayAdapter<TaskList> spinnerAdapter = new AddTaskSpinnerAdapter(getActivity(),
                 R.layout.support_simple_spinner_dropdown_item,
-                ((MainActivity) getContext()).getUser().getAllTaskLists());
+                MainActivity.getUser().getAllTaskLists());
         spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         folderSpinner.setAdapter(spinnerAdapter);
 
@@ -367,7 +369,6 @@ public class AddTaskFragment extends Fragment {
             selectedDate = new GregorianCalendar(values[YEAR], values[MONTH],
                     values[DAY], values[HOUR], values[MINUTE]).getTime();
 
-            //MainActivity.googleCalendarHandler.addTask(title, selectedDate);
         }
 
         return selectedDate;

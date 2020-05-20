@@ -31,14 +31,17 @@ public class AddTagsDiag extends DialogFragment {
 
         final LayoutInflater inflater = requireActivity().getLayoutInflater();
         final View view = inflater.inflate(R.layout.fragment_add_tags_diag, null);
-        builder.setView(view).setPositiveButton("Add", new DialogInterface.OnClickListener() {
+        builder.setView(view).setPositiveButton(getString(R.string.add), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+
                 final EditText tagName = view.findViewById(R.id.newTagName);
-                PostRequests.postTag(tagName.getText().toString(),getContext());
-                ((MainActivity) AddTagsDiag.this.getActivity()).user.addTag(tagName.getText().toString());
-                            }
-        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+                PostRequests.postTag(tagName.getText().toString(), getContext());
+                MainActivity.getUser().addTag(tagName.getText().toString());
+
+            }
+        }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 AddTagsDiag.this.getDialog().cancel();
