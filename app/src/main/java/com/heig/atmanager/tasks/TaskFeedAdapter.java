@@ -1,5 +1,7 @@
 package com.heig.atmanager.tasks;
 
+import android.icu.text.SimpleDateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +23,14 @@ import com.heig.atmanager.R;
 import com.heig.atmanager.Utils;
 import com.heig.atmanager.taskLists.TaskList;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Author : Stéphane Bottin
@@ -36,6 +43,7 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
 
     private ArrayList<Task> tasks;
     private ArrayList<Task> tasksFull;
+    private Map<LocalDate, Boolean> dateTitles;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -55,6 +63,7 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         private LinearLayout expandedView;
         private ImageView favoriteIcon;
         private ToggleButton checkButton;
+        private TextView dateTitle;
         private LinearLayout timeContainer;
 
         public MyViewHolder(View v) {
@@ -73,6 +82,7 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
             removeBtn        = v.findViewById(R.id.remove_button);
             favoriteBtn      = v.findViewById(R.id.favorite_button);
             timeContainer    = v.findViewById(R.id.time_container);
+            dateTitle        = v.findViewById(R.id.date_title);
         }
     }
 
@@ -80,7 +90,14 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
     public TaskFeedAdapter(ArrayList<Task> tasks) {
         this.tasks = tasks;
         this.tasksFull = new ArrayList<>(tasks);
+
+        // Orders the tasks by date and favorites
         orderTasks();
+
+        dateTitles = new HashMap<>();
+        for(Task task : tasks) {
+            dateTitles.put(convertToLocalDateViaInstant(task.getDueDate()), false);
+        }
     }
 
     // Create new views (invoked by the layout manager)
@@ -98,10 +115,23 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
+        Calendar dueDateCalendar = Calendar.getInstance();
+        dueDateCalendar.setTime(tasks.get(position).getDueDate());
+        LocalDate localDueDate = convertToLocalDateViaInstant(tasks.get(position).getDueDate());
+        // Date title
+        if(!dateTitles.get(localDueDate)) {
+            holder.dateTitle.setVisibility(View.VISIBLE);
+            SimpleDateFormat sdf  = new SimpleDateFormat("dd MMM YYYY");
+            holder.dateTitle.setText(sdf.format(dueDateCalendar.getTime()).toUpperCase());
+            dateTitles.put(localDueDate, true);
+        } else {
+            holder.dateTitle.setVisibility(View.GONE);
+        }
+
+        // Title and description
         holder.title.setText(tasks.get(position).getTitle());
         holder.description.setText(tasks.get(position).getDescription());
+
         // Tasklist
         if(tasks.get(position).getTasklist() != null) {
             holder.taskListText.setText(tasks.get(position).getTasklist().getName());
@@ -257,7 +287,18 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
             }
         }
 
+        // Order by date
+        Collections.sort(favorites);
+        Collections.sort(others);
+
         tasksFull = favorites;
         tasksFull.addAll(others);
+        tasks = tasksFull;
+    }
+
+    private LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
+        return dateToConvert.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
     }
 }
