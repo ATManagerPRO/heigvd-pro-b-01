@@ -201,7 +201,10 @@ public class AddGoalFragment extends Fragment {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getContext(), MainActivity.class));
+                getFragmentManager().popBackStack();
+
+                getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
+                getActivity().findViewById(R.id.dock).setVisibility(View.VISIBLE);
             }
         });
 
