@@ -229,7 +229,7 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
 
 
     /*
-    TODO : We have a problem here, the hash map and taskfull are not updated
+    TODO : We have a problem here, the hash map and taskfull are not updated, the second added element create a bus
      */
     public  void  setTasks(ArrayList<Task> tasks){
         this.tasks = tasks;
