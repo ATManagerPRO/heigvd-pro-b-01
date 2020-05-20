@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.heig.atmanager.R;
 import com.heig.atmanager.Utils;
 import com.heig.atmanager.taskLists.TaskList;
+import com.heig.atmanager.userData.DeleteRequests;
 import com.heig.atmanager.userData.PatchRequests;
 
 import java.time.LocalDate;
@@ -218,9 +219,11 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         holder.removeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                DeleteRequests.deleteTask(tasks.get(position),context);
                 MainActivity.getUser().removeTask(tasks.get(position));
                 tasks.remove(tasks.get(position));
                 notifyItemRemoved(position); // notify the adapter about the removed item
+
             }
         });
 
@@ -230,6 +233,7 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
             public void onClick(View view) {
                 tasks.get(position).setFavorite(!tasks.get(position).isFavorite());
                 notifyItemChanged(position);
+                PatchRequests.patchTaskFavorite(tasks.get(position), context);
             }
         });
     }
