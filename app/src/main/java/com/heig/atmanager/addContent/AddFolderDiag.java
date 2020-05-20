@@ -34,18 +34,18 @@ public class AddFolderDiag extends DialogFragment {
 
         final LayoutInflater inflater = requireActivity().getLayoutInflater();
         final View view = inflater.inflate(R.layout.fragment_add_folder_diag, null);
-        builder.setView(view).setPositiveButton("Add", new DialogInterface.OnClickListener() {
+        builder.setView(view).setPositiveButton(getString(R.string.add), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
                 final EditText folderName = view.findViewById(R.id.newFolderName);
                 Folder newFolder = new Folder(folderName.getText().toString());
 
-               PostRequests.postFolder(newFolder,getContext());
+                PostRequests.postFolder(newFolder, getContext());
 
-                ((MainActivity) AddFolderDiag.this.getActivity()).user.addFolder(new Folder(folderName.getText().toString()));
+                MainActivity.user.addFolder(newFolder);
             }
-        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 AddFolderDiag.this.getDialog().cancel();

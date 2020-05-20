@@ -61,16 +61,10 @@ public class AddTaskFragment extends Fragment {
     private int[] dueDateValues;
     private int[] reminderDateValues;
 
-    /*private int mDay;
-    private int mMonth;
-    private int mYear;
-    private int mHour;
-    private int mMinute;*/
-
     private ArrayList<Task> tasks;
     private RecyclerView tasksRecyclerView;
 
-    private String selectedDirectory;
+    private TaskList selectedDirectory;
 
     private EditText titleEditText;
     private EditText descriptionEditText;
@@ -82,7 +76,7 @@ public class AddTaskFragment extends Fragment {
     private TextView reminderTimeTextView;
 
     private TextInputLayout titleLayout;
-    private static Button validationButton;
+    private Button validationButton;
 
     private ArrayList<String> tags;
 
@@ -97,7 +91,6 @@ public class AddTaskFragment extends Fragment {
 
         // Override OnBacPressed to show hidden components
         final OnBackPressedCallback callback = new OnBackPressedCallback(true) {
-
 
             @Override
             public void handleOnBackPressed() {
@@ -141,11 +134,14 @@ public class AddTaskFragment extends Fragment {
             for (String s : MainActivity.getUser().getTags())
                 Log.d(TAG, "onCreateView: Tag : " + s);
         }
+
         // Tags
         tags = new ArrayList<>();
+
         // Enable the user to choose between his/her tags
         final ArrayAdapter<String> chipsAdapter = new ArrayAdapter<>(getActivity(),
                 R.layout.support_simple_spinner_dropdown_item, MainActivity.getUser().getTags());
+
         // App detect the input to suggest the tag
         final AutoCompleteTextView autoCompleteTextView = mView.findViewById(R.id.frag_add_task_autocomplete_textview);
         autoCompleteTextView.setAdapter(chipsAdapter);
@@ -166,7 +162,7 @@ public class AddTaskFragment extends Fragment {
         final Spinner folderSpinner = mView.findViewById(R.id.frag_directory_choice_tag_spinner);
         ArrayAdapter<TaskList> spinnerAdapter = new AddTaskSpinnerAdapter(getActivity(),
                 R.layout.support_simple_spinner_dropdown_item,
-                ((MainActivity) getContext()).getUser().getAllTaskLists());
+                MainActivity.getUser().getAllTaskLists());
         spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         folderSpinner.setAdapter(spinnerAdapter);
 
@@ -176,7 +172,7 @@ public class AddTaskFragment extends Fragment {
             public void onClick(View view) {
                 title = titleEditText.getText().toString();
                 description = descriptionEditText.getText().toString();
-                selectedDirectory = folderSpinner.getSelectedItem().toString();
+                selectedDirectory = (TaskList) folderSpinner.getSelectedItem();
 
 
                 if (title.isEmpty()) {
@@ -194,7 +190,8 @@ public class AddTaskFragment extends Fragment {
                     newTask.addTag(tag);
                 }
 
-                if(dueDateValues[YEAR] != 0){
+                // Add the task in the local calendar
+                if (dueDateValues[YEAR] != 0) {
                     LocalCalendarHandler.getInstance().setTask(newTask);
 
                     LocalCalendarHandler.getInstance().addTask(getActivity());
@@ -202,13 +199,13 @@ public class AddTaskFragment extends Fragment {
 
 
                 // Add the task to a selected taskList
-                for (TaskList taskList : MainActivity.getUser().getTaskLists()) {
-                    if (taskList.toString().equals(selectedDirectory)) {
+                for (TaskList taskList : MainActivity.getUser().getAllTaskLists()) {
+                    if (taskList.equals(selectedDirectory)) {
                         // Assigning the tasklist and adding the task in the tasklist
                         // (which is already in the user)
                         newTask.setTasklist(taskList);
-                        PostRequests.postTask(newTask,getContext());
-                        ((MainActivity) getContext()).getUser().addTask(newTask);
+                        PostRequests.postTask(newTask, getContext());
+                        MainActivity.getUser().addTask(newTask);
                         //update homeview
                         tasks = MainActivity.getUser().getTasksForDay(Calendar.getInstance().getTime());
                         tasks.addAll(MainActivity.getUser().getTasksWithoutDate());
@@ -226,15 +223,6 @@ public class AddTaskFragment extends Fragment {
 
         return mView;
     }
-
-    public static void addTaskPressed() {
-        validationButton.performClick();
-    }
-
-    private void addInCalendar() {
-
-    }
-
 
     /**
      * Add a string as chip into the given chip group
@@ -271,10 +259,6 @@ public class AddTaskFragment extends Fragment {
                 values[MONTH] = calendar.get(Calendar.MONTH);
                 values[YEAR]  = calendar.get(Calendar.YEAR);
 
-                Log.d(TAG, "onClick: " + values[DAY]);
-                Log.d(TAG, "onClick: " + values[MONTH]);
-                Log.d(TAG, "onClick: " + values[YEAR]);
-
                 // Bind the picker value to ours variable
                 picker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
                     @Override
@@ -304,6 +288,8 @@ public class AddTaskFragment extends Fragment {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         time.setText(Utils.formatNumber(hourOfDay) + ":" + Utils.formatNumber(minute));
+                        dueDateValues[HOUR]   = hourOfDay;
+                        dueDateValues[MINUTE] = minute;
                     }
                 }, values[MINUTE], values[HOUR], true);
                 timePickerDialog.show();
@@ -320,7 +306,6 @@ public class AddTaskFragment extends Fragment {
             selectedDate = new GregorianCalendar(values[YEAR], values[MONTH],
                     values[DAY], values[HOUR], values[MINUTE]).getTime();
 
-            //MainActivity.googleCalendarHandler.addTask(title, selectedDate);
         }
 
         return selectedDate;

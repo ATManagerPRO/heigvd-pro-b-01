@@ -1,5 +1,7 @@
 package com.heig.atmanager.tasks;
 
+import android.icu.text.SimpleDateFormat;
+import android.util.Log;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,9 +25,14 @@ import com.heig.atmanager.Utils;
 import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.userData.PatchRequests;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Author : Stéphane Bottin
@@ -39,6 +46,7 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
     private ArrayList<Task> tasks;
     private Context context;
     private ArrayList<Task> tasksFull;
+    private Map<LocalDate, Boolean> dateTitles;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -54,9 +62,11 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         private Button expandBtn;
         private Button retractBtn;
         private ImageButton removeBtn;
+        private ImageButton favoriteBtn;
         private LinearLayout expandedView;
         private ImageView favoriteIcon;
         private ToggleButton checkButton;
+        private TextView dateTitle;
         private LinearLayout timeContainer;
 
         public MyViewHolder(View v) {
@@ -73,7 +83,9 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
             favoriteIcon     = v.findViewById(R.id.favorite_icon);
             checkButton      = v.findViewById(R.id.check_button);
             removeBtn        = v.findViewById(R.id.remove_button);
+            favoriteBtn      = v.findViewById(R.id.favorite_button);
             timeContainer    = v.findViewById(R.id.time_container);
+            dateTitle        = v.findViewById(R.id.date_title);
         }
     }
 
@@ -82,7 +94,16 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         this.tasks = tasks;
         this.context = context;
         this.tasksFull = new ArrayList<>(tasks);
+
+        // Orders the tasks by date and favorites
         orderTasks();
+
+        dateTitles = new HashMap<>();
+        for(Task task : tasks) {
+            if(task.getDueDate() != null){
+                dateTitles.put(convertToLocalDateViaInstant(task.getDueDate()), false);
+            }
+        }
     }
 
     // Create new views (invoked by the layout manager)
@@ -100,10 +121,24 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
+        Calendar dueDateCalendar = Calendar.getInstance();
+        if(tasks.get(position).getDueDate() != null){
+                dueDateCalendar.setTime(tasks.get(position).getDueDate());
+                LocalDate localDueDate = convertToLocalDateViaInstant(tasks.get(position).getDueDate());
+            // Date title
+            if(!dateTitles.get(localDueDate)) {
+                holder.dateTitle.setVisibility(View.VISIBLE);
+                SimpleDateFormat sdf  = new SimpleDateFormat("dd MMM YYYY");
+                holder.dateTitle.setText(sdf.format(dueDateCalendar.getTime()).toUpperCase());
+                dateTitles.put(localDueDate, true);
+            }
+        }else {
+            holder.dateTitle.setVisibility(View.GONE);
+        }
+        // Title and description
         holder.title.setText(tasks.get(position).getTitle());
         holder.description.setText(tasks.get(position).getDescription());
+
         // Tasklist
         if(tasks.get(position).getTasklist() != null) {
             holder.taskListText.setText(tasks.get(position).getTasklist().getName());
@@ -115,7 +150,6 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         if(tasks.get(position).getDueDate() != null) {
             // Time
             String hours, minutes, meridiem;
-            Calendar dueDateCalendar = Calendar.getInstance();
             dueDateCalendar.setTime(tasks.get(position).getDueDate());
             hours    = Utils.formatNumber(dueDateCalendar.get(Calendar.HOUR_OF_DAY) % 12) + ":";
             minutes  = Utils.formatNumber(dueDateCalendar.get(Calendar.MINUTE));
@@ -189,6 +223,15 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
                 notifyItemRemoved(position); // notify the adapter about the removed item
             }
         });
+
+        // Favorite status
+        holder.favoriteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tasks.get(position).setFavorite(!tasks.get(position).isFavorite());
+                notifyItemChanged(position);
+            }
+        });
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -256,7 +299,18 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
             }
         }
 
+        // Order by date
+        Collections.sort(favorites);
+        Collections.sort(others);
+
         tasksFull = favorites;
         tasksFull.addAll(others);
+        tasks = tasksFull;
+    }
+
+    private LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
+        return dateToConvert.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
     }
 }

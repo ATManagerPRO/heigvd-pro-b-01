@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -24,7 +23,6 @@ import com.heig.atmanager.Interval;
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -54,13 +52,6 @@ public class AddGoalFragment extends Fragment {
     private TextInputLayout quantityLayout;
     private TextInputLayout intervalNumberLayout;
 
-    private ArrayList<Goal> goals;
-
-    private RecyclerView goalRecyclerView;
-    RecyclerView goalsTodayRecyclerView;
-    RecyclerView goalsWeekRecyclerView;
-    RecyclerView goalsMonthRecyclerView;
-
     private final Calendar calendar = Calendar.getInstance();
 
     // Values
@@ -80,10 +71,7 @@ public class AddGoalFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        goalRecyclerView = (RecyclerView) getActivity().findViewById(R.id.goals_today_rv);
-        goalsTodayRecyclerView = (RecyclerView) getActivity().findViewById(R.id.goals_today_rv);
-        goalsWeekRecyclerView = (RecyclerView) getActivity().findViewById(R.id.goals_week_rv);
-        goalsMonthRecyclerView = (RecyclerView) getActivity().findViewById(R.id.goals_month_rv);
+
         // Override OnBacPressed to show hidden components
         final OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
@@ -198,10 +186,8 @@ public class AddGoalFragment extends Fragment {
                 interval = Interval.valueOf(intervalSpinner.getSelectedItem().toString());
                 Goal newGoal = new Goal(-1, unit, quantity, intervalNumber, interval, selectedDate, Calendar.getInstance().getTime());
                 PostRequests.postGoal(newGoal,getContext());
-                ((MainActivity) getActivity()).getUser().addGoal(newGoal);
+                MainActivity.getUser().addGoal(newGoal);
 
-                goals = ((MainActivity) getContext()).getUser().getGoals();
-                
 
                 getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
                 getActivity().findViewById(R.id.dock).setVisibility(View.VISIBLE);
@@ -215,7 +201,10 @@ public class AddGoalFragment extends Fragment {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getContext(), MainActivity.class));
+                getFragmentManager().popBackStack();
+
+                getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
+                getActivity().findViewById(R.id.dock).setVisibility(View.VISIBLE);
             }
         });
 

@@ -12,7 +12,7 @@ import java.util.Date;
  *
  * Task object
  */
-public class Task {
+public class Task implements Comparable<Task> {
 
     private static final long UNDEFINED_ID = -1;
 
@@ -89,6 +89,10 @@ public class Task {
         return done;
     }
 
+    public void setFavorite(boolean fav) {
+        this.favorite = fav;
+    }
+
     public void setTasklist(TaskList tasklist){
         this.tasklist = tasklist;
     }
@@ -117,5 +121,15 @@ public class Task {
 
     public long getId() {
         return id;
+    }
+
+    @Override
+    public int compareTo(Task task) {
+        if(getDueDate() == null && task.getDueDate() == null){
+            return 1;
+        } else if(getDueDate() == null || task.getDueDate() == null){
+            return -1;
+        }
+        return getDueDate().compareTo(task.getDueDate());
     }
 }
