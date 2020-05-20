@@ -19,7 +19,7 @@ import java.util.ArrayList;
  *
  *  tasklist adapter for recycler view
  */
-public class TaskListAdapter extends RecyclerView.Adapter<com.heig.atmanager.taskLists.TaskListAdapter.ViewHolder> {
+public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHolder> {
 
     private ArrayList<TaskList> lists;
 
@@ -46,7 +46,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<com.heig.atmanager.tas
         View v = (View) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.task_list_button, parent, false);
         // Returns a new holder instance
-        com.heig.atmanager.taskLists.TaskListAdapter.ViewHolder viewHolder = new com.heig.atmanager.taskLists.TaskListAdapter.ViewHolder(v);
+        TaskListAdapter.ViewHolder viewHolder = new com.heig.atmanager.taskLists.TaskListAdapter.ViewHolder(v);
         return viewHolder;
     }
 
