@@ -147,8 +147,15 @@ public class HomeFragment extends Fragment {
 
     public void updateHomeFragment() {
         feedProgress.setVisibility(View.GONE);
-        tasks = MainActivity.getUser().getTasksForDay(Calendar.getInstance().getTime());
-        tasks.addAll(MainActivity.getUser().getTasksWithoutDate());
+        ArrayList<Task> allTasks;
+        tasks.clear();
+        allTasks = MainActivity.getUser().getTasksForDay(Calendar.getInstance().getTime());
+        allTasks.addAll(MainActivity.getUser().getTasksWithoutDate());
+        for(Task task : allTasks){
+            if(!task.isArchived()){
+                tasks.add(task);
+            }
+        }
         goals = MainActivity.getUser().getGoalTodosOfDay(Calendar.getInstance().getTime());
 
         TaskFeedAdapter newAdapter = new TaskFeedAdapter(tasks, getContext());

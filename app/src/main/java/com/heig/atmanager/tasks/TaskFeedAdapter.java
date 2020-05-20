@@ -92,15 +92,21 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public TaskFeedAdapter(ArrayList<Task> tasks, Context context) {
-        this.tasks = tasks;
+        ArrayList<Task> shownTasks = new ArrayList<Task>();
+        for(Task task : tasks){
+            if(!task.isArchived()){
+                shownTasks.add(task);
+            }
+        }
+        this.tasks = shownTasks;
         this.context = context;
-        this.tasksFull = new ArrayList<>(tasks);
+        this.tasksFull = new ArrayList<>(shownTasks);
 
         // Orders the tasks by date and favorites
         orderTasks();
 
         dateTitles = new HashMap<>();
-        for(Task task : tasks) {
+        for(Task task : shownTasks) {
             if(task.getDueDate() != null){
                 dateTitles.put(convertToLocalDateViaInstant(task.getDueDate()), false);
             }
