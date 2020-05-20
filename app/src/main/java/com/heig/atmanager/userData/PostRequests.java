@@ -1,7 +1,6 @@
-package com.heig.atmanager;
+package com.heig.atmanager.userData;
 
 import android.content.Context;
-import android.nfc.Tag;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -9,6 +8,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.goals.Goal;
 import com.heig.atmanager.taskLists.TaskList;

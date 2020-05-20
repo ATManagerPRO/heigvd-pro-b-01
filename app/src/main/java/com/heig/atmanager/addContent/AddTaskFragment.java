@@ -1,28 +1,19 @@
-package com.heig.atmanager.addTaskGoal;
+package com.heig.atmanager.addContent;
 
-import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -31,17 +22,15 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputLayout;
-import com.heig.atmanager.GoogleCalendarHandler;
+import com.heig.atmanager.LocalCalendarHandler;
 import com.heig.atmanager.MainActivity;
-import com.heig.atmanager.PostRequests;
+import com.heig.atmanager.userData.PostRequests;
 import com.heig.atmanager.R;
 import com.heig.atmanager.Utils;
-import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.tasks.Task;
 import com.heig.atmanager.tasks.TaskFeedAdapter;
@@ -51,8 +40,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import android.provider.CalendarContract.Events;
-
 
 public class AddTaskFragment extends Fragment {
 
@@ -61,10 +48,10 @@ public class AddTaskFragment extends Fragment {
     private static final String TAG = "AddTaskFragment";
 
     private static final int MINUTE = 0;
-    private static final int HOUR   = 1;
-    private static final int DAY    = 2;
-    private static final int MONTH  = 3;
-    private static final int YEAR   = 4;
+    private static final int HOUR = 1;
+    private static final int DAY = 2;
+    private static final int MONTH = 3;
+    private static final int YEAR = 4;
 
     private String title;
     private String description;
@@ -74,16 +61,10 @@ public class AddTaskFragment extends Fragment {
     private int[] dueDateValues;
     private int[] reminderDateValues;
 
-    /*private int mDay;
-    private int mMonth;
-    private int mYear;
-    private int mHour;
-    private int mMinute;*/
-
     private ArrayList<Task> tasks;
     private RecyclerView tasksRecyclerView;
 
-    private String selectedDirectory;
+    private TaskList selectedDirectory;
 
     private EditText titleEditText;
     private EditText descriptionEditText;
@@ -95,6 +76,7 @@ public class AddTaskFragment extends Fragment {
     private TextView reminderTimeTextView;
 
     private TextInputLayout titleLayout;
+    private Button validationButton;
 
     private ArrayList<String> tags;
 
@@ -109,7 +91,6 @@ public class AddTaskFragment extends Fragment {
 
         // Override OnBacPressed to show hidden components
         final OnBackPressedCallback callback = new OnBackPressedCallback(true) {
-
 
             @Override
             public void handleOnBackPressed() {
@@ -135,29 +116,32 @@ public class AddTaskFragment extends Fragment {
 
         dueDateTextView = mView.findViewById(R.id.frag_add_task_due_date);
         dueTimeTextView = mView.findViewById(R.id.frag_add_task_due_time);
-        dueDateValues   = new int[5];
+        dueDateValues = new int[5];
 
         reminderDateTextView = mView.findViewById(R.id.frag_add_task_reminder_date);
         reminderTimeTextView = mView.findViewById(R.id.frag_add_task_reminder_time);
-        reminderDateValues   = new int[5];
+        reminderDateValues = new int[5];
 
         titleLayout = mView.findViewById(R.id.frag_add_task_title_layout);
 
-        final Button validationButton = mView.findViewById(R.id.frag_validation_button);
+        validationButton = mView.findViewById(R.id.frag_validation_button);
 
         // date setup here
         setupDatePicker(dueDateTextView, dueTimeTextView, dueDateValues);
         setupDatePicker(reminderDateTextView, reminderTimeTextView, reminderDateValues);
 
-        if(MainActivity.getUser().getTags() != null) {
+        if (MainActivity.getUser().getTags() != null) {
             for (String s : MainActivity.getUser().getTags())
                 Log.d(TAG, "onCreateView: Tag : " + s);
         }
+
         // Tags
         tags = new ArrayList<>();
+
         // Enable the user to choose between his/her tags
         final ArrayAdapter<String> chipsAdapter = new ArrayAdapter<>(getActivity(),
                 R.layout.support_simple_spinner_dropdown_item, MainActivity.getUser().getTags());
+
         // App detect the input to suggest the tag
         final AutoCompleteTextView autoCompleteTextView = mView.findViewById(R.id.frag_add_task_autocomplete_textview);
         autoCompleteTextView.setAdapter(chipsAdapter);
@@ -178,7 +162,7 @@ public class AddTaskFragment extends Fragment {
         final Spinner folderSpinner = mView.findViewById(R.id.frag_directory_choice_tag_spinner);
         ArrayAdapter<TaskList> spinnerAdapter = new AddTaskSpinnerAdapter(getActivity(),
                 R.layout.support_simple_spinner_dropdown_item,
-                ((MainActivity) getContext()).getUser().getAllTaskLists());
+                MainActivity.getUser().getAllTaskLists());
         spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         folderSpinner.setAdapter(spinnerAdapter);
 
@@ -188,7 +172,7 @@ public class AddTaskFragment extends Fragment {
             public void onClick(View view) {
                 title = titleEditText.getText().toString();
                 description = descriptionEditText.getText().toString();
-                selectedDirectory = folderSpinner.getSelectedItem().toString();
+                selectedDirectory = (TaskList) folderSpinner.getSelectedItem();
 
 
                 if (title.isEmpty()) {
@@ -202,25 +186,32 @@ public class AddTaskFragment extends Fragment {
                         getSelectedDate(reminderDateValues));
 
                 // Add the tags
-                for(String tag : tags) {
+                for (String tag : tags) {
                     newTask.addTag(tag);
                 }
 
+                // Add the task in the local calendar
+                if (dueDateValues[YEAR] != 0) {
+                    LocalCalendarHandler.getInstance().setTask(newTask);
+
+                    LocalCalendarHandler.getInstance().addTask(getActivity());
+                }
+
+
                 // Add the task to a selected taskList
-                for(TaskList taskList : MainActivity.getUser().getTaskLists()) {
-                    if (taskList.toString().equals(selectedDirectory)) {
+                for (TaskList taskList : MainActivity.getUser().getAllTaskLists()) {
+                    if (taskList.equals(selectedDirectory)) {
                         // Assigning the tasklist and adding the task in the tasklist
                         // (which is already in the user)
                         newTask.setTasklist(taskList);
-                        PostRequests.postTask(newTask,getContext());
-                        ((MainActivity) getContext()).getUser().addTask(newTask);
+                        PostRequests.postTask(newTask, getContext());
+                        MainActivity.getUser().addTask(newTask);
                         //update homeview
                         tasks = MainActivity.getUser().getTasksForDay(Calendar.getInstance().getTime());
                         tasks.addAll(MainActivity.getUser().getTasksWithoutDate());
-                        ((TaskFeedAdapter)tasksRecyclerView.getAdapter()).setTasks(tasks);
+                        ((TaskFeedAdapter) tasksRecyclerView.getAdapter()).setTasks(tasks);
                     }
                 }
-
 
                 getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
                 getActivity().findViewById(R.id.dock).setVisibility(View.VISIBLE);
@@ -232,7 +223,6 @@ public class AddTaskFragment extends Fragment {
 
         return mView;
     }
-
 
     /**
      * Add a string as chip into the given chip group
@@ -265,9 +255,9 @@ public class AddTaskFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                values[DAY]   = calendar.get(Calendar.DAY_OF_MONTH);
+                values[DAY] = calendar.get(Calendar.DAY_OF_MONTH);
                 values[MONTH] = calendar.get(Calendar.MONTH);
-                values[YEAR]  = calendar.get(Calendar.YEAR);
+                values[YEAR] = calendar.get(Calendar.YEAR);
 
                 Log.d(TAG, "onClick: " + values[DAY]);
                 Log.d(TAG, "onClick: " + values[MONTH]);
@@ -281,9 +271,9 @@ public class AddTaskFragment extends Fragment {
                                 Utils.formatNumber(month + 1) + "." +
                                 Utils.formatNumber(year);
                         date.setText(dueDateString);
-                        dueDateValues[DAY]   = dayOfMonth;
+                        dueDateValues[DAY] = dayOfMonth;
                         dueDateValues[MONTH] = month;
-                        dueDateValues[YEAR]  = year;
+                        dueDateValues[YEAR] = year;
                     }
                 }, values[YEAR], values[MONTH], values[DAY]);
 
@@ -296,7 +286,7 @@ public class AddTaskFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 values[MINUTE] = calendar.get(Calendar.MINUTE);
-                values[HOUR]   = calendar.get(Calendar.HOUR_OF_DAY);
+                values[HOUR] = calendar.get(Calendar.HOUR_OF_DAY);
 
                 TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
@@ -318,7 +308,6 @@ public class AddTaskFragment extends Fragment {
             selectedDate = new GregorianCalendar(values[YEAR], values[MONTH],
                     values[DAY], values[HOUR], values[MINUTE]).getTime();
 
-            //MainActivity.googleCalendarHandler.addTask(title, selectedDate);
         }
 
         return selectedDate;

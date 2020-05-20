@@ -2,9 +2,7 @@ package com.heig.atmanager.calendar;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 
-import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
