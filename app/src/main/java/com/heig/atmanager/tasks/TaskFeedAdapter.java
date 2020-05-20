@@ -227,6 +227,10 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         return tasks.size();
     }
 
+
+    /*
+    TODO : We have a problem here, the hash map and taskfull are not updated
+     */
     public  void  setTasks(ArrayList<Task> tasks){
         this.tasks = tasks;
         notifyDataSetChanged();
