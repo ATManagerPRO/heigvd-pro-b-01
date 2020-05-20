@@ -51,6 +51,7 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         private Button expandBtn;
         private Button retractBtn;
         private ImageButton removeBtn;
+        private ImageButton favoriteBtn;
         private LinearLayout expandedView;
         private ImageView favoriteIcon;
         private ToggleButton checkButton;
@@ -70,6 +71,7 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
             favoriteIcon     = v.findViewById(R.id.favorite_icon);
             checkButton      = v.findViewById(R.id.check_button);
             removeBtn        = v.findViewById(R.id.remove_button);
+            favoriteBtn      = v.findViewById(R.id.favorite_button);
             timeContainer    = v.findViewById(R.id.time_container);
         }
     }
@@ -177,6 +179,15 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
                 MainActivity.getUser().removeTask(tasks.get(position));
                 tasks.remove(tasks.get(position));
                 notifyItemRemoved(position); // notify the adapter about the removed item
+            }
+        });
+
+        // Favorite status
+        holder.favoriteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tasks.get(position).setFavorite(!tasks.get(position).isFavorite());
+                notifyItemChanged(position);
             }
         });
     }
