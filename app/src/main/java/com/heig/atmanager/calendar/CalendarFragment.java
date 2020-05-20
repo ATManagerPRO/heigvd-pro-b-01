@@ -27,7 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * Author : Stéphane Bottin
  * Date   : 15.03.2020
  * <p>
- * Calendar view of todos and goals
+ * Calendar view of task todos
  */
 public class CalendarFragment extends Fragment {
 

@@ -32,8 +32,8 @@ public class SelectionCalendarDecorator implements DayViewDecorator {
     @Override
     public void decorate(DayViewFacade view) {
         // Selection outline when pressing on a day
-        Drawable selection_outline = ContextCompat.getDrawable(context, R.drawable.calendar_selection);
-        if(selection_outline != null)
-            view.setSelectionDrawable(selection_outline);
+        Drawable selectionOutline = ContextCompat.getDrawable(context, R.drawable.calendar_selection);
+        if(selectionOutline != null)
+            view.setSelectionDrawable(selectionOutline);
     }
 }
