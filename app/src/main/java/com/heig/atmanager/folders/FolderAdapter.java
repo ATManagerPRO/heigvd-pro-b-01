@@ -53,7 +53,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
         }
     }
 
-    // Pass in the contact array into the constructor
+    // Pass in the folders array into the constructor
     public FolderAdapter(ArrayList<Folder> folders) {
         this.folders = folders;
     }
