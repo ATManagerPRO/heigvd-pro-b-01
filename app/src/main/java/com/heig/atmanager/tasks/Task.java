@@ -89,6 +89,10 @@ public class Task implements Comparable<Task> {
         return done;
     }
 
+    public void setFavorite(boolean fav) {
+        this.favorite = fav;
+    }
+
     public void setTasklist(TaskList tasklist){
         this.tasklist = tasklist;
     }

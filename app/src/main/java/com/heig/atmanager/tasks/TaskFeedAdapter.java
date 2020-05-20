@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.anychart.scales.Linear;
 import com.heig.atmanager.HomeFragment;
 import com.heig.atmanager.MainActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -58,10 +59,12 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         private Button expandBtn;
         private Button retractBtn;
         private ImageButton removeBtn;
+        private ImageButton favoriteBtn;
         private LinearLayout expandedView;
         private ImageView favoriteIcon;
         private ToggleButton checkButton;
         private TextView dateTitle;
+        private LinearLayout timeContainer;
 
         public MyViewHolder(View v) {
             super(v);
@@ -77,6 +80,8 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
             favoriteIcon     = v.findViewById(R.id.favorite_icon);
             checkButton      = v.findViewById(R.id.check_button);
             removeBtn        = v.findViewById(R.id.remove_button);
+            favoriteBtn      = v.findViewById(R.id.favorite_button);
+            timeContainer    = v.findViewById(R.id.time_container);
             dateTitle        = v.findViewById(R.id.date_title);
         }
     }
@@ -133,17 +138,27 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         } else {
             holder.taskListText.setText(TaskList.defaultList.getName());
         }
-        // Time
-        String hours    = "";
-        String minutes  = "";
-        String meridiem = "";
+
+        ViewGroup.LayoutParams params = holder.timeContainer.getLayoutParams();
         if(tasks.get(position).getDueDate() != null) {
+            // Time
+            String hours, minutes, meridiem;
+            Calendar dueDateCalendar = Calendar.getInstance();
+            dueDateCalendar.setTime(tasks.get(position).getDueDate());
             hours    = Utils.formatNumber(dueDateCalendar.get(Calendar.HOUR_OF_DAY) % 12) + ":";
             minutes  = Utils.formatNumber(dueDateCalendar.get(Calendar.MINUTE));
             meridiem = dueDateCalendar.get(Calendar.HOUR_OF_DAY) < 12 ? "AM" : "PM";
+            holder.timeHourText.setVisibility(View.VISIBLE);
+            holder.timeMeridiemText.setVisibility(View.VISIBLE);
+            holder.timeHourText.setText(hours + minutes);
+            holder.timeMeridiemText.setText(meridiem);
+            params.width = 200;
+        } else {
+            holder.timeHourText.setVisibility(View.GONE);
+            holder.timeMeridiemText.setVisibility(View.GONE);
+            params.width = 40;
         }
-        holder.timeHourText.setText(hours + minutes);
-        holder.timeMeridiemText.setText(meridiem);
+        holder.timeContainer.setLayoutParams(params);
 
         // Tags
         String tagsString = "";
@@ -194,6 +209,15 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
                 MainActivity.getUser().removeTask(tasks.get(position));
                 tasks.remove(tasks.get(position));
                 notifyItemRemoved(position); // notify the adapter about the removed item
+            }
+        });
+
+        // Favorite status
+        holder.favoriteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tasks.get(position).setFavorite(!tasks.get(position).isFavorite());
+                notifyItemChanged(position);
             }
         });
     }

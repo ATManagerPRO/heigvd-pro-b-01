@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.heig.atmanager.R;
-import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.taskLists.TaskListAdapter;
 
 import java.util.ArrayList;

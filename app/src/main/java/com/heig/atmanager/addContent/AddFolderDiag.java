@@ -1,4 +1,4 @@
-package com.heig.atmanager;
+package com.heig.atmanager.addContent;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -12,19 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
+import com.heig.atmanager.MainActivity;
+import com.heig.atmanager.userData.PostRequests;
+import com.heig.atmanager.R;
 import com.heig.atmanager.folders.Folder;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Author : Chau Ying Kot
@@ -43,18 +34,18 @@ public class AddFolderDiag extends DialogFragment {
 
         final LayoutInflater inflater = requireActivity().getLayoutInflater();
         final View view = inflater.inflate(R.layout.fragment_add_folder_diag, null);
-        builder.setView(view).setPositiveButton("Add", new DialogInterface.OnClickListener() {
+        builder.setView(view).setPositiveButton(getString(R.string.add), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
                 final EditText folderName = view.findViewById(R.id.newFolderName);
                 Folder newFolder = new Folder(folderName.getText().toString());
 
-               PostRequests.postFolder(newFolder,getContext());
+                PostRequests.postFolder(newFolder, getContext());
 
-                ((MainActivity) AddFolderDiag.this.getActivity()).user.addFolder(new Folder(folderName.getText().toString()));
+                MainActivity.user.addFolder(newFolder);
             }
-        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 AddFolderDiag.this.getDialog().cancel();
