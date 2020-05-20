@@ -63,7 +63,7 @@ public class TaskList extends DrawerObject implements Serializable {
         return id;
     }
 
-    public long getFolder_id() {
+    public long getFolderId() {
         return folder_id;
     }
 
