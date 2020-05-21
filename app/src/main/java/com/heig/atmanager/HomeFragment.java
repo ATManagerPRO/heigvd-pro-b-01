@@ -161,7 +161,7 @@ public class HomeFragment extends Fragment {
         TaskFeedAdapter newAdapter = new TaskFeedAdapter(tasks, getContext());
         tasksRecyclerView.swapAdapter(newAdapter, false);
 
-        Utils.setupGoalTodosFeedBubbled(view, goalsRecyclerView, goals);
+        Utils.setupGoalTodosFeedBubbled(view, goalsRecyclerView, goals, getContext());
         greetingText.setText(getGreetings());
         refreshLayout.setRefreshing(false);
     }
