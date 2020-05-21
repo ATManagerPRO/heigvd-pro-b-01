@@ -284,23 +284,29 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
     };
 
     private void orderTasks() {
-        ArrayList<Task> favorites = new ArrayList<>();
-        ArrayList<Task> others    = new ArrayList<>();
+        ArrayList<Task> favorites     = new ArrayList<>();
+        ArrayList<Task> othersDated   = new ArrayList<>();
+        ArrayList<Task> othersUndated = new ArrayList<>();
 
         for(Task task : tasksFull) {
             if(task.isFavorite()) {
                 favorites.add(task);
             } else {
-                others.add(task);
+                if(task.getDueDate() == null) {
+                    othersUndated.add(task);
+                } else {
+                    othersDated.add(task);
+                }
             }
         }
 
         // Order by date
         Collections.sort(favorites);
-        Collections.sort(others);
+        Collections.sort(othersDated);
 
         tasksFull = favorites;
-        tasksFull.addAll(others);
+        tasksFull.addAll(othersDated);
+        tasksFull.addAll(othersUndated);
         tasks = tasksFull;
     }
 
