@@ -96,7 +96,9 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
 
         dateTitles = new HashMap<>();
         for(Task task : tasks) {
-            dateTitles.put(convertToLocalDateViaInstant(task.getDueDate()), false);
+            if(task.getDueDate() != null){
+                dateTitles.put(convertToLocalDateViaInstant(task.getDueDate()), false);
+            }
         }
     }
 
@@ -116,18 +118,19 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         Calendar dueDateCalendar = Calendar.getInstance();
-        dueDateCalendar.setTime(tasks.get(position).getDueDate());
-        LocalDate localDueDate = convertToLocalDateViaInstant(tasks.get(position).getDueDate());
-        // Date title
-        if(!dateTitles.get(localDueDate)) {
-            holder.dateTitle.setVisibility(View.VISIBLE);
-            SimpleDateFormat sdf  = new SimpleDateFormat("dd MMM YYYY");
-            holder.dateTitle.setText(sdf.format(dueDateCalendar.getTime()).toUpperCase());
-            dateTitles.put(localDueDate, true);
-        } else {
+        if(tasks.get(position).getDueDate() != null){
+                dueDateCalendar.setTime(tasks.get(position).getDueDate());
+                LocalDate localDueDate = convertToLocalDateViaInstant(tasks.get(position).getDueDate());
+            // Date title
+            if(!dateTitles.get(localDueDate)) {
+                holder.dateTitle.setVisibility(View.VISIBLE);
+                SimpleDateFormat sdf  = new SimpleDateFormat("dd MMM YYYY");
+                holder.dateTitle.setText(sdf.format(dueDateCalendar.getTime()).toUpperCase());
+                dateTitles.put(localDueDate, true);
+            }
+        }else {
             holder.dateTitle.setVisibility(View.GONE);
         }
-
         // Title and description
         holder.title.setText(tasks.get(position).getTitle());
         holder.description.setText(tasks.get(position).getDescription());
@@ -143,7 +146,6 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         if(tasks.get(position).getDueDate() != null) {
             // Time
             String hours, minutes, meridiem;
-            Calendar dueDateCalendar = Calendar.getInstance();
             dueDateCalendar.setTime(tasks.get(position).getDueDate());
             hours    = Utils.formatNumber(dueDateCalendar.get(Calendar.HOUR_OF_DAY) % 12) + ":";
             minutes  = Utils.formatNumber(dueDateCalendar.get(Calendar.MINUTE));

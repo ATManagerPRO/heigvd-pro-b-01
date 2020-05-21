@@ -121,6 +121,11 @@ public class Task implements Comparable<Task> {
 
     @Override
     public int compareTo(Task task) {
+        if(getDueDate() == null && task.getDueDate() == null){
+            return 1;
+        } else if(getDueDate() == null || task.getDueDate() == null){
+            return -1;
+        }
         return getDueDate().compareTo(task.getDueDate());
     }
 }
