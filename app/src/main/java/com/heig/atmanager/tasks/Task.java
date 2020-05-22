@@ -117,6 +117,12 @@ public class Task implements Comparable<Task> {
         return tags;
     }
 
+    public void setReminderDate(Date reminderDate) {
+        this.reminderDate = reminderDate;
+    }
+
+
+
     public Date getDoneDate() {
         return doneDate;
     }
