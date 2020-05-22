@@ -57,7 +57,7 @@ public class AddTasklistDiag extends DialogFragment {
                 if(folderSpinner.getSelectedItem().equals(NONE) ) {
                     newTaskList = new TaskList(taskListName.getText().toString());
                 }else{
-                    newTaskList = new TaskList(taskListName.getText().toString(), ((Folder) folderSpinner.getSfelectedItem()).getId());
+                    newTaskList = new TaskList(taskListName.getText().toString(), ((Folder) folderSpinner.getSelectedItem()).getId());
 
                 }
                 PostRequests.postTaskList(newTaskList, getContext());
