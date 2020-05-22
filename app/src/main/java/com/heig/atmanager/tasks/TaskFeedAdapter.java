@@ -1,5 +1,6 @@
 package com.heig.atmanager.tasks;
 
+import android.content.Context;
 import android.icu.text.SimpleDateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
