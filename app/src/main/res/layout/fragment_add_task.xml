@@ -39,6 +39,7 @@
             android:maxLines="1"
             android:inputType="text"
             android:textSize="18sp"
+            android:maxLength="@integer/task_title"
             />
     </com.google.android.material.textfield.TextInputLayout>
 

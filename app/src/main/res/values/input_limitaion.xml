@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="folder_label">50</integer>
+    <integer name="goal_label">50</integer>
+    <integer name="tag_label">50</integer>
+    <integer name="tasklist_title">50</integer>
+    <integer name="task_title">50</integer>
+</resources>
