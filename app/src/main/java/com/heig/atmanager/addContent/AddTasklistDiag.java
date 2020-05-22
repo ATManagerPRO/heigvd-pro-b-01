@@ -24,6 +24,9 @@ import com.heig.atmanager.taskLists.TaskList;
 
 public class AddTasklistDiag extends DialogFragment {
 
+    private final static Folder NONE = new Folder("None");
+
+
     public AddTasklistDiag() {
         // Required empty public constructor
     }
@@ -38,9 +41,11 @@ public class AddTasklistDiag extends DialogFragment {
 
         final Spinner folderSpinner = view.findViewById(R.id.dropdwon_folder);
 
+
         final ArrayAdapter<Folder> spinnerAdapter = new FolderSpinnerAdapter(getActivity(),
                 R.layout.support_simple_spinner_dropdown_item, MainActivity.getUser().getFolders());
         spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        spinnerAdapter.add(NONE);
         folderSpinner.setAdapter(spinnerAdapter);
 
 
@@ -48,7 +53,13 @@ public class AddTasklistDiag extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 final EditText taskListName = view.findViewById(R.id.newTaskListName);
-                TaskList newTaskList = new TaskList(taskListName.getText().toString(), ((Folder) folderSpinner.getSelectedItem()).getId());
+                TaskList newTaskList;
+                if(folderSpinner.getSelectedItem().equals(NONE) ) {
+                    newTaskList = new TaskList(taskListName.getText().toString());
+                }else{
+                    newTaskList = new TaskList(taskListName.getText().toString(), ((Folder) folderSpinner.getSelectedItem()).getId());
+
+                }
                 PostRequests.postTaskList(newTaskList, getContext());
                 MainActivity.getUser().addTaskList(newTaskList);
             }
