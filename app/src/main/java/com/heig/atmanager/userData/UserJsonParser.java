@@ -41,11 +41,7 @@ public class UserJsonParser {
     // User identification
     private static final int USER_ID = 4;
 
-    // Response codes
-    private static final String RESPONSE_CODE      = "status code";
-    private static final String RESPONSE_MESSAGE   = "message";
-    private static final String RESPONSE_RESOURCE  = "resource";
-    private static final int RESPONSE_CODE_SUCCESS = 200;
+
 
 
     private String baseUserURL;
@@ -84,7 +80,7 @@ public class UserJsonParser {
             public void onResponse(JSONObject response) {
                 try {
                     if(isRequestValid(response)) {
-                        parseAndLoadTaskListsAndFolders(response.getJSONObject(RESPONSE_RESOURCE));
+                        parseAndLoadTaskListsAndFolders(response.getJSONObject(RequestConstant.RESPONSE_RESOURCE));
 
                         // Home Fragment view (today's activities)
                         Log.d(TAG, "loadAllDataIntoUser: loading today's activity...");
@@ -137,7 +133,7 @@ public class UserJsonParser {
             public void onResponse(JSONObject response) {
                 try {
                     if(isRequestValid(response)) {
-                        parseAndLoadTasks(response.getJSONObject(RESPONSE_RESOURCE));
+                        parseAndLoadTasks(response.getJSONObject(RequestConstant.RESPONSE_RESOURCE));
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
@@ -172,7 +168,7 @@ public class UserJsonParser {
             public void onResponse(JSONObject response) {
                 try {
                     if(isRequestValid(response)) {
-                        parseAndLoadGoalTodos(response.getJSONObject(RESPONSE_RESOURCE));
+                        parseAndLoadGoalTodos(response.getJSONObject(RequestConstant.RESPONSE_RESOURCE));
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
@@ -208,7 +204,7 @@ public class UserJsonParser {
             public void onResponse(JSONObject response) {
                 try {
                     if(isRequestValid(response)) {
-                        parseAndLoadTasks(response.getJSONObject(RESPONSE_RESOURCE));
+                        parseAndLoadTasks(response.getJSONObject(RequestConstant.RESPONSE_RESOURCE));
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
@@ -243,7 +239,7 @@ public class UserJsonParser {
             public void onResponse(JSONObject response) {
                 try {
                     if(isRequestValid(response)) {
-                        parseAndLoadGoalTodos(response.getJSONObject(RESPONSE_RESOURCE));
+                        parseAndLoadGoalTodos(response.getJSONObject(RequestConstant.RESPONSE_RESOURCE));
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
@@ -398,10 +394,10 @@ public class UserJsonParser {
 
     private boolean isRequestValid(JSONObject response) throws JSONException {
         // Get the response code
-        int responseCode = response.getInt(RESPONSE_CODE);
-        String responseMsg = response.getString(RESPONSE_MESSAGE);
+        int responseCode = response.getInt(RequestConstant.RESPONSE_CODE);
+        String responseMsg = response.getString(RequestConstant.RESPONSE_MESSAGE);
 
-        if(responseCode == RESPONSE_CODE_SUCCESS) {
+        if(responseCode == RequestConstant.RESPONSE_CODE_SUCCESS) {
             return true;
         } else {
             Log.e(TAG, "Error " + responseMsg);

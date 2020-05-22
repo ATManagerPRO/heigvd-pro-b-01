@@ -76,4 +76,10 @@ public final class RequestConstant {
     public final static String TAGS_URL = BASE_URL +TAGS_EXTENSION;
     public final static String USER_BASE_URL = BASE_URL + USER__EXTENSION;
 
+    // Response codes
+    public static final String RESPONSE_CODE      = "status code";
+    public static final String RESPONSE_MESSAGE   = "message";
+    public static final String RESPONSE_RESOURCE  = "resource";
+    public static final int RESPONSE_CODE_SUCCESS = 200;
+
 }
