@@ -124,10 +124,7 @@ public class MainActivity extends AppCompatActivity {
         user.setBackEndToken(i.getExtras().getString("userToken"));
         user.setUserId(i.getExtras().getLong("userId"));
 
-        // if the user is invited, show invitation info
-        if(i.getExtras().containsKey("invitation")){
-            openDeepLink(Uri.parse(i.getExtras().getString("invitation")));
-        }
+
         fab = findViewById(R.id.fab);
         fabAddGoal = findViewById(R.id.fab_add_goal);
         fabAddTask = findViewById(R.id.fab_add_task);
@@ -411,25 +408,6 @@ public class MainActivity extends AppCompatActivity {
         if (fragment != null) {
             loadFragment(fragment, previousFragment);
         }
-    }
-
-    /**
-     * Handle a the receive link
-     * @param data
-     */
-    void openDeepLink(Uri data) {
-        // Get link infomation
-        int taskListId = Integer.parseInt(data.getQueryParameter("taskListId"));
-        String userName = data.getQueryParameter("userName");
-        boolean isEditable = data.getBooleanQueryParameter("isEditable", false);
-        String senderMail = data.getQueryParameter("senderEmail");
-
-        Log.d(TAG, "openDeepLink: isEditable " + isEditable);
-
-        // Show to the user information
-        InviteDialog inviteDialog = InviteDialog.newInsance(userName, taskListId, isEditable, senderMail);
-        inviteDialog.show(getSupportFragmentManager(), "invited");
-        // add this task as mine
     }
 
     // Share invite Dialog

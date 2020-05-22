@@ -80,11 +80,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        // Handle incoming data
-        Intent intent = getIntent();
-        String action = intent.getAction();
-        data = intent.getData();
-        isInvited = action != null && action.equals(Intent.ACTION_VIEW);
     }
 
 
@@ -95,10 +90,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             Intent mainActivity = new Intent(SignInActivity.this, MainActivity.class);
             mainActivity.putExtra("userToken", token);
             mainActivity.putExtra("userId", id);
-            // If the user open our app with a invitation link pass the link further
-            if (isInvited) {
-                mainActivity.putExtra("invitation", data.toString());
-            }
             startActivity(mainActivity);
         }
     }
