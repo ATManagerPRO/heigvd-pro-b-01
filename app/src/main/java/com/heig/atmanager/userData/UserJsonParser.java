@@ -325,13 +325,24 @@ public class UserJsonParser {
             long id                = c.getLong(RequestConstant.ID);
             long taskListId        = c.getLong(RequestConstant.TASK_TASKLIST_ID);
             String title           = c.getString(RequestConstant.TASK_TITLE);
-            String description     = c.getString(RequestConstant.TASK_DESCRIPTION);
+            String description     = c.getString(RequestConstant.TASK_DESCRIPTION).equals("null") ?
+                    null : c.getString(RequestConstant.TASK_DESCRIPTION);
             boolean done           = c.isNull(RequestConstant.TASK_DONE_DATE);
             boolean favorite       = c.getInt(RequestConstant.TASK_FAVORITE) != 0;
             boolean archived       = c.getInt(RequestConstant.TASK_ARCHIVED) != 0;
             String dueDateStr      = c.getString(RequestConstant.TASK_DUE_DATE);
             String doneDateStr     = c.getString(RequestConstant.TASK_DONE_DATE);
             String reminderDateStr = c.getString(RequestConstant.TASK_REMINDER_DATE);
+            JSONArray tagsJson     = c.getJSONArray(RequestConstant.TAG_KEY);
+
+            ArrayList<String> tags = new ArrayList<>();
+            if(tagsJson.length() != 0) {
+
+                for (int j = 0; j < tagsJson.length(); j++) {
+                    tags.add(tagsJson.getJSONObject(j).getString(RequestConstant.TAG_LABEL));
+                }
+            }
+
 
             // Date parser
             SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -340,7 +351,7 @@ public class UserJsonParser {
             Date reminderDate     = reminderDateStr.equals("null") ? null : sdf.parse(reminderDateStr);
 
             // Creating the task and adding it to the current user
-            Task task = new Task(id, title, description , done, favorite, dueDate, doneDate, reminderDate);
+            Task task = new Task(id, title, description , done, favorite, dueDate, doneDate, reminderDate, tags);
             task.setTasklist(user.getTaskList(taskListId));
             task.setArchived(archived);
             user.addTask(task);
