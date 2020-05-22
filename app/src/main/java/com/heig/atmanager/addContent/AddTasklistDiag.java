@@ -24,7 +24,7 @@ import com.heig.atmanager.taskLists.TaskList;
 
 public class AddTasklistDiag extends DialogFragment {
 
-    private final static Folder NONE = new Folder("None");
+    private final static Folder NONE = new Folder("- None -");
 
 
     public AddTasklistDiag() {
@@ -45,7 +45,7 @@ public class AddTasklistDiag extends DialogFragment {
         final ArrayAdapter<Folder> spinnerAdapter = new FolderSpinnerAdapter(getActivity(),
                 R.layout.support_simple_spinner_dropdown_item, MainActivity.getUser().getFolders());
         spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        spinnerAdapter.add(NONE);
+        spinnerAdapter.insert(NONE, 0);
         folderSpinner.setAdapter(spinnerAdapter);
 
 
@@ -57,7 +57,7 @@ public class AddTasklistDiag extends DialogFragment {
                 if(folderSpinner.getSelectedItem().equals(NONE) ) {
                     newTaskList = new TaskList(taskListName.getText().toString());
                 }else{
-                    newTaskList = new TaskList(taskListName.getText().toString(), ((Folder) folderSpinner.getSelectedItem()).getId());
+                    newTaskList = new TaskList(taskListName.getText().toString(), ((Folder) folderSpinner.getSfelectedItem()).getId());
 
                 }
                 PostRequests.postTaskList(newTaskList, getContext());
