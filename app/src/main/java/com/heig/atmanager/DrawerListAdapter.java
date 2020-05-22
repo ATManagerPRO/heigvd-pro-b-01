@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.heig.atmanager.dialog.ShareTaskListDiag;
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.taskLists.TaskList;
+import com.heig.atmanager.tasks.Task;
 
 import java.util.ArrayList;
 
@@ -82,11 +83,23 @@ public class DrawerListAdapter extends BaseExpandableListAdapter {
 
         TextView title = (TextView) view.findViewById(R.id.drawer_object_title);
         title.setText(name);
-        Button shareBtn = view.findViewById(R.id.share);
 
         // If a default list (without folder) "remove" the button
         if(!((DrawerObject) getGroup(i)).isFolder()){
-            shareBtn.setVisibility(View.GONE);
+            Button shareBtn = view.findViewById(R.id.share);
+
+            final long taskListId = ((TaskList) getGroup(i)).getId();
+            // Set false to separate the click on the button and the list
+            shareBtn.setFocusable(false);
+            shareBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    // callback to MainActivity to handle the dialog
+                    ((MainActivity) context).showShareTaskDialog(taskListId);
+
+                }
+            });
         }
 
         return view;
