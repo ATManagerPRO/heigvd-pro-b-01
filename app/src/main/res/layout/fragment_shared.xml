@@ -22,13 +22,14 @@
         android:text="@string/invitee_email" />
 
     <EditText
-        android:id="@+id/newTaskListName"
+        android:id="@+id/invitee_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:hint="@string/email"
-        android:inputType="text"
+        android:inputType="textEmailAddress"
         android:maxLength="@integer/tasklist_title"
+
         />
 
 
