@@ -7,9 +7,18 @@
     tools:context=".addContent.AddTasklistDiag">
 
     <TextView
+        android:id="@+id/diag_description"
+        style="@style/MaterialAlertDialog.MaterialComponents.Title.Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="start"
+        android:text="@string/add_new_tasklist"
+        android:padding="8dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
         android:padding="8dp"
         android:text="@string/which_folder" />
 
@@ -21,22 +30,31 @@
         android:padding="16dp"
         android:spinnerMode="dropdown" />
 
-    <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal"
-    android:padding="8dp"
-    android:text="@string/folder_name" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/newTaskListName_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <EditText
-    android:id="@+id/newTaskListName"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:hint="@string/new_tasklist_name"
-    android:inputType="text"
-        android:maxLength="@integer/tasklist_title"
-    />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/newTaskListName"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="4dp"
+            android:hint="@string/tasklist"
+            android:maxLength="@integer/tag_label">
+
+        </com.google.android.material.textfield.TextInputEditText>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+
 
 
 
