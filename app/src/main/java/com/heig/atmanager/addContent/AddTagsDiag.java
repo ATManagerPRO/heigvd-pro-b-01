@@ -35,6 +35,7 @@ public class AddTagsDiag extends DialogFragment {
         final LayoutInflater inflater = requireActivity().getLayoutInflater();
         final View view = inflater.inflate(R.layout.fragment_add_tags_diag, null);
         AlertDialog dialog = builder.setView(view)
+                // Null, we override this later to change the close behaviour
                 .setPositiveButton(getString(R.string.add), null)
                 .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
@@ -47,9 +48,9 @@ public class AddTagsDiag extends DialogFragment {
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-                Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                Button positiveBtn = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
 
-                button.setOnClickListener(new View.OnClickListener() {
+                positiveBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         final EditText tagName = view.findViewById(R.id.newTagName);
