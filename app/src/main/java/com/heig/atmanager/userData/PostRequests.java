@@ -1,7 +1,7 @@
 package com.heig.atmanager.userData;
 
-import android.app.DownloadManager;
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PostRequests {
+
+    private final static String TAG = "PostRequests";
 
     static public void postFolder(Folder newFolder, Context context) {
         //post request to the server
@@ -213,21 +215,23 @@ public class PostRequests {
         }
     }
 
-    static public void postShared(int todoListId, String invitedEmail, Context context){
+    static public void postShared(long todoListId, String inviteeEmail, Context context){
         try{
             String URL = "https://atmanager.gollgot.app/api/v1/todolists/" + todoListId + "/share";
 
             JSONObject jsonBody = new JSONObject();
 
-            jsonBody.put("invitedEmail ", invitedEmail);
+            jsonBody.put("invitedEmail", inviteeEmail);
 
             JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
+                    Log.d(TAG, "onResponse: ");
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    Log.d(TAG, "onErrorResponse: " + error.getMessage());
                 }
             }) {
                 @Override
