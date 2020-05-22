@@ -117,6 +117,12 @@ public class Task implements Comparable<Task> {
         return tags;
     }
 
+    public void setReminderDate(Date reminderDate) {
+        this.reminderDate = reminderDate;
+    }
+
+
+
     public Date getDoneDate() {
         return doneDate;
     }
@@ -127,10 +133,13 @@ public class Task implements Comparable<Task> {
 
     @Override
     public int compareTo(Task task) {
+        // If both are null, they are equals
         if(getDueDate() == null && task.getDueDate() == null){
-            return 1;
-        } else if(getDueDate() == null || task.getDueDate() == null){
+            return 0;
+        } else if(getDueDate() == null ) { // if this dueDate is null, it means that arg is greater
             return -1;
+        } else if(task.getDueDate() == null) { // if the arg dueDate is null, it means that this is greater
+            return 1;
         }
         return getDueDate().compareTo(task.getDueDate());
     }

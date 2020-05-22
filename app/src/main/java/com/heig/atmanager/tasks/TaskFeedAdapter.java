@@ -1,11 +1,7 @@
 package com.heig.atmanager.tasks;
 
-import android.icu.text.SimpleDateFormat;
-import android.util.Log;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.util.Log;
+import android.icu.text.SimpleDateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.anychart.scales.Linear;
-import com.heig.atmanager.HomeFragment;
 import com.heig.atmanager.MainActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -254,6 +248,11 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         return tasks.size();
     }
 
+
+    /*
+    TODO : We have a problem here, the hash map and taskfull are not updated, the second added element create a bus
+    public  void  setTasks(ArrayList<Task> tasks){
+     */
     public void setTasks(ArrayList<Task> tasks) {
         this.tasks = tasks;
         notifyDataSetChanged();

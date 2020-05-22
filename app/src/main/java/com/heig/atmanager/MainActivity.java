@@ -120,7 +120,12 @@ public class MainActivity extends AppCompatActivity {
 
         // Creating the user with basic data
         Intent i = getIntent();
-        user = new User(userAccount.getDisplayName(), userAccount.getIdToken(), userAccount.getEmail());
+        Bundle bundle = i.getExtras();
+        if (bundle != null) {
+            for (String key : bundle.keySet()) {
+                Log.e(TAG, key + " : " + (bundle.get(key) != null ? bundle.get(key) : "NULL"));
+            }
+        }        user = new User(userAccount.getDisplayName(), userAccount.getIdToken(), userAccount.getEmail());
         user.setBackEndToken(i.getExtras().getString("userToken"));
         user.setUserId(i.getExtras().getLong("userId"));
 

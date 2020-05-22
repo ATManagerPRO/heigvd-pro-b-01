@@ -71,7 +71,7 @@ public class PostRequests {
 
 
             jsonBody.put("title", newTaskList.getName());
-            jsonBody.put("folder_id", newTaskList.getFolder_id());
+            jsonBody.put("folder_id", newTaskList.getFolderId());
 
             JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
                 @Override
