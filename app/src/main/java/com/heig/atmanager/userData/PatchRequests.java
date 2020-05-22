@@ -22,7 +22,7 @@ public class PatchRequests {
     static public void patchTaskDoneDate(Task newTask, Context context) {
         //post request to the server
         try {
-            String URL = RequestConstant.TASK_URL + newTask.getId() + "/" + RequestConstant.DONE_EXTENSION;
+            String URL = RequestConstant.TASK_URL + "/" + newTask.getId() + RequestConstant.DONE_EXTENSION;
             JSONObject jsonBody = new JSONObject();
 
             android.icu.text.SimpleDateFormat sdf = new android.icu.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -61,7 +61,7 @@ public class PatchRequests {
     static public void patchTaskFavorite(Task newTask, Context context) {
         //post request to the server
         try {
-            String URL = RequestConstant.TASK_URL + newTask.getId() + "/" + RequestConstant.FAVORITE_EXTENSION;
+            String URL = RequestConstant.TASK_URL + "/" + newTask.getId() + RequestConstant.FAVORITE_EXTENSION;
             JSONObject jsonBody = new JSONObject();
 
             jsonBody.put(RequestConstant.TODO_ID, newTask.getId());
@@ -94,7 +94,7 @@ public class PatchRequests {
     static public void patchGoalTodoDoneDate(GoalTodo newGoalTodo, Context context) {
         //post request to the server
         try {
-            String URL = RequestConstant.TASK_URL + newGoalTodo.getGoalTodoId() + "/" + RequestConstant.DONE_EXTENSION;
+            String URL = RequestConstant.TASK_URL + "/" + newGoalTodo.getGoalTodoId() + RequestConstant.DONE_EXTENSION;
             JSONObject jsonBody = new JSONObject();
 
             android.icu.text.SimpleDateFormat sdf = new android.icu.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
