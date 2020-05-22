@@ -76,6 +76,7 @@ public class UserJsonParser {
     private static final String TASK_DUE_DATE      = "dueDate";
     private static final String TASK_DONE_DATE     = "dateTimeDone";
     private static final String TASK_REMINDER_DATE = "reminderDateTime";
+    private static final String TASK_ARCHIVED = "archived";
     // - Goals
     private static final String GOAL_KEY               = "goals";
     private static final String GOAL_ID                = "goal_id";
@@ -136,7 +137,7 @@ public class UserJsonParser {
 
                         // Home Fragment view (today's activities)
                         Log.d(TAG, "loadAllDataIntoUser: loading today's activity...");
-                        loadTodaysTasks(queue);
+                        //loadTodaysTasks(queue); only ssems to load tasks for today twice causing bugs (the other time in loadAllTasks)
                         loadTodaysGoalsTodo(queue);
 
                         // Calendar view
@@ -380,6 +381,7 @@ public class UserJsonParser {
             String description     = c.getString(TASK_DESCRIPTION);
             boolean done           = c.isNull(TASK_DONE_DATE);
             boolean favorite       = c.getInt(TASK_FAVORITE) != 0;
+            boolean archived       = c.getInt(TASK_ARCHIVED) != 0;
             String dueDateStr      = c.getString(TASK_DUE_DATE);
             String doneDateStr     = c.getString(TASK_DONE_DATE);
             String reminderDateStr = c.getString(TASK_REMINDER_DATE);
@@ -393,6 +395,7 @@ public class UserJsonParser {
             // Creating the task and adding it to the current user
             Task task = new Task(id, title, description , done, favorite, dueDate, doneDate, reminderDate);
             task.setTasklist(user.getTaskList(taskListId));
+            task.setArchived(archived);
             user.addTask(task);
         }
     }

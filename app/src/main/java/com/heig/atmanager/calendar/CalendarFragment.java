@@ -89,7 +89,7 @@ public class CalendarFragment extends Fragment {
                 dateCalendar.set(Calendar.MONTH, date.getMonth() - 1);
                 dateCalendar.set(Calendar.YEAR, date.getYear());
                 tasks = MainActivity.getUser().getTasksForDay(dateCalendar.getTime());
-                Utils.setupTasksFeed(getView(), tasksRecyclerView, tasks);
+                Utils.setupTasksFeed(getView(), tasksRecyclerView, tasks, getContext());
             }
         });
 
@@ -104,7 +104,7 @@ public class CalendarFragment extends Fragment {
 
         // Task feed
         tasksRecyclerView = (RecyclerView) v.findViewById(R.id.tasks_rv);
-        Utils.setupTasksFeed(v, tasksRecyclerView, tasks);
+        Utils.setupTasksFeed(v, tasksRecyclerView, tasks, getContext());
 
         return v;
     }
