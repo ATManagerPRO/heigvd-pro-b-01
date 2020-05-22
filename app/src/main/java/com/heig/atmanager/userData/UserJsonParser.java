@@ -41,13 +41,6 @@ public class UserJsonParser {
     // User identification
     private static final int USER_ID = 4;
 
-    // Http urls
-    private String URL_FOLDERS_AND_TASKLISTS;
-    private String URL_TODAY_TASKS;
-    private String URL_TODAY_GOALS_TODO;
-    private String URL_ALL_TASKS;
-    private String URL_ALL_GOAL_TODOS;
-
     // Response codes
     private static final String RESPONSE_CODE      = "status code";
     private static final String RESPONSE_MESSAGE   = "message";
@@ -94,6 +87,8 @@ public class UserJsonParser {
     private static final String GOAL_TODO_DONE_DATE     = "dateTimeDone";
     private static final String GOAL_TODO_DUE_DATE      = "dueDate";
 
+    private String baseUserURL;
+
     // User reference by context
     private Context mainContext;
     private User user;
@@ -104,12 +99,7 @@ public class UserJsonParser {
         Log.d(TAG, "updateUI: testingSignIn creating UserJsonParson");
 
         // Update urls with user's id
-        String base_url = "https://atmanager.gollgot.app/api/v1/users/" + MainActivity.getUser().getUserId() ;
-        URL_FOLDERS_AND_TASKLISTS = base_url + "/todolists";
-        URL_TODAY_TASKS           = base_url + "/todos/today";
-        URL_TODAY_GOALS_TODO      = base_url + "/goaltodos/today";
-        URL_ALL_TASKS             = base_url + "/todos";
-        URL_ALL_GOAL_TODOS        = base_url + "/goaltodos";
+        baseUserURL = RequestConstant.USER_BASE_URL + "/"+ MainActivity.getUser().getUserId() ;
 
         Log.d(TAG, "updateUI: loading for : testingSignIn " + MainActivity.getUser().getUserId());
     }
@@ -127,7 +117,7 @@ public class UserJsonParser {
      */
     private void loadFoldersAndTasklists(final RequestQueue queue) {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
-                URL_FOLDERS_AND_TASKLISTS, null, new Response.Listener<JSONObject>() {
+                baseUserURL + RequestConstant.TODOLISTS_EXTENSION, null, new Response.Listener<JSONObject>() {
 
             @Override
             public void onResponse(JSONObject response) {
@@ -181,7 +171,7 @@ public class UserJsonParser {
      */
     private void loadTodaysTasks(RequestQueue queue) {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
-                URL_TODAY_TASKS, null, new Response.Listener<JSONObject>() {
+                baseUserURL + RequestConstant.TODOS_EXTENSION + RequestConstant.TODAY_EXTENSION, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
@@ -216,7 +206,7 @@ public class UserJsonParser {
      */
     private void loadTodaysGoalsTodo(RequestQueue queue) {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
-                URL_TODAY_GOALS_TODO, null, new Response.Listener<JSONObject>() {
+                baseUserURL + RequestConstant.GOAL_TODOS_EXTENSION + RequestConstant.TODAY_EXTENSION, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
@@ -252,7 +242,7 @@ public class UserJsonParser {
      */
     private void loadAllTasks(RequestQueue queue) {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
-                URL_ALL_TASKS, null, new Response.Listener<JSONObject>() {
+                baseUserURL + RequestConstant.TODOS_EXTENSION, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
@@ -287,7 +277,7 @@ public class UserJsonParser {
      */
     private void loadAllGoalTodos(RequestQueue queue) {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
-                URL_ALL_GOAL_TODOS, null, new Response.Listener<JSONObject>() {
+                baseUserURL + RequestConstant.GOAL_TODOS_EXTENSION, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {

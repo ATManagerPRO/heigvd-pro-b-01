@@ -1,5 +1,7 @@
 package com.heig.atmanager.userData;
 
+import com.heig.atmanager.MainActivity;
+
 public final class RequestConstant {
 
     // /!\ All URL begins with a slash
@@ -8,12 +10,13 @@ public final class RequestConstant {
     public final static String DONE_EXTENSION = "/done";
     public final static String FAVORITE_EXTENSION = "/favorite";
     private final static String FOLDERS_EXTENSION = "/folders";
-    private final static String TODOLISTS_EXTENSION = "/todolists";
+    public final static String TODOLISTS_EXTENSION = "/todolists";
     private final static String GOALS_EXTENSION = "/goals";
-    private final static String TODOS_EXTENSION = "/todos";
+    public final static String TODOS_EXTENSION = "/todos";
     private final static String TAGS_EXTENSION = "/tags";
-    private final static String TODAY_EXTENSION = "/today";
-    private final static String GOAL_TODOS = "/goaltodos";
+    public final static String TODAY_EXTENSION = "/today";
+    public final static String GOAL_TODOS_EXTENSION = "/goaltodos";
+    private final static String USER__EXTENSION = "/users";
 
     // Data keywords
     // - Folders
@@ -72,5 +75,6 @@ public final class RequestConstant {
     public final static String TODOLISTS_URL = BASE_URL + TODOLISTS_EXTENSION;
     public final static String GOAL_URL = BASE_URL + GOALS_EXTENSION;
     public final static String TAGS_URL = BASE_URL +TAGS_EXTENSION;
+    public final static String USER_BASE_URL = BASE_URL + USER__EXTENSION;
 
 }
