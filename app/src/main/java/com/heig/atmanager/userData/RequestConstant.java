@@ -5,8 +5,8 @@ public final class RequestConstant {
     // /!\ All URL ends with a slash
     private final static String BASE_URL = "https://atmanager.gollgot.app/api/v1/";
 
-    private final static String DONE_EXTENSION = "done/";
-    private final static String FAVORITE_EXTENSION = "favorite/";
+    public final static String DONE_EXTENSION = "done/";
+    public final static String FAVORITE_EXTENSION = "favorite/";
     private final static String FOLDERS_EXTENSION = "folders/";
     private final static String TODOLISTS_EXTENSION = "todolists/";
     private final static String GOALS_EXTENSION = "goals/";
@@ -54,6 +54,9 @@ public final class RequestConstant {
     public static final String GOAL_TODO_QUANTITY_DONE = "quantityDone";
     public static final String GOAL_TODO_DONE_DATE     = "dateTimeDone";
     public static final String GOAL_TODO_DUE_DATE      = "dueDate";
+
+    // - Misc
+    public static final String DONE                    = "done";
     
     // URL
     public final static String TASK_URL = BASE_URL + TODOS_EXTENSION;

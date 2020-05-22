@@ -22,16 +22,16 @@ public class PatchRequests {
     static public void patchTaskDoneDate(Task newTask, Context context) {
         //post request to the server
         try {
-            String URL = "https://atmanager.gollgot.app/api/v1/todos/"+ newTask.getId() +"/done";
+            String URL = RequestConstant.TASK_URL + newTask.getId() + "/" + RequestConstant.DONE_EXTENSION;
             JSONObject jsonBody = new JSONObject();
 
-            android.icu.text.SimpleDateFormat sdf  = new android.icu.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            android.icu.text.SimpleDateFormat sdf = new android.icu.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-            jsonBody.put("todo_id", newTask.getId());
-            if(newTask.getDoneDate() != null) {
-                jsonBody.put("done", sdf.format(newTask.getDoneDate()));
-            }else{
-                jsonBody.put("done", null);
+            jsonBody.put(RequestConstant.TODO_ID, newTask.getId());
+            if (newTask.getDoneDate() != null) {
+                jsonBody.put(RequestConstant.DONE, sdf.format(newTask.getDoneDate()));
+            } else {
+                jsonBody.put(RequestConstant.DONE, null);
             }
 
             JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.PATCH, URL, jsonBody, new Response.Listener<JSONObject>() {
@@ -61,11 +61,11 @@ public class PatchRequests {
     static public void patchTaskFavorite(Task newTask, Context context) {
         //post request to the server
         try {
-            String URL = "https://atmanager.gollgot.app/api/v1/todos/"+ newTask.getId() +"/favorite";
+            String URL = RequestConstant.TASK_URL + newTask.getId() + "/" + RequestConstant.FAVORITE_EXTENSION;
             JSONObject jsonBody = new JSONObject();
 
-            jsonBody.put("todo_id", newTask.getId());
-            jsonBody.put("favorite", newTask.isFavorite());
+            jsonBody.put(RequestConstant.TODO_ID, newTask.getId());
+            jsonBody.put(RequestConstant.TASK_FAVORITE, newTask.isFavorite());
 
             JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.PATCH, URL, jsonBody, new Response.Listener<JSONObject>() {
                 @Override
@@ -94,16 +94,16 @@ public class PatchRequests {
     static public void patchGoalTodoDoneDate(GoalTodo newGoalTodo, Context context) {
         //post request to the server
         try {
-            String URL = "https://atmanager.gollgot.app/api/v1/todos/"+ newGoalTodo.getGoalTodoId() +"/done";
+            String URL = RequestConstant.TASK_URL + newGoalTodo.getGoalTodoId() + "/" + RequestConstant.DONE_EXTENSION;
             JSONObject jsonBody = new JSONObject();
 
-            android.icu.text.SimpleDateFormat sdf  = new android.icu.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            android.icu.text.SimpleDateFormat sdf = new android.icu.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-            jsonBody.put("todo_id", newGoalTodo.getGoalTodoId());
-            if(newGoalTodo.getDoneDate() != null) {
-                jsonBody.put("done", sdf.format(newGoalTodo.getDoneDate()));
-            }else{
-                jsonBody.put("done", null);
+            jsonBody.put(RequestConstant.TODO_ID, newGoalTodo.getGoalTodoId());
+            if (newGoalTodo.getDoneDate() != null) {
+                jsonBody.put(RequestConstant.DONE, sdf.format(newGoalTodo.getDoneDate()));
+            } else {
+                jsonBody.put(RequestConstant.DONE, null);
             }
 
             JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.PATCH, URL, jsonBody, new Response.Listener<JSONObject>() {
