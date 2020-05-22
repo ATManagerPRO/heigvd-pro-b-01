@@ -66,7 +66,7 @@ import com.heig.atmanager.userData.UserJsonParser;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements ShareTaskListDiag.ShareDialogListener {
+public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity" ;
     public static User user;
 
@@ -436,34 +436,6 @@ public class MainActivity extends AppCompatActivity implements ShareTaskListDiag
     public void showShareTaskDialog(long taskListId){
         DialogFragment dialog = new ShareTaskListDiag(taskListId);
         dialog.show(getSupportFragmentManager(), "ShareTaskListDialog");
-    }
-
-    @Override
-    public void onDialogPositiveClick(DialogFragment dialog, long taskListId, boolean isEditable) {
-
-        final Uri.Builder builder = new Uri.Builder();
-
-        // Create the URI to send
-        builder.scheme("https")
-                .authority("atmanager.com")
-                //Need to add the real id
-                .appendQueryParameter("taskListId", String.valueOf(taskListId))
-                .appendQueryParameter("userName", user.getUserName())
-                .appendQueryParameter("isEditable", isEditable ? "1" : "0")
-                .appendQueryParameter("senderEmail", user.getEmail());
-
-        Log.d(TAG, "onShareClicked : " + builder.build().toString());
-
-        // Attache to the intent
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT, builder.build().toString());
-        startActivity(Intent.createChooser(intent, "Share TaskList"));
-    }
-
-    @Override
-    public void onDialogNegativeClick(DialogFragment dialog) {
-        dialog.getDialog().cancel();
     }
 
     public void setContentAdapter(RecyclerView.Adapter adapter) {
