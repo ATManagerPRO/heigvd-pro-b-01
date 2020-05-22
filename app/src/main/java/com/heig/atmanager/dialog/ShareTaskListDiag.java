@@ -2,7 +2,6 @@ package com.heig.atmanager.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
@@ -21,27 +20,6 @@ public class ShareTaskListDiag extends DialogFragment {
 
     public ShareTaskListDiag(long taskListId) {
         this.taskListId = taskListId;
-    }
-
-    /**
-     * Interface for the callback
-     */
-    public interface ShareDialogListener{
-        public void onDialogPositiveClick(DialogFragment dialog, long taskListId, boolean isEditabl);
-        public void onDialogNegativeClick(DialogFragment dialog);
-    }
-
-    ShareDialogListener listener;
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-
-        try {
-            listener = (ShareDialogListener) context;
-        } catch (ClassCastException e){
-            throw new ClassCastException(getActivity().toString() + "must implement ShareDialogueListener");
-        }
     }
 
     @NonNull
@@ -64,12 +42,12 @@ public class ShareTaskListDiag extends DialogFragment {
         }).setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                listener.onDialogPositiveClick(ShareTaskListDiag.this, taskListId, isEditable[0]);
+
             }
         }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                listener.onDialogNegativeClick(ShareTaskListDiag.this);
+
             }
         });
 
