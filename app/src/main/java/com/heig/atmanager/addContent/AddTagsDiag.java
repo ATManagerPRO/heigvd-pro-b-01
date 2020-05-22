@@ -11,8 +11,11 @@ import androidx.fragment.app.DialogFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.userData.PostRequests;
 import com.heig.atmanager.R;
@@ -31,25 +34,42 @@ public class AddTagsDiag extends DialogFragment {
 
         final LayoutInflater inflater = requireActivity().getLayoutInflater();
         final View view = inflater.inflate(R.layout.fragment_add_tags_diag, null);
-        builder.setView(view).setPositiveButton(getString(R.string.add), new DialogInterface.OnClickListener() {
+        AlertDialog dialog = builder.setView(view)
+                .setPositiveButton(getString(R.string.add), null)
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        AddTagsDiag.this.getDialog().cancel();
+                    }
+                })
+                .create();
+
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+            public void onShow(DialogInterface dialog) {
+                Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
 
-                final EditText tagName = view.findViewById(R.id.newTagName);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final EditText tagName = view.findViewById(R.id.newTagName);
 
-                PostRequests.postTag(tagName.getText().toString(), getContext());
-                MainActivity.getUser().addTag(tagName.getText().toString());
+                        TextInputLayout tagLayout = view.findViewById(R.id.newTagName_layout);
 
-            }
-        }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                AddTagsDiag.this.getDialog().cancel();
+                        if (tagName.getText().toString().isEmpty()) {
+                            tagLayout.setError(getString(R.string.input_missing));
+                        } else {
+                            PostRequests.postTag(tagName.getText().toString(), getContext());
+                            MainActivity.getUser().addTag(tagName.getText().toString());
+                            dismiss();
+                        }
+                    }
+                });
             }
         });
 
 
-        return builder.create();
+        return dialog;
 
     }
 }
