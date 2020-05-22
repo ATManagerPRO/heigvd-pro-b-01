@@ -60,7 +60,7 @@ public class TaskListFragment extends Fragment {
         tasksRv.setHasFixedSize(true);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(v.getContext());
         tasksRv.setLayoutManager(manager);
-        tasksAdapter = new TaskFeedAdapter(tasks);
+        tasksAdapter = new TaskFeedAdapter(tasks, getContext());
         tasksRv.setAdapter(tasksAdapter);
         // Set adapter for searches
         ((MainActivity) getContext()).setContentAdapter(tasksAdapter);
