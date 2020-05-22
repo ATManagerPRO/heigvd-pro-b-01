@@ -21,7 +21,7 @@ public class DeleteRequests {
     static public void deleteTask (Task oldTask, Context context) {
         //post request to the server
         try {
-            String URL = RequestConstant.DELETE_TASK_URL + oldTask.getId();
+            String URL = RequestConstant.TASK_URL + oldTask.getId();
             JSONObject jsonBody = new JSONObject();
 
             jsonBody.put(RequestConstant.TODO_ID, oldTask.getId());

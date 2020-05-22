@@ -56,5 +56,5 @@ public final class RequestConstant {
     public static final String GOAL_TODO_DUE_DATE      = "dueDate";
     
     // URL
-    public final static String DELETE_TASK_URL = BASE_URL + TODOS_EXTENSION;
+    public final static String TASK_URL = BASE_URL + TODOS_EXTENSION;
 }
