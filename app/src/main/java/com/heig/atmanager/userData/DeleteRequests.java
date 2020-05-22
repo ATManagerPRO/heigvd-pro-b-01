@@ -21,10 +21,10 @@ public class DeleteRequests {
     static public void deleteTask (Task oldTask, Context context) {
         //post request to the server
         try {
-            String URL = "https://atmanager.gollgot.app/api/v1/todos/"+ oldTask.getId();
+            String URL = RequestConstant.DELETE_TASK_URL + oldTask.getId();
             JSONObject jsonBody = new JSONObject();
 
-            jsonBody.put("todo_id", oldTask.getId());
+            jsonBody.put(RequestConstant.TODO_ID, oldTask.getId());
 
             JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.DELETE, URL, jsonBody, new Response.Listener<JSONObject>() {
                 @Override
