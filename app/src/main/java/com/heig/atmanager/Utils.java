@@ -1,5 +1,6 @@
 package com.heig.atmanager;
 
+import android.content.Context;
 import android.view.View;
 
 import androidx.fragment.app.FragmentActivity;
@@ -92,7 +93,7 @@ public class Utils {
     }
 
 
-    public static void setupTasksFeed(View v, RecyclerView rv, ArrayList<Task> tasks) {
+    public static void setupTasksFeed(View v, RecyclerView rv, ArrayList<Task> tasks, Context context) {
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         rv.setHasFixedSize(true);
@@ -102,7 +103,7 @@ public class Utils {
         rv.setLayoutManager(manager);
 
         // specify an adapter (see also next example)
-        RecyclerView.Adapter adapter = new TaskFeedAdapter(tasks);
+        RecyclerView.Adapter adapter = new TaskFeedAdapter(tasks, context);
         rv.setAdapter(adapter);
     }
 

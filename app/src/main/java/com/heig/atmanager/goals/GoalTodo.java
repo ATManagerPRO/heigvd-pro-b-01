@@ -90,4 +90,7 @@ public class GoalTodo {
         return dueDate;
     }
 
+    public long getGoalTodoId() {
+        return goalTodoId;
+    }
 }

@@ -23,7 +23,8 @@
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp"
-        android:hint="@string/tag" />
+        android:hint="@string/tag"
+        android:maxLength="@integer/tag_label"/>
 
 
 

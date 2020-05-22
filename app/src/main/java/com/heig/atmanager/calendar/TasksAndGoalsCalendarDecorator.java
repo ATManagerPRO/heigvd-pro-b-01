@@ -12,7 +12,7 @@ import java.util.Date;
  * Author : Stéphane Bottin
  * Date   : 22.03.2020
  *
- * Decorator to give the user an overiew on how much there is goals and tasks on a day
+ * Decorator to give the user an overiew on how much there is tasks on a day
  * without opening the days' content
  */
 public class TasksAndGoalsCalendarDecorator implements DayViewDecorator {
