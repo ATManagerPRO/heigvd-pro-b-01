@@ -1,6 +1,5 @@
 package com.heig.atmanager.userData;
 
-import com.heig.atmanager.MainActivity;
 
 public final class RequestConstant {
 

@@ -48,45 +48,6 @@ public class UserJsonParser {
     private static final int RESPONSE_CODE_SUCCESS = 200;
 
 
-    // Data keywords
-    // - Folders
-    private static final String FOLDERS_KEY       = "folders";
-    private static final String FOLDERS_ID        = "id";
-    private static final String FOLDERS_TITLE     = "label";
-    private static final String FOLDERS_TASKLISTS = "todolist";
-    // - TaskLists
-    private static final String TASKLISTS_KEY       = "todoLists";
-    private static final String TASKLISTS_ID        = "id";
-    private static final String TASKLISTS_TITLE     = "title";
-    private static final String TASKLISTS_FOLDER_ID = "folder_id";
-    // - Tasks
-    private static final String TASK_KEY           = "todos";
-    private static final String TASK_ID            = "id";
-    private static final String TASK_TASKLIST_ID   = "todo_list_id";
-    private static final String TASK_TITLE         = "title";
-    private static final String TASK_DESCRIPTION   = "details";
-    private static final String TASK_FAVORITE      = "favorite";
-    private static final String TASK_DUE_DATE      = "dueDate";
-    private static final String TASK_DONE_DATE     = "dateTimeDone";
-    private static final String TASK_REMINDER_DATE = "reminderDateTime";
-    private static final String TASK_ARCHIVED = "archived";
-    // - Goals
-    private static final String GOAL_KEY               = "goals";
-    private static final String GOAL_ID                = "goal_id";
-    private static final String GOAL_DUE_DATE          = "endDate_goal";
-    private static final String GOAL_INTERVAL          = "interval_id";
-    private static final String GOAL_INTERVAL_NUMBER   = "intervalValue";
-    private static final String GOAL_TODO_CREATED_DATE = "created_at";
-    private static final String GOAL_TODO_UPDATED_DATE = "updated_at";
-    private static final String GOAL_LABEL             = "label";
-    private static final String GOAL_QUANTITY          = "quantity";
-    // - GoalTodo
-    private static final String GOAL_TODO_KEY           = "goalTodos";
-    private static final String GOAL_TODO_ID            = "id";
-    private static final String GOAL_TODO_QUANTITY_DONE = "quantityDone";
-    private static final String GOAL_TODO_DONE_DATE     = "dateTimeDone";
-    private static final String GOAL_TODO_DUE_DATE      = "dueDate";
-
     private String baseUserURL;
 
     // User reference by context
@@ -310,17 +271,17 @@ public class UserJsonParser {
     private void parseAndLoadTaskListsAndFolders(JSONObject response) throws JSONException {
 
         // Getting JSON Array node
-        JSONArray tasklists = response.getJSONArray(TASKLISTS_KEY);
-        JSONArray folders   = response.getJSONArray(FOLDERS_KEY);
+        JSONArray tasklists = response.getJSONArray(RequestConstant.TASKLISTS_KEY);
+        JSONArray folders   = response.getJSONArray(RequestConstant.FOLDERS_KEY);
 
         // looping through all taskLists
         for (int i = 0; i < tasklists.length(); i++) {
             JSONObject c = tasklists.getJSONObject(i);
 
             // Tasklist data
-            String id        = c.getString(TASKLISTS_ID);
-            String title     = c.getString(TASKLISTS_TITLE);
-            String folder_id = c.isNull(TASKLISTS_FOLDER_ID) ? "-1" : c.getString(TASKLISTS_FOLDER_ID);
+            String id        = c.getString(RequestConstant.ID);
+            String title     = c.getString(RequestConstant.TASKLISTS_TITLE);
+            String folder_id = c.isNull(RequestConstant.TASKLISTS_FOLDER_ID) ? "-1" : c.getString(RequestConstant.TASKLISTS_FOLDER_ID);
 
             // Creating the tasklist and adding it to the current user
             TaskList tl = new TaskList(Long.parseLong(id), title, Long.parseLong(folder_id));
@@ -331,16 +292,16 @@ public class UserJsonParser {
         for (int i = 0; i < folders.length(); i++) {
             JSONObject c = folders.getJSONObject(i);
             // Folder data
-            String id    = c.getString(FOLDERS_ID);
-            String title = c.getString(FOLDERS_TITLE);
+            String id    = c.getString(RequestConstant.ID);
+            String title = c.getString(RequestConstant.FOLDERS_LABEL);
             ArrayList<TaskList> folder_tasklists = new ArrayList<>();
 
-            JSONArray folder_tasklists_json = c.getJSONArray(FOLDERS_TASKLISTS);
+            JSONArray folder_tasklists_json = c.getJSONArray(RequestConstant.FOLDERS_TASKLISTS);
             for (int j = 0; j < folder_tasklists_json.length(); j++) {
                 JSONObject tasklist = folder_tasklists_json.getJSONObject(j);
                 // Tasklist data
-                String folder_tasklist_id    = tasklist.getString(TASKLISTS_ID);
-                String folder_tasklist_title = tasklist.getString(TASKLISTS_TITLE);
+                String folder_tasklist_id    = tasklist.getString(RequestConstant.ID);
+                String folder_tasklist_title = tasklist.getString(RequestConstant.TASKLISTS_TITLE);
 
                 // Creating the tasklist and adding it to the list
                 folder_tasklists.add(new TaskList(Long.parseLong(folder_tasklist_id),
@@ -358,23 +319,23 @@ public class UserJsonParser {
 
     private void parseAndLoadTasks(JSONObject response) throws JSONException, ParseException {
         // Getting JSON Array node
-        JSONArray tasks = response.getJSONArray(TASK_KEY);
+        JSONArray tasks = response.getJSONArray(RequestConstant.TASK_KEY);
 
         // looping through all tasks
         for (int i = 0; i < tasks.length(); i++) {
             JSONObject c = tasks.getJSONObject(i);
 
             // Task data
-            long id                = c.getLong(TASK_ID);
-            long taskListId        = c.getLong(TASK_TASKLIST_ID);
-            String title           = c.getString(TASK_TITLE);
-            String description     = c.getString(TASK_DESCRIPTION);
-            boolean done           = c.isNull(TASK_DONE_DATE);
-            boolean favorite       = c.getInt(TASK_FAVORITE) != 0;
-            boolean archived       = c.getInt(TASK_ARCHIVED) != 0;
-            String dueDateStr      = c.getString(TASK_DUE_DATE);
-            String doneDateStr     = c.getString(TASK_DONE_DATE);
-            String reminderDateStr = c.getString(TASK_REMINDER_DATE);
+            long id                = c.getLong(RequestConstant.ID);
+            long taskListId        = c.getLong(RequestConstant.TASK_TASKLIST_ID);
+            String title           = c.getString(RequestConstant.TASK_TITLE);
+            String description     = c.getString(RequestConstant.TASK_DESCRIPTION);
+            boolean done           = c.isNull(RequestConstant.TASK_DONE_DATE);
+            boolean favorite       = c.getInt(RequestConstant.TASK_FAVORITE) != 0;
+            boolean archived       = c.getInt(RequestConstant.TASK_ARCHIVED) != 0;
+            String dueDateStr      = c.getString(RequestConstant.TASK_DUE_DATE);
+            String doneDateStr     = c.getString(RequestConstant.TASK_DONE_DATE);
+            String reminderDateStr = c.getString(RequestConstant.TASK_REMINDER_DATE);
 
             // Date parser
             SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -392,26 +353,26 @@ public class UserJsonParser {
 
     private void parseAndLoadGoalTodos(JSONObject response) throws JSONException, ParseException {
         // Getting JSON Array node
-        JSONArray goalsTodo = response.getJSONArray(GOAL_TODO_KEY);
+        JSONArray goalsTodo = response.getJSONArray(RequestConstant.GOAL_TODO_KEY);
 
         // looping through all tasks
         for (int i = 0; i < goalsTodo.length(); i++) {
             JSONObject c = goalsTodo.getJSONObject(i);
 
             // Goal data
-            long goal_id          = c.getLong(GOAL_ID);
-            String unit           = c.getString(GOAL_LABEL);
-            int quantity          = c.getInt(GOAL_QUANTITY);
-            int intervalNumber    = c.getInt(GOAL_INTERVAL_NUMBER);
-            long intervalId       = c.getLong(GOAL_INTERVAL);
-            String createDateStr  = c.getString(GOAL_TODO_CREATED_DATE);
-            String dueDateGoalStr = c.getString(GOAL_DUE_DATE);
+            long goal_id          = c.getLong(RequestConstant.GOAL_ID);
+            String unit           = c.getString(RequestConstant.GOAL_LABEL);
+            int quantity          = c.getInt(RequestConstant.GOAL_QUANTITY);
+            int intervalNumber    = c.getInt(RequestConstant.GOAL_INTERVAL_NUMBER);
+            long intervalId       = c.getLong(RequestConstant.GOAL_INTERVAL);
+            String createDateStr  = c.getString(RequestConstant.GOAL_TODO_CREATED_DATE);
+            String dueDateGoalStr = c.getString(RequestConstant.GOAL_DUE_DATE);
 
             // GoalsTodo data
-            long goalTodoId    = c.getLong(GOAL_TODO_ID);
-            int quantityDone   = c.isNull(GOAL_TODO_QUANTITY_DONE) ? 0 : c.getInt(GOAL_TODO_QUANTITY_DONE);
-            String doneDateStr = c.getString(GOAL_TODO_DONE_DATE);
-            String dueDateStr  = c.getString(GOAL_TODO_DUE_DATE);
+            long goalTodoId    = c.getLong(RequestConstant.ID);
+            int quantityDone   = c.isNull(RequestConstant.GOAL_TODO_QUANTITY_DONE) ? 0 : c.getInt(RequestConstant.GOAL_TODO_QUANTITY_DONE);
+            String doneDateStr = c.getString(RequestConstant.GOAL_TODO_DONE_DATE);
+            String dueDateStr  = c.getString(RequestConstant.GOAL_TODO_DUE_DATE);
 
             // Date parser
             SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
