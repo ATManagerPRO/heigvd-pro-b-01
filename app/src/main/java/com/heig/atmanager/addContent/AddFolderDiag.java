@@ -44,6 +44,9 @@ public class AddFolderDiag extends DialogFragment {
                 PostRequests.postFolder(newFolder, getContext());
 
                 MainActivity.user.addFolder(newFolder);
+                
+                ((MainActivity) getContext()).updateDrawerItems();
+
             }
         }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
