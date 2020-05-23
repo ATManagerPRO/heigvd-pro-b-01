@@ -1,6 +1,8 @@
 package com.heig.atmanager.userData;
 
 import android.content.Context;
+import android.icu.text.SimpleDateFormat;
+import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -19,20 +21,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PatchRequests {
+    private static final String TAG = "PatchRequests";
+
     static public void patchTaskDoneDate(Task newTask, Context context) {
         //post request to the server
         try {
             String URL = "https://atmanager.gollgot.app/api/v1/todos/"+ newTask.getId() +"/done";
             JSONObject jsonBody = new JSONObject();
 
-            android.icu.text.SimpleDateFormat sdf  = new android.icu.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
             jsonBody.put("todo_id", newTask.getId());
-            if(newTask.getDoneDate() != null) {
-                jsonBody.put("done", sdf.format(newTask.getDoneDate()));
-            }else{
-                jsonBody.put("done", null);
-            }
+            jsonBody.put("done",    newTask.getDoneDate() == null ? JSONObject.NULL : sdf.format(newTask.getDoneDate()));
 
             JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.PATCH, URL, jsonBody, new Response.Listener<JSONObject>() {
                 @Override

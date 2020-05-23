@@ -373,13 +373,13 @@ public class UserJsonParser {
         // looping through all tasks
         for (int i = 0; i < tasks.length(); i++) {
             JSONObject c = tasks.getJSONObject(i);
-
+            Log.d(TAG, "parseAndLoadTasks: " + c.toString());
             // Task data
             long id                = c.getLong(TASK_ID);
             long taskListId        = c.getLong(TASK_TASKLIST_ID);
             String title           = c.getString(TASK_TITLE);
             String description     = c.getString(TASK_DESCRIPTION);
-            boolean done           = c.isNull(TASK_DONE_DATE);
+            boolean done           = !c.isNull(TASK_DONE_DATE);
             boolean favorite       = c.getInt(TASK_FAVORITE) != 0;
             boolean archived       = c.getInt(TASK_ARCHIVED) != 0;
             String dueDateStr      = c.getString(TASK_DUE_DATE);
@@ -393,7 +393,7 @@ public class UserJsonParser {
             Date reminderDate     = reminderDateStr.equals("null") ? null : sdf.parse(reminderDateStr);
 
             // Creating the task and adding it to the current user
-            Task task = new Task(id, title, description , done, favorite, dueDate, doneDate, reminderDate);
+            Task task = new Task(id, title, description, done, favorite, dueDate, doneDate, reminderDate);
             task.setTasklist(user.getTaskList(taskListId));
             task.setArchived(archived);
             user.addTask(task);

@@ -2,6 +2,7 @@ package com.heig.atmanager.tasks;
 
 import android.content.Context;
 import android.icu.text.SimpleDateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -206,14 +207,13 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
             public void onClick(View view) {
                 if(holder.checkButton.isChecked()) {
                     tasks.get(position).setDoneDate(Calendar.getInstance().getTime());
-                    PatchRequests.patchTaskDoneDate(tasks.get(position),context);
                     tasks.get(position).setDone(true);
                     // TODO : update automatically if in home fragment
                 } else {
                     tasks.get(position).setDoneDate(null);
-                    PatchRequests.patchTaskDoneDate(tasks.get(position),context);
                     tasks.get(position).setDone(false);
                 }
+                PatchRequests.patchTaskDoneDate(tasks.get(position),context);
             }
         });
 
