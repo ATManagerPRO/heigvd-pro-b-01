@@ -198,11 +198,9 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         // Favorite
         holder.favoriteIcon.setVisibility(tasks.get(position).isFavorite() ? View.VISIBLE : View.GONE);
 
-        if (tasks.get(position).getDoneDate() != null) {
-            holder.checkButton.setChecked(true);
-        }
 
         // Checkbox
+        holder.checkButton.setChecked(tasks.get(position).isDone());
         holder.checkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -210,6 +208,7 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
                     tasks.get(position).setDoneDate(Calendar.getInstance().getTime());
                     PatchRequests.patchTaskDoneDate(tasks.get(position),context);
                     tasks.get(position).setDone(true);
+                    // TODO : update automatically if in home fragment
                 } else {
                     tasks.get(position).setDoneDate(null);
                     PatchRequests.patchTaskDoneDate(tasks.get(position),context);
