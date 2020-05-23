@@ -153,8 +153,7 @@ public class PostRequests {
             if(newTask.getReminderDate() != null) {
                 jsonBody.put("reminderDate", sdf.format(newTask.getReminderDate()));
             }*/
-           jsonBody.put("tags", newTask.getTags().toString());
-
+            jsonBody.put("tags", newTask.getTags().toString());
 
             JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
                 @Override
