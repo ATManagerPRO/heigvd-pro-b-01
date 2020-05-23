@@ -78,6 +78,7 @@
     <string name="folder_name">Folder name</string>
     <string name="notification_time_text">Notification Time</string>
     <string name="notification_hint">DD.MM.YYYY HH:MM</string>
+    <string name="tasklist">TaskList</string>
     <string-array name="weekDays">
         <item>Mon</item>
         <item>Tue</item>
