@@ -51,6 +51,7 @@ public class AddTasklistDiag extends DialogFragment {
                 TaskList newTaskList = new TaskList(taskListName.getText().toString(), ((Folder) folderSpinner.getSelectedItem()).getId());
                 PostRequests.postTaskList(newTaskList, getContext());
                 MainActivity.getUser().addTaskList(newTaskList);
+                ((MainActivity) getContext()).updateDrawerItems();
             }
         }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
