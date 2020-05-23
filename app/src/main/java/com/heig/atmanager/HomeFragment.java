@@ -77,7 +77,7 @@ public class HomeFragment extends Fragment {
         tasksRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(v.getContext());
         tasksRecyclerView.setLayoutManager(manager);
-        adapter = new TaskFeedAdapter(tasks);
+        adapter = new TaskFeedAdapter(tasks, getContext());
         tasksRecyclerView.setAdapter(adapter);
 
         // Set adapter for searches
@@ -147,11 +147,18 @@ public class HomeFragment extends Fragment {
 
     public void updateHomeFragment() {
         feedProgress.setVisibility(View.GONE);
-        tasks = MainActivity.getUser().getTasksForDay(Calendar.getInstance().getTime());
-        tasks.addAll(MainActivity.getUser().getTasksWithoutDate());
+        ArrayList<Task> allTasks;
+        tasks.clear();
+        allTasks = MainActivity.getUser().getTasksForDay(Calendar.getInstance().getTime());
+        allTasks.addAll(MainActivity.getUser().getTasksWithoutDate());
+        for(Task task : allTasks){
+            if(!task.isArchived()){
+                tasks.add(task);
+            }
+        }
         goals = MainActivity.getUser().getGoalTodosOfDay(Calendar.getInstance().getTime());
 
-        TaskFeedAdapter newAdapter = new TaskFeedAdapter(tasks);
+        TaskFeedAdapter newAdapter = new TaskFeedAdapter(tasks, getContext());
         tasksRecyclerView.swapAdapter(newAdapter, false);
 
         Utils.setupGoalTodosFeedBubbled(view, goalsRecyclerView, goals);

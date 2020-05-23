@@ -1,7 +1,7 @@
 package com.heig.atmanager.tasks;
 
+import android.content.Context;
 import android.icu.text.SimpleDateFormat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +14,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.anychart.scales.Linear;
-import com.heig.atmanager.HomeFragment;
 import com.heig.atmanager.MainActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.heig.atmanager.R;
 import com.heig.atmanager.Utils;
 import com.heig.atmanager.taskLists.TaskList;
+import com.heig.atmanager.userData.DeleteRequests;
+import com.heig.atmanager.userData.PatchRequests;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -43,6 +43,7 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
     private static final String TAG = "TaskFeedAdapter";
 
     private ArrayList<Task> tasks;
+    private Context context;
     private ArrayList<Task> tasksFull;
     private Map<LocalDate, Boolean> dateTitles;
 
@@ -88,9 +89,16 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public TaskFeedAdapter(ArrayList<Task> tasks) {
-        this.tasks = tasks;
-        this.tasksFull = new ArrayList<>(tasks);
+    public TaskFeedAdapter(ArrayList<Task> tasks, Context context) {
+        ArrayList<Task> shownTasks = new ArrayList<Task>();
+        for(Task task : tasks){
+            if(!task.isArchived()){
+                shownTasks.add(task);
+            }
+        }
+        this.tasks = shownTasks;
+        this.context = context;
+        this.tasksFull = new ArrayList<>(shownTasks);
 
         // Orders the tasks by date and favorites
         orderTasks();
@@ -191,15 +199,21 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         // Favorite
         holder.favoriteIcon.setVisibility(tasks.get(position).isFavorite() ? View.VISIBLE : View.GONE);
 
+        if (tasks.get(position).getDoneDate() != null) {
+            holder.checkButton.setChecked(true);
+        }
+
         // Checkbox
         holder.checkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(holder.checkButton.isChecked()) {
-                    tasks.get(position).setDoneDate(new Date());
+                    tasks.get(position).setDoneDate(Calendar.getInstance().getTime());
+                    PatchRequests.patchTaskDoneDate(tasks.get(position),context);
                     tasks.get(position).setDone(true);
                 } else {
                     tasks.get(position).setDoneDate(null);
+                    PatchRequests.patchTaskDoneDate(tasks.get(position),context);
                     tasks.get(position).setDone(false);
                 }
             }
@@ -209,9 +223,11 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         holder.removeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                DeleteRequests.deleteTask(tasks.get(position),context);
                 MainActivity.getUser().removeTask(tasks.get(position));
                 tasks.remove(tasks.get(position));
                 notifyItemRemoved(position); // notify the adapter about the removed item
+
             }
         });
 
@@ -226,6 +242,7 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
                 // Reset hashmap values
                 resetDateHashMap();
                 notifyDataSetChanged();
+                PatchRequests.patchTaskFavorite(tasks.get(position), context);
             }
         });
     }
@@ -236,6 +253,9 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         return tasks.size();
     }
 
+    /*
+    TODO : We have a problem here, the hash map and taskfull are not updated, the second added element create a bus
+     */
     public  void  setTasks(ArrayList<Task> tasks){
         this.tasks = tasks;
         notifyDataSetChanged();

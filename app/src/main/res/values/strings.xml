@@ -76,6 +76,8 @@
     <string name="which_folder">Which folder</string>
     <string name="new_tasklist_name">New tasklist name</string>
     <string name="folder_name">Folder name</string>
+    <string name="notification_time_text">Notification Time</string>
+    <string name="notification_hint">DD.MM.YYYY HH:MM</string>
     <string-array name="weekDays">
         <item>Mon</item>
         <item>Tue</item>

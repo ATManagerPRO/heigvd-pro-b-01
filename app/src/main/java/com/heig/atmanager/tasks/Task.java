@@ -21,6 +21,7 @@ public class Task implements Comparable<Task> {
     private String description;
     private boolean done;
     private boolean favorite;
+    private boolean archived;
     private Date dueDate;
     private Date doneDate;
     private Date reminderDate;
@@ -50,6 +51,7 @@ public class Task implements Comparable<Task> {
         this.doneDate     = doneDate;
         this.reminderDate = reminderDate;
         this.tags         = new ArrayList<>();
+        this.archived = false;
     }
 
     public String getTitle() {
@@ -115,17 +117,38 @@ public class Task implements Comparable<Task> {
         return tags;
     }
 
+    public void setReminderDate(Date reminderDate) {
+        this.reminderDate = reminderDate;
+    }
+
+
+
     public Date getDoneDate() {
         return doneDate;
     }
 
+    public long getId() {
+        return id;
+    }
+
     @Override
     public int compareTo(Task task) {
+        // If both are null, they are equals
         if(getDueDate() == null && task.getDueDate() == null){
-            return 1;
-        } else if(getDueDate() == null || task.getDueDate() == null){
+            return 0;
+        } else if(getDueDate() == null ) { // if this dueDate is null, it means that arg is greater
             return -1;
+        } else if(task.getDueDate() == null) { // if the arg dueDate is null, it means that this is greater
+            return 1;
         }
         return getDueDate().compareTo(task.getDueDate());
+    }
+
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived (boolean archived){
+        this.archived = archived;
     }
 }
