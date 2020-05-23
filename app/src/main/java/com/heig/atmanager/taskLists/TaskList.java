@@ -26,6 +26,10 @@ public class TaskList extends DrawerObject implements Serializable {
         this(-1, name, folder_id);
     }
 
+    public TaskList(String name) {
+        this(-1, name, -1);
+    }
+
     public TaskList(long id, String name) {
         this(id, name, -1);
     }

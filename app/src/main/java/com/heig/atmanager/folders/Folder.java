@@ -4,6 +4,7 @@ import com.heig.atmanager.DrawerObject;
 import com.heig.atmanager.taskLists.TaskList;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  *  Author : Teo Ferrari
@@ -71,5 +72,18 @@ public class Folder extends DrawerObject {
     @Override
     public boolean isFolder() {
         return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Folder folder = (Folder) o;
+        return id == folder.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
