@@ -84,15 +84,7 @@ public class User {
     }
 
     public int getTotalTasksForDay(Date day) {
-        int totalTasks = 0;
-
-        for (Task task : tasks) {
-            if (task.getDueDate() != null && isSameSimpleDate(task.getDueDate(), day)) {
-                totalTasks++;
-            }
-        }
-
-        return totalTasks;
+        return getTasksForDay(day).size();
     }
 
     private boolean isSameSimpleDate(Date d1, Date d2) {
