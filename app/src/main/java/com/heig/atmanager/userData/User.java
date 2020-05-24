@@ -66,6 +66,15 @@ public class User {
     }
 
     public void addTaskList(TaskList taskList) {
+        // Adding the tasklist in its folder as well (better to have only tasklists with a folder id ?)
+        if(taskList.getFolderId() != -1) {
+            for(Folder f : folders) {
+                if(f.getId() == taskList.getFolderId())
+                    f.addList(taskList);
+            }
+        }
+
+
         taskLists.add(taskList);
     }
 

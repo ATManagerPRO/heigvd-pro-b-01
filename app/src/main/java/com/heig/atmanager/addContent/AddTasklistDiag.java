@@ -75,8 +75,9 @@ public class AddTasklistDiag extends DialogFragment {
                             taskLisLayout.setError(getString(R.string.input_missing));
                         }else {
                             TaskList newTaskList = new TaskList(taskListName.getText().toString(), ((Folder) folderSpinner.getSelectedItem()).getId());
-                            PostRequests.postTaskList(newTaskList, getContext());
                             MainActivity.getUser().addTaskList(newTaskList);
+                            ((MainActivity) getContext()).updateDrawerItems();
+                            PostRequests.postTaskList(newTaskList, getContext());
                             dismiss();
                         }
                     }
