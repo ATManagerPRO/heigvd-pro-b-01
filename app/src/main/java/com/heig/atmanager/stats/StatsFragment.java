@@ -355,7 +355,7 @@ public class StatsFragment  extends Fragment {
         pieChartTasks = AnyChart.pie();
         pieChartTasksView.setBackgroundColor(bgColor);
         pieChartTasksView.setChart(pieChartTasks);
-        pieChartTasks.palette(new String[]{"#de390b","#2c53c7"}); //colors
+        pieChartTasks.palette(new String[]{"#069BFF","#EC1484"}); //colors
         pieChartTasks.background().fill(bgColor); //bgcolor
         pieChartTasks.noData().label().enabled(true);
         pieChartTasks.noData().label().text("Could not retrieve any tasks!");
@@ -382,7 +382,7 @@ public class StatsFragment  extends Fragment {
         pieChartGoals = AnyChart.pie();
         pieChartGoalsView.setBackgroundColor(bgColor);
         pieChartGoalsView.setChart(pieChartGoals);
-        pieChartGoals.palette(new String[]{"#80EB5A","#FF9745"}); //Colors
+        pieChartGoals.palette(new String[]{"#069BFF","#EC1484"}); //Colors
         pieChartGoals.background().fill(bgColor); //bgColor
         pieChartGoals.noData().label().enabled(true);
         pieChartGoals.noData().label().text("Could not retrieve any goals!");
@@ -398,8 +398,6 @@ public class StatsFragment  extends Fragment {
         cloudTags.noData().label().enabled(true);
         cloudTags.background().fill(bgColor);
         cloudTags.noData().label().text("Could not retrieve any tags");
-        cloudTags.palette(new String[]{"#80EB5A","#FF9745"}); //Colors
-
     }
 
 
