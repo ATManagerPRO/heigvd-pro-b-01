@@ -22,7 +22,7 @@ import java.util.Calendar;
 /**
  * Author : Stéphane Bottin
  * Date   : 11.03.2020
- *
+ * <p>
  * Fragment for the Home view (User's Tasks and Goals of the day)
  */
 public class HomeFragment extends Fragment {
@@ -100,7 +100,7 @@ public class HomeFragment extends Fragment {
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
 
         // Select proper greeting
-        if(currentHour < MORNING_HOUR) {
+        if (currentHour < MORNING_HOUR) {
             greeting = "Good morning ";
         } else if (currentHour < DAY_HOUR) {
             greeting = "Hello ";
@@ -117,17 +117,18 @@ public class HomeFragment extends Fragment {
 
     /**
      * Get the welcoming sentence (dynamic with user's data)
+     *
      * @return the proper greetings
      */
     private String getGreetings() {
         String user_info = "";
 
         // Select user info sentence (total tasks/goals for the day)
-        if(tasks.size() == 0 && goals.size() == 0) {
+        if (tasks.isEmpty() && goals.isEmpty()) {
             user_info = "relax! You have nothing to do today.";
-        } else if (tasks.size() != 0 && goals.size() == 0) {
+        } else if (!tasks.isEmpty() && goals.isEmpty()) {
             user_info = getSingleUserInfoGreeting(tasks.size()) + " for today.";
-        } else if (tasks.size() == 0) { // goals != 0 always true
+        } else if (tasks.isEmpty()) { // goals != 0 always true
             user_info = getSingleUserInfoGreeting(goals.size()) + " for today.";
         } else {
             user_info = getSingleUserInfoGreeting(tasks.size()) + " and "
@@ -139,6 +140,7 @@ public class HomeFragment extends Fragment {
 
     /**
      * Get the total of a value in a sentence
+     *
      * @param value : the value to display
      * @return the formatted sentence
      */
@@ -152,8 +154,8 @@ public class HomeFragment extends Fragment {
         ArrayList<Task> allTasks;
         tasks.clear();
         allTasks = MainActivity.getUser().getHomeViewTasks();
-        for(Task task : allTasks){
-            if(!task.isArchived()){
+        for (Task task : allTasks) {
+            if (!task.isArchived()) {
                 tasks.add(task);
             }
         }
