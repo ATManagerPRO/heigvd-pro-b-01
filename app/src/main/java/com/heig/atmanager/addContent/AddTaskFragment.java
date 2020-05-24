@@ -1,6 +1,7 @@
 package com.heig.atmanager.addContent;
 
 import android.app.DatePickerDialog;
+import android.app.Notification;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 
@@ -28,6 +29,7 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputLayout;
 import com.heig.atmanager.LocalCalendarHandler;
 import com.heig.atmanager.MainActivity;
+import com.heig.atmanager.NotificationUtils;
 import com.heig.atmanager.userData.PostRequests;
 import com.heig.atmanager.R;
 import com.heig.atmanager.Utils;
@@ -61,6 +63,7 @@ public class AddTaskFragment extends Fragment {
     private int[] dueDateValues;
     private int[] reminderDateValues;
 
+
     private ArrayList<Task> tasks;
     private RecyclerView tasksRecyclerView;
 
@@ -72,13 +75,15 @@ public class AddTaskFragment extends Fragment {
     private TextView dueDateTextView;
     private TextView dueTimeTextView;
 
-    private TextView reminderDateTextView;
-    private TextView reminderTimeTextView;
+    private TextView reminderTextView;
 
     private TextInputLayout titleLayout;
     private Button validationButton;
 
     private ArrayList<String> tags;
+
+    private NotificationUtils mNotificationUtils;
+
 
     public AddTaskFragment() {
         // Required empty public constructor
@@ -88,6 +93,9 @@ public class AddTaskFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tasksRecyclerView = (RecyclerView) getActivity().findViewById(R.id.tasks_rv);
+
+        mNotificationUtils = new NotificationUtils(getContext());
+
 
         // Override OnBacPressed to show hidden components
         final OnBackPressedCallback callback = new OnBackPressedCallback(true) {
@@ -118,9 +126,8 @@ public class AddTaskFragment extends Fragment {
         dueTimeTextView = mView.findViewById(R.id.frag_add_task_due_time);
         dueDateValues   = new int[5];
 
-        reminderDateTextView = mView.findViewById(R.id.frag_add_task_reminder_date);
-        reminderTimeTextView = mView.findViewById(R.id.frag_add_task_reminder_time);
-        reminderDateValues   = new int[5];
+        reminderTextView = mView.findViewById(R.id.frag_add_task_notification);
+        reminderDateValues = new int[5];
 
         titleLayout = mView.findViewById(R.id.frag_add_task_title_layout);
 
@@ -128,7 +135,54 @@ public class AddTaskFragment extends Fragment {
 
         // date setup here
         setupDatePicker(dueDateTextView, dueTimeTextView, dueDateValues);
-        setupDatePicker(reminderDateTextView, reminderTimeTextView, reminderDateValues);
+
+        // Picker for notification
+        reminderTextView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                reminderDateValues[DAY] = calendar.get(Calendar.DAY_OF_MONTH);
+                reminderDateValues[MONTH] = calendar.get(Calendar.MONTH);
+                reminderDateValues[YEAR] = calendar.get(Calendar.YEAR);
+
+                reminderDateValues[HOUR] = calendar.get(Calendar.HOUR_OF_DAY);
+                reminderDateValues[MINUTE] = calendar.get(Calendar.MINUTE);
+
+
+                DatePickerDialog reminderDatePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        final String notifTime = Utils.formatNumber(dayOfMonth) + "." +
+                                Utils.formatNumber(month + 1) + "." +
+                                Utils.formatNumber(year);
+
+                        TimePickerDialog reminderTimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                reminderDateValues[HOUR] = hourOfDay;
+                                reminderDateValues[MINUTE] = minute;
+                                reminderTextView.setText(notifTime + " " + Utils.formatNumber(hourOfDay) + ":" + Utils.formatNumber(minute));
+
+                            }
+                        }, reminderDateValues[HOUR], reminderDateValues[MINUTE], true);
+                        reminderTimePicker.show();
+
+
+                        reminderDateValues[YEAR] = year;
+                        reminderDateValues[MONTH] = month;
+                        reminderDateValues[DAY] = dayOfMonth;
+
+                    }
+                }, reminderDateValues[YEAR], reminderDateValues[MONTH], reminderDateValues[DAY]);
+
+                // Show the picker
+                reminderDatePicker.show();
+
+
+            }
+        });
 
         if (MainActivity.getUser().getTags() != null) {
             for (String s : MainActivity.getUser().getTags())
@@ -182,21 +236,27 @@ public class AddTaskFragment extends Fragment {
                     titleLayout.setError(null);
                 }
 
-                Task newTask = new Task(title, description, getSelectedDate(dueDateValues),
-                        getSelectedDate(reminderDateValues));
+                Task newTask = new Task(title, description);
+
+                if (dueDateValues[YEAR] != 0) {
+                    newTask.setDueDate(getSelectedDate(dueDateValues));
+                    LocalCalendarHandler.getInstance().setTask(newTask);
+                    LocalCalendarHandler.getInstance().addTask(getActivity());
+                }
+
+
+                if (reminderDateValues[YEAR] != 0) {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.set(reminderDateValues[YEAR], reminderDateValues[MONTH], reminderDateValues[DAY], reminderDateValues[HOUR], reminderDateValues[MINUTE]);
+                    Notification.Builder nb = mNotificationUtils.getChannelNotification(getString(R.string.app_name), title);
+                    mNotificationUtils.scheduleNotification(nb.build(), calendar.getTimeInMillis());
+                    newTask.setReminderDate(calendar.getTime());
+                }
 
                 // Add the tags
                 for (String tag : tags) {
                     newTask.addTag(tag);
                 }
-
-                // Add the task in the local calendar
-                if (dueDateValues[YEAR] != 0) {
-                    LocalCalendarHandler.getInstance().setTask(newTask);
-
-                    LocalCalendarHandler.getInstance().addTask(getActivity());
-                }
-
 
                 // Add the task to a selected taskList
                 for (TaskList taskList : MainActivity.getUser().getAllTaskLists()) {
@@ -207,8 +267,7 @@ public class AddTaskFragment extends Fragment {
                         PostRequests.postTask(newTask, getContext());
                         MainActivity.getUser().addTask(newTask);
                         //update homeview
-                        tasks = MainActivity.getUser().getTasksForDay(Calendar.getInstance().getTime());
-                        tasks.addAll(MainActivity.getUser().getTasksWithoutDate());
+                        tasks = MainActivity.getUser().getHomeViewTasks();
                         ((TaskFeedAdapter) tasksRecyclerView.getAdapter()).setTasks(tasks);
                     }
                 }
@@ -223,6 +282,7 @@ public class AddTaskFragment extends Fragment {
 
         return mView;
     }
+
 
     /**
      * Add a string as chip into the given chip group

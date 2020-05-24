@@ -1,8 +1,8 @@
 package com.heig.atmanager.tasks;
 
+import android.content.Context;
 import android.icu.text.SimpleDateFormat;
 import android.util.Log;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.anychart.scales.Linear;
-import com.heig.atmanager.HomeFragment;
 import com.heig.atmanager.MainActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,6 +31,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -106,11 +105,7 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         orderTasks();
 
         dateTitles = new HashMap<>();
-        for(Task task : shownTasks) {
-            if(task.getDueDate() != null){
-                dateTitles.put(convertToLocalDateViaInstant(task.getDueDate()), false);
-            }
-        }
+        resetDateHashMap();
     }
 
     // Create new views (invoked by the layout manager)
@@ -130,16 +125,23 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         Calendar dueDateCalendar = Calendar.getInstance();
         if(tasks.get(position).getDueDate() != null){
-                dueDateCalendar.setTime(tasks.get(position).getDueDate());
-                LocalDate localDueDate = convertToLocalDateViaInstant(tasks.get(position).getDueDate());
-            // Date title
-            if(!dateTitles.get(localDueDate)) {
+            dueDateCalendar.setTime(tasks.get(position).getDueDate());
+            LocalDate localDueDate = convertToLocalDateViaInstant(tasks.get(position).getDueDate());
+
+            // Date title when it hasn't been shown or is a favorite
+            Boolean hasDate = dateTitles.get(localDueDate);
+            if((hasDate != null && !hasDate) || tasks.get(position).isFavorite()) {
                 holder.dateTitle.setVisibility(View.VISIBLE);
                 SimpleDateFormat sdf  = new SimpleDateFormat("dd MMM YYYY");
                 holder.dateTitle.setText(sdf.format(dueDateCalendar.getTime()).toUpperCase());
-                dateTitles.put(localDueDate, true);
+                // Set the shown date as true so the next tasks from the same date don't show it
+                // rem : only set it if it's not a favorite since the favorite are on top
+                if(!tasks.get(position).isFavorite())
+                    dateTitles.put(localDueDate, true);
+            } else {
+                holder.dateTitle.setVisibility(View.GONE);
             }
-        }else {
+        } else {
             holder.dateTitle.setVisibility(View.GONE);
         }
         // Title and description
@@ -156,15 +158,12 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         ViewGroup.LayoutParams params = holder.timeContainer.getLayoutParams();
         if(tasks.get(position).getDueDate() != null) {
             // Time
-            String hours, minutes, meridiem;
-            dueDateCalendar.setTime(tasks.get(position).getDueDate());
-            hours    = Utils.formatNumber(dueDateCalendar.get(Calendar.HOUR_OF_DAY) % 12) + ":";
-            minutes  = Utils.formatNumber(dueDateCalendar.get(Calendar.MINUTE));
-            meridiem = dueDateCalendar.get(Calendar.HOUR_OF_DAY) < 12 ? "AM" : "PM";
+            SimpleDateFormat time     = new SimpleDateFormat("hh.mm");
+            SimpleDateFormat meridiem = new SimpleDateFormat("aa");
             holder.timeHourText.setVisibility(View.VISIBLE);
             holder.timeMeridiemText.setVisibility(View.VISIBLE);
-            holder.timeHourText.setText(hours + minutes);
-            holder.timeMeridiemText.setText(meridiem);
+            holder.timeHourText.setText(time.format(dueDateCalendar.getTime()));
+            holder.timeMeridiemText.setText(meridiem.format(dueDateCalendar.getTime()));
             params.width = 200;
         } else {
             holder.timeHourText.setVisibility(View.GONE);
@@ -201,23 +200,21 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         // Favorite
         holder.favoriteIcon.setVisibility(tasks.get(position).isFavorite() ? View.VISIBLE : View.GONE);
 
-        if (tasks.get(position).getDoneDate() != null) {
-            holder.checkButton.setChecked(true);
-        }
 
         // Checkbox
+        holder.checkButton.setChecked(tasks.get(position).isDone());
         holder.checkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(holder.checkButton.isChecked()) {
                     tasks.get(position).setDoneDate(Calendar.getInstance().getTime());
-                    PatchRequests.patchTaskDoneDate(tasks.get(position),context);
                     tasks.get(position).setDone(true);
+                    // TODO : update automatically if in home fragment
                 } else {
                     tasks.get(position).setDoneDate(null);
-                    PatchRequests.patchTaskDoneDate(tasks.get(position),context);
                     tasks.get(position).setDone(false);
                 }
+                PatchRequests.patchTaskDoneDate(tasks.get(position),context);
             }
         });
 
@@ -238,7 +235,12 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
             @Override
             public void onClick(View view) {
                 tasks.get(position).setFavorite(!tasks.get(position).isFavorite());
-                notifyItemChanged(position);
+                // Reorder and refresh the layout so that the favorite appears on top
+                orderTasks();
+
+                // Reset hashmap values
+                resetDateHashMap();
+                notifyDataSetChanged();
                 PatchRequests.patchTaskFavorite(tasks.get(position), context);
             }
         });
@@ -250,6 +252,9 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         return tasks.size();
     }
 
+    /*
+    TODO : We have a problem here, the hash map and taskfull are not updated, the second added element create a bus
+     */
     public  void  setTasks(ArrayList<Task> tasks){
         this.tasks = tasks;
         notifyDataSetChanged();
@@ -298,23 +303,29 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
     };
 
     private void orderTasks() {
-        ArrayList<Task> favorites = new ArrayList<>();
-        ArrayList<Task> others    = new ArrayList<>();
+        ArrayList<Task> favorites     = new ArrayList<>();
+        ArrayList<Task> othersDated   = new ArrayList<>();
+        ArrayList<Task> othersUndated = new ArrayList<>();
 
         for(Task task : tasksFull) {
             if(task.isFavorite()) {
                 favorites.add(task);
             } else {
-                others.add(task);
+                if(task.getDueDate() == null) {
+                    othersUndated.add(task);
+                } else {
+                    othersDated.add(task);
+                }
             }
         }
 
         // Order by date
         Collections.sort(favorites);
-        Collections.sort(others);
+        Collections.sort(othersDated);
 
         tasksFull = favorites;
-        tasksFull.addAll(others);
+        tasksFull.addAll(othersDated);
+        tasksFull.addAll(othersUndated);
         tasks = tasksFull;
     }
 
@@ -322,5 +333,13 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
         return dateToConvert.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
+    }
+
+    private void resetDateHashMap() {
+        for(Task task : tasks) {
+            if(task.getDueDate() != null){
+                dateTitles.put(convertToLocalDateViaInstant(task.getDueDate()), false);
+            }
+        }
     }
 }

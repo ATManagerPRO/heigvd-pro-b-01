@@ -149,8 +149,7 @@ public class HomeFragment extends Fragment {
         feedProgress.setVisibility(View.GONE);
         ArrayList<Task> allTasks;
         tasks.clear();
-        allTasks = MainActivity.getUser().getTasksForDay(Calendar.getInstance().getTime());
-        allTasks.addAll(MainActivity.getUser().getTasksWithoutDate());
+        allTasks = MainActivity.getUser().getHomeViewTasks();
         for(Task task : allTasks){
             if(!task.isArchived()){
                 tasks.add(task);
