@@ -155,8 +155,6 @@ public class StatsFragment  extends Fragment {
         pieChartTasks.title("Past " + Utils.firstLetterCapped(interval.name()) + "´s " + Task.class.getSimpleName() + "s");
 
         for(Task t : tasks){
-            Log.d(TAG, "makePieChartTasks: " + t.getTitle() + " / " + t.isDone());
-            
             if(t.isDone())
                 ++tasksDone;
             else
@@ -270,19 +268,20 @@ public class StatsFragment  extends Fragment {
         APIlib.getInstance().setActiveAnyChartView(pieChartGoalsView);
 
         List<DataEntry> data = new ArrayList<>();
-        float goalsDone = 0, goalsToDo = 0;
+        float goalsDone = 0;
 
         pieChartGoals.title(Utils.firstLetterCapped(interval.getAdverb()) + " " + Goal.class.getSimpleName() + "s");
+        Log.d(TAG, "makePieChartGoals: makeing goals");
 
         for(GoalTodo gt : goals){
+            Log.d(TAG, "makePieChartGoals: " + gt.getUnit() + " : " + gt.getPercentage());
             float p = gt.getPercentage();
             goalsDone += p;
-            goalsToDo += 100-p;
         }
 
-        if(goalsDone != 0 || goalsToDo != 0){
+        if(goalsDone != 0){
             data.add(new ValueDataEntry("Done", goalsDone));
-            data.add(new ValueDataEntry("Todo", goalsToDo));
+            data.add(new ValueDataEntry("Todo", 100 - goalsDone));
             pieChartGoals.data(data);
         } else {
             pieChartGoals.data((com.anychart.data.View) null);
