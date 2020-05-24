@@ -37,7 +37,7 @@ import java.util.Map;
 /**
  * Author : Stéphane Bottin
  * Date   : 11.03.2020
- *
+ * <p>
  * Task adapter for the task Recycler view
  */
 public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyViewHolder> implements Filterable {
@@ -47,6 +47,7 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
     private Context context;
     private ArrayList<Task> tasksFull;
     private Map<LocalDate, Boolean> dateTitles;
+
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -254,8 +255,9 @@ public class TaskFeedAdapter extends RecyclerView.Adapter<TaskFeedAdapter.MyView
 
     /*
     TODO : We have a problem here, the hash map and taskfull are not updated, the second added element create a bus
-     */
     public  void  setTasks(ArrayList<Task> tasks){
+     */
+    public void setTasks(ArrayList<Task> tasks) {
         this.tasks = tasks;
         notifyDataSetChanged();
     }

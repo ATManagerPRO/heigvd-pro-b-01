@@ -104,4 +104,9 @@
         <item>November</item>
         <item>December</item>
     </string-array>
+
+    <string name="confirm">Confirm</string>
+    <string name="share_taskList">Share a taskList</string>
+    <string name="email">Email</string>
+    <string name="invitee_email">Invitee Email</string>
 </resources>

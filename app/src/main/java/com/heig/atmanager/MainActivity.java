@@ -7,9 +7,18 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
@@ -44,6 +53,8 @@ import com.heig.atmanager.addContent.AddTagsDiag;
 import com.heig.atmanager.addContent.AddTaskFragment;
 import com.heig.atmanager.addContent.AddTasklistDiag;
 import com.heig.atmanager.calendar.CalendarFragment;
+import com.heig.atmanager.dialog.InviteDialog;
+import com.heig.atmanager.dialog.ShareTaskListDiag;
 import com.heig.atmanager.goals.GoalsFragment;
 import com.heig.atmanager.goals.GoalsTodoFragment;
 import com.heig.atmanager.stats.StatsFragment;
@@ -55,10 +66,8 @@ import com.heig.atmanager.userData.UserJsonParser;
 
 import java.util.ArrayList;
 
-
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "MainActivity";
-
+    private static final String TAG = "MainActivity" ;
     public static User user;
 
     private BottomNavigationView dock;
@@ -120,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
         user.setBackEndToken(i.getExtras().getString("userToken"));
         user.setUserId(i.getExtras().getLong("userId"));
 
-        Log.d(TAG, "onCreate: user updated with : " + user.getUserId() + " / " + user.getBackEndToken());
 
         fab = findViewById(R.id.fab);
         fabAddGoal = findViewById(R.id.fab_add_goal);
@@ -308,6 +316,7 @@ public class MainActivity extends AppCompatActivity {
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
+                Log.d(TAG, "onChildClick: ");
                 drawerLayout.closeDrawer(GravityCompat.START);
 
                 loadTaskListFragment(
@@ -404,6 +413,12 @@ public class MainActivity extends AppCompatActivity {
         if (fragment != null) {
             loadFragment(fragment, previousFragment);
         }
+    }
+
+    // Share invite Dialog
+    public void showShareTaskDialog(long taskListId){
+        DialogFragment dialog = new ShareTaskListDiag(taskListId);
+        dialog.show(getSupportFragmentManager(), "ShareTaskListDialog");
     }
 
     public void setContentAdapter(RecyclerView.Adapter adapter) {

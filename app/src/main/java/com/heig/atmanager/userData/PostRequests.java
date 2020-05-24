@@ -28,6 +28,8 @@ import static com.android.volley.VolleyLog.TAG;
 
 public class PostRequests {
 
+    private final static String TAG = "PostRequests";
+
     static public void postFolder(Folder newFolder, Context context) {
         //post request to the server
         try {
@@ -205,6 +207,40 @@ public class PostRequests {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                }
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    final Map<String, String> headers = new HashMap<>();
+                    headers.put("Authorization", "Bearer " + MainActivity.getUser().getBackEndToken());//put your token here
+                    return headers;
+                }
+            };
+            Volley.newRequestQueue(context).add(jsonObject);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static public void postShared(long todoListId, String inviteeEmail, Context context){
+        try{
+            String URL = "https://atmanager.gollgot.app/api/v1/todolists/" + todoListId + "/share";
+
+            JSONObject jsonBody = new JSONObject();
+
+            jsonBody.put("invitedEmail", inviteeEmail);
+
+            JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    Log.d(TAG, "onResponse: ");
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d(TAG, "onErrorResponse: " + error.getMessage());
                 }
             }) {
                 @Override
