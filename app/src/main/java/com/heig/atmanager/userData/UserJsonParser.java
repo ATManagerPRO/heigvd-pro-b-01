@@ -82,6 +82,9 @@ public class UserJsonParser {
                     if(isRequestValid(response)) {
                         parseAndLoadTaskListsAndFolders(response.getJSONObject(RequestConstant.RESPONSE_RESOURCE));
 
+                        // Load the tags
+                        loadTags(queue);
+
                         // Home Fragment view (today's activities)
                         Log.d(TAG, "loadAllDataIntoUser: loading today's activity...");
                         //loadTodaysTasks(queue); only ssems to load tasks for today twice causing bugs (the other time in loadAllTasks)
@@ -118,41 +121,6 @@ public class UserJsonParser {
                 return Priority.IMMEDIATE; //doesn't seem to do shit
             }
 
-        };
-
-        queue.add(request);
-    }
-
-    /**
-     * Loads the tasks of the user for today
-     */
-    private void loadTodaysTasks(RequestQueue queue) {
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
-                baseUserURL + RequestConstant.TODOS_EXTENSION + RequestConstant.TODAY_EXTENSION, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    if(isRequestValid(response)) {
-                        parseAndLoadTasks(response.getJSONObject(RequestConstant.RESPONSE_RESOURCE));
-                    }
-                } catch (final JSONException e) {
-                    Log.e(TAG, "Json parsing error: " + e.getMessage());
-                } catch (ParseException e) {
-                    Log.e(TAG, "Parsing error : " + e);
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                final Map<String, String> headers = new HashMap<>();
-                headers.put("Authorization", "Bearer " + MainActivity.getUser().getBackEndToken());//put your token here
-                return headers;
-            }
         };
 
         queue.add(request);
@@ -263,6 +231,43 @@ public class UserJsonParser {
 
         queue.add(request);
     }
+
+
+    /**
+     * Loads all the tasks of the user
+     */
+    private void loadTags(RequestQueue queue) {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+                baseUserURL + RequestConstant.TAGS_EXTENSION, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    if(isRequestValid(response)) {
+                        parseAndLoadTags(response.getJSONObject(RequestConstant.RESPONSE_RESOURCE));
+                    }
+                } catch (final JSONException e) {
+                    Log.e(TAG, "Json parsing error: " + e.getMessage());
+                } catch (ParseException e) {
+                    Log.e(TAG, "Parsing error : " + e);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + MainActivity.getUser().getBackEndToken());//put your token here
+                return headers;
+            }
+        };
+
+        queue.add(request);
+    }
+
 
     private void parseAndLoadTaskListsAndFolders(JSONObject response) throws JSONException {
 
@@ -400,6 +405,21 @@ public class UserJsonParser {
             // Create and link the goalTodo to the goal
             GoalTodo goalTodo = new GoalTodo(goalTodoId, goal_id, quantityDone, doneDate, dueDate);
             user.getGoal(goal_id).addGoalTodo(goalTodo);
+        }
+    }
+
+
+    private void parseAndLoadTags(JSONObject response) throws JSONException, ParseException {
+        // Getting JSON Array node
+        JSONArray tags = response.getJSONArray(RequestConstant.TAG_KEY);
+
+        // looping through all tasks
+        for (int i = 0; i < tags.length(); i++) {
+            JSONObject c = tags.getJSONObject(i);
+
+            // Tag data
+            String tag = c.getString(RequestConstant.TAG_LABEL);
+            user.addTag(tag);
         }
     }
 

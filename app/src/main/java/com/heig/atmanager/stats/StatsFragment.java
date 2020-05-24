@@ -17,10 +17,13 @@ import androidx.fragment.app.Fragment;
 import com.anychart.APIlib;
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
+import com.anychart.chart.common.dataentry.CategoryValueDataEntry;
 import com.anychart.chart.common.dataentry.DataEntry;
 import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.anychart.charts.Cartesian;
 import com.anychart.charts.Pie;
+import com.anychart.charts.TagCloud;
+import com.anychart.scales.OrdinalColor;
 import com.heig.atmanager.Interval;
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.R;
@@ -33,7 +36,9 @@ import com.heig.atmanager.userData.User;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -47,10 +52,12 @@ public class StatsFragment  extends Fragment {
     private AnyChartView pieChartTasksView;
     private AnyChartView columnChartTasksView;
     private AnyChartView pieChartGoalsView;
+    private AnyChartView cloudTagsView;
 
     private Cartesian columnChartTasks;
     private Pie pieChartTasks;
     private Pie pieChartGoals;
+    private TagCloud cloudTags;
 
     private static String bgColor;
 
@@ -139,6 +146,7 @@ public class StatsFragment  extends Fragment {
         makePieChartTasks(interval);
         makeColumnChartTasks(interval,lineChartLegend);
         makePieChartGoals(interval);
+        makeTagCloud();
     }
 
     private static final String TAG = "StatsFragment";
@@ -290,7 +298,46 @@ public class StatsFragment  extends Fragment {
         } else {
             pieChartGoals.data((com.anychart.data.View) null);
         }
+    }
 
+    private void makeTagCloud() {
+
+        Log.d(TAG, "makeTagCloud: making cloud tags");
+        
+        APIlib.getInstance().setActiveAnyChartView(cloudTagsView);
+
+        cloudTags.title("Tags Cloud");
+
+        OrdinalColor ordinalColor = OrdinalColor.instantiate();
+        ordinalColor.colors(new String[] {
+                "#26959f", "#f18126", "#3b8ad8", "#60727b", "#e24b26"
+        });
+        cloudTags.colorScale(ordinalColor);
+        cloudTags.angles(new Double[] {-90d, 0d, 90d});
+
+        cloudTags.colorRange().enabled(true);
+        cloudTags.colorRange().colorLineSize(15d);
+
+        // Hashmap to count occurences (loop through task to get the recurrences)
+        Map<String, Integer> tagOccurrences = new HashMap<>();
+        for (Task task : MainActivity.getUser().getTasks()) {
+            for(String tag : task.getTags()) {
+                Integer j = tagOccurrences.get(tag);
+                tagOccurrences.put(tag, (j == null) ? 1 : j + 1);
+            }
+        }
+
+        List<DataEntry> data = new ArrayList<>();
+
+        for(Map.Entry<String, Integer> tagOccurence : tagOccurrences.entrySet()) {
+            Log.d(TAG, "makeTagCloud: added " + tagOccurence.getKey() + " : " + tagOccurence.getValue());
+            data.add(new CategoryValueDataEntry(tagOccurence.getKey(), tagOccurence.getKey(), tagOccurence.getValue()));
+        }
+
+        cloudTags.data(data);
+
+        cloudTagsView.setChart(cloudTags);
+        Log.d(TAG, "makeTagCloud: tag cloud added");
     }
 
     /**
@@ -300,6 +347,8 @@ public class StatsFragment  extends Fragment {
      */
     private void initCharts(View v){
 
+        Log.d(TAG, "initCharts: init charts");
+        
         //PieChartTasks
         pieChartTasksView = v.findViewById(R.id.pie_chart_tasks);
         APIlib.getInstance().setActiveAnyChartView(pieChartTasksView);
@@ -338,6 +387,19 @@ public class StatsFragment  extends Fragment {
         pieChartGoals.noData().label().enabled(true);
         pieChartGoals.noData().label().text("Could not retrieve any goals!");
         pieChartGoals.animation(true);
+
+        // CloudTag
+        cloudTagsView = v.findViewById(R.id.cloud_tags);
+        APIlib.getInstance().setActiveAnyChartView(cloudTagsView);
+        cloudTagsView.setBackgroundColor(bgColor);
+        cloudTags = AnyChart.tagCloud();
+        cloudTagsView.setChart(cloudTags);
+        cloudTags.animation(true);
+        cloudTags.noData().label().enabled(true);
+        cloudTags.background().fill(bgColor);
+        cloudTags.noData().label().text("Could not retrieve any tags");
+        cloudTags.palette(new String[]{"#80EB5A","#FF9745"}); //Colors
+
     }
 
 
