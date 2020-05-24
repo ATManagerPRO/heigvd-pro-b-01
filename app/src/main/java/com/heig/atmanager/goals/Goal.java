@@ -93,10 +93,6 @@ public class Goal implements Serializable {
             case DAY:
                 // User has until the end of the day to finish a daily goal
                 c.set(Calendar.HOUR_OF_DAY, 23);
-            case HOUR:
-                // User has until the end of the hour to finish an hourly goal
-                c.set(Calendar.MINUTE, 59);
-                c.set(Calendar.SECOND, 59);
                 break;
         }
 

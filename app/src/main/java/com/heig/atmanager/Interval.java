@@ -10,7 +10,6 @@ import java.util.Date;
  * Enum to work with intervals for goals or tasks
  */
 public enum Interval {
-    HOUR  (Calendar.HOUR_OF_DAY, "HOURLY", "HOUR"),
     DAY   (Calendar.DAY_OF_YEAR, "DAILY", "DAY"),
     WEEK  (Calendar.WEEK_OF_YEAR, "WEEKLY", "WEEK"),
     MONTH (Calendar.MONTH, "MONTHLY", "MONTH"),
