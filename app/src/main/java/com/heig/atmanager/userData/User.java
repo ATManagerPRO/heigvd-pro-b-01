@@ -1,5 +1,7 @@
 package com.heig.atmanager.userData;
 
+import android.util.Log;
+
 import com.heig.atmanager.Interval;
 import com.heig.atmanager.Utils;
 import com.heig.atmanager.folders.Folder;
@@ -141,14 +143,19 @@ public class User {
         return tasksForDay;
     }
 
-    public ArrayList<Task> getTasksWithoutDate() {
-        ArrayList<Task> tasksForDay = new ArrayList<>();
+    public ArrayList<Task> getHomeViewTasks() {
+        Date today = Calendar.getInstance().getTime();
+        ArrayList<Task> homeViewTasks = new ArrayList<>();
+
         for (Task task : tasks) {
-            if (task.getDueDate() == null) {
-                tasksForDay.add(task);
+            Log.d(TAG, "getHomeViewTasks: " + task.getTitle() + " : " + task.isDone());
+            if (!task.isDone() && (task.getDueDate() == null ||
+                    isSameSimpleDate(task.getDueDate(), today))) {
+                homeViewTasks.add(task);
             }
         }
-        return tasksForDay;
+
+        return homeViewTasks;
     }
 
     public ArrayList<Task> getTasksDone() {
