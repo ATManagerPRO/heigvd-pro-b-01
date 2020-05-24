@@ -43,4 +43,7 @@ public class FolderSpinnerAdapter extends ArrayAdapter<Folder> {
         label.setText(this.getItem(i).getName());
         return label;
     }
+
+
+
 }
