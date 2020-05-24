@@ -3,6 +3,7 @@ package com.heig.atmanager.addContent;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,7 +87,7 @@ public class AddGoalFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
 
     }
-
+    
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
