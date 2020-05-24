@@ -8,23 +8,36 @@
 
     <TextView
         android:id="@+id/diag_description"
+        style="@style/MaterialAlertDialog.MaterialComponents.Title.Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/enter_the_new_tag"
+        android:layout_gravity="start"
+        android:text="@string/add_new_tag"
         android:padding="8dp"/>
 
-    <EditText
-        android:id="@+id/newTagName"
-        android:inputType="text"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/newTagName_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginBottom="4dp"
-        android:hint="@string/tag"
-        android:maxLength="@integer/tag_label"/>
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/newTagName"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="4dp"
+            android:hint="@string/tags"
+            android:maxLength="@integer/tag_label">
+
+        </com.google.android.material.textfield.TextInputEditText>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
 
 
 

@@ -18,6 +18,8 @@ import java.util.List;
 /**
  * Author : Chau Ying Kot
  * Date   : 29.04.2020
+ *
+ * This class custom the basic arrayAdapter to show the folder name in the spinner
  **/
 public class FolderSpinnerAdapter extends ArrayAdapter<Folder> {
 
@@ -41,4 +43,7 @@ public class FolderSpinnerAdapter extends ArrayAdapter<Folder> {
         label.setText(this.getItem(i).getName());
         return label;
     }
+
+
+
 }
