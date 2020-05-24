@@ -64,6 +64,15 @@ public class User {
     }
 
     public void addTaskList(TaskList taskList) {
+        // Adding the tasklist in its folder as well (better to have only tasklists with a folder id ?)
+        if(taskList.getFolderId() != -1) {
+            for(Folder f : folders) {
+                if(f.getId() == taskList.getFolderId())
+                    f.addList(taskList);
+            }
+        }
+
+
         taskLists.add(taskList);
     }
 
@@ -84,15 +93,7 @@ public class User {
     }
 
     public int getTotalTasksForDay(Date day) {
-        int totalTasks = 0;
-
-        for (Task task : tasks) {
-            if (task.getDueDate() != null && isSameSimpleDate(task.getDueDate(), day)) {
-                totalTasks++;
-            }
-        }
-
-        return totalTasks;
+        return getTasksForDay(day).size();
     }
 
     private boolean isSameSimpleDate(Date d1, Date d2) {
