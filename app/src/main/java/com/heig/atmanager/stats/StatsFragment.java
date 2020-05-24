@@ -2,6 +2,7 @@ package com.heig.atmanager.stats;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -111,7 +112,7 @@ public class StatsFragment  extends Fragment {
         //keep interval tasks
         switch(interval){
             case DAY:
-                tasks = user.getTasksForDay(new Date());
+                tasks = user.getTasksForDay(Calendar.getInstance().getTime());
                 goals = user.getDailyGoalTodo();
                 lineChartLegend = "Hours";
                 break;
@@ -138,6 +139,8 @@ public class StatsFragment  extends Fragment {
         makePieChartGoals(interval);
     }
 
+    private static final String TAG = "StatsFragment";
+    
     /**
      * Pie chart for tasks
      * @param interval period
@@ -149,9 +152,11 @@ public class StatsFragment  extends Fragment {
         List<DataEntry> data = new ArrayList<>();
         int tasksDone = 0, tasksToDo = 0;
 
-        pieChartTasks.title("Past " + Utils.firstLetterCapped(interval.name()) + "´s " + Task.class.getSimpleName() + "s"); //title
+        pieChartTasks.title("Past " + Utils.firstLetterCapped(interval.name()) + "´s " + Task.class.getSimpleName() + "s");
 
         for(Task t : tasks){
+            Log.d(TAG, "makePieChartTasks: " + t.getTitle() + " / " + t.isDone());
+            
             if(t.isDone())
                 ++tasksDone;
             else
