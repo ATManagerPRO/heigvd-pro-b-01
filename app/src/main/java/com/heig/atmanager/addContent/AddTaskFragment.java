@@ -267,8 +267,7 @@ public class AddTaskFragment extends Fragment {
                         PostRequests.postTask(newTask, getContext());
                         MainActivity.getUser().addTask(newTask);
                         //update homeview
-                        tasks = MainActivity.getUser().getTasksForDay(Calendar.getInstance().getTime());
-                        tasks.addAll(MainActivity.getUser().getTasksWithoutDate());
+                        tasks = MainActivity.getUser().getHomeViewTasks();
                         ((TaskFeedAdapter) tasksRecyclerView.getAdapter()).setTasks(tasks);
                     }
                 }
