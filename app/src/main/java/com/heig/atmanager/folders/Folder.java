@@ -1,9 +1,12 @@
 package com.heig.atmanager.folders;
 
+import android.util.Log;
+
 import com.heig.atmanager.DrawerObject;
 import com.heig.atmanager.taskLists.TaskList;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  *  Author : Teo Ferrari
@@ -42,22 +45,26 @@ public class Folder extends DrawerObject {
         return false;
     }
 
+    private static final String TAG = "Folder";
+
     /**
      * Adds a list from folder
      *
      * @param list : tasklist to add
-     * @return success of the operation
      */
-    public boolean addList(TaskList list){
-        for(TaskList taskList : taskLists){
-            if(taskList.getName().equals(list.getName())){
-                return false;
+    public void addList(TaskList list){
+        int recurrences = 0;
+        String original = list.getName();
+        for(int i = 0; i < taskLists.size(); ++i) {
+            if(taskLists.get(i).getName().equals(list.getName())){
+                recurrences++;
+                list.setName(original + " (" + recurrences + ")");
+                i = 0;
             }
         }
 
         taskLists.add(list);
         list.setFolderId(this.id);
-        return true;
     }
 
     public ArrayList<TaskList> getTaskLists() {
@@ -73,5 +80,16 @@ public class Folder extends DrawerObject {
         return true;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Folder folder = (Folder) o;
+        return id == folder.id;
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

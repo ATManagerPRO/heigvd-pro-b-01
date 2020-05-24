@@ -1,5 +1,7 @@
 package com.heig.atmanager.userData;
 
+import android.util.Log;
+
 import com.heig.atmanager.Interval;
 import com.heig.atmanager.Utils;
 import com.heig.atmanager.folders.Folder;
@@ -64,6 +66,15 @@ public class User {
     }
 
     public void addTaskList(TaskList taskList) {
+        // Adding the tasklist in its folder as well (better to have only tasklists with a folder id ?)
+        if(taskList.getFolderId() != -1) {
+            for(Folder f : folders) {
+                if(f.getId() == taskList.getFolderId())
+                    f.addList(taskList);
+            }
+        }
+
+
         taskLists.add(taskList);
     }
 
@@ -84,15 +95,7 @@ public class User {
     }
 
     public int getTotalTasksForDay(Date day) {
-        int totalTasks = 0;
-
-        for (Task task : tasks) {
-            if (task.getDueDate() != null && isSameSimpleDate(task.getDueDate(), day)) {
-                totalTasks++;
-            }
-        }
-
-        return totalTasks;
+        return getTasksForDay(day).size();
     }
 
     private boolean isSameSimpleDate(Date d1, Date d2) {
@@ -140,14 +143,19 @@ public class User {
         return tasksForDay;
     }
 
-    public ArrayList<Task> getTasksWithoutDate() {
-        ArrayList<Task> tasksForDay = new ArrayList<>();
+    public ArrayList<Task> getHomeViewTasks() {
+        Date today = Calendar.getInstance().getTime();
+        ArrayList<Task> homeViewTasks = new ArrayList<>();
+
         for (Task task : tasks) {
-            if (task.getDueDate() == null) {
-                tasksForDay.add(task);
+            Log.d(TAG, "getHomeViewTasks: " + task.getTitle() + " : " + task.isDone());
+            if (!task.isDone() && (task.getDueDate() == null ||
+                    isSameSimpleDate(task.getDueDate(), today))) {
+                homeViewTasks.add(task);
             }
         }
-        return tasksForDay;
+
+        return homeViewTasks;
     }
 
     public ArrayList<Task> getTasksDone() {
@@ -274,36 +282,48 @@ public class User {
     private ArrayList<GoalTodo> getXlyGoalTodo(Interval interval){
         ArrayList<GoalTodo> result = new ArrayList<>();
         Calendar current = Calendar.getInstance();
-        Date currentDate = new Date();
-        current.setTime(currentDate);
+        Date currentDate = current.getTime();
 
         for(Goal g : goals){
             for(GoalTodo gt : g.getGoalTodos()){
-                switch(interval) {
-                    case YEAR:
-                        if (Utils.getYear(currentDate) == Utils.getYear(gt.getDoneDate()) && g.getInterval() == Interval.YEAR)
-                            result.add(gt);
-                        break;
-                    case MONTH:
-                        if(Arrays.equals(Utils.getMonthYear(gt.getDoneDate()), Utils.getMonthYear(currentDate))
-                                && g.getInterval() == Interval.MONTH)
-                            result.add(gt);
-                        break;
-                    case WEEK:
-                        if(Arrays.equals(Utils.getWeekMonthYear(gt.getDoneDate()), Utils.getWeekMonthYear(currentDate))
-                                && g.getInterval() == Interval.WEEK)
-                            result.add(gt);
-                        break;
-                    case DAY:
-                        if(Arrays.equals(Utils.getDayWeekMonthYear(gt.getDoneDate()), Utils.getDayWeekMonthYear(currentDate))
-                                && g.getInterval() == Interval.DAY)
-                            result.add(gt);
-                        break;
-                    default: break;
+                if(gt.getDoneDate() != null) { //TODO : fix doneDate null
+                    switch (interval) {
+                        case YEAR:
+                            if (Utils.getYear(currentDate) == Utils.getYear(gt.getDoneDate()) && g.getInterval() == Interval.YEAR)
+                                result.add(gt);
+                            break;
+                        case MONTH:
+                            if (Arrays.equals(Utils.getMonthYear(gt.getDoneDate()), Utils.getMonthYear(currentDate))
+                                    && g.getInterval() == Interval.MONTH)
+                                result.add(gt);
+                            break;
+                        case WEEK:
+                            if (Arrays.equals(Utils.getWeekMonthYear(gt.getDoneDate()), Utils.getWeekMonthYear(currentDate))
+                                    && g.getInterval() == Interval.WEEK)
+                                result.add(gt);
+                            break;
+                        case DAY:
+                            if (Arrays.equals(Utils.getDayWeekMonthYear(gt.getDoneDate()), Utils.getDayWeekMonthYear(currentDate))
+                                    && g.getInterval() == Interval.DAY)
+                                result.add(gt);
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
         }
 
+        return result;
+    }
+
+    public ArrayList<Task> getTasksWithoutDate(){
+        ArrayList<Task> result = new ArrayList<>();
+        for(Task t : tasks){
+            if(t.getDueDate() == null){
+                result.add(t);
+            }
+        }
         return result;
     }
     

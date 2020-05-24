@@ -20,8 +20,11 @@ import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.android.volley.VolleyLog.TAG;
 
 public class PostRequests {
 
@@ -30,11 +33,11 @@ public class PostRequests {
     static public void postFolder(Folder newFolder, Context context) {
         //post request to the server
         try {
-            String URL = "https://atmanager.gollgot.app/api/v1/folders";
+            String URL = RequestConstant.FOLDER_URL;
             JSONObject jsonBody = new JSONObject();
 
 
-            jsonBody.put("label", newFolder.getName());
+            jsonBody.put(RequestConstant.FOLDERS_LABEL, newFolder.getName());
 
             JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
                 @Override
@@ -66,12 +69,12 @@ public class PostRequests {
     static public void postTaskList(TaskList newTaskList, Context context) {
         //post request to the server
         try {
-            String URL = "https://atmanager.gollgot.app/api/v1/todolists";
+            String URL = RequestConstant.TODOLISTS_URL;
             JSONObject jsonBody = new JSONObject();
 
 
-            jsonBody.put("title", newTaskList.getName());
-            jsonBody.put("folder_id", newTaskList.getFolderId());
+            jsonBody.put(RequestConstant.TASK_TITLE, newTaskList.getName());
+            jsonBody.put(RequestConstant.FOLDERS_ID, newTaskList.getFolderId());
 
             JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
                 @Override
@@ -100,19 +103,18 @@ public class PostRequests {
     static public void postGoal(Goal newGoal, Context context) {
         //post request to the server
         try {
-            String URL = "https://atmanager.gollgot.app/api/v1/goals";
+            String URL = RequestConstant.GOAL_URL;
             JSONObject jsonBody = new JSONObject();
 
 
-            jsonBody.put("intervalLabel", newGoal.getInterval().toString());
-            jsonBody.put("label", newGoal.getUnit());
-            jsonBody.put("quantity", newGoal.getQuantity());
-            jsonBody.put("intervalValue", newGoal.getIntervalNumber());
+            jsonBody.put(RequestConstant.GOAL_INTERVAL_LABEL, newGoal.getInterval().toString());
+            jsonBody.put(RequestConstant.GOAL_LABEL, newGoal.getUnit());
+            jsonBody.put(RequestConstant.GOAL_QUANTITY, newGoal.getQuantity());
+            jsonBody.put(RequestConstant.GOAL_INTERVAL_NUMBER, newGoal.getIntervalNumber());
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             String date = df.format(newGoal.getDueDate());
-            jsonBody.put("endDate", date);
-
-
+            jsonBody.put(RequestConstant.GOAL_END_DATE, date);
+            jsonBody.put(RequestConstant.GOAL_BEGIN_DATE, df.format(Calendar.getInstance().getTime()));
 
             JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
                 @Override
@@ -121,6 +123,7 @@ public class PostRequests {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    Log.d(TAG, "onErrorResponse: " + error.getMessage());
                 }
             }) {
                 @Override
@@ -144,19 +147,24 @@ public class PostRequests {
             String URL = "https://atmanager.gollgot.app/api/v1/todos";
             JSONObject jsonBody = new JSONObject();
 
-            android.icu.text.SimpleDateFormat sdf  = new android.icu.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            android.icu.text.SimpleDateFormat sdf = new android.icu.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
             jsonBody.put("todo_list_id", newTask.getTasklist().getId());
             jsonBody.put("title", newTask.getTitle());
-            jsonBody.put("details", newTask.getDescription());
-            if(newTask.getDueDate() != null) {
+            if (!newTask.getDescription().isEmpty()) {
+                jsonBody.put("details", newTask.getDescription());
+            }
+            if (newTask.getDueDate() != null) {
                 jsonBody.put("dueDate", sdf.format(newTask.getDueDate()));
             }
             /*
-            if(newTask.getReminderDate() != null) {
-                jsonBody.put("reminderDate", sdf.format(newTask.getReminderDate()));
+           if(newTask.getReminderDate() != null) {
+                jsonBody.put(RequestConstant.TASK_REMINDER_DATE", sdf.format(newTask.getReminderDate()));
             }*/
-           jsonBody.put("tags", newTask.getTags().toString());
+
+            if (newTask.getTags().size() != 0) {
+                jsonBody.put("tags", newTask.getTags().toString());
+            }
 
 
             JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
@@ -166,6 +174,7 @@ public class PostRequests {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    Log.d(TAG, "onErrorResponse: " + error.getMessage());
                 }
             }) {
                 @Override
@@ -186,10 +195,10 @@ public class PostRequests {
     static public void postTag(String newTag, Context context) {
         //post request to the server
         try {
-            String URL = "https://atmanager.gollgot.app/api/v1/tags";
+            String URL = RequestConstant.TAGS_URL;
             JSONObject jsonBody = new JSONObject();
 
-            jsonBody.put("label", newTag);
+            jsonBody.put(RequestConstant.TAG_LABEL, newTag);
 
             JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
                 @Override

@@ -295,7 +295,7 @@ public class MainActivity extends AppCompatActivity {
         final ArrayList<TaskList> standaloneTaskLists = new ArrayList<>();
 
         for (TaskList taskList : user.getTaskLists())
-            if (!taskList.isFolder())
+            if (taskList.getFolderId() == -1)
                 standaloneTaskLists.add(taskList);
 
         drawerAdapter = new DrawerListAdapter(this, standaloneTaskLists, user.getFolders());
