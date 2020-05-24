@@ -1,6 +1,5 @@
 package com.heig.atmanager;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -22,7 +21,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
-import com.heig.atmanager.dialog.InviteDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;

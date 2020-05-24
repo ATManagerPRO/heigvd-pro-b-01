@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.SystemClock;
 
 public class NotificationUtils extends ContextWrapper {
 
