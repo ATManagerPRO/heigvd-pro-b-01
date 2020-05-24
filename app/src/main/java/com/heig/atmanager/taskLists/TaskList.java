@@ -63,6 +63,11 @@ public class TaskList extends DrawerObject implements Serializable {
         return false;
     }
 
+    public static TaskList getDefaultList() {
+        return defaultList;
+    }
+
+
     public long getId() {
         return id;
     }

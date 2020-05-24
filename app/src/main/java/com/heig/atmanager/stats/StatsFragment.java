@@ -2,6 +2,7 @@ package com.heig.atmanager.stats;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +56,7 @@ public class StatsFragment  extends Fragment {
 
     private User user;
     private ArrayList<Task> tasks;
+    private ArrayList<Task> tasksWithoutDate;
     private ArrayList<GoalTodo> goals;
 
 
@@ -107,11 +109,12 @@ public class StatsFragment  extends Fragment {
     private void makeCharts(Interval interval){
 
         String lineChartLegend = "";
+        tasksWithoutDate = user.getTasksWithoutDate();
 
         //keep interval tasks
         switch(interval){
             case DAY:
-                tasks = user.getTasksForDay(new Date());
+                tasks = user.getTasksForDay(Calendar.getInstance().getTime());
                 goals = user.getDailyGoalTodo();
                 lineChartLegend = "Hours";
                 break;
@@ -138,6 +141,8 @@ public class StatsFragment  extends Fragment {
         makePieChartGoals(interval);
     }
 
+    private static final String TAG = "StatsFragment";
+    
     /**
      * Pie chart for tasks
      * @param interval period
@@ -149,7 +154,7 @@ public class StatsFragment  extends Fragment {
         List<DataEntry> data = new ArrayList<>();
         int tasksDone = 0, tasksToDo = 0;
 
-        pieChartTasks.title("Past " + Utils.firstLetterCapped(interval.name()) + "´s " + Task.class.getSimpleName() + "s"); //title
+        pieChartTasks.title("Past " + Utils.firstLetterCapped(interval.name()) + "´s " + Task.class.getSimpleName() + "s");
 
         for(Task t : tasks){
             if(t.isDone())
@@ -242,16 +247,18 @@ public class StatsFragment  extends Fragment {
 
         Calendar current = Calendar.getInstance();
         int currentPeriod = current.get(calendarInterval);
+        tasks.addAll(tasksWithoutDate);
 
         for (Task t : tasks) {
             if (t.isDone()) {
-                //TODO : use t.getDoneDate when once it's corretly working
-                current.setTime(t.getDoneDate() == null ? new Date() : t.getDoneDate());
-                int taskPeriod = current.get(calendarInterval);
-                if (taskPeriod > currentPeriod)
-                    ++values[values.length + currentPeriod - taskPeriod];
-                else
-                    ++values[currentPeriod - taskPeriod];
+                if(t.getDoneDate() != null) {
+                    current.setTime(t.getDoneDate());
+                    int taskPeriod = current.get(calendarInterval);
+                    if (taskPeriod > currentPeriod)
+                        ++values[values.length + currentPeriod - taskPeriod];
+                    else
+                        ++values[currentPeriod - taskPeriod];
+                }
             }
         }
     }
@@ -265,19 +272,20 @@ public class StatsFragment  extends Fragment {
         APIlib.getInstance().setActiveAnyChartView(pieChartGoalsView);
 
         List<DataEntry> data = new ArrayList<>();
-        float goalsDone = 0, goalsToDo = 0;
+        float goalsDone = 0;
 
         pieChartGoals.title(Utils.firstLetterCapped(interval.getAdverb()) + " " + Goal.class.getSimpleName() + "s");
+        Log.d(TAG, "makePieChartGoals: makeing goals");
 
         for(GoalTodo gt : goals){
+            Log.d(TAG, "makePieChartGoals: " + gt.getUnit() + " : " + gt.getPercentage());
             float p = gt.getPercentage();
             goalsDone += p;
-            goalsToDo += 100-p;
         }
 
-        if(goalsDone != 0 || goalsToDo != 0){
+        if(goalsDone != 0){
             data.add(new ValueDataEntry("Done", goalsDone));
-            data.add(new ValueDataEntry("Todo", goalsToDo));
+            data.add(new ValueDataEntry("Todo", 100 - goalsDone));
             pieChartGoals.data(data);
         } else {
             pieChartGoals.data((com.anychart.data.View) null);

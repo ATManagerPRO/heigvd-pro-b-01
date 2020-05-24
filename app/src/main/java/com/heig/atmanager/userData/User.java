@@ -285,36 +285,48 @@ public class User {
     private ArrayList<GoalTodo> getXlyGoalTodo(Interval interval){
         ArrayList<GoalTodo> result = new ArrayList<>();
         Calendar current = Calendar.getInstance();
-        Date currentDate = new Date();
-        current.setTime(currentDate);
+        Date currentDate = current.getTime();
 
         for(Goal g : goals){
             for(GoalTodo gt : g.getGoalTodos()){
-                switch(interval) {
-                    case YEAR:
-                        if (Utils.getYear(currentDate) == Utils.getYear(gt.getDoneDate()) && g.getInterval() == Interval.YEAR)
-                            result.add(gt);
-                        break;
-                    case MONTH:
-                        if(Arrays.equals(Utils.getMonthYear(gt.getDoneDate()), Utils.getMonthYear(currentDate))
-                                && g.getInterval() == Interval.MONTH)
-                            result.add(gt);
-                        break;
-                    case WEEK:
-                        if(Arrays.equals(Utils.getWeekMonthYear(gt.getDoneDate()), Utils.getWeekMonthYear(currentDate))
-                                && g.getInterval() == Interval.WEEK)
-                            result.add(gt);
-                        break;
-                    case DAY:
-                        if(Arrays.equals(Utils.getDayWeekMonthYear(gt.getDoneDate()), Utils.getDayWeekMonthYear(currentDate))
-                                && g.getInterval() == Interval.DAY)
-                            result.add(gt);
-                        break;
-                    default: break;
+                if(gt.getDoneDate() != null) { //TODO : fix doneDate null
+                    switch (interval) {
+                        case YEAR:
+                            if (Utils.getYear(currentDate) == Utils.getYear(gt.getDoneDate()) && g.getInterval() == Interval.YEAR)
+                                result.add(gt);
+                            break;
+                        case MONTH:
+                            if (Arrays.equals(Utils.getMonthYear(gt.getDoneDate()), Utils.getMonthYear(currentDate))
+                                    && g.getInterval() == Interval.MONTH)
+                                result.add(gt);
+                            break;
+                        case WEEK:
+                            if (Arrays.equals(Utils.getWeekMonthYear(gt.getDoneDate()), Utils.getWeekMonthYear(currentDate))
+                                    && g.getInterval() == Interval.WEEK)
+                                result.add(gt);
+                            break;
+                        case DAY:
+                            if (Arrays.equals(Utils.getDayWeekMonthYear(gt.getDoneDate()), Utils.getDayWeekMonthYear(currentDate))
+                                    && g.getInterval() == Interval.DAY)
+                                result.add(gt);
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
         }
 
+        return result;
+    }
+
+    public ArrayList<Task> getTasksWithoutDate(){
+        ArrayList<Task> result = new ArrayList<>();
+        for(Task t : tasks){
+            if(t.getDueDate() == null){
+                result.add(t);
+            }
+        }
         return result;
     }
     
