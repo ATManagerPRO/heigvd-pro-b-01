@@ -72,16 +72,17 @@
         android:id="@+id/goal_timer"
         android:layout_width="120dp"
         android:layout_height="30dp"
-        android:background="@drawable/goal_timer_background"
-        android:text="XX hours left"
+        android:background="@drawable/goal_timer_background_completed"
+        android:text="@string/goal_completed"
         android:textAlignment="center"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textStyle="bold"
         android:paddingStart="15dp"
         android:paddingEnd="15dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        android:layout_gravity="bottom|center" />
+        android:layout_gravity="bottom|center"
+        android:visibility="gone"/>
 
     <EditText
         android:id="@+id/goal_value_input"
