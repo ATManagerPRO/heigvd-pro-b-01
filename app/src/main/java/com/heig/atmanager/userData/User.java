@@ -282,8 +282,7 @@ public class User {
     private ArrayList<GoalTodo> getXlyGoalTodo(Interval interval){
         ArrayList<GoalTodo> result = new ArrayList<>();
         Calendar current = Calendar.getInstance();
-        Date currentDate = new Date();
-        current.setTime(currentDate);
+        Date currentDate = current.getTime();
 
         for(Goal g : goals){
             for(GoalTodo gt : g.getGoalTodos()){
