@@ -1,7 +1,6 @@
 package com.heig.atmanager;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +30,9 @@ public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
 
     public static final String FRAG_HOME_ID = "Home_Fragment";
+    public static final int MORNING_HOUR = 11;
+    public static final int DAY_HOUR = 13;
+    public static final int AFTERNOON_HOUR = 18;
 
     private ProgressBar feedProgress;
     private SwipeRefreshLayout refreshLayout;
@@ -98,11 +100,11 @@ public class HomeFragment extends Fragment {
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
 
         // Select proper greeting
-        if(currentHour < 11) {
+        if(currentHour < MORNING_HOUR) {
             greeting = "Good morning ";
-        } else if (currentHour < 13) {
+        } else if (currentHour < DAY_HOUR) {
             greeting = "Hello ";
-        } else if (currentHour < 18) {
+        } else if (currentHour < AFTERNOON_HOUR) {
             greeting = "Good afternoon ";
         } else {
             greeting = "Good evening ";
