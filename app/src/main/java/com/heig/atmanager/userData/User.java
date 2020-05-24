@@ -317,6 +317,16 @@ public class User {
 
         return result;
     }
+
+    public ArrayList<Task> getTasksWithoutDate(){
+        ArrayList<Task> result = new ArrayList<>();
+        for(Task t : tasks){
+            if(t.getDueDate() == null){
+                result.add(t);
+            }
+        }
+        return result;
+    }
     
     public void addTag(String tagName){
         tags.add(tagName);

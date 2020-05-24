@@ -55,6 +55,7 @@ public class StatsFragment  extends Fragment {
 
     private User user;
     private ArrayList<Task> tasks;
+    private ArrayList<Task> tasksWithoutDate;
     private ArrayList<GoalTodo> goals;
 
 
@@ -107,6 +108,7 @@ public class StatsFragment  extends Fragment {
     private void makeCharts(Interval interval){
 
         String lineChartLegend = "";
+        tasksWithoutDate = user.getTasksWithoutDate();
 
         //keep interval tasks
         switch(interval){
@@ -242,16 +244,18 @@ public class StatsFragment  extends Fragment {
 
         Calendar current = Calendar.getInstance();
         int currentPeriod = current.get(calendarInterval);
+        tasks.addAll(tasksWithoutDate);
 
         for (Task t : tasks) {
             if (t.isDone()) {
-                //TODO : use t.getDoneDate when once it's corretly working
-                current.setTime(t.getDoneDate() == null ? new Date() : t.getDoneDate());
-                int taskPeriod = current.get(calendarInterval);
-                if (taskPeriod > currentPeriod)
-                    ++values[values.length + currentPeriod - taskPeriod];
-                else
-                    ++values[currentPeriod - taskPeriod];
+                if(t.getDoneDate() != null) {
+                    current.setTime(t.getDoneDate());
+                    int taskPeriod = current.get(calendarInterval);
+                    if (taskPeriod > currentPeriod)
+                        ++values[values.length + currentPeriod - taskPeriod];
+                    else
+                        ++values[currentPeriod - taskPeriod];
+                }
             }
         }
     }
