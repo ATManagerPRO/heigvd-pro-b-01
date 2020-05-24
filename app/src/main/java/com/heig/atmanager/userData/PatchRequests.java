@@ -1,6 +1,8 @@
 package com.heig.atmanager.userData;
 
 import android.content.Context;
+import android.icu.text.SimpleDateFormat;
+import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -25,14 +27,11 @@ public class PatchRequests {
             String URL = RequestConstant.TASK_URL + "/" + newTask.getId() + RequestConstant.DONE_EXTENSION;
             JSONObject jsonBody = new JSONObject();
 
-            android.icu.text.SimpleDateFormat sdf = new android.icu.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
             jsonBody.put(RequestConstant.TODO_ID, newTask.getId());
-            if (newTask.getDoneDate() != null) {
-                jsonBody.put(RequestConstant.DONE, sdf.format(newTask.getDoneDate()));
-            } else {
-                jsonBody.put(RequestConstant.DONE, null);
-            }
+            jsonBody.put(RequestConstant.DONE,    newTask.getDoneDate() == null ?
+                    JSONObject.NULL : sdf.format(newTask.getDoneDate()));
 
             JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.PATCH, URL, jsonBody, new Response.Listener<JSONObject>() {
                 @Override

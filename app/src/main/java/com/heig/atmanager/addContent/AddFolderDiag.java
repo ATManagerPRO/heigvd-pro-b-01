@@ -64,6 +64,7 @@ public class AddFolderDiag extends DialogFragment {
                             Folder newFolder = new Folder(folderName.getText().toString());
                             PostRequests.postFolder(newFolder, getContext());
                             MainActivity.user.addFolder(newFolder);
+                            ((MainActivity) getContext()).updateDrawerItems();
                             dismiss();
                         }
                     }
