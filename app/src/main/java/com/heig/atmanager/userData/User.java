@@ -271,7 +271,7 @@ public class User {
 
         for(Goal g : goals){
             for(GoalTodo gt : g.getGoalTodos()){
-                if(gt.getDoneDate() != null) {
+                if(gt.getDoneDate() != null) { //TODO : fix doneDate null
                     switch (interval) {
                         case YEAR:
                             if (Utils.getYear(currentDate) == Utils.getYear(gt.getDoneDate()) && g.getInterval() == Interval.YEAR)
