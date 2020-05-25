@@ -12,7 +12,7 @@ public final class RequestConstant {
     public final static String TODOLISTS_EXTENSION = "/todolists";
     private final static String GOALS_EXTENSION = "/goals";
     public final static String TODOS_EXTENSION = "/todos";
-    private final static String TAGS_EXTENSION = "/tags";
+    public final static String TAGS_EXTENSION = "/tags";
     public final static String TODAY_EXTENSION = "/today";
     public final static String GOAL_TODOS_EXTENSION = "/goaltodos";
     private final static String USER__EXTENSION = "/users";
@@ -75,6 +75,7 @@ public final class RequestConstant {
     public final static String GOAL_URL = BASE_URL + GOALS_EXTENSION;
     public final static String TAGS_URL = BASE_URL +TAGS_EXTENSION;
     public final static String USER_BASE_URL = BASE_URL + USER__EXTENSION;
+    public final static String GOALTODO_URL = BASE_URL + GOAL_TODOS_EXTENSION;
 
     // Response codes
     public static final String RESPONSE_CODE      = "status code";

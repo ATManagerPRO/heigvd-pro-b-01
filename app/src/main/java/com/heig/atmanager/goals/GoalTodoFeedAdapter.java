@@ -1,5 +1,6 @@
 package com.heig.atmanager.goals;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import android.widget.ToggleButton;
 
 import com.heig.atmanager.R;
 import com.heig.atmanager.Utils;
+import com.heig.atmanager.userData.PatchRequests;
 
 import java.util.ArrayList;
 
@@ -33,6 +35,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class GoalTodoFeedAdapter extends RecyclerView.Adapter<GoalTodoFeedAdapter.MyViewHolder> {
     private ArrayList<GoalTodo> goals;
     private boolean bubbled;
+    private Context context;
 
     // Provide a reference to the views for each data item
 // Complex data items may need more than one view per item, and
@@ -78,7 +81,8 @@ public class GoalTodoFeedAdapter extends RecyclerView.Adapter<GoalTodoFeedAdapte
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public GoalTodoFeedAdapter(boolean bubbled, ArrayList<GoalTodo> goals) {
+    public GoalTodoFeedAdapter(boolean bubbled, ArrayList<GoalTodo> goals, Context context) {
+        this.context = context;
         this.bubbled = bubbled;
         this.goals   = goals;
     }
@@ -107,7 +111,11 @@ public class GoalTodoFeedAdapter extends RecyclerView.Adapter<GoalTodoFeedAdapte
             holder.unit.setText(unit);
             holder.currentValue.setText(doneQt);
             holder.totalValue.setText("/" + totalQt);
-            holder.timerValue.setText(goals.get(position).getTimerValue());
+            if(goals.get(position).getQuantityDone() >= goals.get(position).getTotalQuantity()) {
+                holder.timerValue.setVisibility(View.VISIBLE);
+            } else {
+                holder.timerValue.setVisibility(View.GONE);
+            }
         } else {
             holder.title.setText(doneQt + "/" + totalQt + " " + unit);
             holder.doneDate.setText(Utils.dateToString(goals.get(position).getDueDate()));
@@ -173,9 +181,7 @@ public class GoalTodoFeedAdapter extends RecyclerView.Adapter<GoalTodoFeedAdapte
                             holder.currentValue.setTextColor(ContextCompat.getColor(v.getContext(), R.color.white));
                             holder.totalValue.setTextColor(ContextCompat.getColor(v.getContext(), R.color.white_50));
                             holder.unit.setTextColor(ContextCompat.getColor(v.getContext(), R.color.white_50));
-                            holder.timerValue.setBackground(ContextCompat.getDrawable(v.getContext(), R.drawable.goal_timer_background_completed));
-                            holder.timerValue.setTextColor(ContextCompat.getColor(v.getContext(), R.color.white));
-                            holder.timerValue.setText(R.string.goal_completed);
+                            holder.timerValue.setVisibility(View.VISIBLE);
                         } else {
                             holder.progressBackground.setBackground(
                                         ContextCompat.getDrawable(holder.itemView.getContext(),
@@ -185,6 +191,7 @@ public class GoalTodoFeedAdapter extends RecyclerView.Adapter<GoalTodoFeedAdapte
                         }
                         holder.progress.setVisibility(View.GONE);
                         holder.addBtn.setVisibility(View.GONE);
+                        PatchRequests.patchGoalTodoDoneDate(goals.get(position),context);
                     }
 
                     // Update values

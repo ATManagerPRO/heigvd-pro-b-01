@@ -27,5 +27,9 @@
     <color name="outline_today">#FF1818</color>
     <color name="day_background_notification">#36B8FF</color>
 
+    <!-- Stats -->
+    <color name="done_task">#069BFF</color>
+    <color name="todo_task">#EC1484</color>
+    <color name="line_graph">#069BFF</color>
 
 </resources>

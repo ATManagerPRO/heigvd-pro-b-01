@@ -93,17 +93,14 @@ public class PatchRequests {
     static public void patchGoalTodoDoneDate(GoalTodo newGoalTodo, Context context) {
         //post request to the server
         try {
-            String URL = RequestConstant.TASK_URL + "/" + newGoalTodo.getGoalTodoId() + RequestConstant.DONE_EXTENSION;
+            String URL = RequestConstant.GOALTODO_URL + "/" + newGoalTodo.getGoalTodoId() + RequestConstant.DONE_EXTENSION;
             JSONObject jsonBody = new JSONObject();
 
             android.icu.text.SimpleDateFormat sdf = new android.icu.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
             jsonBody.put(RequestConstant.TODO_ID, newGoalTodo.getGoalTodoId());
-            if (newGoalTodo.getDoneDate() != null) {
-                jsonBody.put(RequestConstant.DONE, sdf.format(newGoalTodo.getDoneDate()));
-            } else {
-                jsonBody.put(RequestConstant.DONE, null);
-            }
+            jsonBody.put(RequestConstant.DONE,    newGoalTodo.getDoneDate() == null ?
+                    JSONObject.NULL : sdf.format(newGoalTodo.getDoneDate()));
 
             JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.PATCH, URL, jsonBody, new Response.Listener<JSONObject>() {
                 @Override

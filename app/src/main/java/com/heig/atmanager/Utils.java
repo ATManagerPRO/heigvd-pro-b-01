@@ -1,6 +1,7 @@
 package com.heig.atmanager;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 
 import androidx.fragment.app.FragmentActivity;
@@ -29,25 +30,25 @@ import java.util.Date;
  * Bag for utils functions, can be refactored / separated later on...
  */
 public class Utils {
-    public static void setupGoalTodosFeedBubbled(View v, RecyclerView rv, ArrayList<GoalTodo> goals) {
+    public static void setupGoalTodosFeedBubbled(View v, RecyclerView rv, ArrayList<GoalTodo> goals, Context context) {
 
         rv.setHasFixedSize(true);
 
         LinearLayoutManager manager = new LinearLayoutManager(v.getContext(), LinearLayoutManager.HORIZONTAL, false);
         rv.setLayoutManager(manager);
 
-        RecyclerView.Adapter adapter = new GoalTodoFeedAdapter(true, goals);
+        RecyclerView.Adapter adapter = new GoalTodoFeedAdapter(true, goals, context);
         rv.setAdapter(adapter);
     }
 
-    public static void setupGoalTodosFeedLined(View v, RecyclerView rv, ArrayList<GoalTodo> goals) {
+    public static void setupGoalTodosFeedLined(View v, RecyclerView rv, ArrayList<GoalTodo> goals, Context context) {
 
         rv.setHasFixedSize(true);
 
         LinearLayoutManager manager = new LinearLayoutManager(v.getContext(), LinearLayoutManager.VERTICAL, false);
         rv.setLayoutManager(manager);
 
-        RecyclerView.Adapter adapter = new GoalTodoFeedAdapter(false, goals);
+        RecyclerView.Adapter adapter = new GoalTodoFeedAdapter(false, goals, context);
         rv.setAdapter(adapter);
     }
 
@@ -142,12 +143,11 @@ public class Utils {
         return cal.get(Calendar.YEAR);
     }
 
-
     public static String dateToString(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return formatNumber(cal.get(Calendar.DAY_OF_MONTH)) + "/" +
-                formatNumber(cal.get(Calendar.MONTH)) + "/" +
+                formatNumber(cal.get(Calendar.MONTH) + 1) + "/" +
                 formatNumber(cal.get(Calendar.YEAR));
     }
 

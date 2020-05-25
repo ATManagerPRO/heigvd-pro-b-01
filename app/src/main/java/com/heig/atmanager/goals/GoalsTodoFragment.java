@@ -55,7 +55,7 @@ public class GoalsTodoFragment extends Fragment {
         // GoalTodos of the goal send in th bundle
         goalTodos = ((Goal) getArguments().getSerializable(Goal.SERIAL_GOAL_KEY)).getGoalTodos();
         goalsTodoRecyclerView = (RecyclerView) v.findViewById(R.id.goalstodo_rv);
-        Utils.setupGoalTodosFeedLined(v, goalsTodoRecyclerView, goalTodos);
+        Utils.setupGoalTodosFeedLined(v, goalsTodoRecyclerView, goalTodos, getContext());
 
         return v;
     }
