@@ -151,7 +151,7 @@ public class PostRequests {
         }
     }
 
-    static public void postTask(Task newTask, Context context) {
+    static public void postTask(final Task newTask, Context context) {
         //post request to the server
         try {
             String URL = "https://atmanager.gollgot.app/api/v1/todos";
@@ -180,6 +180,11 @@ public class PostRequests {
             JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
+                    try {
+                        newTask.setId(response.getJSONArray("resource").getJSONObject(0).getInt("id"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }, new Response.ErrorListener() {
                 @Override
