@@ -12,7 +12,7 @@ public final class RequestConstant {
     public final static String TODOLISTS_EXTENSION = "/todolists";
     private final static String GOALS_EXTENSION = "/goals";
     public final static String TODOS_EXTENSION = "/todos";
-    private final static String TAGS_EXTENSION = "/tags";
+    public final static String TAGS_EXTENSION = "/tags";
     public final static String TODAY_EXTENSION = "/today";
     public final static String GOAL_TODOS_EXTENSION = "/goaltodos";
     private final static String USER__EXTENSION = "/users";
