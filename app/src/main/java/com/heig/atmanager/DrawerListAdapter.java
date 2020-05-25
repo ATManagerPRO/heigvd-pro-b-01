@@ -1,6 +1,5 @@
 package com.heig.atmanager;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,10 +8,8 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.heig.atmanager.dialog.ShareTaskListDiag;
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.taskLists.TaskList;
-import com.heig.atmanager.tasks.Task;
 
 import java.util.ArrayList;
 

@@ -64,13 +64,13 @@ public class LocalCalendarHandler {
      */
     public void createCalendar(Activity activity) {
         ContentValues values = new ContentValues();
-        values.put(Calendars.ACCOUNT_NAME, MainActivity.user.getEmail());
+        values.put(Calendars.ACCOUNT_NAME, MainActivity.getUser().getEmail());
         values.put(Calendars.ACCOUNT_TYPE, BuildConfig.APPLICATION_ID);
         values.put(Calendars.NAME, activity.getString(R.string.app_name));
         values.put(Calendars.CALENDAR_DISPLAY_NAME, activity.getString(R.string.app_name));
         values.put(Calendars.CALENDAR_COLOR, R.color.colorAccent);
         values.put(Calendars.CALENDAR_ACCESS_LEVEL, Calendars.CAL_ACCESS_OWNER);
-        values.put(Calendars.OWNER_ACCOUNT, MainActivity.user.getEmail());
+        values.put(Calendars.OWNER_ACCOUNT, MainActivity.getUser().getEmail());
         values.put(Calendars.SYNC_EVENTS, true);
         values.put(Calendars.VISIBLE, true);
 
@@ -79,7 +79,7 @@ public class LocalCalendarHandler {
         uri = uri.buildUpon()
                 // Sync with server, didn't work...
                 .appendQueryParameter(CalendarContract.CALLER_IS_SYNCADAPTER, "true")
-                .appendQueryParameter(Calendars.ACCOUNT_NAME, MainActivity.user.getEmail())
+                .appendQueryParameter(Calendars.ACCOUNT_NAME, MainActivity.getUser().getEmail())
                 .appendQueryParameter(Calendars.ACCOUNT_TYPE, BuildConfig.APPLICATION_ID)
                 .build();
 

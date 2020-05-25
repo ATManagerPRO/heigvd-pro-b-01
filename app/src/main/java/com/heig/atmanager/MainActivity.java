@@ -7,7 +7,6 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,8 +16,6 @@ import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
@@ -27,16 +24,8 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ExpandableListAdapter;
-import android.widget.ExpandableListView;
-
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.RecyclerView;
-
 
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -53,7 +42,6 @@ import com.heig.atmanager.addContent.AddTagsDiag;
 import com.heig.atmanager.addContent.AddTaskFragment;
 import com.heig.atmanager.addContent.AddTasklistDiag;
 import com.heig.atmanager.calendar.CalendarFragment;
-import com.heig.atmanager.dialog.InviteDialog;
 import com.heig.atmanager.dialog.ShareTaskListDiag;
 import com.heig.atmanager.goals.GoalsFragment;
 import com.heig.atmanager.goals.GoalsTodoFragment;
@@ -68,7 +56,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity" ;
-    public static User user;
+    private static User user;
 
     private BottomNavigationView dock;
 
@@ -125,7 +113,8 @@ public class MainActivity extends AppCompatActivity {
             for (String key : bundle.keySet()) {
                 Log.e(TAG, key + " : " + (bundle.get(key) != null ? bundle.get(key) : "NULL"));
             }
-        }        user = new User(userAccount.getDisplayName(), userAccount.getIdToken(), userAccount.getEmail());
+        }
+        user = new User(userAccount.getDisplayName(), userAccount.getIdToken(), userAccount.getEmail());
         user.setBackEndToken(i.getExtras().getString("userToken"));
         user.setUserId(i.getExtras().getLong("userId"));
 
