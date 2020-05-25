@@ -75,6 +75,7 @@ public final class RequestConstant {
     public final static String GOAL_URL = BASE_URL + GOALS_EXTENSION;
     public final static String TAGS_URL = BASE_URL +TAGS_EXTENSION;
     public final static String USER_BASE_URL = BASE_URL + USER__EXTENSION;
+    public final static String GOALTODO_URL = BASE_URL + GOAL_TODOS_EXTENSION;
 
     // Response codes
     public static final String RESPONSE_CODE      = "status code";
