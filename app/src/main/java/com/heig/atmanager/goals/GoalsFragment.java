@@ -42,8 +42,6 @@ public class GoalsFragment extends Fragment {
     // This year's goal feed
     private RecyclerView goalsYearRecyclerView;
 
-    private static final String TAG = "GoalsFragment";
-    
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -57,8 +55,6 @@ public class GoalsFragment extends Fragment {
         ArrayList<Goal> monthGoals = new ArrayList<>();
         ArrayList<Goal> yearGoals  = new ArrayList<>();
         for(Goal goal : goals) {
-            Log.d(TAG, "onCreateView: " + goal.getInterval());
-            Log.d(TAG, "onCreateView: " + goal.getUnit());
             switch(goal.getInterval()) {
                 case DAY:
                     todayGoals.add(goal);
