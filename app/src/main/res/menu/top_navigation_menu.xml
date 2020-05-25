@@ -8,11 +8,6 @@
         app:showAsAction="collapseActionView|ifRoom" />
 
     <item
-        android:id="@+id/action_settings"
-        android:title="Settings"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/sign_out"
         android:title="@string/sign_out" />
 
