@@ -92,23 +92,25 @@
         android:layout_marginBottom="20dp"/>
 
     <LinearLayout
-        android:id="@+id/card_add_task_3_row"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="10dp"
+        android:weightSum="5">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:text="@string/frequency"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/every"
             android:textSize="18sp"
-            android:gravity="center_vertical"/>
+            android:layout_margin="10dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/frag_add_goal_interval_number_layout"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="2"
             android:layout_height="wrap_content"
             android:hint="@string/times"
             app:errorEnabled="true"
@@ -129,22 +131,6 @@
                 />
         </com.google.android.material.textfield.TextInputLayout>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginBottom="10dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/every"
-            android:textSize="18sp"/>
-
         <Spinner
             android:id="@+id/frag_add_goal_interval_spinner"
             android:layout_width="0dp"
@@ -159,19 +145,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:weightSum="5"
         >
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_gravity="center"
-            android:text="@string/due_date_title"
-            android:textSize="18sp"/>
+            android:text="@string/due_date_title_goal"
+            android:textSize="18sp"
+            android:layout_margin="10dp"/>
 
         <TextView
             android:id="@+id/frag_add_goal_due_date"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="4"
             android:layout_gravity="center"
             android:hint="@string/due_date"
             android:textSize="18sp"

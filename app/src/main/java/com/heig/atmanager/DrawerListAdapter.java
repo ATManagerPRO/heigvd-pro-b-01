@@ -1,21 +1,25 @@
 package com.heig.atmanager;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.heig.atmanager.dialog.ShareTaskListDiag;
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.taskLists.TaskList;
+import com.heig.atmanager.tasks.Task;
 
 import java.util.ArrayList;
 
 /**
  * Author : Stéphane Bottin
  * Date   : 12.04.2020
- *
+ * <p>
  * Adapter to display the tasklists and (collapsing) folders in the drawer menu
  */
 public class DrawerListAdapter extends BaseExpandableListAdapter {
@@ -71,7 +75,7 @@ public class DrawerListAdapter extends BaseExpandableListAdapter {
 
         String name = ((DrawerObject) getGroup(i)).getName();
 
-        if(view == null)
+        if (view == null)
             view = LayoutInflater.from(context).inflate(
                     ((DrawerObject) getGroup(i)).isFolder() ?
                             R.layout.drawer_list_group : R.layout.drawer_list_item
@@ -80,18 +84,53 @@ public class DrawerListAdapter extends BaseExpandableListAdapter {
         TextView title = (TextView) view.findViewById(R.id.drawer_object_title);
         title.setText(name);
 
+        // If a default list (without folder) "remove" the button
+        if(!((DrawerObject) getGroup(i)).isFolder()){
+            Button shareBtn = view.findViewById(R.id.share);
+
+            final long taskListId = ((TaskList) getGroup(i)).getId();
+            // Set false to separate the click on the button and the list
+            shareBtn.setFocusable(false);
+            shareBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    // callback to MainActivity to handle the dialog
+                    ((MainActivity) context).showShareTaskDialog(taskListId);
+
+                }
+            });
+        }
+
         return view;
     }
 
     @Override
     public View getChildView(int i, int i1, boolean b, View view, ViewGroup viewGroup) {
-        String taskListName = ((TaskList) getChild(i, i1)).getName();
 
-        if(view == null)
+        final TaskList taskList = ((TaskList) getChild(i, i1));
+
+        if (view == null)
             view = LayoutInflater.from(context).inflate(R.layout.drawer_list_item, null);
 
         TextView title = (TextView) view.findViewById(R.id.drawer_object_title);
-        title.setText(taskListName);
+        title.setText(taskList.getName());
+
+        Button shareBtn = view.findViewById(R.id.share);
+
+
+        // Set false to separate the click on the button and the list
+        shareBtn.setFocusable(false);
+        shareBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // callback to MainActivity to handle the dialog
+                ((MainActivity) context).showShareTaskDialog(taskList.getId());
+
+            }
+        });
+
 
         return view;
     }
@@ -100,4 +139,6 @@ public class DrawerListAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int i, int i1) {
         return true;
     }
+
+
 }

@@ -111,7 +111,11 @@ public class GoalTodoFeedAdapter extends RecyclerView.Adapter<GoalTodoFeedAdapte
             holder.unit.setText(unit);
             holder.currentValue.setText(doneQt);
             holder.totalValue.setText("/" + totalQt);
-            holder.timerValue.setText(goals.get(position).getTimerValue());
+            if(goals.get(position).getQuantityDone() >= goals.get(position).getTotalQuantity()) {
+                holder.timerValue.setVisibility(View.VISIBLE);
+            } else {
+                holder.timerValue.setVisibility(View.GONE);
+            }
         } else {
             holder.title.setText(doneQt + "/" + totalQt + " " + unit);
             holder.doneDate.setText(Utils.dateToString(goals.get(position).getDueDate()));
@@ -177,9 +181,7 @@ public class GoalTodoFeedAdapter extends RecyclerView.Adapter<GoalTodoFeedAdapte
                             holder.currentValue.setTextColor(ContextCompat.getColor(v.getContext(), R.color.white));
                             holder.totalValue.setTextColor(ContextCompat.getColor(v.getContext(), R.color.white_50));
                             holder.unit.setTextColor(ContextCompat.getColor(v.getContext(), R.color.white_50));
-                            holder.timerValue.setBackground(ContextCompat.getDrawable(v.getContext(), R.drawable.goal_timer_background_completed));
-                            holder.timerValue.setTextColor(ContextCompat.getColor(v.getContext(), R.color.white));
-                            holder.timerValue.setText(R.string.goal_completed);
+                            holder.timerValue.setVisibility(View.VISIBLE);
                         } else {
                             holder.progressBackground.setBackground(
                                         ContextCompat.getDrawable(holder.itemView.getContext(),

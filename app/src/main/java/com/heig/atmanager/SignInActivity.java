@@ -3,9 +3,12 @@ package com.heig.atmanager;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -19,6 +22,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.heig.atmanager.dialog.InviteDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,26 +33,30 @@ import java.util.Map;
 /**
  * Author : Simon Mattei
  * Date   : 21.03.2020
- *
  */
 
-public class SignInActivity extends Activity implements View.OnClickListener {
+public class SignInActivity extends AppCompatActivity implements View.OnClickListener {
 
     private GoogleSignInClient mGoogleSignInClient; //google client account
     private final int RC_SIGN_IN = 1; //request number when calling google sign in
     private final String TAG = getClass().getSimpleName(); //name of class for errors
+
+    private GoogleSignInAccount account;
+
+    private Uri data;
+    private boolean isInvited;
 
     @Override
     protected void onStart() {
         super.onStart();
 
         //get userId and token from the local sharedPreferences
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        account = GoogleSignIn.getLastSignedInAccount(this);
         SharedPreferences settings = getApplicationContext().getSharedPreferences("user", 0);
         String token = settings.getString("userToken", null);
         long id = settings.getLong("userId", 0);
 
-        updateUI(account, token , id );
+        updateUI(account, token, id);
 
     }
 
@@ -71,11 +79,13 @@ public class SignInActivity extends Activity implements View.OnClickListener {
 
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
     }
+
 
     private void updateUI(GoogleSignInAccount account, String token, long id) {
         //If user is connected, launch mainActivity
-        if(account != null){
+        if (account != null) {
             //launch main activity
             Intent mainActivity = new Intent(SignInActivity.this, MainActivity.class);
             mainActivity.putExtra("userToken", token);
@@ -116,7 +126,7 @@ public class SignInActivity extends Activity implements View.OnClickListener {
         try {
             final GoogleSignInAccount account = completedTask.getResult(ApiException.class);
 
-        fetchUser(account);
+            fetchUser(account);
 
 
         } catch (ApiException e) {
@@ -127,7 +137,7 @@ public class SignInActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    private void fetchUser(final GoogleSignInAccount googleAccount){
+    private void fetchUser(final GoogleSignInAccount googleAccount) {
         //post request to the server
         String URL = "https://atmanager.gollgot.app/api/v1/auth";
         JSONObject jsonBody = new JSONObject();
@@ -136,7 +146,7 @@ public class SignInActivity extends Activity implements View.OnClickListener {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    if(response.getInt("status code") == 200 || response.getInt("status code") == 201){
+                    if (response.getInt("status code") == 200 || response.getInt("status code") == 201) {
                         String token = response.getJSONObject("resource").getString("tokenAPI");
                         long id = response.getJSONObject("resource").getInt("userId");
 
@@ -149,7 +159,7 @@ public class SignInActivity extends Activity implements View.OnClickListener {
 
                         updateUI(googleAccount, token, id);
                     }
-                    if(response.getInt("status code") == 400 || response.getInt("status code") == 500){
+                    if (response.getInt("status code") == 400 || response.getInt("status code") == 500) {
                         //MainActivity.signOut();
                     }
                 } catch (JSONException e) {
@@ -171,3 +181,5 @@ public class SignInActivity extends Activity implements View.OnClickListener {
         Volley.newRequestQueue(this).add(jsonObject);
     }
 }
+
+

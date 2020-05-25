@@ -217,8 +217,11 @@ public class User {
     public ArrayList<GoalTodo> getGoalTodosOfDay(Date day) {
         ArrayList<GoalTodo> goalTodos = new ArrayList<>();
         for(Goal goal : goals) {
+            Log.d(TAG, "getGoalTodosOfDay: GOAL " + goal.getUnit());
             for(GoalTodo goalTodo : goal.getGoalTodos()) {
-                if(isSameSimpleDate(goalTodo.getDoneDate(), day)) {
+                Log.d(TAG, "getGoalTodosOfDay:   - " + goalTodo.getDueDate() + "/" + goalTodo.getDoneDate());
+                if(isSameSimpleDate(goalTodo.getDueDate(), day)) {
+                    Log.d(TAG, "getGoalTodosOfDay: Same as today!");
                     goalTodos.add(goalTodo);
                 }
             }
