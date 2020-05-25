@@ -1,6 +1,7 @@
 package com.heig.atmanager.goals;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,20 +42,23 @@ public class GoalsFragment extends Fragment {
     // This year's goal feed
     private RecyclerView goalsYearRecyclerView;
 
+    private static final String TAG = "GoalsFragment";
+    
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_goals, container, false);
 
-        //goals = userVm.getGoals().getValue();
-
-        goals = ((MainActivity) getContext()).getUser().getGoals();
+        goals = MainActivity.getUser().getGoals();
 
         // Displaying the generating GoalTodo from the goals by intervals
         ArrayList<Goal> todayGoals = new ArrayList<>();
         ArrayList<Goal> weekGoals  = new ArrayList<>();
         ArrayList<Goal> monthGoals = new ArrayList<>();
+        ArrayList<Goal> yearGoals  = new ArrayList<>();
         for(Goal goal : goals) {
+            Log.d(TAG, "onCreateView: " + goal.getInterval());
+            Log.d(TAG, "onCreateView: " + goal.getUnit());
             switch(goal.getInterval()) {
                 case DAY:
                     todayGoals.add(goal);
@@ -64,6 +68,9 @@ public class GoalsFragment extends Fragment {
                     break;
                 case MONTH:
                     monthGoals.add(goal);
+                    break;
+                case YEAR:
+                    yearGoals.add(goal);
                     break;
             }
         }
@@ -76,6 +83,9 @@ public class GoalsFragment extends Fragment {
 
         goalsMonthRecyclerView = (RecyclerView) v.findViewById(R.id.goals_month_rv);
         Utils.setupGoalsFeed(getActivity(), v, goalsMonthRecyclerView, monthGoals);
+
+        goalsYearRecyclerView = (RecyclerView) v.findViewById(R.id.goals_year_rv);
+        Utils.setupGoalsFeed(getActivity(), v, goalsYearRecyclerView, yearGoals);
         return v;
     }
 

@@ -439,13 +439,13 @@ public class UserJsonParser {
     private Interval getIntervalFromId(long interval_id) {
         // TODO : Can probably do better than a switch
         switch((int) interval_id) {
-            case 0:
-                return Interval.DAY;
             case 1:
-                return Interval.WEEK;
+                return Interval.DAY;
             case 2:
-                return Interval.MONTH;
+                return Interval.WEEK;
             case 3:
+                return Interval.MONTH;
+            case 4:
                 return Interval.YEAR;
         }
 
