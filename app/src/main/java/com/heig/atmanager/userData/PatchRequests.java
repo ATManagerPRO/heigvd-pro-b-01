@@ -93,7 +93,7 @@ public class PatchRequests {
     static public void patchGoalTodoDoneDate(GoalTodo newGoalTodo, Context context) {
         //post request to the server
         try {
-            String URL = "https://atmanager.gollgot.app/api/v1/goaltodos" + "/" + newGoalTodo.getGoalTodoId() + RequestConstant.DONE_EXTENSION;
+            String URL = RequestConstant.GOALTODO_URL + "/" + newGoalTodo.getGoalTodoId() + RequestConstant.DONE_EXTENSION;
             JSONObject jsonBody = new JSONObject();
 
             android.icu.text.SimpleDateFormat sdf = new android.icu.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
