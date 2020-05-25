@@ -35,6 +35,7 @@ import com.heig.atmanager.userData.User;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -304,18 +305,6 @@ public class StatsFragment  extends Fragment {
         
         APIlib.getInstance().setActiveAnyChartView(cloudTagsView);
 
-        cloudTags.title("Tags Cloud");
-
-        OrdinalColor ordinalColor = OrdinalColor.instantiate();
-        ordinalColor.colors(new String[] {
-                "#26959f", "#f18126", "#3b8ad8", "#60727b", "#e24b26"
-        });
-        cloudTags.colorScale(ordinalColor);
-        cloudTags.angles(new Double[] {-90d, 0d, 90d});
-
-        cloudTags.colorRange().enabled(true);
-        cloudTags.colorRange().colorLineSize(15d);
-
         // Hashmap to count occurences (loop through task to get the recurrences)
         Map<String, Integer> tagOccurrences = new HashMap<>();
         for (Task task : MainActivity.getUser().getTasks()) {
@@ -333,8 +322,6 @@ public class StatsFragment  extends Fragment {
         }
 
         cloudTags.data(data);
-
-        cloudTagsView.setChart(cloudTags);
         Log.d(TAG, "makeTagCloud: tag cloud added");
     }
 
@@ -380,7 +367,7 @@ public class StatsFragment  extends Fragment {
         pieChartGoals = AnyChart.pie();
         pieChartGoalsView.setBackgroundColor(bgColor);
         pieChartGoalsView.setChart(pieChartGoals);
-        pieChartGoals.palette(new String[]{"#069BFF","#EC1484"}); //Colors
+        pieChartGoals.palette(new String[]{"#80EB5A","#FF9745"}); //Colors
         pieChartGoals.background().fill(bgColor); //bgColor
         pieChartGoals.noData().label().enabled(true);
         pieChartGoals.noData().label().text("Could not retrieve any goals!");
@@ -391,11 +378,20 @@ public class StatsFragment  extends Fragment {
         APIlib.getInstance().setActiveAnyChartView(cloudTagsView);
         cloudTagsView.setBackgroundColor(bgColor);
         cloudTags = AnyChart.tagCloud();
+        cloudTags.title("Tags Cloud");
         cloudTagsView.setChart(cloudTags);
         cloudTags.animation(true);
         cloudTags.noData().label().enabled(true);
         cloudTags.background().fill(bgColor);
         cloudTags.noData().label().text("Could not retrieve any tags");
+        OrdinalColor ordinalColor = OrdinalColor.instantiate();
+        ordinalColor.colors(new String[] {
+                "#26959f", "#f18126", "#3b8ad8", "#60727b", "#e24b26"
+        });
+        cloudTags.colorScale(ordinalColor);
+        cloudTags.angles(new Double[] {-90d, 0d, 90d});
+        cloudTags.colorRange().enabled(true);
+        cloudTags.colorRange().colorLineSize(15d);
     }
 
 
