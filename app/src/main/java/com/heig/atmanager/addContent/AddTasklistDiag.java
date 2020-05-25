@@ -47,7 +47,7 @@ public class AddTasklistDiag extends DialogFragment {
         final ArrayAdapter<Folder> spinnerAdapter = new FolderSpinnerAdapter(getActivity(),
                 R.layout.support_simple_spinner_dropdown_item, MainActivity.getUser().getFolders());
         spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        spinnerAdapter.insert(NONE, 0);
+        //spinnerAdapter.insert(NONE, 0);
         folderSpinner.setAdapter(spinnerAdapter);
 
         AlertDialog dialog = builder.setView(view)

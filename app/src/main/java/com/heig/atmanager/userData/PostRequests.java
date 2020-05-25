@@ -30,7 +30,7 @@ public class PostRequests {
 
     private final static String TAG = "PostRequests";
 
-    static public void postFolder(Folder newFolder, Context context) {
+    static public void postFolder(final Folder newFolder, Context context) {
         //post request to the server
         try {
             String URL = RequestConstant.FOLDER_URL;
@@ -42,6 +42,11 @@ public class PostRequests {
             JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
+                    try {
+                        newFolder.setId(response.getJSONObject("resource").getInt("id"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -66,7 +71,7 @@ public class PostRequests {
     }
 
 
-    static public void postTaskList(TaskList newTaskList, Context context) {
+    static public void postTaskList(final TaskList newTaskList, Context context) {
         //post request to the server
         try {
             String URL = RequestConstant.TODOLISTS_URL;
@@ -79,6 +84,11 @@ public class PostRequests {
             JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
+                    try {
+                        newTaskList.setId(response.getJSONObject("resource").getInt("id"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }, new Response.ErrorListener() {
                 @Override
