@@ -155,4 +155,8 @@ public class Task implements Comparable<Task> {
     public void setArchived(boolean archived) {
         this.archived = archived;
     }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }
