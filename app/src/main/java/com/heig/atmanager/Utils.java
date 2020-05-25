@@ -30,25 +30,25 @@ import java.util.Date;
  * Bag for utils functions, can be refactored / separated later on...
  */
 public class Utils {
-    public static void setupGoalTodosFeedBubbled(View v, RecyclerView rv, ArrayList<GoalTodo> goals) {
+    public static void setupGoalTodosFeedBubbled(View v, RecyclerView rv, ArrayList<GoalTodo> goals, Context context) {
 
         rv.setHasFixedSize(true);
 
         LinearLayoutManager manager = new LinearLayoutManager(v.getContext(), LinearLayoutManager.HORIZONTAL, false);
         rv.setLayoutManager(manager);
 
-        RecyclerView.Adapter adapter = new GoalTodoFeedAdapter(true, goals);
+        RecyclerView.Adapter adapter = new GoalTodoFeedAdapter(true, goals, context);
         rv.setAdapter(adapter);
     }
 
-    public static void setupGoalTodosFeedLined(View v, RecyclerView rv, ArrayList<GoalTodo> goals) {
+    public static void setupGoalTodosFeedLined(View v, RecyclerView rv, ArrayList<GoalTodo> goals, Context context) {
 
         rv.setHasFixedSize(true);
 
         LinearLayoutManager manager = new LinearLayoutManager(v.getContext(), LinearLayoutManager.VERTICAL, false);
         rv.setLayoutManager(manager);
 
-        RecyclerView.Adapter adapter = new GoalTodoFeedAdapter(false, goals);
+        RecyclerView.Adapter adapter = new GoalTodoFeedAdapter(false, goals, context);
         rv.setAdapter(adapter);
     }
 

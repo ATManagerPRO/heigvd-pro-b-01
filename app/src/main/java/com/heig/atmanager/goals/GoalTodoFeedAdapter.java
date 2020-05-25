@@ -1,5 +1,6 @@
 package com.heig.atmanager.goals;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import android.widget.ToggleButton;
 
 import com.heig.atmanager.R;
 import com.heig.atmanager.Utils;
+import com.heig.atmanager.userData.PatchRequests;
 
 import java.util.ArrayList;
 
@@ -33,6 +35,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class GoalTodoFeedAdapter extends RecyclerView.Adapter<GoalTodoFeedAdapter.MyViewHolder> {
     private ArrayList<GoalTodo> goals;
     private boolean bubbled;
+    private Context context;
 
     // Provide a reference to the views for each data item
 // Complex data items may need more than one view per item, and
@@ -78,7 +81,8 @@ public class GoalTodoFeedAdapter extends RecyclerView.Adapter<GoalTodoFeedAdapte
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public GoalTodoFeedAdapter(boolean bubbled, ArrayList<GoalTodo> goals) {
+    public GoalTodoFeedAdapter(boolean bubbled, ArrayList<GoalTodo> goals, Context context) {
+        this.context = context;
         this.bubbled = bubbled;
         this.goals   = goals;
     }
@@ -187,6 +191,7 @@ public class GoalTodoFeedAdapter extends RecyclerView.Adapter<GoalTodoFeedAdapte
                         }
                         holder.progress.setVisibility(View.GONE);
                         holder.addBtn.setVisibility(View.GONE);
+                        PatchRequests.patchGoalTodoDoneDate(goals.get(position),context);
                     }
 
                     // Update values
