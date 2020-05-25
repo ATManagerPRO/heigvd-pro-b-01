@@ -32,7 +32,6 @@ import com.heig.atmanager.userData.User;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -275,7 +274,7 @@ public class StatsFragment  extends Fragment {
         float goalsDone = 0;
 
         pieChartGoals.title(Utils.firstLetterCapped(interval.getAdverb()) + " " + Goal.class.getSimpleName() + "s");
-        Log.d(TAG, "makePieChartGoals: makeing goals");
+        Log.d(TAG, "makePieChartGoals: making goals");
 
         for(GoalTodo gt : goals){
             Log.d(TAG, "makePieChartGoals: " + gt.getUnit() + " : " + gt.getPercentage());
@@ -283,7 +282,7 @@ public class StatsFragment  extends Fragment {
             goalsDone += p;
         }
 
-        if(goalsDone != 0){
+        if(goals.size() != 0){
             data.add(new ValueDataEntry("Done", goalsDone));
             data.add(new ValueDataEntry("Todo", 100 - goalsDone));
             pieChartGoals.data(data);
