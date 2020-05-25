@@ -53,6 +53,7 @@
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="due_date_title">Due date</string>
+    <string name="due_date_title_goal">Until</string>
     <string name="reminder_date_title">Reminder date</string>
     <string name="due_date">DD.MM.YYYY</string>
     <string name="due_time">HH.MM</string>
@@ -104,4 +105,9 @@
         <item>November</item>
         <item>December</item>
     </string-array>
+
+    <string name="confirm">Confirm</string>
+    <string name="share_taskList">Share a taskList</string>
+    <string name="email">Email</string>
+    <string name="invitee_email">Invitee Email</string>
 </resources>

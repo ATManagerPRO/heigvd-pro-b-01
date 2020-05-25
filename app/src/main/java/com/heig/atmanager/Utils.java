@@ -1,6 +1,7 @@
 package com.heig.atmanager;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 
 import androidx.fragment.app.FragmentActivity;
@@ -142,12 +143,11 @@ public class Utils {
         return cal.get(Calendar.YEAR);
     }
 
-
     public static String dateToString(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return formatNumber(cal.get(Calendar.DAY_OF_MONTH)) + "/" +
-                formatNumber(cal.get(Calendar.MONTH)) + "/" +
+                formatNumber(cal.get(Calendar.MONTH) + 1) + "/" +
                 formatNumber(cal.get(Calendar.YEAR));
     }
 

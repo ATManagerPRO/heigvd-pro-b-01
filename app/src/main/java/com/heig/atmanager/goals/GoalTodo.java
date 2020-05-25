@@ -1,5 +1,7 @@
 package com.heig.atmanager.goals;
 
+import android.util.Log;
+
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.Utils;
 
@@ -62,10 +64,12 @@ public class GoalTodo {
      * @return the timer value as a string
      */
     public String getTimerValue() {
-        Calendar calendarNow = Calendar.getInstance();
-        long millisLeft = doneDate.getTime() - calendarNow.getTimeInMillis();
+        long millisLeft = dueDate.getTime() - Calendar.getInstance().getTimeInMillis();
         int timeLeft;
         String unit;
+
+        if(millisLeft < 0)
+            return "late!";
 
         if(millisLeft < MILLIS_IN_HOUR) {
             timeLeft = (int) TimeUnit.MILLISECONDS.toMinutes(millisLeft);

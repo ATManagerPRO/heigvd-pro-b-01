@@ -88,7 +88,7 @@ public class UserJsonParser {
                         // Home Fragment view (today's activities)
                         Log.d(TAG, "loadAllDataIntoUser: loading today's activity...");
                         //loadTodaysTasks(queue); only ssems to load tasks for today twice causing bugs (the other time in loadAllTasks)
-                        loadTodaysGoalsTodo(queue);
+                        //loadTodaysGoalsTodo(queue);
 
                         // Calendar view
                         Log.d(TAG, "loadAllDataIntoUser: loading all tasks...");
@@ -440,14 +440,12 @@ public class UserJsonParser {
         // TODO : Can probably do better than a switch
         switch((int) interval_id) {
             case 0:
-                return Interval.HOUR;
-            case 1:
                 return Interval.DAY;
-            case 2:
+            case 1:
                 return Interval.WEEK;
-            case 3:
+            case 2:
                 return Interval.MONTH;
-            case 4:
+            case 3:
                 return Interval.YEAR;
         }
 
