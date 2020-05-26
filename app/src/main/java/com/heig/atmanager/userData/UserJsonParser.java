@@ -88,6 +88,9 @@ public class UserJsonParser {
                     if(isRequestValid(response)) {
                         parseAndLoadTaskListsAndFolders(response.getJSONObject(RequestConstant.RESPONSE_RESOURCE));
 
+                        // Load shared tasks
+                        loadSharedTasks(queue);
+
                         // Load the tags
                         loadTags(queue);
 
@@ -120,6 +123,42 @@ public class UserJsonParser {
                 return Priority.IMMEDIATE; //doesn't seem to do shit
             }
 
+        };
+
+        queue.add(request);
+    }
+
+    /**
+     * Loads shared tasks of the user
+     */
+    private void loadSharedTasks(RequestQueue queue) {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+                baseUserURL + RequestConstant.TODOLISTS_EXTENSION + RequestConstant.SHARED_EXTENSION,
+                null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    if(isRequestValid(response)) {
+                        parseAndLoadSharedTasks(response.getJSONObject(RequestConstant.RESPONSE_RESOURCE));
+                    }
+                } catch (final JSONException e) {
+                    Log.e(TAG, "Json parsing error: " + e.getMessage());
+                } catch (ParseException e) {
+                    Log.e(TAG, "Parsing error : " + e);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + MainActivity.getUser().getBackEndToken());//put your token here
+                return headers;
+            }
         };
 
         queue.add(request);
@@ -278,10 +317,60 @@ public class UserJsonParser {
         }
 
         // Shared folder
-        user.addFolder(new Folder("Shared Tasks"));
+        user.addFolder(Folder.sharedFolder);
 
         // Update the items
         ((MainActivity) mainContext).updateDrawerItems();
+    }
+
+    private void parseAndLoadSharedTasks(JSONObject response) throws JSONException, ParseException {
+        Log.d(TAG, "parseAndLoadSharedTasks: " + response);
+
+        // Getting JSON Array node
+        JSONObject sharedFolder = response.getJSONObject("folder");
+        JSONArray tasklists = sharedFolder.getJSONArray(RequestConstant.FOLDERS_TASKLISTS);
+
+        // looping through all tasklists
+        for (int i = 0; i < tasklists.length(); i++) {
+            JSONObject tasklist = tasklists.getJSONObject(i);
+            JSONArray tasks = tasklist.getJSONArray(RequestConstant.TASK_KEY);
+
+            // Tasklist data
+            String tl_id        = tasklist.getString(RequestConstant.ID);
+            String tl_title     = tasklist.getString(RequestConstant.TASKLISTS_TITLE);
+
+            // Creating the tasklist and adding it to the current user
+            TaskList tl = new TaskList(Long.parseLong(tl_id), tl_title, Folder.sharedFolder.getId());
+            user.addTaskList(tl);
+
+            for(int j = 0; j < tasks.length(); j++) {
+                JSONObject task = tasks.getJSONObject(j);
+                // Task data
+                long id                = task.getLong(RequestConstant.ID);
+                long taskListId        = task.getLong(RequestConstant.TASK_TASKLIST_ID);
+                String title           = task.getString(RequestConstant.TASK_TITLE);
+                String description     = task.getString(RequestConstant.TASK_DESCRIPTION).equals("null") ?
+                        null : task.getString(RequestConstant.TASK_DESCRIPTION);
+                boolean done           = !task.isNull(RequestConstant.TASK_DONE_DATE);
+                boolean favorite       = task.getInt(RequestConstant.TASK_FAVORITE) != 0;
+                boolean archived       = task.getInt(RequestConstant.TASK_ARCHIVED) != 0;
+                String dueDateStr      = task.getString(RequestConstant.TASK_DUE_DATE);
+                String doneDateStr     = task.getString(RequestConstant.TASK_DONE_DATE);
+                String reminderDateStr = task.getString(RequestConstant.TASK_REMINDER_DATE);
+
+                // Date parser
+                SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date dueDate          = dueDateStr.equals("null")      ? null : sdf.parse(dueDateStr);
+                Date doneDate         = doneDateStr.equals("null")     ? null : sdf.parse(doneDateStr);
+                Date reminderDate     = reminderDateStr.equals("null") ? null : sdf.parse(reminderDateStr);
+
+                // Creating the task and adding it to the current user
+                Task sharedTask = new Task(id, title, description, done, favorite, dueDate, doneDate, reminderDate);
+                sharedTask.setTasklist(user.getTaskList(taskListId));
+                sharedTask.setArchived(archived);
+                user.addTask(sharedTask);
+            }
+        }
     }
 
     private void parseAndLoadTasks(JSONObject response) throws JSONException, ParseException {
