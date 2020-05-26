@@ -1,6 +1,7 @@
 package com.heig.atmanager.userData;
 
 import android.content.Context;
+import android.icu.text.CaseMap;
 import android.icu.text.SimpleDateFormat;
 import android.util.Log;
 
@@ -90,17 +91,10 @@ public class UserJsonParser {
                         // Load the tags
                         loadTags(queue);
 
-                        // Home Fragment view (today's activities)
-                        Log.d(TAG, "loadAllDataIntoUser: loading today's activity...");
-                        //loadTodaysTasks(queue); only ssems to load tasks for today twice causing bugs (the other time in loadAllTasks)
-                        //loadTodaysGoalsTodo(queue);
-
-                        // Calendar view
-                        Log.d(TAG, "loadAllDataIntoUser: loading all tasks...");
+                        // Load the tasks
                         loadAllTasks(queue);
 
-                        // Goals view
-                        Log.d(TAG, "loadAllDataIntoUser: loading all goaltodos...");
+                        // Load the goals
                         loadAllGoalTodos(queue);
 
                     }
@@ -130,42 +124,6 @@ public class UserJsonParser {
 
         queue.add(request);
     }
-
-    /**
-     * Loads the goals of the user for today
-     */
-    private void loadTodaysGoalsTodo(RequestQueue queue) {
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
-                baseUserURL + RequestConstant.GOAL_TODOS_EXTENSION + RequestConstant.TODAY_EXTENSION, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    if(isRequestValid(response)) {
-                        parseAndLoadGoalTodos(response.getJSONObject(RequestConstant.RESPONSE_RESOURCE));
-                    }
-                } catch (final JSONException e) {
-                    Log.e(TAG, "Json parsing error: " + e.getMessage());
-                } catch (ParseException e) {
-                    Log.e(TAG, "Parsing error : " + e);
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                final Map<String, String> headers = new HashMap<>();
-                headers.put("Authorization", "Bearer " + MainActivity.getUser().getBackEndToken());//put your token here
-                return headers;
-            }
-        };
-
-        queue.add(request);
-    }
-
 
     /**
      * Loads all the tasks of the user
@@ -318,6 +276,9 @@ public class UserJsonParser {
             Folder folder = new Folder(Long.parseLong(id), title, folder_tasklists);
             user.addFolder(folder);
         }
+
+        // Shared folder
+        user.addFolder(new Folder("Shared Tasks"));
 
         // Update the items
         ((MainActivity) mainContext).updateDrawerItems();
