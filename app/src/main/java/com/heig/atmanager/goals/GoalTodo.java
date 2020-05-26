@@ -40,6 +40,9 @@ public class GoalTodo {
 
     public void addQuantity(int quantity) {
         quantityDone += quantity;
+        if(quantityDone > getTotalQuantity()){
+            quantityDone = getTotalQuantity();
+        }
     }
 
     public int getPercentage() {
