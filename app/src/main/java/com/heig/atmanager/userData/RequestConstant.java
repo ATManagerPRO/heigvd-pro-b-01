@@ -3,6 +3,8 @@ package com.heig.atmanager.userData;
 
 public final class RequestConstant {
 
+
+
     // /!\ All URL begins with a slash
     private final static String BASE_URL = "https://atmanager.gollgot.app/api/v1";
 
@@ -59,6 +61,7 @@ public final class RequestConstant {
     public static final String GOAL_TODO_QUANTITY_DONE = "quantityDone";
     public static final String GOAL_TODO_DONE_DATE     = "dateTimeDone";
     public static final String GOAL_TODO_DUE_DATE      = "dueDate";
+    public static final String GOAL_TODO_QUANTITY      = "quantity";
 
     // - Tags
     public static final String TAG_KEY                 = "tags";

@@ -190,11 +190,18 @@ public class AddGoalFragment extends Fragment {
                 MainActivity.getUser().addGoal(newGoal);
 
 
+
                 getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
                 getActivity().findViewById(R.id.dock).setVisibility(View.VISIBLE);
                 getFragmentManager().popBackStack();
 
+                try {
+                    Thread.sleep(500); //temporary way of fixing this to fix for real we d'need for the backend to send the created goalstodo in the goal post response
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
+                MainActivity.getJsonParser().updateGoalTodos(MainActivity.getQueue());
             }
         });
 

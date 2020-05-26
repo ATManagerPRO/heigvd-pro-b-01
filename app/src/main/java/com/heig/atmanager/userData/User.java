@@ -74,8 +74,11 @@ public class User {
             }
         }
 
-
         taskLists.add(taskList);
+    }
+
+    public void clearGoalTodos(){
+        goals.clear();
     }
 
     public void addGoal(Goal goal) {

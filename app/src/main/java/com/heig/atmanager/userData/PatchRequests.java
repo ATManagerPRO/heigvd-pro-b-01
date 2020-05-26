@@ -101,6 +101,7 @@ public class PatchRequests {
             jsonBody.put(RequestConstant.TODO_ID, newGoalTodo.getGoalTodoId());
             jsonBody.put(RequestConstant.DONE,    newGoalTodo.getDoneDate() == null ?
                     JSONObject.NULL : sdf.format(newGoalTodo.getDoneDate()));
+            jsonBody.put(RequestConstant.GOAL_TODO_QUANTITY, newGoalTodo.getQuantityDone());
 
             JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.PATCH, URL, jsonBody, new Response.Listener<JSONObject>() {
                 @Override

@@ -88,4 +88,6 @@ public class TaskList extends DrawerObject implements Serializable {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    public void setId(long id){this.id = id;}
 }
