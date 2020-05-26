@@ -467,7 +467,7 @@ public class UserJsonParser {
     private void parseAndLoadTags(JSONObject response) throws JSONException, ParseException {
         // Getting JSON Array node
         JSONArray tags = response.getJSONArray(RequestConstant.TAG_KEY);
-
+        
         // looping through all tasks
         for (int i = 0; i < tags.length(); i++) {
             JSONObject c = tags.getJSONObject(i);
