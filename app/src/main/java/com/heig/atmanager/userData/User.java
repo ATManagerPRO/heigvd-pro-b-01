@@ -74,7 +74,6 @@ public class User {
             }
         }
 
-
         taskLists.add(taskList);
     }
 

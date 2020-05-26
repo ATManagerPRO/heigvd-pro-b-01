@@ -75,6 +75,10 @@ public class Folder extends DrawerObject {
         return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     @Override
     public boolean isFolder() {
         return true;
