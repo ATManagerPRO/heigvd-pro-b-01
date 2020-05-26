@@ -1,6 +1,7 @@
 package com.heig.atmanager.userData;
 
 import android.content.Context;
+import android.icu.text.CaseMap;
 import android.icu.text.SimpleDateFormat;
 import android.util.Log;
 
@@ -87,20 +88,16 @@ public class UserJsonParser {
                     if(isRequestValid(response)) {
                         parseAndLoadTaskListsAndFolders(response.getJSONObject(RequestConstant.RESPONSE_RESOURCE));
 
+                        // Load shared tasks
+                        loadSharedTasks(queue);
+
                         // Load the tags
                         loadTags(queue);
 
-                        // Home Fragment view (today's activities)
-                        Log.d(TAG, "loadAllDataIntoUser: loading today's activity...");
-                        //loadTodaysTasks(queue); only ssems to load tasks for today twice causing bugs (the other time in loadAllTasks)
-                        //loadTodaysGoalsTodo(queue);
-
-                        // Calendar view
-                        Log.d(TAG, "loadAllDataIntoUser: loading all tasks...");
+                        // Load the tasks
                         loadAllTasks(queue);
 
-                        // Goals view
-                        Log.d(TAG, "loadAllDataIntoUser: loading all goaltodos...");
+                        // Load the goals
                         loadAllGoalTodos(queue);
 
                     }
@@ -132,16 +129,17 @@ public class UserJsonParser {
     }
 
     /**
-     * Loads the goals of the user for today
+     * Loads shared tasks of the user
      */
-    private void loadTodaysGoalsTodo(RequestQueue queue) {
+    private void loadSharedTasks(RequestQueue queue) {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
-                baseUserURL + RequestConstant.GOAL_TODOS_EXTENSION + RequestConstant.TODAY_EXTENSION, null, new Response.Listener<JSONObject>() {
+                baseUserURL + RequestConstant.TODOLISTS_EXTENSION + RequestConstant.SHARED_EXTENSION,
+                null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
                     if(isRequestValid(response)) {
-                        parseAndLoadGoalTodos(response.getJSONObject(RequestConstant.RESPONSE_RESOURCE));
+                        parseAndLoadSharedTasks(response.getJSONObject(RequestConstant.RESPONSE_RESOURCE));
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
@@ -154,7 +152,7 @@ public class UserJsonParser {
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
             }
-        }) {
+        }){
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 final Map<String, String> headers = new HashMap<>();
@@ -165,7 +163,6 @@ public class UserJsonParser {
 
         queue.add(request);
     }
-
 
     /**
      * Loads all the tasks of the user
@@ -319,8 +316,61 @@ public class UserJsonParser {
             user.addFolder(folder);
         }
 
+        // Shared folder
+        user.addFolder(Folder.sharedFolder);
+
         // Update the items
         ((MainActivity) mainContext).updateDrawerItems();
+    }
+
+    private void parseAndLoadSharedTasks(JSONObject response) throws JSONException, ParseException {
+        Log.d(TAG, "parseAndLoadSharedTasks: " + response);
+
+        // Getting JSON Array node
+        JSONObject sharedFolder = response.getJSONObject("folder");
+        JSONArray tasklists = sharedFolder.getJSONArray(RequestConstant.FOLDERS_TASKLISTS);
+
+        // looping through all tasklists
+        for (int i = 0; i < tasklists.length(); i++) {
+            JSONObject tasklist = tasklists.getJSONObject(i);
+            JSONArray tasks = tasklist.getJSONArray(RequestConstant.TASK_KEY);
+
+            // Tasklist data
+            String tl_id        = tasklist.getString(RequestConstant.ID);
+            String tl_title     = tasklist.getString(RequestConstant.TASKLISTS_TITLE);
+
+            // Creating the tasklist and adding it to the current user
+            TaskList tl = new TaskList(Long.parseLong(tl_id), tl_title, Folder.sharedFolder.getId());
+            user.addTaskList(tl);
+
+            for(int j = 0; j < tasks.length(); j++) {
+                JSONObject task = tasks.getJSONObject(j);
+                // Task data
+                long id                = task.getLong(RequestConstant.ID);
+                long taskListId        = task.getLong(RequestConstant.TASK_TASKLIST_ID);
+                String title           = task.getString(RequestConstant.TASK_TITLE);
+                String description     = task.getString(RequestConstant.TASK_DESCRIPTION).equals("null") ?
+                        null : task.getString(RequestConstant.TASK_DESCRIPTION);
+                boolean done           = !task.isNull(RequestConstant.TASK_DONE_DATE);
+                boolean favorite       = task.getInt(RequestConstant.TASK_FAVORITE) != 0;
+                boolean archived       = task.getInt(RequestConstant.TASK_ARCHIVED) != 0;
+                String dueDateStr      = task.getString(RequestConstant.TASK_DUE_DATE);
+                String doneDateStr     = task.getString(RequestConstant.TASK_DONE_DATE);
+                String reminderDateStr = task.getString(RequestConstant.TASK_REMINDER_DATE);
+
+                // Date parser
+                SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date dueDate          = dueDateStr.equals("null")      ? null : sdf.parse(dueDateStr);
+                Date doneDate         = doneDateStr.equals("null")     ? null : sdf.parse(doneDateStr);
+                Date reminderDate     = reminderDateStr.equals("null") ? null : sdf.parse(reminderDateStr);
+
+                // Creating the task and adding it to the current user
+                Task sharedTask = new Task(id, title, description, done, favorite, dueDate, doneDate, reminderDate);
+                sharedTask.setTasklist(user.getTaskList(taskListId));
+                sharedTask.setArchived(archived);
+                user.addTask(sharedTask);
+            }
+        }
     }
 
     private void parseAndLoadTasks(JSONObject response) throws JSONException, ParseException {

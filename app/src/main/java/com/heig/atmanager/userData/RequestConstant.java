@@ -12,6 +12,7 @@ public final class RequestConstant {
     public final static String FAVORITE_EXTENSION = "/favorite";
     private final static String FOLDERS_EXTENSION = "/folders";
     public final static String TODOLISTS_EXTENSION = "/todolists";
+    public final static String SHARED_EXTENSION = "/shared";
     private final static String GOALS_EXTENSION = "/goals";
     public final static String TODOS_EXTENSION = "/todos";
     public final static String TAGS_EXTENSION = "/tags";
