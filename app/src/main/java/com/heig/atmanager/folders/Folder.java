@@ -16,6 +16,8 @@ import java.util.Objects;
  */
 public class Folder extends DrawerObject {
 
+    public static Folder sharedFolder = new Folder(0, "Shared", new ArrayList<TaskList>());
+
     private long id;
     private ArrayList<TaskList> taskLists;
 
