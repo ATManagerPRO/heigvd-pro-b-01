@@ -191,8 +191,9 @@ public class GoalTodoFeedAdapter extends RecyclerView.Adapter<GoalTodoFeedAdapte
                         }
                         holder.progress.setVisibility(View.GONE);
                         holder.addBtn.setVisibility(View.GONE);
-                        PatchRequests.patchGoalTodoDoneDate(goals.get(position),context);
                     }
+
+                    PatchRequests.patchGoalTodoDoneDate(goals.get(position),context);
 
                     // Update values
                     if(bubbled) {

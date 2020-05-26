@@ -69,6 +69,11 @@ public class UserJsonParser {
 
     }
 
+    public void updateGoalTodos(RequestQueue queue){
+        user.clearGoalTodos();
+        loadAllGoalTodos(queue);
+    }
+
     /**
      * Loads the folders and tasklists of the user
      */
