@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".addContent.AddTagsDiag">
 
@@ -18,7 +19,8 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/newTagName_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:hintTextAppearance="@style/hintLabel">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/newTagName"
@@ -29,7 +31,7 @@
             android:layout_marginLeft="4dp"
             android:layout_marginRight="4dp"
             android:layout_marginBottom="4dp"
-            android:hint="@string/tags"
+            android:hint="@string/enter_new_tag_label"
             android:maxLength="@integer/tag_label">
 
         </com.google.android.material.textfield.TextInputEditText>
