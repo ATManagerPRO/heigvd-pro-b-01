@@ -123,11 +123,18 @@ public class GoalTodoFeedAdapter extends RecyclerView.Adapter<GoalTodoFeedAdapte
         }
 
         holder.progress.setProgress(goals.get(position).getPercentage());
-        if(goals.get(position).getPercentage() >= 100) {
-            holder.progressBackground.setBackground(
-                    ContextCompat.getDrawable(holder.itemView.getContext(),
-                            R.drawable.goal_timer_background_completed));
+        if(bubbled) {
+            if(goals.get(position).getPercentage() == 100) {
+                holder.background.setBackground(ContextCompat.getDrawable(context, R.drawable.goal_background_completed));
+            }
+        } else {
+            if(goals.get(position).getPercentage() == 100) {
+                holder.progressBackground.setBackground(
+                        ContextCompat.getDrawable(holder.itemView.getContext(),
+                                R.drawable.goal_timer_background_completed));
+            }
         }
+
 
         // Add a quantity to a GoalTodo
         holder.addBtn.setOnClickListener(new View.OnClickListener() {
