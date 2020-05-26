@@ -80,8 +80,8 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.Adapter contentAdapter;
 
     // JSON Parser
-    private UserJsonParser jsonParser;
-    private RequestQueue queue;
+    private static UserJsonParser jsonParser;
+    private static RequestQueue queue;
 
 
     public static String[] PERMISSIONS = {
@@ -414,6 +414,13 @@ public class MainActivity extends AppCompatActivity {
         this.contentAdapter = adapter;
     }
 
+    public static UserJsonParser getJsonParser() {
+        return jsonParser;
+    }
+
+    public static RequestQueue getQueue(){
+        return queue;
+    }
 
     @Override
     public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull int[] grantResults) {
