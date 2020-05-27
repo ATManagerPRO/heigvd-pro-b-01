@@ -92,4 +92,8 @@
         <item name="icon">@drawable/task_checkbox</item>
     </style>
 
+    <style name="hintLabel" parent="TextAppearance.Design.Hint">
+        <item name="android:textSize">16dp</item>
+    </style>
+
 </resources>
