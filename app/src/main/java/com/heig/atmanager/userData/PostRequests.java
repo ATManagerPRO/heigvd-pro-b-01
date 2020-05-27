@@ -167,15 +167,9 @@ public class PostRequests {
             if (newTask.getDueDate() != null) {
                 jsonBody.put("dueDate", sdf.format(newTask.getDueDate()));
             }
-            /*
-           if(newTask.getReminderDate() != null) {
-                jsonBody.put(RequestConstant.TASK_REMINDER_DATE", sdf.format(newTask.getReminderDate()));
-            }*/
 
-            if (newTask.getTags().size() != 0) {
-                jsonBody.put("tags", newTask.getTags().toString());
-            }
-
+            for(String tag : newTask.getTags())
+                postTag(tag, context);
 
             JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
                 @Override
