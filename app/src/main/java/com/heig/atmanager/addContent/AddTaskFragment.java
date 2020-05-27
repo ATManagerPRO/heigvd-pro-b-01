@@ -269,6 +269,7 @@ public class AddTaskFragment extends Fragment {
                         //update homeview
                         tasks = MainActivity.getUser().getHomeViewTasks();
                         ((TaskFeedAdapter) tasksRecyclerView.getAdapter()).setTasks(tasks);
+                        break;
                     }
                 }
 
