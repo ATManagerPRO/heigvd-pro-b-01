@@ -202,7 +202,8 @@ public class AddTaskFragment extends Fragment {
         autoCompleteTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) ||
+                        (actionId == EditorInfo.IME_ACTION_DONE)) {
                     ChipGroup chipGroup = mView.findViewById(R.id.frag_add_task_chipgroup);
                     addChipToGroup(autoCompleteTextView.getText().toString().trim(), chipGroup);
                     autoCompleteTextView.setText(null);
@@ -268,6 +269,7 @@ public class AddTaskFragment extends Fragment {
                         //update homeview
                         tasks = MainActivity.getUser().getHomeViewTasks();
                         ((TaskFeedAdapter) tasksRecyclerView.getAdapter()).setTasks(tasks);
+                        break;
                     }
                 }
 
