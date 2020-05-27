@@ -11,6 +11,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.heig.atmanager.HomeFragment;
 import com.heig.atmanager.Interval;
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.folders.Folder;
@@ -38,12 +39,6 @@ import java.util.Map;
 public class UserJsonParser {
 
     private static final String TAG = "UserJsonParser";
-
-    // User identification
-    private static final int USER_ID = 4;
-
-
-
 
     private String baseUserURL;
 
@@ -99,7 +94,6 @@ public class UserJsonParser {
 
                         // Load the goals
                         loadAllGoalTodos(queue);
-
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
@@ -416,6 +410,9 @@ public class UserJsonParser {
             task.setArchived(archived);
             user.addTask(task);
         }
+
+        HomeFragment hf = (HomeFragment) ((MainActivity) mainContext).getSupportFragmentManager().findFragmentByTag(HomeFragment.FRAG_HOME_ID);
+        hf.updateHomeFragment();
     }
 
     private void parseAndLoadGoalTodos(JSONObject response) throws JSONException, ParseException {
@@ -461,13 +458,16 @@ public class UserJsonParser {
             GoalTodo goalTodo = new GoalTodo(goalTodoId, goal_id, quantityDone, doneDate, dueDate);
             user.getGoal(goal_id).addGoalTodo(goalTodo);
         }
+
+        HomeFragment hf = (HomeFragment) ((MainActivity) mainContext).getSupportFragmentManager().findFragmentByTag(HomeFragment.FRAG_HOME_ID);
+        hf.updateHomeFragment();
     }
 
 
     private void parseAndLoadTags(JSONObject response) throws JSONException, ParseException {
         // Getting JSON Array node
         JSONArray tags = response.getJSONArray(RequestConstant.TAG_KEY);
-
+        
         // looping through all tasks
         for (int i = 0; i < tags.length(); i++) {
             JSONObject c = tags.getJSONObject(i);
