@@ -72,9 +72,11 @@ public class User {
                 if(f.getId() == taskList.getFolderId())
                     f.addList(taskList);
             }
+        }else{
+            taskLists.add(taskList);
         }
 
-        taskLists.add(taskList);
+
     }
 
     public void clearGoalTodos(){

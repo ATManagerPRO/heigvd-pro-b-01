@@ -27,12 +27,10 @@ import java.util.Calendar;
  */
 public class HomeFragment extends Fragment {
 
-    private static final String TAG = "HomeFragment";
-
     public static final String FRAG_HOME_ID = "Home_Fragment";
-    public static final int MORNING_HOUR = 11;
-    public static final int DAY_HOUR = 13;
-    public static final int AFTERNOON_HOUR = 18;
+    private static final int MORNING_HOUR = 11;
+    private static final int DAY_HOUR = 13;
+    private static final int AFTERNOON_HOUR = 18;
 
     private ProgressBar feedProgress;
     private SwipeRefreshLayout refreshLayout;

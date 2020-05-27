@@ -81,15 +81,11 @@ public class AddTasklistDiag extends DialogFragment {
                             ((MainActivity) getContext()).updateDrawerItems();
                             PostRequests.postTaskList(newTaskList, getContext());
                             dismiss();
-
-
                         }
                     }
                 });
             }
         });
-
-
 
         return dialog;
 
