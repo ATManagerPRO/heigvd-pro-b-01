@@ -27,15 +27,14 @@ import android.widget.TimePicker;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputLayout;
-import com.heig.atmanager.LocalCalendarHandler;
+import com.heig.atmanager.calendar.local.LocalCalendarHandler;
 import com.heig.atmanager.MainActivity;
-import com.heig.atmanager.NotificationUtils;
+import com.heig.atmanager.notifications.NotificationUtils;
 import com.heig.atmanager.userData.PostRequests;
 import com.heig.atmanager.R;
 import com.heig.atmanager.Utils;
 import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.tasks.Task;
-import com.heig.atmanager.tasks.TaskFeedAdapter;
 
 import java.util.ArrayList;
 import java.util.Calendar;

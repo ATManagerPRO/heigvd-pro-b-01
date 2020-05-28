@@ -42,7 +42,9 @@ import com.heig.atmanager.addContent.AddTagsDiag;
 import com.heig.atmanager.addContent.AddTaskFragment;
 import com.heig.atmanager.addContent.AddTasklistDiag;
 import com.heig.atmanager.calendar.CalendarFragment;
-import com.heig.atmanager.dialog.ShareTaskListDiag;
+import com.heig.atmanager.calendar.local.LocalCalendarHandler;
+import com.heig.atmanager.drawers.DrawerListAdapter;
+import com.heig.atmanager.sharing.ShareTaskListDiag;
 import com.heig.atmanager.goals.GoalsFragment;
 import com.heig.atmanager.goals.GoalsTodoFragment;
 import com.heig.atmanager.stats.StatsFragment;
@@ -173,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
                     default:
                         return false;
                 }
+                enableBackButton(false);
                 loadFragment(selectedFragment, selectedTag);
                 return true;
             }

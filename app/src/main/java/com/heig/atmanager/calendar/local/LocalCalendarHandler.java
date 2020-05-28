@@ -1,4 +1,4 @@
-package com.heig.atmanager;
+package com.heig.atmanager.calendar.local;
 
 import android.Manifest;
 import android.app.Activity;
@@ -14,6 +14,9 @@ import android.provider.CalendarContract.Events;
 
 import androidx.core.app.ActivityCompat;
 
+import com.heig.atmanager.BuildConfig;
+import com.heig.atmanager.MainActivity;
+import com.heig.atmanager.R;
 import com.heig.atmanager.tasks.Task;
 
 import java.util.TimeZone;

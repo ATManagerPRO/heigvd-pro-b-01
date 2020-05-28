@@ -26,7 +26,7 @@
         </activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".SignInActivity"/>
-        <receiver android:name=".NotificationPublisher"/>
+        <receiver android:name=".notifications.NotificationPublisher"/>
     </application>
 
 </manifest>

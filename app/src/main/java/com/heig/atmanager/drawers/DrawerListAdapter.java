@@ -1,4 +1,4 @@
-package com.heig.atmanager;
+package com.heig.atmanager.drawers;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,9 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.heig.atmanager.MainActivity;
+import com.heig.atmanager.R;
+import com.heig.atmanager.drawers.DrawerObject;
 import com.heig.atmanager.folders.Folder;
 import com.heig.atmanager.taskLists.TaskList;
 

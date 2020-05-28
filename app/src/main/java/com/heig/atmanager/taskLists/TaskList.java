@@ -1,6 +1,6 @@
 package com.heig.atmanager.taskLists;
 
-import com.heig.atmanager.DrawerObject;
+import com.heig.atmanager.drawers.DrawerObject;
 import com.heig.atmanager.MainActivity;
 import com.heig.atmanager.tasks.Task;
 

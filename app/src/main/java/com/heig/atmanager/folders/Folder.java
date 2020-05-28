@@ -1,8 +1,6 @@
 package com.heig.atmanager.folders;
 
-import android.util.Log;
-
-import com.heig.atmanager.DrawerObject;
+import com.heig.atmanager.drawers.DrawerObject;
 import com.heig.atmanager.taskLists.TaskList;
 
 import java.util.ArrayList;
