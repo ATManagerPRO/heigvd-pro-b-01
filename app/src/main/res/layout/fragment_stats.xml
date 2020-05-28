@@ -40,7 +40,8 @@
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dropdown_container">
@@ -49,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="300dp">
+            android:paddingBottom="80dp">
 
             <com.anychart.AnyChartView
                 android:id="@+id/pie_chart_tasks"
@@ -59,8 +60,8 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/light_grey"
-                android:layout_margin="20dp"/>
+                android:layout_margin="20dp"
+                android:background="@color/light_grey" />
 
             <com.anychart.AnyChartView
                 android:id="@+id/line_chart_tasks"
@@ -70,8 +71,8 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/light_grey"
-                android:layout_margin="20dp"/>
+                android:layout_margin="20dp"
+                android:background="@color/light_grey" />
 
             <com.anychart.AnyChartView
                 android:id="@+id/pie_chart_goals"
@@ -81,8 +82,8 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/light_grey"
-                android:layout_margin="20dp"/>
+                android:layout_margin="20dp"
+                android:background="@color/light_grey" />
 
             <com.anychart.AnyChartView
                 android:id="@+id/cloud_tags"
