@@ -58,6 +58,7 @@ public class AddTaskFragment extends Fragment {
     private String description;
     private DatePickerDialog picker;
     private final Calendar calendar = Calendar.getInstance();
+    private Button cancelButton;
 
     private int[] dueDateValues;
     private int[] reminderDateValues;
@@ -120,6 +121,7 @@ public class AddTaskFragment extends Fragment {
         // Bind all input with id
         titleEditText = mView.findViewById(R.id.frag_add_task_title);
         descriptionEditText = mView.findViewById(R.id.frag_add_task_description);
+        cancelButton = mView.findViewById(R.id.frag_add_task_cancel_button);
 
         dueDateTextView = mView.findViewById(R.id.frag_add_task_due_date);
         dueTimeTextView = mView.findViewById(R.id.frag_add_task_due_time);
@@ -272,6 +274,8 @@ public class AddTaskFragment extends Fragment {
                     }
                 }
 
+
+
                 getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
                 getActivity().findViewById(R.id.dock).setVisibility(View.VISIBLE);
 
@@ -279,6 +283,16 @@ public class AddTaskFragment extends Fragment {
             }
         });
 
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getFragmentManager().popBackStack();
+
+                getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
+                getActivity().findViewById(R.id.dock).setVisibility(View.VISIBLE);
+            }
+        });
 
         return mView;
     }
