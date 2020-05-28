@@ -33,4 +33,4 @@ Technical documentation : `PRO_B-01_RenduProjet.pdf`
 ...
 
 ## ATManager API
-You can found in [this repository](https://github.com/ATManagerPRO/heigvd-pro-b-01-api) the ATManager API that is used to manage our database resources.
+You can find in [this repository](https://github.com/ATManagerPRO/heigvd-pro-b-01-api) the ATManager API that is used to manage our database resources.
