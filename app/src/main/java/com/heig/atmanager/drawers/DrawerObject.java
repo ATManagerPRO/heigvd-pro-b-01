@@ -1,4 +1,4 @@
-package com.heig.atmanager;
+package com.heig.atmanager.drawers;
 
 /**
  * Author : Stéphane Bottin

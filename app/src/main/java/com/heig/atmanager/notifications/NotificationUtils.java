@@ -1,4 +1,4 @@
-package com.heig.atmanager;
+package com.heig.atmanager.notifications;
 
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -9,6 +9,9 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Color;
+
+import com.heig.atmanager.BuildConfig;
+import com.heig.atmanager.R;
 
 public class NotificationUtils extends ContextWrapper {
 

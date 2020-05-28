@@ -27,15 +27,14 @@ import android.widget.TimePicker;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputLayout;
-import com.heig.atmanager.LocalCalendarHandler;
+import com.heig.atmanager.calendar.local.LocalCalendarHandler;
 import com.heig.atmanager.MainActivity;
-import com.heig.atmanager.NotificationUtils;
+import com.heig.atmanager.notifications.NotificationUtils;
 import com.heig.atmanager.userData.PostRequests;
 import com.heig.atmanager.R;
 import com.heig.atmanager.Utils;
 import com.heig.atmanager.taskLists.TaskList;
 import com.heig.atmanager.tasks.Task;
-import com.heig.atmanager.tasks.TaskFeedAdapter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -59,6 +58,7 @@ public class AddTaskFragment extends Fragment {
     private String description;
     private DatePickerDialog picker;
     private final Calendar calendar = Calendar.getInstance();
+    private Button cancelButton;
 
     private int[] dueDateValues;
     private int[] reminderDateValues;
@@ -121,6 +121,7 @@ public class AddTaskFragment extends Fragment {
         // Bind all input with id
         titleEditText = mView.findViewById(R.id.frag_add_task_title);
         descriptionEditText = mView.findViewById(R.id.frag_add_task_description);
+        cancelButton = mView.findViewById(R.id.frag_add_task_cancel_button);
 
         dueDateTextView = mView.findViewById(R.id.frag_add_task_due_date);
         dueTimeTextView = mView.findViewById(R.id.frag_add_task_due_time);
@@ -273,6 +274,8 @@ public class AddTaskFragment extends Fragment {
                     }
                 }
 
+
+
                 getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
                 getActivity().findViewById(R.id.dock).setVisibility(View.VISIBLE);
 
@@ -280,6 +283,16 @@ public class AddTaskFragment extends Fragment {
             }
         });
 
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getFragmentManager().popBackStack();
+
+                getActivity().findViewById(R.id.fab_container).setVisibility(View.VISIBLE);
+                getActivity().findViewById(R.id.dock).setVisibility(View.VISIBLE);
+            }
+        });
 
         return mView;
     }

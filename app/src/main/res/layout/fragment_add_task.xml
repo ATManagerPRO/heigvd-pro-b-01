@@ -1,68 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frag_add_task"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    tools:context=".addContent.AddTaskFragment"
     android:layout_margin="16dp"
-    android:id="@+id/frag_add_task"
-    android:scrollbars="vertical">
+    android:orientation="vertical"
+    android:scrollbars="vertical"
+    tools:context=".addContent.AddTaskFragment">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/task_title"
+        android:layout_marginBottom="10dp"
         android:fontFamily="@font/arialbd"
+        android:text="@string/task_title"
         android:textColor="@color/black"
-        android:textSize="40sp"
-        android:layout_marginBottom="10dp"/>
+        android:textSize="40sp" />
 
     <!-- Task title -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/frag_add_task_title_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/title"
-        app:errorEnabled="true"
         app:boxStrokeColor="@color/colorAccent"
-        app:hintTextColor="@color/colorAccent"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        app:errorEnabled="true"
+        app:hintTextColor="@color/colorAccent">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/frag_add_task_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:cursorVisible="true"
-            android:textCursorDrawable="@drawable/cursor_color"
-            android:maxLines="1"
             android:inputType="text"
-            android:textSize="18sp"
             android:maxLength="@integer/task_title"
-            />
+            android:maxLines="1"
+            android:textCursorDrawable="@drawable/cursor_color"
+            android:textSize="18sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Task description -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/frag_add_task_description_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/description"
-        app:errorEnabled="true"
         app:boxStrokeColor="@color/colorAccent"
-        app:hintTextColor="@color/colorAccent"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        app:errorEnabled="true"
+        app:hintTextColor="@color/colorAccent">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/frag_add_task_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:cursorVisible="true"
-            android:textCursorDrawable="@drawable/cursor_color"
-            android:inputType="textMultiLine"
             android:gravity="top|start"
-            android:textSize="18sp"
-            />
+            android:inputType="textMultiLine"
+            android:textCursorDrawable="@drawable/cursor_color"
+            android:textSize="18sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <FrameLayout
@@ -70,33 +69,33 @@
         android:layout_height="1dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:background="@color/light_grey"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="20dp"
+        android:background="@color/light_grey" />
 
     <!-- Task tags input -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/frag_add_task_tags_input"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/tags"
-        app:errorEnabled="true"
         app:boxStrokeColor="@color/colorAccent"
-        app:hintTextColor="@color/colorAccent"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        app:errorEnabled="true"
+        app:hintTextColor="@color/colorAccent">
 
         <com.google.android.material.textview.MaterialAutoCompleteTextView
             android:id="@+id/frag_add_task_autocomplete_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:cursorVisible="true"
-            android:textCursorDrawable="@drawable/cursor_color"
             android:inputType="text"
-            android:textSize="18sp"
             android:maxLines="1"
             android:paddingStart="10dp"
-            android:paddingEnd="10dp"
             android:paddingTop="15dp"
-            android:paddingBottom="15dp"/>
+            android:paddingEnd="10dp"
+            android:paddingBottom="15dp"
+            android:textCursorDrawable="@drawable/cursor_color"
+            android:textSize="18sp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -117,9 +116,9 @@
     </HorizontalScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/dateTable"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/dateTable">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/frag_add_task_due_date_text"
@@ -129,53 +128,49 @@
             android:padding="10dp"
             android:text="@string/due_date_title"
             android:textSize="18sp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="@id/frag_add_task_notification_text"
             app:layout_constraintEnd_toEndOf="@id/frag_add_task_notification_text"
-            />
+            app:layout_constraintStart_toStartOf="@id/frag_add_task_notification_text"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/frag_add_task_due_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:padding="10dp"
-            android:hint="@string/due_date"
-            android:clickable="true"
-            android:textSize="18sp"
             android:layout_weight="1"
-            app:layout_constraintTop_toTopOf="parent"
+            android:clickable="true"
+            android:hint="@string/due_date"
+            android:padding="10dp"
+            android:textSize="18sp"
             app:layout_constraintLeft_toRightOf="@id/frag_add_task_due_date_text"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/frag_add_task_due_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:padding="10dp"
-            android:hint="@string/due_time"
-            android:clickable="true"
-            android:textSize="18sp"
             android:layout_weight="1"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            android:clickable="true"
+            android:hint="@string/due_time"
+            android:padding="10dp"
+            android:textSize="18sp"
             app:layout_constraintLeft_toRightOf="@id/frag_add_task_due_date"
-            />
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/frag_add_task_notification_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_weight="1"
             android:padding="10dp"
             android:text="@string/reminder_date_title"
             android:textSize="18sp"
-            android:layout_weight="1"
-            app:layout_constraintTop_toBottomOf="@id/frag_add_task_due_date_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            />
+            app:layout_constraintTop_toBottomOf="@id/frag_add_task_due_date_text" />
 
         <TextView
             android:id="@+id/frag_add_task_notification"
@@ -187,22 +182,22 @@
             android:hint="@string/notification_hint"
             android:padding="10dp"
             android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/frag_add_task_due_date_text"
-            app:layout_constraintTop_toBottomOf="@id/frag_add_task_due_date"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/frag_add_task_due_date" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:id="@+id/directory_layout"
-        app:layout_constraintBottom_toTopOf="@id/frag_validation_button"
-        app:layout_constraintTop_toBottomOf="@id/dateTable"
-        android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:orientation="horizontal"
-        android:weightSum="2">
+        android:padding="10dp"
+        android:weightSum="2"
+        app:layout_constraintBottom_toTopOf="@id/frag_validation_button"
+        app:layout_constraintTop_toBottomOf="@id/dateTable">
 
         <ImageView
             android:layout_width="100dp"
@@ -218,21 +213,37 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:padding="10dp"
-            android:spinnerMode="dropdown"
-            />
+            android:spinnerMode="dropdown" />
     </LinearLayout>
 
 
-    <Button
-        android:id="@+id/frag_validation_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        style="@style/AppTheme.Button.Icon.Validation"
-        android:layout_gravity="center"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
 
+        <Button
+            android:id="@+id/frag_validation_button"
+            style="@style/AppTheme.Button.Icon.Validation"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
 
+        <Button
+            android:id="@+id/frag_add_task_cancel_button"
+            style="@style/AppTheme.Button.Icon.Validation"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            app:icon="@drawable/ic_clear_white_24dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+    </LinearLayout>
 
 
 </LinearLayout>

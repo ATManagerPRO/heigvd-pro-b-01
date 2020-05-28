@@ -1,10 +1,12 @@
-package com.heig.atmanager;
+package com.heig.atmanager.notifications;
 
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+
+import com.heig.atmanager.BuildConfig;
 
 
 public class NotificationPublisher extends BroadcastReceiver {

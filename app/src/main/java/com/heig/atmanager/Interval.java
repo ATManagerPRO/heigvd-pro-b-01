@@ -1,7 +1,6 @@
 package com.heig.atmanager;
 
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Author : Stéphane Bottin
